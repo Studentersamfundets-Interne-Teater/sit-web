@@ -1,0 +1,15 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<h3>Er du sikker på at du vil fjerne {{erfaring.medlem}}s erfaring<br>
+	som {{erfaring.tittel}}?</h3>
+
+	<form action="{% url 'erfaring_fjern' erfaring.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="ja">
+	</form>
+	<a href="{% url 'medlem_info' erfaring.medlem.id %}">nei</a>
+	<br><br>
+
+{% endblock innhold %}

@@ -1,0 +1,24 @@
+{% extends "produksjon_info.html" %}
+
+{% block produksjon_tittel %}
+
+	<h3>Er du sikker på at du vil slette produksjonen<br>
+	{{produksjon}}?</h3>
+
+	<form action="{% url 'produksjon_slett' produksjon.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="ja">
+	</form>
+	<a href="{% url 'produksjon_info' produksjon.id %}">nei</a>
+	<br><br>
+	
+	<img src="{{produksjon.banner.url}}" height=300>
+
+{% endblock produksjon_tittel %}
+
+{% block produksjon_nav %}
+
+	<br><br>
+	<a href="{% url 'produksjon_info' produksjon.id %}">vis produksjon</a>
+
+{% endblock produksjon_nav %}

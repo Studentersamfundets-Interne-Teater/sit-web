@@ -1,0 +1,15 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<h3>Er du sikker på at du vil fjerne {{utmerkelse.medlem}}s utmerkelse<br>
+	som {{utmerkelse.tittel}}?</h3>
+
+	<form action="{% url 'utmerkelse_fjern' utmerkelse.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="ja">
+	</form>
+	<a href="{% url 'medlem_info' utmerkelse.medlem.id %}">nei</a>
+	<br><br>
+
+{% endblock innhold %}

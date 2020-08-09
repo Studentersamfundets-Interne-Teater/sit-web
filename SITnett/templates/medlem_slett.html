@@ -1,0 +1,22 @@
+{% extends "medlem_info.html" %}
+
+{% block medlem_navn %}
+
+	<h3>Er du sikker på at du vil slette medlemmet<br>
+	{{medlem}}?</h3>
+
+	<form action="{% url 'medlem_slett' medlem.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="ja">
+	</form>
+	<a href="{% url 'medlem_info' medlem.id %}">nei</a>
+	<br><br>
+
+{% endblock medlem_navn %}
+
+{% block medlem_nav %}
+
+	<br><br>
+	<a href="{% url 'medlem_info' medlem.id %}">vis medlem</a>
+
+{% endblock medlem_nav %}

@@ -1,0 +1,15 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<h3>Er du sikker på at du vil fjerne forestillingen av<br>
+	{{forestilling.produksjon.tittel}} den {{forestilling.tidspunkt}}?</h3>
+
+	<form action="{% url 'forestilling_fjern' forestilling.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="ja">
+	</form>
+	<a href="{% url 'produksjon_info' forestilling.produksjon.id %}">nei</a>
+	<br><br>
+
+{% endblock innhold %}

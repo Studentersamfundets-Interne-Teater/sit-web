@@ -1,0 +1,11 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	{% for medlem in mliste %}
+	<a href="{% url 'medlem_info' medlem.id %}">{{medlem}}</a><br>
+	{% endfor %}
+	<br><br>
+	<a href="{% url 'medlem_ny' %}">nytt medlem</a>
+
+{% endblock innhold %}

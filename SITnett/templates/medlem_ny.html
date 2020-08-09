@@ -1,0 +1,11 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<form action="{% url 'medlem_ny' %}" enctype="multipart/form-data" method="post">
+		{% csrf_token %}
+		{{mform}}
+		<input type="submit" value="lagre">
+	</form>
+
+{% endblock innhold %}

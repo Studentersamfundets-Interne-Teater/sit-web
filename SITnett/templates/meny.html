@@ -1,0 +1,44 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8"/>
+	<title>Studentersamfundets Interne Teater</title>
+	<link rel="stylesheet" href="{% static 'style.css' %}"/>
+</head>
+
+<body>
+
+	<status id="status">
+		<h1>
+		intern
+		<a href="{% url 'opptak' %}">Søk SIT</a>
+		</h1>
+	</status>
+
+	<menu id="menu">
+		<h2>
+		<a href="{% url 'hoved' %}"><img src="{% static 'assets/sit_logo_no_subtitle.svg' %}" height=60></a>
+		<a href="{% url 'info' %}">Om SIT</a>
+		<a href="{% url 'kontakt' %}">Kontakt</a>
+		<a href="{% url 'medlemmer' %}">Medlemmer</a>
+		<a href="{% url 'produksjoner' %}">Produksjoner</a>
+		<a href="{% url 'verv' %}">Verv</a>
+		<a href="{% url 'uttrykk' %}">Uttrykk</a>
+		<a href="{% url 'dokumenter' %}">Dokumenter</a>
+		<a href="{% url 'arkiv' %}">Arkiv</a>
+		<a href="http://sit-bar.samfundet.no/">Badeportal</a>
+		</h2>
+	</menu>
+
+	<content>
+		{% block innhold %}
+	
+		{% endblock innhold %}
+	</content>
+
+</body>
+
+</html>

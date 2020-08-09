@@ -1,0 +1,11 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	{% for produksjon in pliste %}
+	<a href="{% url 'produksjon_info' produksjon.id %}">{{produksjon}}</a><br>
+	{% endfor %}
+	<br><br>
+	<a href="{% url 'produksjon_ny' %}">ny produksjon</a>
+
+{% endblock innhold %}

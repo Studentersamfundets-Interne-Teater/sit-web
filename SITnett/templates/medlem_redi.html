@@ -1,0 +1,54 @@
+{% extends "medlem_info.html" %}
+
+{% block medlem_info %}
+
+	<form action="{% url 'medlem_redi' medlem.id %}" enctype="multipart/form-data" method="post">
+		{% csrf_token %}
+		{{mform}}
+		<input type="submit" value="lagre">
+	</form>
+
+{% endblock medlem_info %}
+
+{% block erfaring_fjern %}
+
+			<a href="{% url 'erfaring_fjern' erfaring.id %}">fjern</a><br>
+
+{% endblock erfaring_fjern %}
+
+{% block erfaring_ny %}
+		
+	<br>
+	<form action="{% url 'medlem_redi' medlem.id %}" enctype="multipart/form-data" method="post">
+		{% csrf_token %}
+		Ny erfaring:
+		{{eform}}
+		<input type="submit" value="legg til">
+	</form>
+
+{% endblock erfaring_ny %}
+
+{% block utmerkelse_fjern %}
+	
+	<a href="{% url 'utmerkelse_fjern' utmerkelse.id %}">fjern</a><br>
+	
+{% endblock utmerkelse_fjern %}
+
+{% block utmerkelse_ny %}
+
+	<br>
+	<form action="{% url 'medlem_redi' medlem.id %}" method="post">
+		{% csrf_token %}
+		Ny utmerkelse:
+		{{uform}}
+		<input type="submit" value="legg til">
+	</form>
+
+{% endblock utmerkelse_ny %}
+
+{% block medlem_nav %}
+
+	<br><br>
+	<a href="{% url 'medlem_info' medlem.id %}">vis medlem</a>
+
+{% endblock medlem_nav %}

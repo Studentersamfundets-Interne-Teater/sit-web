@@ -1,0 +1,62 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+	
+	{% block produksjon_tittel %}
+	<h3>{{produksjon}}</h3>
+	{% endblock produksjon_tittel %}
+	
+	{% block produksjon_info %}
+	<img src="{{produksjon.banner.url}}" width=900>
+
+	<br><br>
+	<b>Forfatter:</b> {{produksjon.forfatter}}<br>
+	<b>Opphavsår:</b> {{produksjon.opphav}}<br>
+	{% if produksjon.varighet %}<b>Varighet:</b> {{produksjon.varighet}}<br>{% endif %}
+	<br>
+	<b>Semester:</b> {{produksjon.semester}}<br>
+	<b>Lokale:</b> {{produksjon.lokale}}<br>
+	<br>
+	{{produksjon.info}}<br>
+	{% if produksjon.memo %}<br><i>{{produksjon.memo}}</i><br>{% endif %}
+	<br><img src="{{produksjon.plakat.url}}" height=300>
+	{% endblock produksjon_info %}
+
+	
+	<h4>Forestillinger</h4>
+	<b>Premiere:</b> {{produksjon.premiere}}<br>
+	{% for forestilling in produksjon.forestillinger.all %}
+		{{forestilling.tidspunkt}}
+		{% block forestilling_fjern %}
+		<br>
+		{% endblock forestilling_fjern %}
+	{% endfor %}
+	
+	{% block forestilling_ny %}
+
+	{% endblock forestilling_ny %}
+
+	{% if produksjon.erfaringer.count %}
+		<h4>Medvirkende</h4>
+		{% for erfaring in produksjon.erfaringer.all %}
+			<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a> som {{erfaring.verv}}
+			{% if erfaring.rolle %}
+				 ({{erfaring.rolle}})
+			{% endif %}
+			{% block medvirkende_fjern %}
+			<br>
+			{% endblock medvirkende_fjern %}
+		{% endfor %}
+	{% endif %}
+	{% block medvirkende_ny %}
+
+	{% endblock medvirkende_ny %}
+
+	{% block produksjon_nav %}
+	<br><br>
+	<a href="{% url 'produksjon_redi' produksjon.id %}">endre produksjon</a>
+	<br><br>
+	<a href="{% url 'produksjon_slett' produksjon.id %}">slett produksjon</a>
+	{% endblock produksjon_nav %}
+
+{% endblock innhold %}
