@@ -14,35 +14,36 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include,path
+from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
 
 from . import views
 
 urlpatterns = [
-	path('',views.hoved,name='hoved'),
-	path('info/',views.info,name='info'),
-	path('opptak/',views.opptak,name='opptak'),
-	path('kontakt/',views.kontakt,name='kontakt'),
-	path('medlemmer/',views.medlemmer,name='medlemmer'),
-	path('medlem/ny/',views.medlem_ny,name='medlem_ny'),
-	path('medlem/<int:mid>/',views.medlem_info,name='medlem_info'),
-	path('medlem/<int:mid>/redi',views.medlem_redi,name='medlem_redi'),
-	path('medlem/<int:mid>/slett',views.medlem_slett,name='medlem_slett'),
-	path('utmerkelse/<int:uid>/fjern',views.utmerkelse_fjern,name='utmerkelse_fjern'),
-	path('produksjoner/',views.produksjoner,name='produksjoner'),
-	path('produksjon/ny/',views.produksjon_ny,name='produksjon_ny'),
-	path('produksjon/<int:pid>/',views.produksjon_info,name='produksjon_info'),
-	path('produksjon/<int:pid>/redi',views.produksjon_redi,name='produksjon_redi'),
-	path('produksjon/<int:pid>/slett',views.produksjon_slett,name='produksjon_slett'),
-	path('forestilling/<int:fid>/fjern',views.forestilling_fjern,name='forestilling_fjern'),
-	path('verv/',views.verv,name='verv'),
-	path('erfaring/<int:eid>/fjern',views.erfaring_fjern,name='erfaring_fjern'),
-	path('uttrykk/',views.uttrykk,name='uttrykk'),
-	path('dokumenter/',views.dokumenter,name='dokumenter'),
-	path('arkiv/',views.arkiv,name='arkiv'),
-	path('produksjoner/',views.produksjoner,name='produksjoner'),
+	path('',views.view_hoved,name='hoved'),
+	path('info/',views.view_info,name='info'),
+	path('opptak/',views.view_opptak,name='opptak'),
+	path('kontakt/',views.view_kontakt,name='kontakt'),
+	path('medlemmer/',views.view_medlemmer,name='medlemmer'),
+	path('medlem/ny/',views.view_medlem_ny,name='medlem_ny'),
+	path('medlem/<int:mid>/',views.view_medlem_info,name='medlem_info'),
+	path('medlem/<int:mid>/redi',views.view_medlem_redi,name='medlem_redi'),
+	path('medlem/<int:mid>/slett',views.view_medlem_slett,name='medlem_slett'),
+	path('utmerkelse/<int:uid>/fjern',views.view_utmerkelse_fjern,name='utmerkelse_fjern'),
+	path('produksjoner/',views.view_produksjoner,name='produksjoner'),
+	path('produksjon/ny/',views.view_produksjon_ny,name='produksjon_ny'),
+	path('produksjon/<int:pid>/',views.view_produksjon_info,name='produksjon_info'),
+	path('produksjon/<int:pid>/redi',views.view_produksjon_redi,name='produksjon_redi'),
+	path('produksjon/<int:pid>/slett',views.view_produksjon_slett,name='produksjon_slett'),
+	path('forestilling/<int:fid>/fjern',views.view_forestilling_fjern,name='forestilling_fjern'),
+	path('verv/',views.view_verv,name='verv'),
+	path('erfaring/<int:eid>/fjern',views.view_erfaring_fjern,name='erfaring_fjern'),
+	path('uttrykk/',views.view_uttrykk,name='uttrykk'),
+	path('dokumenter/',views.view_dokumenter,name='dokumenter'),
+	path('arkiv/',views.view_arkiv,name='arkiv'),
+	path('produksjoner/',views.view_produksjoner,name='produksjoner'),
+	path('konto/',include('django.contrib.auth.urls')),
 	path('admin/',admin.site.urls)
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

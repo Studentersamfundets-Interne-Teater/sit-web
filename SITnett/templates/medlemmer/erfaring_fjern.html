@@ -7,9 +7,9 @@
 
 	<form action="{% url 'erfaring_fjern' erfaring.id %}" method="post">
 		{% csrf_token %}
-		<input type="submit" value="ja">
+		<input type="submit" value="Ja">
 	</form>
-	<a href="{% url 'medlem_info' erfaring.medlem.id %}">nei</a>
+	<a href="{% url 'medlem_info' erfaring.medlem.id %}">Nei</a>
 	<br><br>
 
 {% endblock innhold %}

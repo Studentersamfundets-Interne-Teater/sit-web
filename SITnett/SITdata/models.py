@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 import datetime
 
@@ -26,9 +27,12 @@ class Medlem(models.Model):
 	studium = models.CharField(max_length=30)
 	jobb = models.CharField(blank=True,max_length=30)
 	kallenavn = models.CharField(blank=True,max_length=30)
+	konto = models.OneToOneField(User,models.SET_NULL,verbose_name="brukerkonto",blank=True,null=True)
+	def brukernavn(self):
+		return (self.fornavn[:3]+self.etternavn[:3]).lower()+str(self.opptak)[2:]
 	class Meta:
 		verbose_name_plural = "medlemmer"
-		ordering = ['etternavn','fornavn']
+		ordering = ['opptak','ugjeng','etternavn','fornavn']
 	def __str__(self):
 		return self.fornavn+(" "+self.mellomnavn if self.mellomnavn else "")+" "+self.etternavn
 	def get_absolute_url(self):
@@ -62,7 +66,7 @@ class Utmerkelse(models.Model):
 
 
 class Verv(models.Model):
-	VTYPER = ((1,'styreverv'),(2,'ansvarsverv'),(3,'produksjonsverv_med_erfaringsskriv'),(4,'produksjonsverv_uten_erfaringsskriv'))
+	VTYPER = ((1,'styre'),(2,'genfors'),(3,'prod_merf'),(4,'prod_uerf'))
 	vtype = models.IntegerField("vervtype",choices=VTYPER)
 	tittel = models.CharField(max_length=50)
 	info = models.TextField("beskrivelse",blank=True)

@@ -18,7 +18,9 @@
 	<b>Lokale:</b> {{produksjon.lokale}}<br>
 	<br>
 	{{produksjon.info}}<br>
-	{% if produksjon.memo %}<br><i>{{produksjon.memo}}</i><br>{% endif %}
+	{% if user.is_authenticated %}
+		{% if produksjon.memo %}<br><i>{{produksjon.memo}}</i><br>{% endif %}
+	{% endif %}
 	<br><img src="{{produksjon.plakat.url}}" height=300>
 	{% endblock produksjon_info %}
 
@@ -53,10 +55,16 @@
 	{% endblock medvirkende_ny %}
 
 	{% block produksjon_nav %}
-	<br><br>
-	<a href="{% url 'produksjon_redi' produksjon.id %}">endre produksjon</a>
-	<br><br>
-	<a href="{% url 'produksjon_slett' produksjon.id %}">slett produksjon</a>
+
+		{% if access == 'admin' or access == 'own' %}
+			<br><br>
+			<a href="{% url 'produksjon_redi' produksjon.id %}">Endre produksjon</a>
+		{% endif %}
+		{% if perms.SITdata.delete_produksjon %}
+			<br><br>
+			<a href="{% url 'produksjon_slett' produksjon.id %}">Slett produksjon</a>
+		{% endif %}
+
 	{% endblock produksjon_nav %}
 
 {% endblock innhold %}

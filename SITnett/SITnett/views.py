@@ -1,151 +1,210 @@
-from django.http import HttpResponse,HttpResponseRedirect
-from django.urls import reverse
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib.auth.models import User,Group
+from django.contrib.auth.decorators import login_required,permission_required
 
 from SITdata import models,forms
 
-def hoved(request):
+
+def view_hoved(request):
 	return render(request,'hoved.html')
 
-def info(request):
+def view_info(request):
 	return render(request,'info.html')
 
-def opptak(request):
+def view_opptak(request):
 	return render(request,'opptak.html')
 
-def kontakt(request):
+def view_kontakt(request):
 	return render(request,'kontakt.html')
 
-def medlemmer(request):
-	return render(request,'medlemmer.html',{'mliste':models.Medlem.objects.all()})
+def view_medlemmer(request):
+	return render(request,'medlemmer/medlemmer.html',{'mliste':models.Medlem.objects.all()})
 
-def medlem_ny(request):
-	if (request.method == 'POST'):
+@permission_required('SITdata.add_medlem')
+def view_medlem_ny(request):
+	if request.method == 'POST':
 		mform = forms.MedlemForm(request.POST,request.FILES)
 		if mform.is_valid():
 			medlem = mform.save()
-			return HttpResponseRedirect(reverse('medlem_info',kwargs={'mid':medlem.id}))
+			if 'opprett_konto' in request.POST:
+				konto = User.objects.create_user(medlem.brukernavn(),medlem.epost,'ta-de-du!')
+				medlem.konto = konto
+				medlem.save()
+			return redirect('medlem_info',medlem.id)
 	else:
 		mform = forms.MedlemForm()
-	return render(request,'medlem_ny.html',{'mform':mform})
+	return render(request,'medlemmer/medlem_ny.html',{'mform':mform})
 
-def medlem_info(request,mid):
+def view_medlem_info(request,mid):
 	medlem = get_object_or_404(models.Medlem,id=mid)
-	return render(request,'medlem_info.html',{'medlem':medlem})
+	if request.user.has_perm('SITdata.change_medlem'):
+		access = 'admin'
+	elif request.user == medlem.konto:
+		access = 'own'
+	else:
+		access = 'other'
+	return render(request,'medlemmer/medlem_info.html',{'access':access,'medlem':medlem})
 
-def medlem_redi(request,mid):
+@login_required
+def view_medlem_redi(request,mid):
 	medlem = get_object_or_404(models.Medlem,id=mid)
-	if (request.method == 'POST'):
-		mform = forms.MedlemForm(request.POST,request.FILES,instance=medlem)
+	if request.user.has_perm('SITdata.change_medlem'):
+		MedlemForm = forms.MedlemAdminForm
+	elif request.user == medlem.konto:
+		MedlemForm = forms.MedlemOwnForm
+	else:
+		MedlemForm = forms.MedlemOtherForm
+	if request.method == 'POST':
+		mform = MedlemForm(request.POST,instance=medlem)
 		eform = forms.ErfaringMedForm(request.POST,request.FILES)
 		uform = forms.UtmerkelseForm(request.POST)
 		if mform.is_valid():
 			mform.save()
-			return HttpResponseRedirect(reverse('medlem_info',kwargs={'mid':medlem.id}))
+			if 'opprett_konto' in request.POST:
+				konto = User.objects.create_user(medlem.brukernavn(),medlem.epost,'ta-de-du!')
+				medlem.konto = konto
+				medlem.save()
+			elif 'fjern_konto' in request.POST:
+				konto = medlem.konto
+				konto.delete()
+			return redirect('medlem_info',medlem.id)
 		elif uform.is_valid():
 			utmerkelse = uform.save(commit=False)
 			utmerkelse.medlem = medlem
 			utmerkelse.save()
-			return HttpResponseRedirect(reverse('medlem_redi',kwargs={'mid':medlem.id}))
+			return redirect('medlem_redi',medlem.id)
 		elif eform.is_valid():
 			erfaring = eform.save(commit=False)
 			erfaring.medlem = medlem
 			erfaring.save()
-			return HttpResponseRedirect(reverse('medlem_redi',kwargs={'mid':medlem.id}))
+			return redirect('medlem_redi',medlem.id)
 	else:
-		mform = forms.MedlemForm(instance=medlem)
+		mform = MedlemForm(instance=medlem)
 		eform = forms.ErfaringMedForm()
 		uform = forms.UtmerkelseForm()
-	return render(request,'medlem_redi.html',{'medlem':medlem,'mform':mform,'uform':uform,'eform':eform})
+	return render(request,'medlemmer/medlem_redi.html',{'medlem':medlem,'mform':mform,'uform':uform,'eform':eform})
 
-def medlem_slett(request,mid):
+@permission_required('SITdata.delete_medlem')
+def view_medlem_slett(request,mid):
 	medlem = get_object_or_404(models.Medlem,id=mid)
 	if (request.method == 'POST'):
 		medlem.delete()
-		return HttpResponseRedirect(reverse('medlemmer'))
-	return render(request,'medlem_slett.html',{'medlem':medlem})
+		return redirect('medlemmer')
+	return render(request,'medlemmer/medlem_slett.html',{'medlem':medlem})
 
-def utmerkelse_fjern(request,uid):
+@permission_required('SITdata.delete_utmerkelse')
+def view_utmerkelse_fjern(request,uid):
 	utmerkelse = get_object_or_404(models.Utmerkelse,id=uid)
 	if (request.method == 'POST'):
 		medlem = utmerkelse.medlem
 		utmerkelse.delete()
-		return HttpResponseRedirect(reverse('medlem_info',kwargs={'mid':medlem.id}))
-	return render(request,'utmerkelse_fjern.html',{'utmerkelse':utmerkelse})
+		return redirect('medlem_info',medlem.id)
+	return render(request,'medlemmer/utmerkelse_fjern.html',{'utmerkelse':utmerkelse})
 
-def produksjoner(request):
-	return render(request,'produksjoner.html',{'pliste':models.Produksjon.objects.all()})
+def view_produksjoner(request):
+	return render(request,'produksjoner/produksjoner.html',{'pliste':models.Produksjon.objects.all()})
 
-def produksjon_ny(request):
-	if (request.method == 'POST'):
+@permission_required('SITdata.add_produksjon')
+def view_produksjon_ny(request):
+	if request.method == 'POST':
 		pform = forms.ProduksjonForm(request.POST,request.FILES)
 		if pform.is_valid():
 			produksjon = pform.save()
-			return HttpResponseRedirect(reverse('produksjon_info',kwargs={'pid':produksjon.id}))
+			return redirect('produksjon_info',produksjon.id)
 	else:
 		pform = forms.ProduksjonForm()
-	return render(request,'produksjon_ny.html',{'pform':pform})
+	return render(request,'produksjoner/produksjon_ny.html',{'pform':pform})
 
-def produksjon_info(request,pid):
+def view_produksjon_info(request,pid):
 	produksjon = get_object_or_404(models.Produksjon,id=pid)
-	return render(request,'produksjon_info.html',{'produksjon':produksjon})
+	if request.user.has_perm('SITdata.change_produksjon'):
+		access = 'admin'
+	elif request.user.is_authenticated \
+	and request.user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent"):
+		access = 'own'
+	else:
+		access = 'other'
+	return render(request,'produksjoner/produksjon_info.html',{'access':access,'produksjon':produksjon})
 
-def produksjon_redi(request,pid):
+@login_required
+def view_produksjon_redi(request,pid):
 	produksjon = get_object_or_404(models.Produksjon,id=pid)
-	if (request.method == 'POST'):
-		pform = forms.ProduksjonForm(request.POST,request.FILES,instance=produksjon)
+	if request.user.has_perm('SITdata.change_produksjon'):
+		ProduksjonForm = forms.ProduksjonAdminForm
+	elif request.user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent"):
+		ProduksjonForm = forms.ProduksjonOwnForm
+	else:
+		return redirect('/konto/login/?next=%s'%request.path)
+	if request.method == 'POST':
+		pform = ProduksjonForm(request.POST,request.FILES,instance=produksjon)	
 		fform = forms.ForestillingForm(request.POST)
 		eform = forms.ErfaringProdForm(request.POST,request.FILES)
 		if pform.is_valid():
 			pform.save()
-			return HttpResponseRedirect(reverse('produksjon_info',kwargs={'pid':produksjon.id}))
+			return redirect('produksjon_info',produksjon.id)
 		elif fform.is_valid():
 			forestilling = fform.save(commit=False)
 			forestilling.produksjon = produksjon
 			forestilling.save()
-			return HttpResponseRedirect(reverse('produksjon_redi',kwargs={'pid':produksjon.id}))
+			return redirect('produksjon_redi',produksjon.id)
 		elif eform.is_valid():
 			erfaring = eform.save(commit=False)
 			erfaring.produksjon = produksjon
 			erfaring.save()
-			return HttpResponseRedirect(reverse('produksjon_redi',kwargs={'pid':produksjon.id}))
+			return redirect('produksjon_redi',produksjon.id)
 	else:
-		pform = forms.ProduksjonForm(instance=produksjon)
+		pform = ProduksjonForm(instance=produksjon)
 		fform = forms.ForestillingForm()
 		eform = forms.ErfaringProdForm()
-	return render(request,'produksjon_redi.html',{'produksjon':produksjon,'pform':pform,'fform':fform,'eform':eform})
+	return render(request,'produksjoner/produksjon_redi.html',{'produksjon':produksjon,'pform':pform,'fform':fform,'eform':eform})
 
-def produksjon_slett(request,pid):
+@permission_required('SITdata.delete_produksjon')
+def view_produksjon_slett(request,pid):
 	produksjon = get_object_or_404(models.Produksjon,id=pid)
-	if (request.method == 'POST'):
+	if request.method == 'POST':
 		produksjon.delete()
-		return HttpResponseRedirect(reverse('produksjoner'))
-	return render(request,'produksjon_slett.html',{'produksjon':produksjon})
+		return redirect('produksjoner')
+	return render(request,'produksjoner/produksjon_slett.html',{'produksjon':produksjon})
 
-def forestilling_fjern(request,fid):
+@login_required
+def view_forestilling_fjern(request,fid):
 	forestilling = get_object_or_404(models.Forestilling,id=fid)
-	if (request.method == 'POST'):
-		produksjon = forestilling.produksjon
-		forestilling.delete()
-		return HttpResponseRedirect(reverse('produksjon_info',kwargs={'pid':forestilling.produksjon.id}))
-	return render(request,'forestilling_fjern.html',{'forestilling':forestilling})
+	if request.user.has_perm('SITdata.delete_forestilling') \
+	or request.user.medlem.erfaringer.all() & forestilling.produksjon.erfaringer.filter(verv__tittel="produsent"):
+		if request.method == 'POST':
+			produksjon = forestilling.produksjon
+			forestilling.delete()
+			return redirect('produksjon_info',forestilling.produksjon.id)
+		return render(request,'produksjoner/forestilling_fjern.html',{'forestilling':forestilling})
+	else:
+		return redirect('/konto/login?next=%s'%request.path)
 
-def verv(request):
+@login_required
+def view_verv(request):
 	return render(request,'verv.html')
 
-def erfaring_fjern(request,eid):
+@login_required
+def view_erfaring_fjern(request,eid):
 	erfaring = get_object_or_404(models.Erfaring,id=eid)
-	if (request.method == 'POST'):
-		medlem = erfaring.medlem
-		erfaring.delete()
-		return HttpResponseRedirect(reverse('medlem_info',kwargs={'mid':medlem.id}))
-	return render(request,'erfaring_fjern.html',{'erfaring':erfaring})
+	if request.user.has_perm('SITdata.delete_erfaring') \
+	or erfaring.produksjon \
+	and request.user.medlem.erfaringer.all() & erfaring.produksjon.erfaringer.filter(verv__tittel="produsent"):
+		if request.method == 'POST':
+			medlem = erfaring.medlem
+			erfaring.delete()
+			return redirect('medlem_info',medlem.id)
+		return render(request,'medlemmer/erfaring_fjern.html',{'erfaring':erfaring})
+	else:
+		return redirect('/konto/login?next=%s'%request.path)
 
-def uttrykk(request):
+@login_required
+def view_uttrykk(request):
 	return render(request,'uttrykk.html')
 
-def dokumenter(request):
+@login_required
+def view_dokumenter(request):
 	return render(request,'dokumenter.html')
 
-def arkiv(request):
+@login_required
+def view_arkiv(request):
 	return render(request,'arkiv.html')

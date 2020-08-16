@@ -5,7 +5,9 @@
 	{% for medlem in mliste %}
 	<a href="{% url 'medlem_info' medlem.id %}">{{medlem}}</a><br>
 	{% endfor %}
+	{% if perms.SITdata.add_medlem %}
 	<br><br>
-	<a href="{% url 'medlem_ny' %}">nytt medlem</a>
+	<a href="{% url 'medlem_ny' %}">Nytt medlem</a>
+	{% endif %}
 
 {% endblock innhold %}
