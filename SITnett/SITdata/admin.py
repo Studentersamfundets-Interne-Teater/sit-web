@@ -18,7 +18,7 @@ class ForestillingInline(admin.TabularInline):
 
 
 class MedlemAdmin(admin.ModelAdmin):
-	list_display = ['id','etternavn','fornavn','ugjeng','opptak','status','konto']
+	list_display = ['id','etternavn','fornavn','undergjeng','opptak','status','brukerkonto']
 	inlines = [ErfaringInline,UtmerkelseInline]
 
 admin.site.register(models.Medlem,MedlemAdmin)

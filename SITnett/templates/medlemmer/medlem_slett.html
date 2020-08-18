@@ -3,7 +3,7 @@
 {% block medlem_navn %}
 
 	<h3>Er du sikker på at du vil slette medlemmet<br>
-	{{medlem}}?</h3>
+	{{medlem}}? All data knytta til medlemmet slettes permanent.</h3>
 
 	<form action="{% url 'medlem_slett' medlem.id %}" method="post">
 		{% csrf_token %}

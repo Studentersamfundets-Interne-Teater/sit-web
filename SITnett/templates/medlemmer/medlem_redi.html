@@ -13,13 +13,13 @@
 		{{mform}}
 		{% if perms.SITdata.add_medlem %}
 			Brukerkonto:
-			{% if medlem.konto %}
-			{{medlem.konto.get_username}}
-			<input type="checkbox" name='fjern_konto'>
-			<label for='fjern_konto'>Fjern</label>
+			{% if medlem.brukerkonto %}
+			{{medlem.brukerkonto.get_username}}
+			<input type="checkbox" name='fjern_brukerkonto'>
+			<label for='fjern_brukerkonto'>Fjern</label>
 			{% else %}
-			<input type="checkbox" name='opprett_konto'>
-			<label for='opprett_konto'>Opprett</label>
+			<input type="checkbox" name='opprett_brukerkonto'>
+			<label for='opprett_brukerkonto'>Opprett</label>
 			{% endif %}
 		{% endif %}
 		<input type="submit" value="Lagre">

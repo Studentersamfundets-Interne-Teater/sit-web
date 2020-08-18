@@ -5,8 +5,8 @@
 	<form action="{% url 'medlem_ny' %}" enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 		{{mform}}
-		Brukerkonto:<input type="checkbox" name='opprett_konto'>
-		<label for='opprett_konto'>opprett</label>
+		Brukerkonto:<input type="checkbox" name='opprett_brukerkonto'>
+		<label for='opprett_brukerkonto'>opprett</label>
 		<input type="submit" value="Lagre">
 	</form>
 

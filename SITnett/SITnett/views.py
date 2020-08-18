@@ -26,9 +26,9 @@ def view_medlem_ny(request):
 		mform = forms.MedlemForm(request.POST,request.FILES)
 		if mform.is_valid():
 			medlem = mform.save()
-			if 'opprett_konto' in request.POST:
-				konto = User.objects.create_user(medlem.brukernavn(),medlem.epost,'ta-de-du!')
-				medlem.konto = konto
+			if 'opprett_brukerkonto' in request.POST:
+				brukerkonto = User.objects.create_user(medlem.brukernavn(),medlem.epost,'ta-de-du!')
+				medlem.brukerkonto = brukerkonto
 				medlem.save()
 			return redirect('medlem_info',medlem.id)
 	else:
@@ -39,7 +39,7 @@ def view_medlem_info(request,mid):
 	medlem = get_object_or_404(models.Medlem,id=mid)
 	if request.user.has_perm('SITdata.change_medlem'):
 		access = 'admin'
-	elif request.user == medlem.konto:
+	elif request.user == medlem.brukerkonto:
 		access = 'own'
 	else:
 		access = 'other'
@@ -50,7 +50,7 @@ def view_medlem_redi(request,mid):
 	medlem = get_object_or_404(models.Medlem,id=mid)
 	if request.user.has_perm('SITdata.change_medlem'):
 		MedlemForm = forms.MedlemAdminForm
-	elif request.user == medlem.konto:
+	elif request.user == medlem.brukerkonto:
 		MedlemForm = forms.MedlemOwnForm
 	else:
 		MedlemForm = forms.MedlemOtherForm
@@ -60,13 +60,13 @@ def view_medlem_redi(request,mid):
 		uform = forms.UtmerkelseForm(request.POST)
 		if mform.is_valid():
 			mform.save()
-			if 'opprett_konto' in request.POST:
-				konto = User.objects.create_user(medlem.brukernavn(),medlem.epost,'ta-de-du!')
-				medlem.konto = konto
+			if 'opprett_brukerkonto' in request.POST:
+				brukerkonto = User.objects.create_user(medlem.brukernavn(),medlem.epost,'ta-de-du!')
+				medlem.brukerkonto = brukerkonto
 				medlem.save()
-			elif 'fjern_konto' in request.POST:
-				konto = medlem.konto
-				konto.delete()
+			elif 'fjern_brukerkonto' in request.POST:
+				brukerkonto = medlem.brukerkonto
+				brukerkonto.delete()
 			return redirect('medlem_info',medlem.id)
 		elif uform.is_valid():
 			utmerkelse = uform.save(commit=False)

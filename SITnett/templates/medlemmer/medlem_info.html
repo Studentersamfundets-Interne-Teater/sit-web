@@ -13,7 +13,7 @@
 	<img src="{{medlem.portrett.url}}" height=300>
 	
 	<br><br>
-	<b>Undergjeng:</b> {{medlem.get_ugjeng_display}}<br>
+	<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
 	<b>Opptaksår:</b> {{medlem.opptak}}<br>
 	<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
 	{% if user.is_authenticated %}

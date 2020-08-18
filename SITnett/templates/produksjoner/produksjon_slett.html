@@ -3,7 +3,7 @@
 {% block produksjon_tittel %}
 
 	<h3>Er du sikker på at du vil slette produksjonen<br>
-	{{produksjon}}?</h3>
+	{{produksjon}}? All data knytta til produksjonen slettes permanent.</h3>
 
 	<form action="{% url 'produksjon_slett' produksjon.id %}" method="post">
 		{% csrf_token %}

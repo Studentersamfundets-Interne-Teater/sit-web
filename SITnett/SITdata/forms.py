@@ -10,8 +10,8 @@ class CustomFileInput(forms.widgets.ClearableFileInput):
 class MedlemAdminForm(forms.ModelForm):
 	class Meta:
 		model = models.Medlem
-		fields = ['fornavn','mellomnavn','etternavn','portrett','ugjeng','opptak','status','fodsel','studium','jobb','telefon','epost','kallenavn']
-		labels = {'ugjeng':"Undergjeng",'opptak':"Opptaksår",'fodsel':"Fødselsdato (DD.MM.ÅÅÅÅ)",'epost':"E-post"}
+		fields = ['fornavn','mellomnavn','etternavn','portrett','undergjeng','opptak','status','fodsel','studium','jobb','telefon','epost','kallenavn']
+		labels = {'opptak':"Opptaksår",'fodsel':"Fødselsdato (DD.MM.ÅÅÅÅ)",'epost':"E-post"}
 		widgets = {'portrett':CustomFileInput}
 
 class MedlemOwnForm(forms.ModelForm):
