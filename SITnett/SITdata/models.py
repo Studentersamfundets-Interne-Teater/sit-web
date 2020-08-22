@@ -68,7 +68,7 @@ class Verv(models.Model):
 	info = models.TextField("beskrivelse",blank=True)
 	instruks = models.TextField(blank=True)
 	def plural(self):
-		if tittel[-2:] == "er":
+		if self.tittel[-2:] == "er":
 			return self.tittel+"e"
 		else:
 			return self.tittel+"er"
