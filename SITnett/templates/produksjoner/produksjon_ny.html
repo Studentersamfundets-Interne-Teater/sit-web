@@ -5,7 +5,7 @@
 	<form action="{% url 'produksjon_ny' %}" enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 		{{pform}}
-		<input type="submit" value="lagre">
+		<input type="submit" value="Lagre">
 	</form>
 
 {% endblock innhold %}

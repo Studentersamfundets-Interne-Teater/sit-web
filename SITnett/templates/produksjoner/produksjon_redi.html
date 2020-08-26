@@ -1,18 +1,18 @@
-{% extends "produksjon_info.html" %}
+{% extends "produksjoner/produksjon_info.html" %}
 
 {% block produksjon_info %}
 
 	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 		{{pform}}
-		<input type="submit" value="lagre">
+		<input type="submit" value="Lagre">
 	</form>
 
 {% endblock produksjon_info %}
 
 {% block forestilling_fjern %}
 
-	<a href="{% url 'forestilling_fjern' forestilling.id %}">fjern</a><br>
+	<a href="{% url 'forestilling_fjern' forestilling.id %}">Fjern</a><br>
 
 {% endblock forestilling_fjern %}
 
@@ -23,13 +23,13 @@
 		{% csrf_token %}
 		Ny forestilling:
 		{{fform}}
-		<input type="submit" value="legg til">
+		<input type="submit" value="Legg til">
 	</form>
 
 {% endblock forestilling_ny %}
 
 {% block medvirkende_fjern %}
-	<a href="{% url 'erfaring_fjern' erfaring.id %}">fjern</a><br>
+	<a href="{% url 'erfaring_fjern' erfaring.id %}">Fjern</a><br>
 {% endblock medvirkende_fjern %}
 
 {% block medvirkende_ny %}
@@ -38,13 +38,13 @@
 		{% csrf_token %}
 		Ny medvirkende:
 		{{eform}}
-		<input type="submit" value="legg til">
+		<input type="submit" value="Legg til">
 	</form>
 {% endblock medvirkende_ny %}
 
 {% block produksjon_nav %}
 
 	<br><br>
-	<a href="{% url 'produksjon_info' produksjon.id %}">vis produksjon</a>
+	<a href="{% url 'produksjon_info' produksjon.id %}">Vis produksjon</a>
 
 {% endblock produksjon_nav %}

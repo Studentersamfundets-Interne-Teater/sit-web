@@ -3,13 +3,14 @@
 {% block innhold %}
 
 	<h3>Er du sikker på at du vil fjerne forestillingen av<br>
-	{{forestilling.produksjon.tittel}} den {{forestilling.tidspunkt}}?</h3>
+	{{forestilling.produksjon.tittel}} den {{forestilling.tidspunkt}}?<br>
+	All data knytta til forestillinga slettes permanent</h3>
 
 	<form action="{% url 'forestilling_fjern' forestilling.id %}" method="post">
 		{% csrf_token %}
-		<input type="submit" value="ja">
+		<input type="submit" value="Ja">
 	</form>
-	<a href="{% url 'produksjon_info' forestilling.produksjon.id %}">nei</a>
+	<a href="{% url 'produksjon_info' forestilling.produksjon.id %}">Nei</a>
 	<br><br>
 
 {% endblock innhold %}

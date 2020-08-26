@@ -5,7 +5,9 @@
 	<form action="{% url 'medlem_ny' %}" enctype="multipart/form-data" method="post">
 		{% csrf_token %}
 		{{mform}}
-		<input type="submit" value="lagre">
+		Brukerkonto:<input type="checkbox" name='opprett_brukerkonto'>
+		<label for='opprett_brukerkonto'>opprett</label>
+		<input type="submit" value="Lagre">
 	</form>
 
 {% endblock innhold %}

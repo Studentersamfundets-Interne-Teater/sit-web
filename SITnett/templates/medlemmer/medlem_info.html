@@ -4,23 +4,27 @@
 	
 	{% block medlem_navn %}
 	<h3>{{medlem}}</h3>
-	{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
+	{% if user.is_authenticated %}
+		{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
+	{% endif %}
 	{% endblock medlem_navn %}
 
 	{% block medlem_info %}
 	<img src="{{medlem.portrett.url}}" height=300>
 	
 	<br><br>
-	<b>Undergjeng:</b> {{medlem.get_ugjeng_display}}<br>
+	<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
 	<b>Opptaksår:</b> {{medlem.opptak}}<br>
 	<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
+	{% if user.is_authenticated %}
+	<br>
+	<b>Telefon:</b> {{medlem.telefon}}<br>
+	<b>E-post:</b> {{medlem.epost}}<br>
 	<br>
 	<b>Fødselsdato:</b> {{medlem.fodsel}}<br>
 	<b>Studium:</b> {{medlem.studium|capfirst}}<br>
 	{% if medlem.jobb %}<b>Jobb:</b> {{medlem.jobb|capfirst}}<br>{% endif %}
-	<br>
-	<b>Telefon:</b> {{medlem.telefon}}<br>
-	<b>E-post:</b> {{medlem.epost}}<br>
+	{% endif %}
 	{% endblock medlem_info %}
 
 	{% if medlem.erfaringer.count %}
@@ -40,8 +44,9 @@
 				<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
 			{% endif %}
 			{% block erfaring_fjern %}
-			<br>
+			
 			{% endblock erfaring_fjern %}
+			<br>
 		{% endfor %}
 	{% endif %}
 	{% block erfaring_ny %}
@@ -53,8 +58,9 @@
 		{% for utmerkelse in medlem.utmerkelser.all %}
 			{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} fra {{utmerkelse.dato.year}}
 			{% block utmerkelse_fjern %}
-			<br>
+			
 			{% endblock utmerkelse_fjern %}
+			<br>
 		{% endfor %}
 	{% endif %}
 	{% block utmerkelse_ny %}
@@ -62,10 +68,14 @@
 	{% endblock utmerkelse_ny %}
 
 	{% block medlem_nav %}
-	<br><br>
-	<a href="{% url 'medlem_redi' medlem.id %}">endre medlem</a>
-	<br><br>
-	<a href="{% url 'medlem_slett' medlem.id %}">slett medlem</a>
+	{% if user.is_authenticated %}
+		<br><br>
+		<a href="{% url 'medlem_redi' medlem.id %}">Endre medlem</a>
+	{% endif %}
+	{% if access == 'admin' %}
+		<br><br>
+		<a href="{% url 'medlem_slett' medlem.id %}">Slett medlem</a>
+	{% endif %}
 	{% endblock medlem_nav %}
 
 {% endblock innhold %}

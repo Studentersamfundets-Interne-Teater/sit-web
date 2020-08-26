@@ -1,0 +1,81 @@
+{% extends "medlemmer/medlem_info.html" %}
+
+{% block medlem_navn %}
+
+	<h3>{{medlem}}</h3>
+
+{% endblock medlem_navn %}
+
+{% block medlem_info %}
+
+	<form action="{% url 'medlem_redi' medlem.id %}" enctype="multipart/form-data" method="post">
+		{% csrf_token %}
+		{{mform}}
+		{% if perms.SITdata.add_medlem %}
+			Brukerkonto:
+			{% if medlem.brukerkonto %}
+			{{medlem.brukerkonto.get_username}}
+			<input type="checkbox" name='fjern_brukerkonto'>
+			<label for='fjern_brukerkonto'>Fjern</label>
+			{% else %}
+			<input type="checkbox" name='opprett_brukerkonto'>
+			<label for='opprett_brukerkonto'>Opprett</label>
+			{% endif %}
+		{% endif %}
+		<input type="submit" value="Lagre">
+	</form>
+
+{% endblock medlem_info %}
+
+{% block erfaring_fjern %}
+
+	{% if perms.SITdata.delete_erfaring %}
+		<a href="{% url 'erfaring_fjern' erfaring.id %}">Fjern</a>
+	{% endif %}
+			
+{% endblock erfaring_fjern %}
+
+
+{% block erfaring_ny %}
+	
+	{% if perms.SITdata.add_erfaring %}	
+		<br>
+		<form action="{% url 'medlem_redi' medlem.id %}" enctype="multipart/form-data" method="post">
+			{% csrf_token %}
+			Ny erfaring:
+			{{eform}}
+			<input type="submit" value="Legg til">
+		</form>
+	{% endif %}
+
+{% endblock erfaring_ny %}
+
+
+{% block utmerkelse_fjern %}
+	
+	{% if perms.SITdata.delete_utmerkelse %}
+		<a href="{% url 'utmerkelse_fjern' utmerkelse.id %}">Fjern</a>
+	{% endif %}
+
+{% endblock utmerkelse_fjern %}
+
+{% block utmerkelse_ny %}
+
+	{% if perms.SITdata.add_utmerkelse %}
+		<br>
+		<form action="{% url 'medlem_redi' medlem.id %}" method="post">
+			{% csrf_token %}
+			Ny utmerkelse:
+			{{uform}}
+			<input type="submit" value="Legg til">
+		</form>
+	{% endif %}
+
+{% endblock utmerkelse_ny %}
+
+{% block medlem_nav %}
+
+	<br><br>
+	<a href="{% url 'medlem_info' medlem.id %}">Vis medlem</a>
+
+{% endblock medlem_nav %}

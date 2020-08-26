@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 import datetime
 
@@ -10,7 +11,7 @@ class Medlem(models.Model):
 		(5,'SO'),(6,'TSS'),(7,'TKS'),(8,'SPO'),(9,'UKA'),(10,'ISFiT'),
 		(11,'MG'),(12,'ITK'),(13,'ARK'),(14,'FG'),(15,'KSG'),
 		(16,'KU'),(17,'KLST'),(18,'LØK'),(19,'DG'),(20,'Profil'),(21,'ekstern'))
-	UGJENGER = ((1,'Kostyme'),(2,'Kulisse'),(3,'Skuespill'))
+	UNDERGJENGER = ((1,'Kostyme'),(2,'Kulisse'),(3,'Skuespill'))
 	STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsionist'),(4,'permittert'))
 	mtype = models.IntegerField("medlemstype",choices=MTYPER,default=1)
 	fornavn = models.CharField(max_length=30)
@@ -18,7 +19,7 @@ class Medlem(models.Model):
 	etternavn = models.CharField(max_length=30)
 	fodsel = models.DateField("fødselsdato")
 	opptak = models.IntegerField("opptaksår")
-	ugjeng = models.IntegerField("undergjeng",choices=UGJENGER)
+	undergjeng = models.IntegerField(choices=UNDERGJENGER)
 	status = models.IntegerField(choices=STATUSER)
 	portrett = models.ImageField(default='portretter/katt.png',upload_to='portretter/')
 	telefon = models.CharField("telefonnummer",max_length=8)
@@ -26,13 +27,16 @@ class Medlem(models.Model):
 	studium = models.CharField(max_length=30)
 	jobb = models.CharField(blank=True,max_length=30)
 	kallenavn = models.CharField(blank=True,max_length=30)
+	brukerkonto = models.OneToOneField(User,models.SET_NULL,blank=True,null=True)
+	def brukernavn(self):
+		return (self.fornavn[:3]+self.etternavn[:3]).lower()+str(self.opptak)[2:]
 	class Meta:
 		verbose_name_plural = "medlemmer"
-		ordering = ['etternavn','fornavn']
+		ordering = ['opptak','undergjeng','etternavn','fornavn']
 	def __str__(self):
 		return self.fornavn+(" "+self.mellomnavn if self.mellomnavn else "")+" "+self.etternavn
 	def get_absolute_url(self):
-		return reverse('medlem_profil',kwargs={'mid':self.id})
+		return reverse('medlem_info',kwargs={'mid':self.id})
 
 
 class Sitat(models.Model):
@@ -62,7 +66,7 @@ class Utmerkelse(models.Model):
 
 
 class Verv(models.Model):
-	VTYPER = ((1,'styreverv'),(2,'ansvarsverv'),(3,'produksjonsverv_med_erfaringsskriv'),(4,'produksjonsverv_uten_erfaringsskriv'))
+	VTYPER = ((1,'styre'),(2,'års'),(3,'prod_merf'),(4,'prod_uerf'))
 	vtype = models.IntegerField("vervtype",choices=VTYPER)
 	tittel = models.CharField(max_length=50)
 	info = models.TextField("beskrivelse",blank=True)
@@ -106,7 +110,7 @@ class Produksjon(models.Model):
 	def __str__(self):
 		return self.tittel+" ("+self.semester()+")"
 	def get_absolute_url(self):
-		return reverse('produksjon_profil',kwargs={'pid':self.id})
+		return reverse('produksjon_info',kwargs={'pid':self.id})
 
 
 class Forestilling(models.Model):

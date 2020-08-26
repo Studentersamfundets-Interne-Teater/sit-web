@@ -7,12 +7,24 @@ class CustomFileInput(forms.widgets.ClearableFileInput):
 	input_text = "Endre"
 
 
-class MedlemForm(forms.ModelForm):
+class MedlemAdminForm(forms.ModelForm):
 	class Meta:
 		model = models.Medlem
-		fields = ['fornavn','mellomnavn','etternavn','portrett','ugjeng','opptak','status','fodsel','studium','jobb','telefon','epost','kallenavn']
-		labels = {'ugjeng':"Undergjeng",'opptak':"Opptaksår",'fodsel':"Fødselsdato (DD.MM.ÅÅÅÅ)",'epost':"E-post"}
+		fields = ['fornavn','mellomnavn','etternavn','portrett','undergjeng','opptak','status','fodsel','studium','jobb','telefon','epost','kallenavn']
+		labels = {'opptak':"Opptaksår",'fodsel':"Fødselsdato (DD.MM.ÅÅÅÅ)",'epost':"E-post"}
 		widgets = {'portrett':CustomFileInput}
+
+class MedlemOwnForm(forms.ModelForm):
+	class Meta:
+		model = models.Medlem
+		fields = ['portrett','studium','jobb','telefon','epost']
+		labels = {'epost':"E-post"}
+		widgets = {'portrett':CustomFileInput}
+
+class MedlemOtherForm(forms.ModelForm):
+	class Meta:
+		model = models.Medlem
+		fields = ['kallenavn']
 
 
 class UtmerkelseForm(forms.ModelForm):
@@ -22,11 +34,18 @@ class UtmerkelseForm(forms.ModelForm):
 		labels = {'utype':"Utmerkelsestype"}
 
 
-class ProduksjonForm(forms.ModelForm):
+class ProduksjonAdminForm(forms.ModelForm):
 	class Meta:
 		model = models.Produksjon
-		fields = ['tittel','banner','forfatter','opphav','varighet','premiere','lokale','plakat','program','info','memo','film','blestestart','FBlink','billettlink']
+		fields = ['tittel','revy','banner','forfatter','opphav','varighet','premiere','lokale','plakat','program','info','memo','film','blestestart','FBlink','billettlink']
 		labels = {'opphav':"Opphavsår",'info':"Beskrivelse",'memo':"Kommentar",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
+		widgets = {'banner':CustomFileInput,'plakat':CustomFileInput}
+
+class ProduksjonOwnForm(forms.ModelForm):
+	class Meta:
+		model = models.Produksjon
+		fields = ['banner','varighet','premiere','lokale','plakat','program','info','memo','film','blestestart','FBlink','billettlink']
+		labels = {'info':"Beskrivelse",'memo':"Kommentar",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
 		widgets = {'banner':CustomFileInput,'plakat':CustomFileInput}
 
 class ForestillingForm(forms.ModelForm):
