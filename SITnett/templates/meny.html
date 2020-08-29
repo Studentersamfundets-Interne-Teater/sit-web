@@ -22,22 +22,29 @@
 		</h1>
 	</status>
 
-	<menu id="menu">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<div class="topnav">
 		<h2>
-		<a href="{% url 'hoved' %}"><img src="{% static 'assets/sit_logo_no_subtitle.svg' %}" height=60></a>
-		{% if not user.is_authenticated %}
-		<a href="{% url 'info' %}">Om SIT</a>
-		{% endif %}
-		<a href="{% url 'kontakt' %}">Kontakt</a>
-		<a href="{% url 'medlemmer' %}">Medlemmer</a>
-		<a href="{% url 'produksjoner' %}">Produksjoner</a>
-		{% if user.is_authenticated %}
-		<a href="{% url 'verv' %}">Verv</a>
-		<a href="{% url 'uttrykk' %}">Uttrykk</a>
-		<a href="{% url 'dokumenter' %}">Dokumenter</a>
-		<a href="{% url 'arkiv' %}">Arkiv</a>
-		<a href="http://sit-bar.samfundet.no/">Badeportal</a>
-		{% endif %}
+			<div id="menuLinks">
+				<a href="{% url 'hoved' %}"><img src="{% static 'assets/sit_logo_no_subtitle.svg' %}" height=60 class="active"></a>
+				{% if not user.is_authenticated %}
+				<a href="{% url 'info' %}">Om SIT</a>
+				{% endif %}
+				<a href="{% url 'kontakt' %}">Kontakt</a>
+				<a href="{% url 'medlemmer' %}">Medlemmer</a>
+				<a href="{% url 'produksjoner' %}">Produksjoner</a>
+				{% if user.is_authenticated %}
+				<a href="{% url 'verv' %}">Verv</a>
+				<a href="{% url 'uttrykk' %}">Uttrykk</a>
+				<a href="{% url 'dokumenter' %}">Dokumenter</a>
+				<a href="{% url 'arkiv' %}">Arkiv</a>
+				<a href="http://sit-bar.samfundet.no/">Badeportal</a>
+				{% endif %}
+				<a href="javascript:void(0);" class="icon" onclick="hamburgerFunction()">
+					<i class="fa fa-bars"></i>
+				</a>
+
+		</div>
 		</h2>
 	</menu>
 
