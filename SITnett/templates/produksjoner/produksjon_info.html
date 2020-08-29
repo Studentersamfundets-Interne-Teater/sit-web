@@ -41,7 +41,7 @@
 	{% if produksjon.erfaringer.count %}
 		<h4>Medvirkende</h4>
 		{% for verv, erfaringer in verv_dict.items %}
-			<strong>{{verv}}:</strong>
+			<b>{{verv|capfirst}}:</b>
 			<br>
 			{% for erfaring in erfaringer %}
 				<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
