@@ -40,14 +40,19 @@
 
 	{% if produksjon.erfaringer.count %}
 		<h4>Medvirkende</h4>
-		{% for erfaring in produksjon.erfaringer.all %}
-			<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a> som {{erfaring.verv}}
-			{% if erfaring.rolle %}
-				 ({{erfaring.rolle}})
-			{% endif %}
-			{% block medvirkende_fjern %}
+		{% for verv, erfaringer in verv_dict.items %}
+			<strong>{{verv}}:</strong>
 			<br>
-			{% endblock medvirkende_fjern %}
+			{% for erfaring in erfaringer %}
+				<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+				{% if erfaring.rolle %}
+					 ({{erfaring.rolle}})
+				{% endif %}
+				{% block medvirkende_fjern %}
+				<br>
+				{% endblock medvirkende_fjern %}
+			{% endfor %}
+			<br>
 		{% endfor %}
 	{% endif %}
 	{% block medvirkende_ny %}

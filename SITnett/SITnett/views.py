@@ -124,7 +124,17 @@ def view_produksjon_info(request,pid):
 		access = 'own'
 	else:
 		access = 'other'
-	return render(request,'produksjoner/produksjon_info.html',{'access':access,'produksjon':produksjon})
+	verv_list = produksjon.erfaringer.all().values_list("verv", flat=True).distinct()
+	verv_dict = {}
+	for verv_key in verv_list:
+		erfaringer = produksjon.erfaringer.filter(verv__exact=verv_key)
+		if erfaringer.count() == 1:
+			verv_dict[models.Verv.objects.get(pk=verv_key).tittel] = erfaringer
+		else:
+			verv_dict[models.Verv.objects.get(pk=verv_key).plural()] = erfaringer
+	return render(request,'produksjon_info.html',{'access':access,'produksjon':produksjon, 'verv_dict':verv_dict})
+
+>>>>>>> new-sort_medlemmer_by_verv
 
 @login_required
 def view_produksjon_redi(request,pid):
