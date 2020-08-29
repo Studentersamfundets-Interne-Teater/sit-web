@@ -23,7 +23,7 @@ def view_medlemmer(request):
 @permission_required('SITdata.add_medlem')
 def view_medlem_ny(request):
 	if request.method == 'POST':
-		mform = forms.MedlemForm(request.POST,request.FILES)
+		mform = forms.MedlemAdminForm(request.POST,request.FILES)
 		if mform.is_valid():
 			medlem = mform.save()
 			if 'opprett_brukerkonto' in request.POST:
@@ -32,7 +32,7 @@ def view_medlem_ny(request):
 				medlem.save()
 			return redirect('medlem_info',medlem.id)
 	else:
-		mform = forms.MedlemForm()
+		mform = forms.MedlemAdminForm()
 	return render(request,'medlemmer/medlem_ny.html',{'mform':mform})
 
 def view_medlem_info(request,mid):
@@ -107,12 +107,12 @@ def view_produksjoner(request):
 @permission_required('SITdata.add_produksjon')
 def view_produksjon_ny(request):
 	if request.method == 'POST':
-		pform = forms.ProduksjonForm(request.POST,request.FILES)
+		pform = forms.ProduksjonAdminForm(request.POST,request.FILES)
 		if pform.is_valid():
 			produksjon = pform.save()
 			return redirect('produksjon_info',produksjon.id)
 	else:
-		pform = forms.ProduksjonForm()
+		pform = forms.ProduksjonAdminForm()
 	return render(request,'produksjoner/produksjon_ny.html',{'pform':pform})
 
 def view_produksjon_info(request,pid):
