@@ -132,9 +132,7 @@ def view_produksjon_info(request,pid):
 			verv_dict[models.Verv.objects.get(pk=verv_key).tittel] = erfaringer
 		else:
 			verv_dict[models.Verv.objects.get(pk=verv_key).plural()] = erfaringer
-	return render(request,'produksjon_info.html',{'access':access,'produksjon':produksjon, 'verv_dict':verv_dict})
-
->>>>>>> new-sort_medlemmer_by_verv
+	return render(request,'produksjoner/produksjon_info.html',{'access':access,'produksjon':produksjon, 'verv_dict':verv_dict})
 
 @login_required
 def view_produksjon_redi(request,pid):
