@@ -5,4 +5,4 @@ function hamburgerFunction() {
     } else {
       x.style.display = "block";
     }
-  } 
+  }

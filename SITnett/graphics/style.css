@@ -8,44 +8,60 @@ a {
 	color: black;
 }
 
-  
+/* Mobile phones first */
+
 .topnav {
 	overflow: hidden;
-	background-color: #333;
+	background-color: gray;
 	position: relative;
-  }
+}
 
-  /* Hide the links inside the navigation menu (except for logo/home) */
-  .topnav #menuLinks {
+/* Hide the links inside the navigation menu (except for logo/home) */
+.topnav #menuLinks {
 	display: none;
-  }
-  
-  /* Style navigation menu links */
-  .topnav a {
+}
+
+/* Style navigation menu links */
+.topnav a {
 	color: white;
 	padding: 14px 16px;
 	text-decoration: none;
 	font-size: 17px;
 	display: block;
-  }
-  
-  /* Style the hamburger menu */
-  .topnav a.icon {
-	background: black;
+}
+
+/* Style the hamburger menu */
+.topnav a.icon {
+	background: gray;
 	display: block;
 	position: absolute;
 	right: 0;
 	top: 0;
-  }
-  
-  /* Add a grey background color on mouse-over */
-  .topnav a:hover {
-	background-color: #ddd;
-	color: black;
-  }
-  
-  /* Style the active link (or home/logo) */
-  .active {
-	background-color: #4CAF50;
+}
+
+/* Add a grey background color on mouse-over */
+.topnav a:hover {
+	color: #ed1c24;
+}
+
+/* Style the active link (or home/logo) */
+.active {
+	background-color: gray;
 	color: white;
-  }
+}
+
+/* Desktop */
+@media only screen and (min-width: 768px) {
+	.topnav a.icon {
+		display: none; 
+	}
+	.topnav a {
+		color: white;
+		float: left; 
+		text-align: center;
+		text-decoration: none;
+	}
+	.topnav #menuLinks {
+		display: block !important; 
+	}
+}
