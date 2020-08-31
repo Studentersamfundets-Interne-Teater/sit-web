@@ -7,46 +7,52 @@
 	<meta charset="UTF-8"/>
 	<title>Studentersamfundets Interne Teater</title>
 	<link rel="stylesheet" href="{% static 'style.css' %}"/>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
 </head>
 
 <body>
 
 	<status id="status">
-		<h1>
+		
 		{% if user.is_authenticated %}
-		<a href="{% url 'logout' %}">{{user.get_username}}</a>
+		<a href="{% url 'logout' %}">heisann, {{user.get_username}}!</a>
 		{% else %}
-		<a href="{% url 'login' %}">ekstern</a>
+		<a href="{% url 'login' %}">Logg inn</a>
 		<a href="{% url 'opptak' %}">Søk SIT</a>
 		{% endif %}
-		</h1>
+		
 	</status>
 
-	<menu id="menu">
-		<h2>
-		<a href="{% url 'hoved' %}"><img src="{% static 'assets/sit_logo_no_subtitle.svg' %}" height=60></a>
-		{% if not user.is_authenticated %}
-		<a href="{% url 'info' %}">Om SIT</a>
-		{% endif %}
-		<a href="{% url 'kontakt' %}">Kontakt</a>
-		<a href="{% url 'medlemmer' %}">Medlemmer</a>
-		<a href="{% url 'produksjoner' %}">Produksjoner</a>
-		{% if user.is_authenticated %}
-		<a href="{% url 'verv' %}">Verv</a>
-		<a href="{% url 'uttrykk' %}">Uttrykk</a>
-		<a href="{% url 'dokumenter' %}">Dokumenter</a>
-		<a href="{% url 'arkiv' %}">Arkiv</a>
-		<a href="http://sit-bar.samfundet.no/">Badeportal</a>
-		{% endif %}
-		</h2>
-	</menu>
+	<div class="topnav">
+		<a href="{% url 'hoved' %}" class="active"><img src="{% static 'assets/sit_logo_no_subtitle.svg' %}" height=60 class="active"></a>
+		<div id="menuLinks">
+			{% if not user.is_authenticated %}
+			<a href="{% url 'info' %}">Om SIT</a>
+			{% endif %}
+			<a href="{% url 'kontakt' %}">Kontakt</a>
+			<a href="{% url 'medlemmer' %}">Medlemmer</a>
+			<a href="{% url 'produksjoner' %}">Produksjoner</a>
+			{% if user.is_authenticated %}
+			<a href="{% url 'verv' %}">Verv</a>
+			<a href="{% url 'uttrykk' %}">Uttrykk</a>
+			<a href="{% url 'dokumenter' %}">Dokumenter</a>
+			<a href="{% url 'arkiv' %}">Arkiv</a>
+			<a href="http://sit-bar.samfundet.no/">Badeportal</a>
+			{% endif %}
+		</div>
+		<a href="javascript:void(0);" class="icon" onclick="hamburgerFunction()">
+			<i class="material-icons">menu</i>
+		</a>
+	</div>
 
 	<content>
 		{% block innhold %}
 	
 		{% endblock innhold %}
 	</content>
-
+	
+	{% load static %}
+	<script src="{% static 'hamburger.js' %}"></script>
 </body>
 
 </html>
