@@ -7,9 +7,7 @@
 	<meta charset="UTF-8"/>
 	<title>Studentersamfundets Interne Teater</title>
 	<link rel="stylesheet" href="{% static 'style.css' %}"/>
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	{% load static %}
-	<script src="{% static 'hamburger.js' %}"></script> 
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
 </head>
 
 <body>
@@ -52,7 +50,9 @@
 	
 		{% endblock innhold %}
 	</content>
-
+	
+	{% load static %}
+	<script src="{% static 'hamburger.js' %}"></script>
 </body>
 
 </html>
