@@ -1,67 +1,109 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+/* 1. GENERAL STYLES */
 
 body {
-	color: white;
-	background-color: gray;
+	color: #2B2B2C;
+	background-color: #F2F4F3;
+	/*margin: 20px;*/
+
+	font-family: Open Sans, sans-serif;
+	font-style: normal;
+
+	margin: 0;
 }
 
 a {
-	color: black;
+	color: #2B2B2C;
 }
 
-/* Mobile phones first */
+content {
+	position: absolute;
+	padding: 50px;
+}
+
+
+/* 2. SITEWIDE */ 
+
+/* 2.1 NAVBAR */
+
+/* 2.1.1 Mobile phones first */
 
 .topnav {
 	overflow: hidden;
-	background-color: gray;
 	position: relative;
+	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+	padding: 25px;
 }
 
-/* Hide the links inside the navigation menu (except for logo/home) */
+/* Hide the links inside the navigation menu (except for logo) */
 .topnav #menuLinks {
 	display: none;
 }
 
-/* Style navigation menu links */
-.topnav a {
-	color: white;
-	padding: 14px 16px;
+/* Style navbar menu and status links */
+.topnav #menuLinks a, #status a {
 	text-decoration: none;
-	font-size: 17px;
+	font-size: 18px;
 	display: block;
+	font-size: 18px;
+	padding: 24px;
+	font-weight: 600;
 }
 
 /* Style the hamburger menu */
-.topnav a.icon {
-	background: gray;
+.topnav a.hamburger-icon {
 	display: block;
 	position: absolute;
 	right: 0;
-	top: 0;
+	top: 50px;
+	margin-right: 25px;
 }
 
-/* Add a grey background color on mouse-over */
+/* Style the login icon element */ 
+.topnav #status {
+	position: absolute; 
+	right: 50px;
+	top: 25px;
+}
+
+/* Add bold font to menu links when hovering */
 .topnav a:hover {
-	color: #ed1c24;
+	text-decoration: underline;
 }
 
-/* Style the active link (or home/logo) */
-.active {
-	background-color: gray;
-	color: white;
+/* Create space between logo and first menu link */
+#logo {
+	margin-right: 10px;
+	padding: 10px 15px 10px 45px;
+	
 }
 
-/* Desktop */
-@media only screen and (min-width: 768px) {
-	.topnav a.icon {
+@media only screen and (min-width: 756px) {
+	.topnav #menuLinks a, #status a {
+		font-size: 20px;
+	}
+}
+
+/* 2.1.2 Desktop */
+@media only screen and (min-width: 1024px) {
+	.topnav a.hamburger-icon {
 		display: none; 
 	}
 	.topnav a {
-		color: white;
+		margin-bottom: auto;
+		margin-top: auto;
 		float: left; 
 		text-align: center;
 		text-decoration: none;
 	}
+
 	.topnav #menuLinks {
 		display: block !important; 
 	}
+	
+	.topnav #status {
+		float: right; 
+	}
 }
+
