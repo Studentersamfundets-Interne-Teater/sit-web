@@ -1,14 +1,48 @@
-{% extends "meny.html" %}
+{% extends "meny.html" %} {% block innhold %}
 
-{% block innhold %}
+<section class="hero">
+  <div class="container">
+		<h1>Spring Awakening</h1>
+		<a href="#" class="btn">Finn billetter</a>
+  </div>
+</section>
 
-	<h1> Dette er hovedsida. Velkommen! </h1>
-	<h2>Dette er en header 2</h2>
-	<h3>Dette er en header 3</h3>
-	<p class="ingress">Dette er en ingress</p>
-	<p>Dette er en test av et avsnitt med vanlig tekst</p>
-	<p class="text-strong">Her står det noe ekstra viktig</p>
-	<p class="text-info">Dette er en infotekst</p>
-	<p class="text-info text-strong">Dette er en viktig infotekst</p>
-	
+<div class="container">
+<section class="about">
+  <div class="about-text">
+    <h2>Om oss</h2>
+    <p>
+      Lorem ipsum er opprinnelig et lettere redigert utdrag fra De finibus
+			bonorum et malorum av Opprinnelig begynte avsnittet: Neque porro quisquam
+			<p>
+				est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit.
+			</p>
+		</p>
+		<p>
+      Opprinnelig begynte avsnittet: Neque porro quisquam est qui dolorem ipsum
+      quia dolor sit. JHbasbf saknd knf j fja ka fjabe fadkafa k aksfja f aj
+      flka ljfs ,a kwkf adkjbaw f,ajbjkalkafdqa.
+    </p>
+  </div>
+</section>
+
+<section class="current-shows">
+	<div class="card">
+		<img src="#" alt="Spring Awkening" class="show-image">
+		<h3>Spring Awakening</h3>
+		<span class="show-date">4.&ndash;14. oktober 2020</span>
+		<p class="center-text">Stikkordene er sårbarhet, seksualitet og nakenhet.</p>
+		<a href="#" class="btn">Billetter</a>
+	</div>
+	<div class="card">
+		<img src="#" alt="Dickie Dick Dickens" class="show-image">
+		<h3>Dickie Dick Dickens</h3>
+		<span class="show-date">21.&ndash;22. februar 2021</span>
+		<p class="center-text">Dickie Dick Dickens er «mannen med stålnervene, lynøynene og hjertet av gull».</p>
+		<a href="#" class="btn">Billetter</a>
+	</div>
+</section>
+
+</div>
+
 {% endblock innhold %}
