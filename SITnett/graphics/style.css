@@ -1,24 +1,133 @@
 
 /* 1. GENERAL STYLES */
 
-body {
-	color: #2B2B2C;
-	background-color: #F2F4F3;
-	/*margin: 20px;*/
-
-	font-family: Open Sans, sans-serif;
-	font-style: normal;
-
-	margin: 0;
+/* Changes in root is sitewide */
+:root {
+	--main-bg-color: #F2F4F3;
+	--main-text-color: #2B2B2C;
+	--error-red-dark: #ED0000;
+	--sit-red-light: #F99FA3;
+	--sit-gunmetal-dark: #3C5A68;
+	--sit-gunmetal-light: #97B5C3;
+	--sit-grullo-dark: #A9927D;
+	--sit-grullo-light: #DED5CE;
+	--sit-sans: Open Sans, sans-serif;
+	--sit-serif: Libre Baskerville, serif;
 }
 
-a {
-	color: #2B2B2C;
+/* 1.1 General styles, mobile/default */
+body {
+	color: var(--main-text-color);
+	background-color: var(--main-bg-color);
+	font-family: var(--sit-sans);
+	font-size: 18px; 
+	font-weight: 400;
+	margin: 0;
 }
 
 content {
 	position: absolute;
 	padding: 50px;
+}
+
+h1, h2, h3{
+	font-family: var(--sit-serif);
+}
+
+a {
+	color: var(--main-text-color);
+	font-style: normal;
+}
+
+h1 {
+	font-size: 2.7em;
+	line-height: 3.3em;
+}
+
+h2 {
+	font-size: 1.9em;
+	line-height: 2.7px;
+}
+
+h3 {
+	font-size: 1.3em;
+	line-height: 2em;
+}
+
+.ingress {
+	font-size: 1.3em;
+	line-height: 2em;
+}
+
+p {
+	line-height: 1.3em;
+}
+
+.text-strong {
+	font-weight: 600;
+}
+
+.text-info {
+	font-size: 0.9em;
+	line-height: 1.3em;
+}
+
+/* 1.2 General styles, tablet */
+@media only screen and (min-width: 756px) {
+	body {
+		font-size: 20px; 
+	}
+	h2 {
+		font-size: 2em;
+		line-height: 2.7px;
+	}
+	
+	h3 {
+		font-size: 1.5em;
+		line-height: 2.1em;
+	}
+	
+	.ingress {
+		font-size: 1.5em;
+		line-height: 2.1em;
+	}
+	
+	p {
+		line-height: 1.5em;
+	}
+	
+	.text-info {
+		font-size: 0.8em;
+		line-height: 1.2em;
+	}
+		
+}
+
+/* 1.3 General styles, desktop */
+@media only screen and (min-width: 1024px) {
+	h1 {
+		font-size: 3em;
+		line-height: 3.9em;
+	}
+	h2 {
+		font-size: 2.3em;
+		line-height: 3px;
+	}
+	
+	h3 {
+		font-size: 1.7em;
+		line-height: 2.4em;
+	}
+	
+	.ingress {
+		font-size: 1.7em;
+		line-height: 2.4em;
+	}
+	
+	.text-info {
+		font-size: 0.9em;
+		line-height: 1.2em;
+	}
 }
 
 
@@ -43,9 +152,7 @@ content {
 /* Style navbar menu and status links */
 .topnav #menuLinks a, #status a {
 	text-decoration: none;
-	font-size: 18px;
 	display: block;
-	font-size: 18px;
 	padding: 24px;
 	font-weight: 600;
 }
@@ -76,12 +183,6 @@ content {
 	margin-right: 10px;
 	padding: 10px 15px 10px 45px;
 	
-}
-
-@media only screen and (min-width: 756px) {
-	.topnav #menuLinks a, #status a {
-		font-size: 20px;
-	}
 }
 
 /* 2.1.2 Desktop */
