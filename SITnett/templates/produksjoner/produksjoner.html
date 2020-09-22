@@ -1,11 +1,22 @@
 {% extends "meny.html" %}
+{% load static %}
 
 {% block innhold %}
 
+<div class="card-wrapper">
 	{% for produksjon in pliste %}
-	<a href="{% url 'produksjon_info' produksjon.id %}">{{produksjon}}</a><br>
+	<a class="production-card" href="{% url 'produksjon_info' produksjon.id %}">
+		<img src="{{produksjon.banner.url}}" class="production-card-image">
+		<div class="production-card-container">
+		<h3 class="production-card-title">{{produksjon}}</h3> 
+		<div class="text-info text-strong">{{produksjon.premiere}}</div> 
+		</div>
+	</a>
 	{% endfor %}
 	{% if perms.SITdata.add_produksjon %}
+</div>
+
+
 	<br><br>
 	<a href="{% url 'produksjon_ny' %}">Ny produksjon</a>
 	{% endif %}
