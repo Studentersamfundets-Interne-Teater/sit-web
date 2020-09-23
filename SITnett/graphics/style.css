@@ -5,6 +5,7 @@
 :root {
 	--main-bg-color: #F2F4F3;
 	--main-text-color: #2B2B2C;
+	--secondary-text-color: #4B4B4B;
 	--error-red-dark: #ED0000;
 	--sit-red-light: #F99FA3;
 	--sit-gunmetal-dark: #3C5A68;
@@ -74,6 +75,7 @@ p {
 .text-info {
 	font-size: 0.9em;
 	line-height: 1.3em;
+	color: var(--secondary-text-color);
 }
 
 /* 1.2 General styles, tablet */
@@ -122,7 +124,6 @@ p {
 	}
 	
 	h3 {
-		font-size: 1.7em;
 		line-height: 2.4em;
 	}
 	
@@ -216,16 +217,18 @@ p {
 .card-wrapper {
 	width: 80%;
 	min-width: 340px;
+	max-width: 1300;
 	margin: auto;
 	height: 1000px;
 	display: flex;
 	flex-flow: row wrap;
 	align-content: flex-start;
-	justify-content: space-around;
+	justify-content: flex-start;
 }
 
 .production-card {
-	width: 300px;
+	width: 100%;
+	max-width: 440px;
 	cursor: pointer;
 	background-color: var(--sit-gunmetal-light);
 	margin: 1em;
@@ -238,6 +241,7 @@ p {
   .production-card-image{
 	  width: 100%;
 	  height: 260px;
+	  object-fit: cover;
   }
   
   .production-card-container {
@@ -251,5 +255,5 @@ p {
  
   .production-card-title {
 	line-height: 1.1em;
-	margin: 0 0 0.5em 0;
+	margin: 0 0 0.6em 0;
   }

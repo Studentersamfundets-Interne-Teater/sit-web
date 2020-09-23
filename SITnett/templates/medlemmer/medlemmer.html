@@ -2,10 +2,20 @@
 
 {% block innhold %}
 
+<div class="card-wrapper">
 	{% for medlem in mliste %}
-	<a href="{% url 'medlem_info' medlem.id %}">{{medlem}}</a><br>
+	<a class="production-card" href="{% url 'medlem_info' medlem.id %}">
+		<img src="{{medlem.portrett.url}}" class="production-card-image">
+		<div class="production-card-container">
+		<h3 class="production-card-title">{{medlem.fornavn}}{{medlem.kallenavn}}{{medlem.mellomnavn}}{{medlem.etternavn}}</h3> 
+		<div class="text-info text-strong">{{medlem.get_status_display}}</div> 
+		</div>
+	</a>
 	{% endfor %}
+</div>
+
 	{% if perms.SITdata.add_medlem %}
+
 	<br><br>
 	<a href="{% url 'medlem_ny' %}">Nytt medlem</a>
 	{% endif %}
