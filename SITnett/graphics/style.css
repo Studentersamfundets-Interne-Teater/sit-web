@@ -217,9 +217,8 @@ p {
 .card-wrapper {
 	width: 80%;
 	min-width: 340px;
-	max-width: 1300;
+	max-width: 1450px;
 	margin: auto;
-	height: 1000px;
 	display: flex;
 	flex-flow: row wrap;
 	align-content: flex-start;
