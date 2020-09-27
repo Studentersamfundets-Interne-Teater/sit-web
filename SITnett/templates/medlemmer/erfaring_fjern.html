@@ -2,8 +2,7 @@
 
 {% block innhold %}
 
-	<h3>Er du sikker på at du vil fjerne {{erfaring.medlem}}s erfaring<br>
-	som {{erfaring.tittel}}? All data knytta til erfaringa slettes permanent.</h3>
+	<p>Er du sikker på at du vil fjerne {{erfaring.medlem}}s erfaring som {{erfaring.tittel}}? All data knyttet til erfaringen slettes permanent.</p>
 
 	<form action="{% url 'erfaring_fjern' erfaring.id %}" method="post">
 		{% csrf_token %}
