@@ -11,6 +11,7 @@
 	--sit-gunmetal-dark: #3C5A68;
 	--sit-gunmetal-light: #97B5C3;
 	--sit-grullo-dark: #A9927D;
+	--sit-grullo-80: #BEAD9D;
 	--sit-grullo-light: #DED5CE;
 	--sit-sans: Open Sans, sans-serif;
 	--sit-serif: Libre Baskerville, serif;
@@ -255,4 +256,69 @@ p {
   .production-card-title {
 	line-height: 1.1em;
 	margin: 0 0 0.6em 0;
-  }
+	}
+
+	.btn {
+		display: inline-block;
+		text-align: center;
+		line-height: 64px;
+		font-weight: 700;
+		height: 64px;
+		width: 240px;
+		border-radius: 32px;
+		background-color: var(--sit-grullo-80);
+		color: var(--main-bg-color);
+	}
+
+	.btn:hover {
+		background-color: var(--sit-grullo-dark);
+	}
+	
+	/* 4. LANDING PAGE */
+	.hero {
+		position: relative;
+		width: 100vw;
+		height: 820px;
+
+		/* Displace the padding from the parent container */
+		left: -50px;
+		top: -50px;
+
+		/* Hide the overflowing parts of the image */
+		overflow: hidden;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: var(--main-bg-color);
+	}
+	.hero-image {
+		position: absolute;
+		width: 100%;
+		height: auto;
+		z-index: -1;
+		/* Center large image in a smaller container */
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	.hero-container {
+		max-width: 746px;
+		height: 308px;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.hero-title {
+		font-size: 74px;
+		font-weight: 700;
+		margin: 0;
+		line-height: 1.31;
+	}
+
+	.hero-btn {
+		margin: 0;
+	}
