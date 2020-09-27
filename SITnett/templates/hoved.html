@@ -1,6 +1,8 @@
 {% extends "meny.html" %} {% block innhold %}
 
 <section class="hero">
+	{% load static %}
+	<img class="hero-image" src="{% static "img/hero.png" %}" alt="">
   <div class="container">
 		<h1>Spring Awakening</h1>
 		<a href="#" class="btn">Finn billetter</a>
