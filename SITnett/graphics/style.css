@@ -13,6 +13,7 @@
 	--sit-grullo-dark: #A9927D;
 	--sit-grullo-80: #BEAD9D;
 	--sit-grullo-light: #DED5CE;
+	--sit-grullo-20: #EFEAE7;
 	--sit-sans: Open Sans, sans-serif;
 	--sit-serif: Libre Baskerville, serif;
 }
@@ -232,7 +233,7 @@ p {
 	cursor: pointer;
 	background-color: var(--sit-gunmetal-light);
 	margin: 1em;
-  }
+	}
   
   .production-card:hover {
 	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
@@ -258,95 +259,142 @@ p {
 	margin: 0 0 0.6em 0;
 	}
 
-	.btn {
-		display: inline-block;
-		text-align: center;
-		line-height: 64px;
-		font-weight: 700;
-		height: 64px;
-		width: 240px;
-		border-radius: 32px;
-		background-color: var(--sit-grullo-80);
-		color: var(--main-bg-color);
-	}
+.btn {
+	display: inline-block;
+	text-align: center;
+	line-height: 64px;
+	font-weight: 700;
+	height: 64px;
+	width: 240px;
+	border-radius: 32px;
+	background-color: var(--sit-grullo-80);
+	color: var(--main-bg-color);
+}
 
-	.btn:hover {
-		background-color: var(--sit-grullo-dark);
-	}
+.btn:hover {
+	background-color: var(--sit-grullo-dark);
+}
+
+.btn__tickets {
+	color: var(--main-text-color);
+	background-color: var(--main-bg-color);
+}
+
+.btn__tickets:hover {
+	background-color: var(--sit-grullo-20);
+	color: inherit;
+}
 	
-	/* 4. LANDING PAGE */
+/* 4. LANDING PAGE */
 
-	/* 4.1 Hero */
+/* 4.1 Hero */
 
-	.hero {
-		position: relative;
-		width: 100vw;
-		height: 820px;
-		margin-bottom: 120px;
+.hero {
+	position: relative;
+	width: 100vw;
+	height: 820px;
+	margin-bottom: 120px;
 
-		/* Displace the padding from the parent container */
-		left: -50px;
-		top: -50px;
+	/* Displace the padding from the parent container */
+	left: -50px;
+	top: -50px;
 
-		/* Hide the overflowing parts of the image */
-		overflow: hidden;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		color: var(--main-bg-color);
-	}
-	.hero-image {
-		position: absolute;
-		width: 100%;
-		height: auto;
-		z-index: -1;
-		/* Center large image in a smaller container */
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+	/* Hide the overflowing parts of the image */
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: var(--main-bg-color);
+}
+.hero-image {
+	position: absolute;
+	width: 100%;
+	height: auto;
+	z-index: -1;
+	/* Center large image in a smaller container */
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
 
-	.hero-container {
-		max-width: 746px;
-		height: 308px;
-		text-align: center;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		align-items: center;
-	}
+.hero-container {
+	max-width: 746px;
+	height: 308px;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+}
 
-	.hero-title {
-		font-size: 74px;
-		font-weight: 700;
-		margin: 0;
-		line-height: 1.31;
-	}
+.hero-title {
+	font-size: 74px;
+	font-weight: 700;
+	margin: 0;
+	line-height: 1.31;
+}
 
-	.hero-btn {
-		margin: 0;
-	}
+.hero-btn {
+	margin: 0;
+}
 
-	/* 4.2 About Us */
+/* 4.2 About Us */
 
-	.about {
-		width: 100%;
-		display: flex;
-		justify-content: space-between;
-		margin-bottom: 200px;
-	}
+.about {
+	width: 100%;
+	max-width: 1140px;
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 200px;
+}
 
-	.about-text {
-		max-width: 465px;
-	}
+.about-text {
+	max-width: 465px;
+}
 
-	.about-text-title {
-		font-size: 2.2em;
-		font-weight: bold;
-		color: var(--sit-gunmetal-dark);
-	}
+.about-text-title {
+	font-size: 2.2em;
+	font-weight: bold;
+	color: var(--sit-gunmetal-dark);
+}
 
-	.about-image {
-		width: 618px;
-		height: auto;
-	}
+.about-image {
+	width: 618px;
+	height: auto;
+}
+
+/* 4.3 Current shows */
+.current-shows  {
+	display: flex;
+	width: 100%;
+	max-width: 1100px;
+	margin: 0 auto;
+	justify-content: space-between;
+}
+
+.production-card__landing {
+	width: 540px;
+	height: 641px;
+	cursor: default;
+}
+
+.production-card-container__landing {
+	height: calc(100% - 260px);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.show-date {
+	font-size: 0.8em;
+	margin-bottom: 31px;
+}
+
+.production-card__landing p {
+	margin-bottom: 36px;
+}
+
+.production-card__landing:first-of-type {
+	background-color: var(--sit-grullo-80);
+}
