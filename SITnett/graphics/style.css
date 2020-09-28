@@ -215,6 +215,7 @@ p {
 }
 
 /* 3. REUSABLE COMPONENTS */
+/* 3.1 CARDS */
 .card-wrapper {
 	width: 80%;
 	min-width: 340px;
@@ -257,3 +258,58 @@ p {
 	line-height: 1.1em;
 	margin: 0 0 0.6em 0;
   }
+
+  /* 3.1 FORMS */
+  .form-wrapper{
+	display: flex;
+    flex-direction: column;
+	width: 80%;
+	min-width: 320px;
+	max-width: 420px;
+    margin: 1em auto;
+  }
+
+  .brukerkonto-wrapper{
+	display: flex;
+	margin: 1em 0 0.5em 0;
+	align-items: center;
+  }
+
+  input{
+	  height: 2em;
+	  font-size: 0.9em;
+  }
+ 
+  label{
+	  margin: 1em 0 0.5em 0;
+  }
+
+  select{
+	  height: 2em;
+	  font-size: 0.9em;
+  }
+  
+/* 4. SPECIFIC COMPONENTS */
+/* 4.1 INFOPAGE */
+.info-wrapper{
+	display: flex;
+	flex-wrap: wrap-reverse;
+	justify-content: space-between;
+	width: 80%;
+	min-width: 320px;
+	margin: 3em auto;
+}
+.info-wrapper h2{
+	line-height: 1em;
+	margin: 0;
+	color: var(--sit-gunmetal-dark);
+}
+.info-wrapper-content{
+	width: 40%;
+	min-width: 320px;
+}
+.info-wrapper-image{
+	width: 55%;
+	min-width: 320px;
+	margin-bottom: 1em;
+}

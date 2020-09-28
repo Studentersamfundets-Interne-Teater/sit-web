@@ -2,9 +2,7 @@
 
 {% block innhold %}
 
-	<h3>Er du sikker på at du vil fjerne forestillingen av<br>
-	{{forestilling.produksjon.tittel}} den {{forestilling.tidspunkt}}?<br>
-	All data knytta til forestillinga slettes permanent</h3>
+	<p>Er du sikker på at du vil fjerne forestillingen av {{forestilling.produksjon.tittel}} den {{forestilling.tidspunkt}}? All data knyttet til forestillingen slettes permanent</p>
 
 	<form action="{% url 'forestilling_fjern' forestilling.id %}" method="post">
 		{% csrf_token %}

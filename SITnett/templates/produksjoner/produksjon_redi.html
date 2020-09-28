@@ -2,10 +2,10 @@
 
 {% block produksjon_info %}
 
-	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post">
+	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
 		{{pform}}
-		<input type="submit" value="Lagre">
+		<input type="submit" value="Lagre endringer">
 	</form>
 
 {% endblock produksjon_info %}
@@ -19,9 +19,9 @@
 {% block forestilling_ny %}
 
 	<br>
-	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post">
+	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
-		Ny forestilling:
+		<div class="ingress">Ny forestilling</div>
 		{{fform}}
 		<input type="submit" value="Legg til">
 	</form>
@@ -34,9 +34,9 @@
 
 {% block medvirkende_ny %}
 	<br>
-	<form action="{% url 'produksjon_redi' produksjon.id %}" method="post">
+	<form action="{% url 'produksjon_redi' produksjon.id %}" method="post" class="form-wrapper">
 		{% csrf_token %}
-		Ny medvirkende:
+		<div class="ingress">Ny medvirkende</div>
 		{{eform}}
 		<input type="submit" value="Legg til">
 	</form>
