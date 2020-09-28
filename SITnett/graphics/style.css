@@ -444,7 +444,7 @@ p {
 
 @media only screen and (min-width: 1024px) {
 	.production-card__landing {
-		margin: 1em 0;
+		margin: 1em auto;
 	}
 	.hero {
 		height: 80vh;
