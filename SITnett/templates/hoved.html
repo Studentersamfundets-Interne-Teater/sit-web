@@ -1,14 +1,55 @@
-{% extends "meny.html" %}
+{% extends "meny.html" %} 
+{% load static %}
 
 {% block innhold %}
 
-	<h1> Dette er hovedsida. Velkommen! </h1>
-	<h2>Dette er en header 2</h2>
-	<h3>Dette er en header 3</h3>
-	<p class="ingress">Dette er en ingress</p>
-	<p>Dette er en test av et avsnitt med vanlig tekst</p>
-	<p class="text-strong">Her står det noe ekstra viktig</p>
-	<p class="text-info">Dette er en infotekst</p>
-	<p class="text-info text-strong">Dette er en viktig infotekst</p>
-	
+<section class="hero">
+	<img class="hero-image" src="{% static "img/hero.png" %}" alt="">
+	<div class="hero-container">
+			<h1 class="hero-title">Spring<br>Awakening</h1>
+			<a class="hero-btn btn" href="#" class="btn">Finn billetter</a>
+	</div>
+</section>
+
+<div class="info-wrapper">
+	<div class="info-wrapper-content">
+		<h2>120 år i 2020</h2>
+		<p>SIT er teatergruppa på Studentersamfundet i Trondhjem. 
+			Dette er en gjeng på ca 70 personer som har innslag på en rekke av styrets lørdagsmøter, 
+			og som også setter opp egne produksjoner. 
+			Under UKA har SIT ansvaret for alle teaterproduksjonene, ikke minst UKE-revyen.</p>
+
+		<p>Gruppa ble offisielt stiftet 3. desember 1910 og het da Studentersamfundets Teater (eller Samfundsteatret). 
+			Det «interne teater» var i utgangspunktet betegnelsen på 
+			«klikker av teatergutter som slår sig sammen og lager forestillinger bare beregnet for underholdning på møtene» 
+			(Studentersamfundet i Trondhjem gjennem 25 år). Gradvis ble Studentersamfundets Interne Teater det offisielle navnet. 
+			I programmet for Vær-i-tass (1937) står det «Produsent: S.I.T.» og «Kostymene fra atelier S.I.T.».</p>
+	</div>
+	<div class="info-wrapper-image">
+		<img src="{% static 'assets/rodhette.jpg' %}" width=100%>
+		<div class="text-info">Barneteater, Rødhette og ulven (1977) foto.samfundet.no</div>
+	</div>
+</div>
+
+<section class="card-wrapper card-wrapper__landing">
+	<div class="production-card production-card__landing">
+		<img class="production-card-image" src="{% static "img/spring-awakening-card.png" %}" alt="Spring Awkening" class="show-image">
+		<div class="production-card-container production-card-container__landing">
+			<h3 class="production-card-title">Spring Awakening</h3>
+			<span class="show-date text-info">4.&ndash;14. oktober 2020</span>
+			<p class="center-text">Stikkordene er sårbarhet, seksualitet og nakenhet.</p>
+			<a href="#" class="btn btn__tickets">Billetter</a>
+		</div>
+	</div>
+	<div class="production-card production-card__landing">
+		<img class="production-card-image" src="{% static "img/dickie-dick-dickens-card.png" %}" alt="Dickie Dick Dickens" class="show-image">
+		<div class="production-card-container production-card-container__landing">
+			<h3 class="production-card-title">Dickie Dick Dickens</h3>
+			<span class="show-date text-info">21.&ndash;22. februar 2021</span>
+			<p class="center-text">Dickie Dick Dickens er «mannen med stålnervene, lynøynene og hjertet av gull».</p>
+			<a href="#" class="btn btn__tickets">Billetter</a>
+		</div>
+	</div>
+</section>
+
 {% endblock innhold %}
