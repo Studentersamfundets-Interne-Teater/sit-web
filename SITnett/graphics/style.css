@@ -450,3 +450,100 @@ p {
 		height: 80vh;
 	}
 }
+
+
+/* 4.3 Production detail view */
+
+.image-container {
+	height: 350px;
+}
+.image-container img {
+	height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+.production-banner {
+	text-align: center;
+	/* Displace the padding from the parent container */
+	margin: -20px;
+}
+.production-banner .production-banner-main {
+	margin-bottom: 36px;
+}
+.production-banner .production-banner-info {
+	background-color: #DED5CE;
+	padding: 36px;
+}
+
+.production-information {
+	margin: 32px;
+}
+
+.production-extra-info {
+	margin: 20px;
+}
+
+.production-extra-info i {
+	display: flex;
+}
+.production-extra-info p {
+	padding-left: 25px;
+}
+
+.production-categories {
+	cursor: pointer;
+	color: #A9927D;
+	font-weight: 600;
+}
+
+.divider {
+	flex-grow: 1;
+	border-top: 2px solid #DED5CE; 
+	margin-bottom: 25px;
+}
+  
+.active, .production-categories:hover {
+	text-decoration: underline;
+}
+
+.production-category-content {
+
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.2s ease-out;
+
+	padding: 15px;
+
+}
+
+@media only screen and (min-width: 1024px) {
+	.production-banner {
+		padding: 90px 130px 120px 120px;
+		background-color: #DED5CE;
+		text-align: left;
+	}
+
+	.production-banner .production-banner-info {
+		padding: 0px;
+	}
+
+	.image-container {
+		float: right;
+	}
+
+	.production-extra-info i {
+		padding: 20px;
+		float: left;
+	}
+	.production-extra-info {
+		display: inline-block;	
+		width: 100%;
+		margin: auto;
+	}
+
+	.production-information {
+		width: 25%;
+		float: left;
+	}
+
+}

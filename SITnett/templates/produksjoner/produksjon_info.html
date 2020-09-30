@@ -1,21 +1,70 @@
 {% extends "meny.html" %}
+{% load static %}
 
 {% block innhold %}
 	
-	{% block produksjon_tittel %}
-	<h3>{{produksjon}}</h3>
-	{% endblock produksjon_tittel %}
-	
 	{% block produksjon_info %}
-	<img src="{{produksjon.banner.url}}" width=900>
 
-	<br><br>
-	<b>Forfatter:</b> {{produksjon.forfatter}}<br>
-	<b>Opphavsår:</b> {{produksjon.opphav}}<br>
-	{% if produksjon.varighet %}<b>Varighet:</b> {{produksjon.varighet}}<br>{% endif %}
-	<br>
-	<b>Semester:</b> {{produksjon.semester}}<br>
-	<b>Lokale:</b> {{produksjon.lokale}}<br>
+	<section class="production-banner">
+		<div class="image-container">
+			<img src="{{produksjon.banner.url}}">
+		</div>
+		<div class="production-banner-info-container">
+			<div class="production-banner-main">
+				{% block produksjon_tittel %}
+				<h3>{{produksjon}}</h3>
+				{% endblock produksjon_tittel %}
+				Musikal av {{produksjon.forfatter}}<br>
+			</div>
+			<div class="production-banner-info">
+				Premiere: {{produksjon.premiere}}<br><br>
+				<a class="btn btn__tickets">Finn billetter</a>
+			</div>
+		</div>
+	</section>	
+
+	<div class="production-extra-info">
+		<i><img src="{% static 'assets/location_icon.svg' %}">
+		<p>{{produksjon.lokale}} </p></i>
+		{% if produksjon.varighet %}
+		<i><img src="{% static 'assets/duration_icon.svg' %}">
+		<p> {{produksjon.varighet}} timer </p> </i>
+		{% endif %}
+		<!--<b>Opphavsår:</b> {{produksjon.opphav}}<br>-->
+		<i><img src="{% static 'assets/price_icon.svg' %}">
+		<p> Medlem: 100,-
+		Ikke-medlem: 150,- </p>
+		</i>
+		
+	</div>
+	
+	<!--<b>Semester:</b> {{produksjon.semester}}<br>-->
+	<section class="production-information">
+		<div class="divider"></div>
+		<a class="production-categories">Om stykket</a>
+		<div class="production-category-content">
+			<h3>test</h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
+		</div>
+		<div class="divider"></div>
+		<a class="production-categories">Medvirkende</a>
+		<div class="production-category-content">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
+		</div>
+		<div class="divider"></div>
+		<a class="production-categories">Omtaler</a>
+		<div class="production-category-content">
+			<p>  </p>
+		</div>
+		<div class="divider"></div>
+		<a class="production-categories">Bildegalleri</a>
+		<div class="production-category-content">
+			<p>  </p>
+		</div>
+		<div class="divider"></div>
+	</section>
+
+	<!--
 	<br>
 	{{produksjon.info}}<br>
 	{% if user.is_authenticated %}
@@ -26,7 +75,7 @@
 
 	
 	<h4>Forestillinger</h4>
-	<b>Premiere:</b> {{produksjon.premiere}}<br>
+	
 	{% for forestilling in produksjon.forestillinger.all %}
 		{{forestilling.tidspunkt}}
 		{% block forestilling_fjern %}
@@ -72,4 +121,7 @@
 
 	{% endblock produksjon_nav %}
 
+	-->
+	{% load static %}
+	<script src="{% static 'collapsible.js' %}"></script>
 {% endblock innhold %}
