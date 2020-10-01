@@ -464,7 +464,6 @@ p {
 }
 .production-banner {
 	text-align: center;
-	/* Displace the padding from the parent container */
 	margin: -20px;
 }
 .production-banner .production-banner-main {
@@ -493,7 +492,6 @@ p {
 .production-categories {
 	cursor: pointer;
 	color: var(--sit-grullo-dark);
-	
 }
 
 .divider, .firstDivider {
@@ -503,20 +501,17 @@ p {
 }
   
 .active, .production-categories:hover {
-	
 	/* Need this even though it is empty for the mobile show category function*/
 }
 
 .production-category-content {
-
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
-
 	padding: 15px;
-
 }
 
+/*Desktop view*/
 @media only screen and (min-width: 1024px) {
 	.production-banner {
 		padding: 90px 130px 120px 120px;
@@ -574,5 +569,4 @@ p {
 		width: 80%;
 		margin-left: 100px;
 	}
-
 }
