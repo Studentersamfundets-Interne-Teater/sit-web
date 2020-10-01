@@ -28,7 +28,7 @@
 		<p>{{produksjon.lokale}} </p></i>
 		{% if produksjon.varighet %}
 		<i><img src="{% static 'assets/duration_icon.svg' %}">
-		<p> {{produksjon.varighet}} timer </p> </i>
+		<p> {{produksjon.varighet}} </p> </i>
 		{% endif %}
 		<!--<b>Opphavsår:</b> {{produksjon.opphav}}<br>-->
 		<i><img src="{% static 'assets/price_icon.svg' %}">
@@ -40,29 +40,36 @@
 	
 	<!--<b>Semester:</b> {{produksjon.semester}}<br>-->
 	<section class="production-information">
-		<div class="divider"></div>
+		<div class="firstDivider"></div>
 		<a class="production-categories">Om stykket</a>
 		<div class="production-category-content">
-			<h3>test</h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
-		</div>
+			<h3>Om stykket </h3>
+			<p>{{produksjon.info}}</p>
+			</div>
 		<div class="divider"></div>
 		<a class="production-categories">Medvirkende</a>
 		<div class="production-category-content">
+			<h3>Medvirkende </h3>
 			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
 		</div>
 		<div class="divider"></div>
 		<a class="production-categories">Omtaler</a>
 		<div class="production-category-content">
-			<p>  </p>
+			<h3>Omtaler </h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
+		
 		</div>
 		<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
-			<p>  </p>
+			<h3>Bildegalleri </h3>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
+		
 		</div>
 		<div class="divider"></div>
 	</section>
+
+
 
 	<!--
 	<br>

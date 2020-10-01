@@ -471,7 +471,7 @@ p {
 	margin-bottom: 36px;
 }
 .production-banner .production-banner-info {
-	background-color: #DED5CE;
+	background-color: var(--sit-grullo-light);
 	padding: 36px;
 }
 
@@ -492,18 +492,19 @@ p {
 
 .production-categories {
 	cursor: pointer;
-	color: #A9927D;
-	font-weight: 600;
+	color: var(--sit-grullo-dark);
+	
 }
 
-.divider {
+.divider, .firstDivider {
 	flex-grow: 1;
-	border-top: 2px solid #DED5CE; 
+	border-top: 2px solid var(--sit-grullo-light); 
 	margin-bottom: 25px;
 }
   
 .active, .production-categories:hover {
-	text-decoration: underline;
+	
+	/* Need this even though it is empty for the mobile show category function*/
 }
 
 .production-category-content {
@@ -519,7 +520,7 @@ p {
 @media only screen and (min-width: 1024px) {
 	.production-banner {
 		padding: 90px 130px 120px 120px;
-		background-color: #DED5CE;
+		background-color: var(--sit-grullo-light);
 		text-align: left;
 	}
 
@@ -531,19 +532,47 @@ p {
 		float: right;
 	}
 
+	.production-extra-info {
+		display: inline-block;	
+		width: 80%;
+		margin-left: 150px;
+		margin-bottom: -30px;
+	}
 	.production-extra-info i {
+		margin-right: 90px;
 		padding: 20px;
 		float: left;
 	}
-	.production-extra-info {
-		display: inline-block;	
-		width: 100%;
-		margin: auto;
+	
+	.production-information {
+		position: relative;
+	}
+	.production-categories {
+		width: 25%;
+		margin-left: 120px;
+		color: var(--main-text-color);
+		
+	}
+	.production-category-content {
+		position: absolute;
+		height: 100%;
+		top: 0;
+		overflow: visible; 
+		display: none;
+		margin-left: 518px;
+		margin-right: 183px;
 	}
 
-	.production-information {
-		width: 25%;
-		float: left;
+	.divider {
+		width: 20%;
+		margin-top: 25px;
+		margin-bottom: 20px;
+		margin-left: 100px;
+	}
+
+	.firstDivider {
+		width: 80%;
+		margin-left: 100px;
 	}
 
 }
