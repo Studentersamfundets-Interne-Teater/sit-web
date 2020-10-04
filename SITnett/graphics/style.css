@@ -53,7 +53,6 @@ h1 {
 
 h2 {
 	font-size: 1.9em;
-	line-height: 2.7px;
 }
 
 h3 {
@@ -88,7 +87,6 @@ p {
 
 	h2 {
 		font-size: 2em;
-		line-height: 2.7px;
 	}
 	
 	h3 {
@@ -120,7 +118,6 @@ p {
 	}
 	h2 {
 		font-size: 2.3em;
-		line-height: 3px;
 	}
 	
 	h3 {
@@ -464,14 +461,16 @@ p {
 }
 .production-banner {
 	text-align: center;
-	margin: -20px;
+	margin-top: -20px;
 }
-.production-banner .production-banner-main {
-	margin-bottom: 36px;
+
+.production-banner-main h2 {
+	font-size: 1.3em
 }
+
 .production-banner .production-banner-info {
 	background-color: var(--sit-grullo-light);
-	padding: 36px;
+	padding: 10px 0 10px 0;
 }
 
 .production-information {
@@ -481,8 +480,13 @@ p {
 .production-extra-info {
 	margin: 20px;
 }
+.button-container{
+	width: 100%;
+	background-color: var(--sit-grullo-light);
+	padding-bottom: 20px;
+}
 
-.production-extra-info i {
+.production-extra-info-box {
 	display: flex;
 }
 .production-extra-info p {
@@ -508,43 +512,71 @@ p {
 	max-height: 0;
 	overflow: hidden;
 	transition: max-height 0.2s ease-out;
-	padding: 15px;
+	padding: 15px 0;
+}
+.production-category-content h3 {
+	display: none;
 }
 
 /*Desktop view*/
 @media only screen and (min-width: 1024px) {
-	.production-banner {
-		padding: 90px 130px 120px 120px;
+	.production-banner-container{
+		width: 100%;
 		background-color: var(--sit-grullo-light);
+
+	}
+	.production-banner {
+		padding: 120px 0;
 		text-align: left;
+		width: 80%;
+		max-width: 1200px;
+		margin: -20px auto 0 auto;
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: space-between;
+	}
+	.production-banner-main h2 {
+		font-size: 2.3em;
 	}
 
 	.production-banner .production-banner-info {
 		padding: 0px;
+		order: -1;
+
+	}
+
+	.production-banner-info-container{
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding-bottom: 10px;
 	}
 
 	.image-container {
 		float: right;
+		height: 420px;
 	}
 
 	.production-extra-info {
-		display: inline-block;	
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
 		width: 80%;
-		margin-left: 150px;
-		margin-bottom: -30px;
+		max-width: 1200px;
+		margin: auto;
 	}
-	.production-extra-info i {
-		margin-right: 90px;
+	.production-extra-info-box {
 		padding: 20px;
-		float: left;
 	}
 	
 	.production-information {
 		position: relative;
+		width: 80%;
+		max-width: 1200px;
+		margin: auto;
 	}
 	.production-categories {
 		width: 25%;
-		margin-left: 120px;
 		color: var(--main-text-color);
 		
 	}
@@ -554,19 +586,16 @@ p {
 		top: 0;
 		overflow: visible; 
 		display: none;
-		margin-left: 518px;
-		margin-right: 183px;
+		margin-left: 35%;
+	}
+
+	.production-category-content h3 {
+		display: block;
+		margin-top: -0px;
 	}
 
 	.divider {
-		width: 20%;
-		margin-top: 25px;
-		margin-bottom: 20px;
-		margin-left: 100px;
-	}
-
-	.firstDivider {
-		width: 80%;
-		margin-left: 100px;
+		width: 30%;
+		margin: 20px 0;
 	}
 }

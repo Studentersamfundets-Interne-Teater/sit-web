@@ -5,36 +5,38 @@
 	
 	{% block produksjon_info %}
 
-	<section class="production-banner">
-		<div class="image-container">
-			<img src="{{produksjon.banner.url}}">
-		</div>
-		<div class="production-banner-info-container">
-			<div class="production-banner-main">
-				{% block produksjon_tittel %}
-				<h3>{{produksjon}}</h3>
-				{% endblock produksjon_tittel %}
-				Musikal av {{produksjon.forfatter}}<br>
+	<section class="production-banner-container">
+		<div class="production-banner">
+			<div class="image-container">
+				<img src="{{produksjon.banner.url}}">
 			</div>
-			<div class="production-banner-info">
-				Premiere: {{produksjon.premiere}}<br><br>
-				<a class="btn btn__tickets">Finn billetter</a>
+			<div class="production-banner-info-container">
+				<div class="production-banner-main">
+					<h2>{{produksjon.tittel}}</h2>
+					<p>Musikal av {{produksjon.forfatter}}</p>
+				</div>
+				<div class="production-banner-info">
+					<p>{{produksjon.premiere}}</p>
+				</div>
+				<div class="button-container">
+					<a class="btn btn__tickets">Finn billetter</a>
+				</div>
 			</div>
 		</div>
 	</section>	
 
 	<div class="production-extra-info">
-		<i><img src="{% static 'assets/location_icon.svg' %}">
-		<p>{{produksjon.lokale}} </p></i>
+		<div class="production-extra-info-box"><img src="{% static 'assets/location_icon.svg' %}">
+		<p>Spilles på {{produksjon.lokale}}</p></div>
 		{% if produksjon.varighet %}
-		<i><img src="{% static 'assets/duration_icon.svg' %}">
-		<p> {{produksjon.varighet}} </p> </i>
+		<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
+		<p> {{produksjon.varighet}} </p> </div>
 		{% endif %}
 		<!--<b>Opphavsår:</b> {{produksjon.opphav}}<br>-->
-		<i><img src="{% static 'assets/price_icon.svg' %}">
+		<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
 		<p> Medlem: 100,-
 		Ikke-medlem: 150,- </p>
-		</i>
+		</div>
 		
 	</div>
 	
@@ -129,6 +131,5 @@
 	{% endblock produksjon_nav %}
 
 	-->
-	{% load static %}
 	<script src="{% static 'collapsible.js' %}"></script>
 {% endblock innhold %}
