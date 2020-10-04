@@ -53,7 +53,6 @@ h1 {
 
 h2 {
 	font-size: 1.9em;
-	line-height: 2.7px;
 }
 
 h3 {
@@ -88,7 +87,6 @@ p {
 
 	h2 {
 		font-size: 2em;
-		line-height: 2.7px;
 	}
 	
 	h3 {
@@ -120,7 +118,6 @@ p {
 	}
 	h2 {
 		font-size: 2.3em;
-		line-height: 3px;
 	}
 	
 	h3 {
@@ -448,5 +445,157 @@ p {
 	}
 	.hero {
 		height: 80vh;
+	}
+}
+
+
+/* 4.3 Production detail view */
+
+.image-container {
+	height: 350px;
+}
+.image-container img {
+	height: 100%;
+	max-width: 100%;
+	margin: auto;
+}
+.production-banner {
+	text-align: center;
+	margin-top: -20px;
+}
+
+.production-banner-main h2 {
+	font-size: 1.3em
+}
+
+.production-banner .production-banner-info {
+	background-color: var(--sit-grullo-light);
+	padding: 10px 0 10px 0;
+}
+
+.production-information {
+	margin: 32px;
+}
+
+.production-extra-info {
+	margin: 20px;
+}
+.button-container{
+	width: 100%;
+	background-color: var(--sit-grullo-light);
+	padding-bottom: 20px;
+}
+
+.production-extra-info-box {
+	display: flex;
+}
+.production-extra-info p {
+	padding-left: 25px;
+}
+
+.production-categories {
+	cursor: pointer;
+	color: var(--sit-grullo-dark);
+}
+
+.divider, .firstDivider {
+	flex-grow: 1;
+	border-top: 2px solid var(--sit-grullo-light); 
+	margin-bottom: 25px;
+}
+  
+.active, .production-categories:hover {
+	/* Need this even though it is empty for the mobile show category function*/
+}
+
+.production-category-content {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.2s ease-out;
+	padding: 15px 0;
+}
+.production-category-content h3 {
+	display: none;
+}
+
+/*Desktop view*/
+@media only screen and (min-width: 1024px) {
+	.production-banner-container{
+		width: 100%;
+		background-color: var(--sit-grullo-light);
+
+	}
+	.production-banner {
+		padding: 120px 0;
+		text-align: left;
+		width: 80%;
+		max-width: 1200px;
+		margin: -20px auto 0 auto;
+		display: flex;
+		flex-direction: row-reverse;
+		justify-content: space-between;
+	}
+	.production-banner-main h2 {
+		font-size: 2.3em;
+	}
+
+	.production-banner .production-banner-info {
+		padding: 0px;
+		order: -1;
+
+	}
+
+	.production-banner-info-container{
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-end;
+		padding-bottom: 10px;
+	}
+
+	.image-container {
+		float: right;
+		height: 420px;
+	}
+
+	.production-extra-info {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		width: 80%;
+		max-width: 1200px;
+		margin: auto;
+	}
+	.production-extra-info-box {
+		padding: 20px;
+	}
+	
+	.production-information {
+		position: relative;
+		width: 80%;
+		max-width: 1200px;
+		margin: auto;
+	}
+	.production-categories {
+		width: 25%;
+		color: var(--main-text-color);
+		
+	}
+	.production-category-content {
+		position: absolute;
+		height: 100%;
+		top: 0;
+		overflow: visible; 
+		display: none;
+		margin-left: 35%;
+	}
+
+	.production-category-content h3 {
+		display: block;
+		margin-top: -0px;
+	}
+
+	.divider {
+		width: 30%;
+		margin: 20px 0;
 	}
 }
