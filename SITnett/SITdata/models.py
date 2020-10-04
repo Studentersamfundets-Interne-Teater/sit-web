@@ -102,6 +102,8 @@ class Produksjon(models.Model):
 	blestestart = models.DateField("blæstestart",blank=True,null=True) 
 	FBlink = models.CharField("Facebook-link",blank=True,max_length=100)
 	billettlink = models.CharField(blank=True,max_length=100)
+	medlemspris = models.IntegerField("Billettpris medlem", blank=True, null=True)
+	ikke_medlemspris = models.IntegerField("Billettpris ikke-medlem", blank=True, null=True)
 	def semester(self):
 		return ("V" if self.premiere.month < 7 else "H")+str(self.premiere.year)
 	class Meta:
