@@ -227,18 +227,14 @@ p {
 
 /* 2.2.1 Default/mobile */
 .footer {
-	/* position: fixed;  */
-	/* height: 200px; */
 	background-color: var(--sit-footer-color);
 	bottom: 0;
 	color: var(--sit-grullo-20);
 	padding: 10px 40px 50px 40px; 
-	/* overflow: hidden; */
 } 
 .footer a {
 	color: var(--sit-grullo-20);
 }
-
 .footer a:hover {
 	color: var(--sit-red-light);
 }
@@ -252,13 +248,11 @@ p {
 		width: 100%;
 		padding: 50px 0px 70px 0px;  
 	}
-
 	.footer .footer-section {
 		margin: auto;
 		width: 270px;
 		min-height: 300px;
 	}
-
 	.footer .footer-divider {
 		border: 0.5px solid var(--sit-grullo-light); 
 	}
