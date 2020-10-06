@@ -33,18 +33,11 @@ body {
 }
 
 content {
-	/* position: relative; */
+	/* display: flex;
+	min-height: 100vh; */
 	padding-top: 20px;
 	left: 0;
 	right: 0;
-	/* min-height: 100vh; */
-	/* display: block; */
-	/* padding-bottom: 200px; /* Same as footer height */  
-	/*margin-bottom: 100px; /*To make space for footer*/
-	/* min-height: 70%;
-    min-height: -webkit-calc(100% - 1450px);
-    min-height: -moz-calc(100% - 150px);
-    min-height: calc(100% - 186px); */
 }
 
 h1, h2, h3{
@@ -230,8 +223,11 @@ p {
 	background-color: var(--sit-footer-color);
 	bottom: 0;
 	color: var(--sit-grullo-20);
-	padding: 10px 40px 50px 40px; 
+	padding: 10px 40px 20px 40px; 
 } 
+.footer-push {
+	flex: 1;
+}
 .footer a {
 	color: var(--sit-grullo-20);
 }
@@ -246,7 +242,7 @@ p {
 		display: flex;
 		align-content: flex-start;
 		width: 100%;
-		padding: 50px 0px 70px 0px;  
+		padding: 50px 0px 0px 0px;  
 	}
 	.footer .footer-section {
 		margin: auto;
