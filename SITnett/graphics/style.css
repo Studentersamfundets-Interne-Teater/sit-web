@@ -14,11 +14,13 @@
 	--sit-grullo-80: #BEAD9D;
 	--sit-grullo-light: #DED5CE;
 	--sit-grullo-20: #EFEAE7;
+	--sit-footer-color: #2D2924;
 	--sit-sans: Open Sans, sans-serif;
 	--sit-serif: Libre Baskerville, serif;
 }
 
 /* 1.1 General styles, mobile/default */
+
 body {
 	color: var(--main-text-color);
 	background-color: var(--main-bg-color);
@@ -27,13 +29,22 @@ body {
 	font-weight: 400;
 	margin: 0;
 	width: 100vw;
+	position: relative; /* To be able to keep footer at the bottom */ 
 }
 
 content {
-	position: absolute;
+	/* position: relative; */
 	padding-top: 20px;
 	left: 0;
 	right: 0;
+	/* min-height: 100vh; */
+	/* display: block; */
+	/* padding-bottom: 200px; /* Same as footer height */  
+	/*margin-bottom: 100px; /*To make space for footer*/
+	/* min-height: 70%;
+    min-height: -webkit-calc(100% - 1450px);
+    min-height: -moz-calc(100% - 150px);
+    min-height: calc(100% - 186px); */
 }
 
 h1, h2, h3{
@@ -136,9 +147,11 @@ p {
 }
 
 
-/* 2. NAVBAR */ 
+/* 2. NAVBAR & FOOTER */ 
 
-/* 2.1 Default/mobile */
+/* 2.1 Navbar */
+
+/* 2.1.1 Default/mobile */
 
 .topnav {
 	overflow: hidden;
@@ -208,7 +221,47 @@ p {
 	.topnav #status {
 		float: right; 
 	}
+}
 
+/* 2.2 Footer */ 
+
+/* 2.2.1 Default/mobile */
+.footer {
+	/* position: fixed;  */
+	/* height: 200px; */
+	background-color: var(--sit-footer-color);
+	bottom: 0;
+	color: var(--sit-grullo-20);
+	padding: 10px 40px 50px 40px; 
+	/* overflow: hidden; */
+} 
+.footer a {
+	color: var(--sit-grullo-20);
+}
+
+.footer a:hover {
+	color: var(--sit-red-light);
+}
+
+/* 2.2.2 Desktop */
+@media only screen and (min-width: 1024px) {
+
+	.footer {
+		display: flex;
+		align-content: flex-start;
+		width: 100%;
+		padding: 50px 0px 70px 0px;  
+	}
+
+	.footer .footer-section {
+		margin: auto;
+		width: 270px;
+		min-height: 300px;
+	}
+
+	.footer .footer-divider {
+		border: 0.5px solid var(--sit-grullo-light); 
+	}
 }
 
 /* 3. REUSABLE COMPONENTS */

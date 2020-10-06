@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -58,6 +58,33 @@
 	
 		{% endblock innhold %}
 	</content>
+
+	<div class="footer">
+		<div class="footer-section">
+			<h3>Adresse</h3>
+			<p>Elgesetergate 1 <br> 
+				7030 Trondheim</p>
+		</div>
+		<div class="footer-divider"></div>
+		<div class="footer-section">
+			<h3>Kontakt oss</h3>
+			<p>E-mail: sit@samfundet.no <br>
+				Se flere måter å kontakte oss på <a href="{% url 'kontakt' %}">her</a>
+			</p>
+		</div>
+		<div class="footer-divider"></div>
+		<div class="footer-section">
+			<h3>Følg oss!</h3>
+			<p> <a href="https://www.instagram.com/samfundetsinterneteater" class="fa fa-facebook"> Facebook</a><br>
+			<a href="https://www.facebook.com/studentersamfundetsinterneteater" class="fa fa-instagram"> Instagram</a><br>
+			<a href="https://www.snapchat.com/add/SITeater" class="fa fa-snapchat-ghost"> Snapchat</a></p>
+		</div>
+		<div class="footer-divider"></div>
+		<div class="footer-section">
+			<h3>Noe på hjertet?</h3>
+			<a href="#">Gi oss en tilbakemelding</a>
+		</div>
+	</div>
 
 	{% load static %}
 	<script src="{% static 'hamburger.js' %}"></script>
