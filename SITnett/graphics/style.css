@@ -29,12 +29,14 @@ body {
 	font-weight: 400;
 	margin: 0;
 	width: 100vw;
-	position: relative; /* To be able to keep footer at the bottom */ 
+	position: relative; 
+	display: flex;
+	flex-direction: column; 
 }
 
 content {
-	/* display: flex;
-	min-height: 100vh; */
+	/* display: flex; */
+	min-height: 100vh;
 	padding-top: 20px;
 	left: 0;
 	right: 0;
@@ -220,37 +222,41 @@ p {
 
 /* 2.2.1 Default/mobile */
 .footer {
+	margin-top: auto;
 	background-color: var(--sit-footer-color);
-	bottom: 0;
 	color: var(--sit-grullo-20);
-	padding: 10px 40px 20px 40px; 
+	padding: 40px; 
 } 
-.footer-push {
-	flex: 1;
-}
 .footer a {
 	color: var(--sit-grullo-20);
 }
 .footer a:hover {
 	color: var(--sit-red-light);
 }
+.footer-some a {
+	padding: 40px;
+}
+
 
 /* 2.2.2 Desktop */
 @media only screen and (min-width: 1024px) {
-
 	.footer {
+		margin-top: auto;
+		width: 100%;
+		padding: 50px 0px 0px 0px;
+	}
+	.footer-flex-wrapper {
 		display: flex;
 		align-content: flex-start;
-		width: 100%;
-		padding: 50px 0px 0px 0px;  
 	}
-	.footer .footer-section {
+	.footer-section {
 		margin: auto;
-		width: 270px;
-		min-height: 300px;
+		width: 320px;
 	}
-	.footer .footer-divider {
-		border: 0.5px solid var(--sit-grullo-light); 
+
+	.footer-some {
+		padding: 50px;
+		text-align: center;
 	}
 }
 
