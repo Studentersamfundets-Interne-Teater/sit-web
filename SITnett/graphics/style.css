@@ -231,12 +231,12 @@ p {
 	color: var(--sit-grullo-20);
 }
 .footer a:hover {
-	color: var(--sit-red-light);
+	text-decoration: underline;
+	/* color: var(--sit-red-light); */
 }
 .footer-some a {
 	padding: 40px;
 }
-
 
 /* 2.2.2 Desktop */
 @media only screen and (min-width: 1024px) {
@@ -247,15 +247,15 @@ p {
 	}
 	.footer-flex-wrapper {
 		display: flex;
+	
 		align-content: flex-start;
 	}
 	.footer-section {
 		margin: auto;
-		width: 320px;
 	}
 
 	.footer-some {
-		padding: 50px;
+		padding: 40px;
 		text-align: center;
 	}
 }
