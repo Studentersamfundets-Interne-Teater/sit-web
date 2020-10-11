@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville">
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -58,6 +58,29 @@
 	
 		{% endblock innhold %}
 	</content>
+
+	<div class="footer">
+		<div class="footer-flex-wrapper">
+			<div class="footer-section">
+				<p><a href="{% url 'kontakt' %}" class="text-strong">Kontakt oss</a></p>
+				<p> Studentersamfundet <br>
+					Elgesetergate 1 <br> 
+					7030 Trondheim</p>
+				<p><a href="mailto:sit@samfundet.no"> sit@samfundet.no</a></p>
+				<!-- <p><a href="{% url 'kontakt' %}"> Kontakt</a> </p> -->
+			</div>
+			<div class="footer-section">
+				<p class="text-strong">Om SIT</p>
+				<a href="{% url 'info' %}"> Vår historie </a><br><br>
+				<a href="https://www.samfundet.no/informasjon" target="_blank" rel="noreferrer noopener">Om Studentersamfundet i Trondhjem</a>
+			</div>
+			<div class="footer-some footer-section">
+				<a href="https://www.facebook.com/studentersamfundetsinterneteater" target="_blank" rel="noreferrer noopener" class="some-links"><i class="fa fa-facebook"></i>Facebook</a>
+				<a href="https://www.instagram.com/samfundetsinterneteater" target="_blank" rel="noreferrer noopener" class="some-links"><i class="fa fa-instagram"></i>Instagram</a>
+				<a href="https://www.snapchat.com/add/SITeater" target="_blank" rel="noreferrer noopener" class="some-links"><i class="fa fa-snapchat"></i>Snapchat</a>
+			</div>
+		</div>
+	</div>
 
 	{% load static %}
 	<script src="{% static 'hamburger.js' %}"></script>

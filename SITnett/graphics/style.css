@@ -14,11 +14,13 @@
 	--sit-grullo-80: #BEAD9D;
 	--sit-grullo-light: #DED5CE;
 	--sit-grullo-20: #EFEAE7;
+	--sit-footer-color: #2D2924;
 	--sit-sans: Open Sans, sans-serif;
 	--sit-serif: Libre Baskerville, serif;
 }
 
 /* 1.1 General styles, mobile/default */
+
 body {
 	color: var(--main-text-color);
 	background-color: var(--main-bg-color);
@@ -27,10 +29,14 @@ body {
 	font-weight: 400;
 	margin: 0;
 	width: 100vw;
+	position: relative; 
+	display: flex;
+	flex-direction: column; 
 }
 
 content {
-	position: absolute;
+	/* display: flex; */
+	min-height: 80vh;
 	padding-top: 20px;
 	left: 0;
 	right: 0;
@@ -136,9 +142,11 @@ p {
 }
 
 
-/* 2. NAVBAR */ 
+/* 2. NAVBAR & FOOTER */ 
 
-/* 2.1 Default/mobile */
+/* 2.1 Navbar */
+
+/* 2.1.1 Default/mobile */
 
 .topnav {
 	overflow: hidden;
@@ -208,7 +216,61 @@ p {
 	.topnav #status {
 		float: right; 
 	}
+}
 
+/* 2.2 Footer */ 
+
+/* 2.2.1 Default/mobile */
+.footer {
+	margin-top: auto;
+	background-color: var(--sit-footer-color);
+	color: var(--sit-grullo-20);
+	padding: 40px 20px; 
+} 
+.footer-flex-wrapper{
+	width: 80%;
+	max-width: 1200px;
+	min-width: 320px;
+	margin: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
+.footer a {
+	color: var(--sit-grullo-20);
+}
+.footer a:hover {
+	text-decoration: underline;
+	/* color: var(--sit-red-light); */
+}
+.footer .footer-section{
+	width: 25%;
+	min-width: 260px;
+	padding-bottom: 1em;
+}
+.footer-some {
+	padding-top: 2em;
+	height: 6em;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.some-links{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.footer-some .fa {
+	font-size: 1.5em;
+	width: 1.2em;
+}
+
+/* 2.2.2 Desktop */
+@media only screen and (min-width: 1024px) {
+	.footer-some {
+		padding-top: 1em;
+	}
 }
 
 /* 3. REUSABLE COMPONENTS */
@@ -285,7 +347,31 @@ p {
 	  height: 2em;
 	  font-size: 0.9em;
   }
-  
+
+/*3.2 PLACEHOLDERS*/
+.placeholder-content{
+	width: 60%;
+	max-width: 800px;
+	min-width: 320px;
+	margin: auto;
+	text-align: center;
+	padding-bottom: 2em;
+}
+.placeholder-content h2{
+	color: var(--sit-gunmetal-dark);
+}
+.placeholder-content a{
+	text-decoration: underline;
+	color: var(--sit-gunmetal-dark);
+}
+.placeholder-content .text-info{
+	margin-top: 0;
+}
+.giphy-embed{
+	width: 320px;
+	height: 320px;
+}
+
 /* 4. SPECIFIC COMPONENTS */
 /* 4.1 INFOPAGE */
 .info-wrapper{

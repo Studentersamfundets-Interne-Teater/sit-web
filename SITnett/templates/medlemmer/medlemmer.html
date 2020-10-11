@@ -1,7 +1,14 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
+<div class="placeholder-content">
+	<iframe src="https://giphy.com/embed/hrRJ41JB2zlgZiYcCw" class="giphy-embed" frameBorder="0" style=height:200px></iframe>
+	<p class="text-info"><a href="https://giphy.com/gifs/memecandy-hrRJ41JB2zlgZiYcCw">via GIPHY</a></p>
+	<h2>Under arbeid</h2>
+	<p>Denne siden er under arbeid. Se <a href="http://skrift.no/sit/index.asp?vis=medlem" target="_blank" rel="noreferrer noopener">våre gamle nettsider</a> for å finne denne informasjonen</p>
+</div>
 
+<!--
 <div class="card-wrapper">
 	{% for medlem in mliste %}
 	<a class="production-card" href="{% url 'medlem_info' medlem.id %}">
@@ -19,5 +26,6 @@
 	<br><br>
 	<a href="{% url 'medlem_ny' %}">Nytt medlem</a>
 	{% endif %}
+-->
 
 {% endblock innhold %}
