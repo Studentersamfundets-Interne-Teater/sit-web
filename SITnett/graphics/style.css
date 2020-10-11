@@ -36,7 +36,7 @@ body {
 
 content {
 	/* display: flex; */
-	min-height: 100vh;
+	min-height: 80vh;
 	padding-top: 20px;
 	left: 0;
 	right: 0;
@@ -347,7 +347,31 @@ p {
 	  height: 2em;
 	  font-size: 0.9em;
   }
-  
+
+/*3.2 PLACEHOLDERS*/
+.placeholder-content{
+	width: 60%;
+	max-width: 800px;
+	min-width: 320px;
+	margin: auto;
+	text-align: center;
+	padding-bottom: 2em;
+}
+.placeholder-content h2{
+	color: var(--sit-gunmetal-dark);
+}
+.placeholder-content a{
+	text-decoration: underline;
+	color: var(--sit-gunmetal-dark);
+}
+.placeholder-content .text-info{
+	margin-top: 0;
+}
+.giphy-embed{
+	width: 320px;
+	height: 320px;
+}
+
 /* 4. SPECIFIC COMPONENTS */
 /* 4.1 INFOPAGE */
 .info-wrapper{
