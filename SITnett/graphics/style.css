@@ -10,7 +10,7 @@
 	--sit-red-light: #F99FA3;
 	--sit-gunmetal-dark: #3C5A68;
 	--sit-gunmetal-light: #97B5C3;
-	--sit-grullo-dark: #A9927D;
+	--sit-grullo-dark: #9D886C;
 	--sit-grullo-80: #BEAD9D;
 	--sit-grullo-light: #DED5CE;
 	--sit-grullo-20: #EFEAE7;
@@ -586,7 +586,7 @@ p {
 
 .divider, .firstDivider {
 	flex-grow: 1;
-	border-top: 2px solid var(--sit-grullo-light); 
+	border-top: 2px solid var(--sit-grullo-dark); 
 	margin-bottom: 25px;
 }
   
