@@ -225,8 +225,18 @@ p {
 	margin-top: auto;
 	background-color: var(--sit-footer-color);
 	color: var(--sit-grullo-20);
-	padding: 40px; 
+	padding: 40px 20px; 
 } 
+.footer-flex-wrapper{
+	width: 80%;
+	max-width: 1200px;
+	min-width: 320px;
+	margin: auto;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
+}
 .footer a {
 	color: var(--sit-grullo-20);
 }
@@ -234,29 +244,32 @@ p {
 	text-decoration: underline;
 	/* color: var(--sit-red-light); */
 }
-.footer-some a {
-	padding: 40px;
+.footer .footer-section{
+	width: 25%;
+	min-width: 260px;
+	padding-bottom: 1em;
+}
+.footer-some {
+	padding-top: 2em;
+	height: 6em;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+.some-links{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+.footer-some .fa {
+	font-size: 1.5em;
+	width: 1.2em;
 }
 
 /* 2.2.2 Desktop */
 @media only screen and (min-width: 1024px) {
-	.footer {
-		margin-top: auto;
-		width: 100%;
-		padding: 50px 0px 0px 0px;
-	}
-	.footer-flex-wrapper {
-		display: flex;
-	
-		align-content: flex-start;
-	}
-	.footer-section {
-		margin: auto;
-	}
-
 	.footer-some {
-		padding: 40px;
-		text-align: center;
+		padding-top: 1em;
 	}
 }
 
