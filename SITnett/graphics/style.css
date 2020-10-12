@@ -468,7 +468,7 @@ p {
 
 .hero-container {
 	max-width: 746px;
-	height: 400px;
+	height: 350px;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
