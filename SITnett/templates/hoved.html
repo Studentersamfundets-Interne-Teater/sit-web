@@ -1,37 +1,60 @@
-{% extends "meny.html" %} 
-{% load static %}
+{% extends "meny.html" %} {% load static %} {% block innhold %}
 
-{% block innhold %}
-
-<section class="hero">
-	<img class="hero-image" src="{% static "img/hero.png" %}" alt="">
-	<div class="hero-container">
-			<h1 class="hero-title">Spring<br>Awakening</h1>
-			<a class="hero-btn btn" href="#" class="btn">Finn billetter</a>
-	</div>
+<section class="hero" id="hero">
+	<img class="hero-image" id="hero-image"
+	src="{% static "img/spring-awakening-banner.png" %}"
+	alt=""
+	data-landscape="{% static "/img/spring-awakening-banner.png" %}"
+	data-portrait="{% static "/img/spring-awakening-poster.png" %}">
+  <div class="hero-container">
+    <!--<h1 class="hero-title">Spring<br>Awakening</h1>-->
+    <a
+      class="hero-btn btn"
+      href="https://samfundet.no/arrangement"
+      class="btn"
+      target="_blank"
+      ref="noopener noreferrer"
+      >Finn billetter</a
+    >
+  </div>
 </section>
 
 <div class="info-wrapper">
-	<div class="info-wrapper-content">
-		<h2>120 år i 2020</h2>
-		<p>SIT er teatergruppa på Studentersamfundet i Trondhjem. 
-			Dette er en gjeng på ca 70 personer som har innslag på en rekke av styrets lørdagsmøter, 
-			og som også setter opp egne produksjoner. 
-			Under UKA har SIT ansvaret for alle teaterproduksjonene, ikke minst UKE-revyen.</p>
+  <div class="info-wrapper-content">
+    <h2>110 år i 2020</h2>
+    <p>
+      SIT er teatergruppa på Studentersamfundet i Trondhjem. Dette er en gjeng
+      på ca 70 personer som har innslag på en rekke av styrets lørdagsmøter, og
+      som også setter opp egne produksjoner. Under UKA har SIT ansvaret for alle
+      teaterproduksjonene, ikke minst UKE-revyen.
+    </p>
 
-		<p>Gruppa ble offisielt stiftet 3. desember 1910 og het da Studentersamfundets Teater (eller Samfundsteatret). 
-			Det «interne teater» var i utgangspunktet betegnelsen på 
-			«klikker av teatergutter som slår sig sammen og lager forestillinger bare beregnet for underholdning på møtene» 
-			(Studentersamfundet i Trondhjem gjennem 25 år). Gradvis ble Studentersamfundets Interne Teater det offisielle navnet. 
-			I programmet for Vær-i-tass (1937) står det «Produsent: S.I.T.» og «Kostymene fra atelier S.I.T.».</p>
-	</div>
-	<div class="info-wrapper-image">
-		<img src="{% static 'assets/rodhette.jpg' %}" width=100%>
-		<div class="text-info">Barneteater, Rødhette og ulven (1977) <a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener">foto.samfundet.no</a></div>
-	</div>
+    <p>
+      Gruppa ble offisielt stiftet 3. desember 1910 og het da
+      Studentersamfundets Teater (eller Samfundsteatret). Det «interne teater»
+      var i utgangspunktet betegnelsen på «klikker av teatergutter som slår sig
+      sammen og lager forestillinger bare beregnet for underholdning på møtene»
+      (Studentersamfundet i Trondhjem gjennem 25 år). Gradvis ble
+      Studentersamfundets Interne Teater det offisielle navnet. I programmet for
+      Vær-i-tass (1937) står det «Produsent: S.I.T.» og «Kostymene fra atelier
+      S.I.T.».
+    </p>
+  </div>
+  <div class="info-wrapper-image">
+    <img src="{% static 'assets/rodhette.jpg' %}" width="100%" />
+    <div class="text-info">
+      Barneteater, Rødhette og ulven (1977)
+      <a
+        href="https://foto.samfundet.no/"
+        target="_blank"
+        rel="noreferrer noopener"
+        >foto.samfundet.no</a
+      >
+    </div>
+  </div>
 </div>
 
-<section class="card-wrapper card-wrapper__landing">
+<!-- <section class="card-wrapper card-wrapper__landing">
 	<div class="production-card production-card__landing">
 		<img class="production-card-image" src="{% static "img/spring-awakening-card.png" %}" alt="Spring Awkening" class="show-image">
 		<div class="production-card-container production-card-container__landing">
@@ -50,6 +73,7 @@
 			<a href="#" class="btn btn__tickets">Billetter</a>
 		</div>
 	</div>
-</section>
+</section> -->
 
+<script src="{% static "/hero_img_picker.js" %}"></script>
 {% endblock innhold %}
