@@ -8,3 +8,10 @@ db.sqlite3
 .DS_Store
 files
 myvenv
+
+## Hide the production secret key
+SITnett/SITnett/local.py
+
+## Ignore the production venv
+SITnett/venv/
+SITnett/requirements.txt

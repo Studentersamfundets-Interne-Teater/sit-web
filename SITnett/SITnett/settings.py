@@ -18,14 +18,28 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n%8)o@tq63(+aacvf2q-1hx%=mb!^@8d$rs8$pwvw0x0x9#7ko'
+try:
+    from .local import *
+    DEBUG = False
+    ALLOWED_HOSTS = [
+    'sit-2020.samfundet.no',
+    'localhost',
+]
+except ModuleNotFoundError:
+    print("Production environment not found – using local debug settings")
+    DEBUG = True
+    SECRET_KEY = 'n%8)o@tq63(+aacvf2q-1hx%=mb!^@8d$rs8$pwvw0x0x9#7ko'   
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
+    ALLOWED_HOSTS = []
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
-ALLOWED_HOSTS = []
+
 
 
 # Application definition
@@ -74,12 +88,12 @@ WSGI_APPLICATION = 'SITnett.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
 MEDIA_URL = '/files/'
