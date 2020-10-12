@@ -265,6 +265,21 @@ p {
 	font-size: 1.5em;
 	width: 1.2em;
 }
+.feedback-button{
+	margin-top: 1.5em;
+	background-color: var(--sit-footer-color);
+    width: 200px;
+    padding: 1em 0;
+	font-size: 0.9em;
+	border: solid 1px var(--sit-grullo-20);
+	text-decoration: none;
+	color: var(--sit-grullo-20);
+	text-align: center;
+}
+.feedback-button:hover{
+	background-color: var(--sit-grullo-20);
+	color: var(--sit-footer-color);
+}
 
 /* 2.2.2 Desktop */
 @media only screen and (min-width: 1024px) {
