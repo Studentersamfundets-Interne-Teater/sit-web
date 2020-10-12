@@ -274,6 +274,7 @@ p {
 	border: solid 1px var(--sit-grullo-20);
 	text-decoration: none;
 	color: var(--sit-grullo-20);
+	text-align: center;
 }
 .feedback-button:hover{
 	background-color: var(--sit-grullo-20);
