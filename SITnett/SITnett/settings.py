@@ -22,7 +22,7 @@ try:
     from .local import *
     DEBUG = False
     ALLOWED_HOSTS = [
-    'sit-2020.samfundet.no',
+    'sit.samfundet.no'
     'localhost',
 ]
 except ModuleNotFoundError:
