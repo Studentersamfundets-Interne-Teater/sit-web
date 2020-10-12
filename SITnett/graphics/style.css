@@ -561,6 +561,7 @@ p {
 	height: 100%;
 	max-width: 100%;
 	margin: auto;
+	object-fit: cover;
 }
 .production-banner {
 	text-align: center;
