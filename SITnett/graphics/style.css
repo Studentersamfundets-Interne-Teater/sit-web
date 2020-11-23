@@ -226,6 +226,7 @@ p {
 	background-color: var(--sit-footer-color);
 	color: var(--sit-grullo-20);
 	padding: 40px 20px; 
+	padding-bottom: 80px;
 } 
 .footer-flex-wrapper{
 	width: 80%;
@@ -257,9 +258,10 @@ p {
 	justify-content: space-between;
 }
 .some-links{
-	display: flex;
+	/*display: flex;*/ /* This made SoMe icons overlap eachother on Safari */
 	flex-direction: row;
 	align-items: center;
+	padding: 4px;
 }
 .footer-some .fa {
 	font-size: 1.5em;
