@@ -257,9 +257,7 @@ p {
 	justify-content: space-between;
 }
 .some-links{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+	padding: 4px;
 }
 .footer-some .fa {
 	font-size: 1.5em;
@@ -543,6 +541,7 @@ p {
 @media only screen and (min-width: 756px) {
 	.hero-container{
 		height: 450px;
+		padding-bottom: 40px;
 	}
 	.production-card__landing {
 		height: 640px;
@@ -553,6 +552,7 @@ p {
 	.show-date {
 		margin-bottom: 1.5em;
 	}
+	
 }
 
 @media only screen and (min-width: 1024px) {
