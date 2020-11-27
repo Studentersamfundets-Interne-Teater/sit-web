@@ -1,12 +1,12 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
-<div class="placeholder-content">
+<!-- <div class="placeholder-content">
 	<iframe src="https://giphy.com/embed/hrRJ41JB2zlgZiYcCw" class="giphy-embed" frameBorder="0" style=height:200px></iframe>
 	<p class="text-info"><a href="https://giphy.com/gifs/memecandy-hrRJ41JB2zlgZiYcCw">via GIPHY</a></p>
 	<h2>Under arbeid</h2>
 	<p>Denne siden er under arbeid. Se <a href="http://skrift.no/sit/index.asp?vis=medlem" target="_blank" rel="noreferrer noopener">våre gamle nettsider</a> for å finne denne informasjonen</p>
-</div>
+</div> -->
 
 <!--
 <div class="card-wrapper">
@@ -27,5 +27,30 @@
 	<a href="{% url 'medlem_ny' %}">Nytt medlem</a>
 	{% endif %}
 -->
+
+<div class="wrapper">
+	<div class="title-wrapper">
+		<h2>Medlemmer</h2>
+		Se alle SITs medlemmer gjennom tidene
+	</div>
+	<div class="card-wrapper">
+		{% for medlem in mliste %}
+		<a class="production-card member-card" href="{% url 'medlem_info' medlem.id %}">
+			<img src="{{medlem.portrett.url}}" class="production-card-image member-card-image">
+			<div class="production-card-container">
+			<h3 class="production-card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h3> 
+			<div class="text-info text-strong">{{medlem.get_status_display}}</div> 
+			</div>
+		</a>
+		{% endfor %}
+	</div>
+
+	{% if perms.SITdata.add_medlem %}
+	<br><br>
+	<div class="btn-wrapper">
+		<a class="btn" href="{% url 'medlem_ny' %}">Nytt medlem</a>
+	</div>
+	{% endif %}
+</div>
 
 {% endblock innhold %}
