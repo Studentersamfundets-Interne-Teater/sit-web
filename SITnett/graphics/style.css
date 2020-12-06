@@ -719,3 +719,33 @@ p {
 		margin: 20px 0;
 	}
 }
+
+/* 4.4 Member page/could be reusable */ 
+
+.wrapper {
+	margin: 5vh 5vh 20vh 5vh; 
+}
+
+.title-wrapper {
+	margin: 5vh; 
+	text-align: center;
+}
+
+.member-card {
+	width: 100%;
+	max-width: 190px;
+	max-height: 350px;
+	cursor: pointer;
+	background-color: var(--sit-gunmetal-light);
+	margin: 1em;
+}
+
+.btn-wrapper {
+	text-align: center;
+	margin: auto;
+}
+
+.member-card-image {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
