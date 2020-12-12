@@ -42,7 +42,7 @@ content {
 	right: 0;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4{
 	font-family: var(--sit-serif);
 }
 
@@ -62,7 +62,12 @@ h2 {
 }
 
 h3 {
-	font-size: 1.3em;
+	font-size: 1.1em;
+	line-height: 2em;
+}
+
+h4 {
+	font-size: 1.0em;
 	line-height: 2em;
 }
 
@@ -96,7 +101,7 @@ p {
 	}
 	
 	h3 {
-		font-size: 1.5em;
+		font-size: 1.4em;
 		line-height: 2.1em;
 	}
 	
@@ -288,94 +293,81 @@ p {
 
 /* 3. REUSABLE COMPONENTS */
 /* 3.1 CARDS */
-/*.card-wrapper {
-	width: 80%;
-	min-width: 340px;
-	max-width: 1450px;
-	margin: auto;
-	display: flex;
-	flex-flow: row wrap;
-	align-content: flex-start;
-	justify-content: flex-start;
-}*/
 .card-wrapper {
 	display: grid;
 	max-width: 1200px;
-	margin:auto;
-	grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+	margin: auto;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     grid-auto-rows: min-content;
-    grid-gap: 1.5rem 1.0rem;
+    grid-gap: 1.0rem 0.5rem;
     justify-content: center;
 }
 
-/*.production-card {
-	position: relative;
-	width: 100%;
-	max-width: 440px;
-	cursor: pointer;
-	background-color: var(--sit-gunmetal-light);
-	margin: 1em;
-}*/
+.production-wrapper .card-wrapper{
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
 
-.production-card {
+.card {
 	position: relative;
 	cursor: pointer;
 	width: 100%;
+	background-color: var(--sit-gunmetal-light);
 }
   
-  .production-card:hover {
-	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  }
+.card:hover {
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
 
-  .production-card-image{
-	  width: 100%;
-	  object-fit: cover;
-	  height: 280px;
-  }
-  
-  .production-card-container {
-	height: 140px;
+.card-image{
+	width: 100%;
+	object-fit: cover;
+	height: 184px;
+}
+
+.card-container {
+	height: 5em;
+	padding: 0 0.5em;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-content: center;
-  }
- 
-  .production-card-title {
+}
+
+.card-title {
 	line-height: 1.1em;
 	margin: 0 0 0.6em 0;
-  }
+}
 
-  /* 3.1 FORMS */
-  .form-wrapper{
+/* 3.1 FORMS */
+.form-wrapper{
 	display: flex;
-    flex-direction: column;
+	flex-direction: column;
 	width: 80%;
 	min-width: 320px;
 	max-width: 420px;
-    margin: 1em auto;
-  }
+	margin: 1em auto;
+}
 
-  .brukerkonto-wrapper{
-	display: flex;
+.brukerkonto-wrapper{
+display: flex;
+margin: 1em 0 0.5em 0;
+align-items: center;
+}
+
+input{
+	height: 2em;
+	font-size: 0.9em;
+}
+
+label{
 	margin: 1em 0 0.5em 0;
-	align-items: center;
-  }
+}
 
-  input{
-	  height: 2em;
-	  font-size: 0.9em;
-  }
- 
-  label{
-	  margin: 1em 0 0.5em 0;
-  }
-
-  select{
-	  height: 2em;
-	  font-size: 0.9em;
-  }
+select{
+	height: 2em;
+	font-size: 0.9em;
+}
 
 /*3.2 PLACEHOLDERS*/
 .placeholder-content{
@@ -524,14 +516,14 @@ p {
 	margin-top: 8em;
 }
 
-.production-card__landing {
+.card__landing {
 	max-width: 540px;
 	height: 440px;
 	cursor: default;
 	margin: 1em auto;
 }
 
-.production-card-container__landing {
+.card-container__landing {
 	height: calc(100% - 260px);
 	display: flex;
 	flex-direction: column;
@@ -546,21 +538,25 @@ p {
 	display: none;
 }
 
-.production-card__landing p {
+.card__landing p {
 	margin-bottom: 36px;
 }
 
-.production-card__landing:first-of-type {
+.card__landing:first-of-type {
 	background-color: var(--sit-grullo-80);
 }
 
-@media only screen and (min-width: 500px) {
-	.production-card-image{
+@media only screen and (min-width: 560px) {
+	.card-image{
 		width: 100%;
 		object-fit: cover;
 		height: 240px;
 	}
 	.card-wrapper {
+		grid-gap: 1.5rem 2.5rem;
+		grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+	}
+	.card-wrapper-production {
 		grid-gap: 1.5rem 2.5rem;
 	}
 }
@@ -570,7 +566,7 @@ p {
 		height: 450px;
 		padding-bottom: 40px;
 	}
-	.production-card__landing {
+	.card__landing {
 		height: 640px;
 	}
 	.center-text{
@@ -585,7 +581,7 @@ p {
 	.hero-container{
 		height: 600px;
 	}
-	.production-card__landing {
+	.card__landing {
 		margin: 1em auto;
 	}
 	.hero {
@@ -751,28 +747,16 @@ p {
 .wrapper {
 	margin: 5vh 5vh 20vh 5vh; 
 }
+.production-wrapper {
+	margin: 5vh 5vh 20vh 5vh; 
+}
 
 .title-wrapper {
 	margin: 5vh; 
 	text-align: center;
 }
 
-/*.member-card {
-	width: 100%;
-	max-width: 190px;
-	max-height: 350px;
-	cursor: pointer;
-	background-color: var(--sit-gunmetal-light);
-	margin: 1em;
-}*/
-
 .btn-wrapper {
 	text-align: center;
 	margin: auto;
 }
-
-/*.member-card-image {
-	width: 100%;
-	height: 200px;
-	object-fit: cover;
-	*/

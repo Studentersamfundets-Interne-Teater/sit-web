@@ -15,10 +15,10 @@
 	</div>
 	<div class="card-wrapper">
 		{% for medlem in mliste %}
-		<a class="production-card member-card" href="{% url 'medlem_info' medlem.id %}">
-			<img src="{{medlem.portrett.url}}" class="production-card-image member-card-image">
-			<div class="production-card-container">
-			<h3 class="production-card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h3> 
+		<a class="card" href="{% url 'medlem_info' medlem.id %}">
+			<img src="{{medlem.portrett.url}}" class="card-image">
+			<div class="card-container">
+			<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
 			<div class="text-info text-strong">{{medlem.get_status_display}}</div> 
 			</div>
 		</a>
