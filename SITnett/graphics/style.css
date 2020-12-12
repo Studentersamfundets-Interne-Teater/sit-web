@@ -510,23 +510,23 @@ select{
 }
 
 /* 4.2 Current shows */
-.card-wrapper__landing {
-	justify-content: space-between;
-	max-width: 1200px;
-	margin-top: 8em;
-}
 
 .card__landing {
 	max-width: 540px;
-	height: 440px;
+	height: 22em;
 	cursor: default;
-	margin: 1em auto;
+}
+
+.card__landing .card-image {
+	height: 13em;
 }
 
 .card-container__landing {
-	height: calc(100% - 260px);
+	padding: 1em 0.5em;
 	display: flex;
 	flex-direction: column;
+	justify-content: start;
+	align-content: center;
 	align-items: center;
 }
 
@@ -539,7 +539,7 @@ select{
 }
 
 .card__landing p {
-	margin-bottom: 36px;
+	margin: 1em 0;
 }
 
 .card__landing:first-of-type {
@@ -567,13 +567,10 @@ select{
 		padding-bottom: 40px;
 	}
 	.card__landing {
-		height: 640px;
+		height: 30em;
 	}
 	.center-text{
 		display: block;
-	}
-	.show-date {
-		margin-bottom: 1.5em;
 	}
 }
 
@@ -582,7 +579,7 @@ select{
 		height: 600px;
 	}
 	.card__landing {
-		margin: 1em auto;
+		height: 28em;
 	}
 	.hero {
 		height: 80vh;
