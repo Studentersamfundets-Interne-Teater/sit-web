@@ -65,13 +65,25 @@
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
 			<h3>Bildegalleri </h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
+			<div class="image-gallery">
+				<div class="card-wrapper">
+					<img src="{{produksjon.banner.url}}" alt="Nature" style="width:100%" onclick="galleryNavigation(this);">
+					<img src="{{produksjon.banner.url}}" alt="Snow" style="width:100%" onclick="galleryNavigation(this);">
+					<img src="{{produksjon.banner.url}}" alt="Mountains" style="width:100%" onclick="galleryNavigation(this);">
+					<img src="{{produksjon.banner.url}}" alt="Lights" style="width:100%" onclick="galleryNavigation(this);">
+				</div>
+			</div>
+			<div class="container">
+				<img src="{{produksjon.banner.url}}" id="expandedImg" style="width:100%">
+				<div id="imgtext"></div>
+			</div>
 		
 		</div>
 		<div class="divider"></div>
 	</section>
 
-
+	{% load static %}
+	<script src="{% static 'image_gallery.js' %}"></script>
 
 	<!--
 	<br>

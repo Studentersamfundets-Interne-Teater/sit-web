@@ -307,6 +307,10 @@ p {
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
+.image-gallery .card-wrapper{
+	max-width: 100%;
+}
+
 .card {
 	position: relative;
 	cursor: pointer;
@@ -756,4 +760,18 @@ select{
 .btn-wrapper {
 	text-align: center;
 	margin: auto;
+}
+
+/* 4.5 Image gallery */
+.container {
+	position: relative;
+	display: block;
+}
+
+#imgtext {
+	position: absolute;
+	bottom: 15px;
+	left: 15px;
+	color: white;
+	font-size: 20px;
 }
