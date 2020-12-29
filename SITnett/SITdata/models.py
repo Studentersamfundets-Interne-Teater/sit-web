@@ -11,178 +11,292 @@ class Medlem(models.Model):
 		(5,'SO'),(6,'TSS'),(7,'TKS'),(8,'SPO'),(9,'UKA'),(10,'ISFiT'),
 		(11,'MG'),(12,'ITK'),(13,'ARK'),(14,'FG'),(15,'KSG'),
 		(16,'KU'),(17,'KLST'),(18,'LØK'),(19,'DG'),(20,'Profil'),(21,'ekstern'))
-	UNDERGJENGER = ((1,'Kostyme'),(2,'Kulisse'),(3,'Skuespill'))
-	STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsionist'),(4,'permittert'))
 	mtype = models.IntegerField("medlemstype",choices=MTYPER,default=1)
 	fornavn = models.CharField(max_length=30)
 	mellomnavn = models.CharField(blank=True,max_length=30)
 	etternavn = models.CharField(max_length=30)
-	fodsel = models.DateField("fødselsdato")
-	opptak = models.IntegerField("opptaksår")
-	undergjeng = models.IntegerField(choices=UNDERGJENGER)
-	status = models.IntegerField(choices=STATUSER)
-	portrett = models.ImageField(default='portretter/katt.png',upload_to='portretter/')
-	telefon = models.CharField("telefonnummer",max_length=8)
-	epost = models.EmailField("e-postadresse",max_length=60)
-	studium = models.CharField(max_length=30)
-	jobb = models.CharField(blank=True,max_length=30)
+	fodselsdato = models.DateField("fødselsdato",blank=True,null=True)
+	opptaksar = models.IntegerField("opptaksår",blank=True,null=True)
+	UNDERGJENGER = ((1,'Kostyme'),(2,'Kulisse'),(3,'Skuespill'))
+	undergjeng = models.IntegerField(choices=UNDERGJENGER,blank=True,null=True)
+	STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsionist'),(4,'inaktiv'))
+	status = models.IntegerField(choices=STATUSER,blank=True,null=True)
+	portrett = models.ImageField(upload_to='portretter/',default='/default/katt.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
 	kallenavn = models.CharField(blank=True,max_length=30)
+	telefon = models.CharField("telefonnummer",blank=True,max_length=8)
+	epost = models.EmailField("e-postadresse",blank=True,max_length=60)
+	studium = models.CharField(blank=True,max_length=30)
+	jobb = models.CharField(blank=True,max_length=30)
 	brukerkonto = models.OneToOneField(User,models.SET_NULL,blank=True,null=True)
-	def brukernavn(self):
+	def brukernavn(self): # lager et brukernavn ut ifra navn på formen 'jonfla93'.
 		return (self.fornavn[:3]+self.etternavn[:3]).lower()+str(self.opptak)[2:]
 	class Meta:
 		verbose_name_plural = "medlemmer"
-		ordering = ['opptak','undergjeng','etternavn','fornavn']
+		ordering = ['mtype','opptaksar','undergjeng','etternavn','fornavn']
 	def __str__(self):
 		return self.fornavn+(" "+self.mellomnavn if self.mellomnavn else "")+" "+self.etternavn
 	def get_absolute_url(self):
 		return reverse('medlem_info',kwargs={'mid':self.id})
 
 
-class Sitat(models.Model):
-	sitat = models.TextField(max_length=100)
-	dato = models.DateField()
-	kontekst = models.CharField(max_length=50)
+class Sitat(models.Model): # holder artige sitater gjort av medlemmer.
 	medlem = models.ForeignKey(Medlem,models.CASCADE,related_name='sitater')
+	tekst = models.TextField(max_length=100) # holder selve sitatet.
+	kontekst = models.CharField(max_length=50) # holder kontekst for sitatet (når, hvor, utdypende, ...).
 	class Meta:
 		verbose_name_plural = "sitater"
-		ordering = ['dato']
+	def __str__(self):
+		return str(self.medlem)+" "+self.kontekst
 
 
-class Utmerkelse(models.Model):
-	UTYPER = ((1,'ridder'),(2,'kommandør'),(3,'storkors'))
-	ORDENER = ((1,'Den Gyldne Kat'),(2,'De Sorte Faars Ridderskab'),(3,'Den Træge Patron'),(4,'Polyhymnia'),(5,"Vrangstrupen"),(6,"Minerva Polyhymnia"))
-	utype = models.IntegerField("utmerkelsestype",choices=UTYPER)
-	orden = models.IntegerField(choices=ORDENER,default=1)
-	dato = models.DateField()
+class Utmerkelse(models.Model): # holder utmerkelser gitt til medlemmer.
 	medlem = models.ForeignKey(Medlem,models.CASCADE,related_name='utmerkelser')
-	def tittel(self):
-		return self.get_utype_display()+" av "+self.get_orden_display()+" fra "+str(self.dato.year)
+	TITLER = ((1,'ridder'),(2,'kommandør'),(3,'storkors'))
+	tittel = models.IntegerField(choices=TITLER)
+	ORDENER = ((1,'Den Gyldne Kat'),(2,'De Sorte Faars Ridderskab'),(3,'Den Træge Patron'),(4,'Polyhymnia'),(5,"Vrangstrupen"),(6,"Minerva Polyhymnia"))
+	orden = models.IntegerField(choices=ORDENER,default=1)
+	ar = models.IntegerField("år")
+	def full_tittel(self): # lager en full tittel på utmerkelsen av typen "ridder av Den Gyldne Kat fra 2015".
+		return self.get_tittel_display()+" av "+self.get_orden_display()+" fra "+str(self.ar)
 	class Meta:
 		verbose_name_plural = "utmerkelser"
-		ordering = ['dato']
+		ordering = ['ar','orden','tittel']
 	def __str__(self):
-		return str(self.medlem)+" som "+self.tittel()
+		return str(self.medlem)+" som "+self.full_tittel()
 
+
+class vTag(models.Model): # holder klassifiseringer for verv (feks prodapp, øvapp, kunstnerisk forum, kulisse, ...).
+	tag = models.CharField(max_length=20)
+	class Meta:
+		verbose_name = "vTag"
+		verbose_name_plural = "vTags"
+		ordering = ['tag']
+	def __str__(self):
+		return self.tag
 
 class Verv(models.Model):
-	VTYPER = ((1,'styre'),(2,'års'),(3,'prod_merf'),(4,'prod_uerf'))
+	VTYPER = ((1,'styre'),(2,'gjeng'),(3,'produksjon'))
+	# Typen 'gjeng' er ment for årsvervene som velges på genfors (utenom Styret).
 	vtype = models.IntegerField("vervtype",choices=VTYPER)
+	vtags = models.ManyToManyField(vTag)
 	tittel = models.CharField(max_length=50)
-	info = models.TextField("beskrivelse",blank=True)
-	instruks = models.TextField(blank=True)
-	def plural(self):
+	erfaringsoverføring = models.BooleanField() # avgjør om vervet skal ha en egen infoside med mulighet for erfaringsskriv.
+	instruks = models.TextField(blank=True) # holder en eventuell instruksfesta beskrivelse av vervet.
+	beskrivelse = models.TextField(blank=True) # holder en eventuell grundigere beskrivelse av vervet.
+	def plural(self): # bøyer vervnavnet i flertall (til listevisninger).
 		if self.tittel[-2:] == "er":
 			return self.tittel+"e"
 		else:
 			return self.tittel+"er"
 	class Meta:
 		verbose_name_plural = "verv"
-		ordering = ['vtype','tittel']
+		ordering = ['vtype','erfaringsoverføring','tittel']
 	def __str__(self):
 		return self.tittel
 
 
+class Lokale(models.Model):
+	navn = models.CharField(max_length=50)
+	class Meta:
+		verbose_name_plural = "lokaler"
+		ordering = ['navn']
+	def __str__(self):
+		return self.navn
+
+
+class pTag(models.Model): # holder klassifiseringer for produksjoner (feks komedie, tragedie, musikal, revy, ...).
+	tag = models.CharField(max_length=20)
+	class Meta:
+		verbose_name = "pTag"
+		verbose_name_plural = "pTags"
+		ordering = ['tag']
+	def __str__(self):
+		return self.tag
+
 class Produksjon(models.Model):
-	PTYPER = ((1,'SIT'),(2,'AFEI'),(3,'UKA'))
+	PTYPER = ((1,'SIT'),(2,'KUP'),(3,'AFEI'),(4,'UKA'))
 	ptype = models.IntegerField("produksjonstype",choices=PTYPER,default=1)
-	revy = models.BooleanField(default=False)
+	ptags = models.ManyToManyField(pTag)
 	tittel = models.CharField(max_length=50)
-	info = models.TextField("beskrivelse")
-	memo = models.TextField("kommentar",blank=True)
 	forfatter = models.CharField(max_length=100)
-	opphav = models.IntegerField("opphavsår")
+	opphavsar = models.IntegerField("opphavsår")
+	premieredato = models.DateField()
 	varighet = models.CharField(blank=True,max_length=22)
-	premiere = models.DateTimeField()
-	lokale = models.CharField(max_length=50)
-	banner = models.ImageField(default='bannere/banner.png',upload_to='bannere/')
-	plakat = models.ImageField(default='plakater/plakat.png',upload_to='plakater/')
-	program = models.FileField(blank=True,upload_to='programmer/')
-	film = models.FileField(blank=True,upload_to='filmer/')
-	blestestart = models.DateField("blæstestart",blank=True,null=True) 
-	FBlink = models.CharField("Facebook-link",blank=True,max_length=100)
-	billettlink = models.CharField(blank=True,max_length=100)
-	medlemspris = models.IntegerField("Billettpris medlem", blank=True, null=True)
-	ikke_medlemspris = models.IntegerField("Billettpris ikke-medlem", blank=True, null=True)
-	def semester(self):
-		return ("V" if self.premiere.month < 7 else "H")+str(self.premiere.year)
+	lokale = models.ForeignKey(Lokale,models.PROTECT,related_name="produksjoner")
+	banner = models.ImageField(upload_to='bannere/',default='/default/katter.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
+	plakat = models.ImageField(upload_to='plakater/',blank=True)
+	opptak = models.FileField(upload_to='opptak/',blank=True) # holder et eventuelt film- eller lydopptak av hele forestillinga.
+	program = models.FileField(upload_to='programmer/',blank=True)
+	manus = models.FileField(upload_to='manus/',blank=True) # holder ei PDF-fil med fullt manus for forestillinga.
+	partitur = models.FileField(upload_to='partitur/',blank=True) # holder ei PDF-fil med fullt partitur for forestillinga.
+	visehefte = models.FileField(upload_to='visehefter/',blank=True) # holder ei PDF-fil med et eventuelt allsangvennlig visehefte fra forestillinga.
+	info = models.TextField("beskrivelse (for eksterne)",blank=True) # holder en beskrivelse av produksjonen for eksterne lesere.
+	memo = models.TextField("ytterligere anekdoter (for interne)",blank=True) # holder ytterligere anekdoter for interne lesere. 
+	blurb = models.TextField("blurb (til forsida)",blank=True) # holder en reklametekst til bruk på forsida.
+	pris = models.IntegerField("billettpris (for ikke-medlemmer)",blank=True,null=True) # holder billettpris for eksterne.
+	medlemspris = models.IntegerField("billettpris (for medlemmer)",blank=True,null=True) # holder billettpris for medlemmer av Samfundet.
+	billettlink = models.CharField(blank=True,max_length=100) # holder en link til kjøp av billetter.
+	blestestart = models.DateField("blæstestart (på forsida)",blank=True,null=True) # avgjør datoen da forsida skal begynne å reklamere for produksjonen.
+	FBlink = models.CharField("Facebook-link",blank=True,max_length=100) # holder en link til Facebook-arrangement.
+	def semester(self): # lager en semesterkode av typen 'H2020'.
+		return ("V" if self.premieredato.month < 7 else "H")+str(self.premieredato.year)
 	class Meta:
 		verbose_name_plural = "produksjoner"
-		ordering = ['ptype','premiere']
+		ordering = ['premieredato','tittel']
 	def __str__(self):
 		return self.tittel+" ("+self.semester()+")"
 	def get_absolute_url(self):
 		return reverse('produksjon_info',kwargs={'pid':self.id})
 
 
-class Forestilling(models.Model):
-	tidspunkt = models.DateTimeField()
+class Forestilling(models.Model): # holder forestillingstidspunktene for en gitt produksjon.
 	produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='forestillinger')
+	tidspunkt = models.DateTimeField()
 	class Meta:
 		verbose_name_plural = "forestillinger"
 		ordering = ['tidspunkt']
+	def __str__(self):
+		return str(self.produksjon)+" den "+str(self.tidspunkt)
 
 
-class Anmeldelse(models.Model):
-	forfatter = models.CharField(max_length=50)
-	medium = models.CharField(max_length=50)
-	dato = models.DateField()
-	tekst = models.FileField(upload_to='anmeldelser/')
-	utdrag = models.TextField(blank=True)
-	produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='anmeldelser')
-	class Meta:
-		verbose_name_plural = "anmeldelser"
-		ordering = ['dato']
-
-
-class Arrangement(models.Model):
-	ATYPER = ((1,'internt'),(2,'eksternt'))
-	atype = models.IntegerField("arrangementtype",choices=ATYPER)
+class Nummer(models.Model): # holder spesielle utdrag fra en produksjon (sang, monolog, sketsj, ...).
+	produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='numre')
 	tittel = models.CharField(max_length=50)
-	info = models.TextField("beskrivelse")
-	memo = models.TextField("kommentar",blank=True)
-	tidspunkt = models.DateTimeField()
-	varighet = models.CharField(blank=True,max_length=22)
-	lokale = models.CharField(max_length=10)
-	banner = models.ImageField(default='banner.png',upload_to='bannere/')
+	opptak = models.FileField(upload_to='opptak/',blank=True) # holder et eventuelt film- eller lydopptak av nummeret.
+	tekst = models.TextField() # holder manus for nummeret.
+	noter = models.FileField(upload_to='noter/',blank=True) # holder eventuelle noter for nummeret.
+	info = models.TextField("beskrivelse (for eksterne)",blank=True) # holder en beskrivelse av nummeret for eksterne lesere.
+	memo = models.TextField("ytterligere anekdoter (for interne)",blank=True) # holder ytterligere anekdoter for interne lesere.
 	class Meta:
-		verbose_name_plural = "arrangementer"
-		ordering = ['tidspunkt','tittel']
+		verbose_name_plural = "numre"
+		ordering = ['produksjon__premieredato','tittel']
 	def __str__(self):
 		return self.tittel
 
 
-class Foto(models.Model):
-	FTYPER = ((1,'scene'),(2,'kostyme'),(3,'kulisse'),(4,'arbeid'),(5,'gruppe'),(6,'arrangement'),(7,'sosialt'))
-	ftype = models.IntegerField("fototype",choices=FTYPER)
-	FG = models.BooleanField()
-	FGlink = models.CharField("FG-link",blank=True,max_length=100)
-	foto = models.ImageField(blank=True,upload_to='bilder/')
-	produksjon = models.ForeignKey(Produksjon,models.CASCADE,blank=True,null=True,related_name='bilder')
-	arrangement = models.ForeignKey(Arrangement,models.CASCADE,blank=True,null=True,related_name='bilder')
-	dato = models.DateField(blank=True,null=True)
-	kontekst = models.TextField()
+class Anmeldelse(models.Model): # holder anmeldelser av produksjoner.
+	produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='anmeldelser')
+	forfatter = models.CharField(max_length=50)
+	medium = models.CharField(max_length=50) # holder mediet der anmeldelsen ble publisert (avis, nettside, ...).
+	gratis = models.BooleanField() # avgjør om anmeldelsen skal være tilgjengelig for eksterne lesere.
+	fil = models.FileField(upload_to='anmeldelser/') # holder ei PDF-fil med den fulle anmeldelsen. 
+	utdrag = models.TextField(blank=True) # holder et eventuelt utdrag av anmeldelsen for eksterne lesere.
 	class Meta:
-		verbose_name_plural = "fotoer"
-		ordering = ['ftype']
+		verbose_name_plural = "anmeldelser"
+		ordering = ['produksjon__premieredato','forfatter']
+	def __str__(self):
+		return self.forfatter+" om "+str(self.produksjon)
 
 
-class Erfaring(models.Model):
-	medlem = models.ForeignKey(Medlem,models.CASCADE,related_name='erfaringer')
-	verv = models.ForeignKey(Verv,models.CASCADE,related_name='erfaringer')
+class Erfaring(models.Model): # holder konkrete erfaringer gjort av medlemmer i rollen som et gitt verv for en gitt produksjon.
+	medlem = models.ForeignKey(Medlem,models.CASCADE,blank=True,null=True,related_name='erfaringer')
+	navn = models.CharField(blank=True,max_length=50) # holder et eventuelt eksternt navn hvis personen ikke er lagra i databasen.
+	verv = models.ForeignKey(Verv,models.CASCADE,blank=True,null=True,related_name='erfaringer')
+	tittel = models.CharField(blank=True,max_length=50) # holder en eventuell spesiell tittel hvis vervet ikke er lagra i databasen.
 	produksjon = models.ForeignKey(Produksjon,models.CASCADE,blank=True,null=True,related_name='erfaringer')
-	ar = models.IntegerField("år",blank=True,null=True)
-	rolle = models.CharField(blank=True,max_length=30)
-	skriv = models.FileField("erfaringsskriv",blank=True,upload_to='erfaringsskriv/')
-	def tittel(self):
-		if self.verv.vtype <= 2:
-			return str(self.verv)+" i "+str(self.ar)
-		elif self.verv.vtype == 3:
-			return str(self.verv)+" for "+str(self.produksjon)
+	ar = models.IntegerField("år",blank=True,null=True) # holder et eventuelt år hvis vervet ikke er knytta til en produksjon.
+	rolle = models.CharField(blank=True,max_length=30) # holder en utdypende rolle innafor vervet (feks Melchior Gabor, gitar, arbeidsleder eller konsulent).
+	skriv = models.FileField("erfaringsskriv",upload_to='erfaringsskriv/',blank=True) # holder et eventuelt erfaringsskriv.
+	def full_tittel(self): # lager en full tittel for erfaringa av typen "skuespiller (Melchior Gabor) i Spring Awakening".
+		if self.produksjon:
+			if self.verv and self.verv.vtype == 3 and self.verv.erfaringsoverføring == True:
+				return str(self.verv)+" for "+str(self.produksjon)
+			else:
+				return (str(self.verv) if self.verv else self.tittel)+(" ("+self.rolle+")" if self.rolle else "")+" i "+str(self.produksjon)
 		else:
-			return str(self.verv)+(" ("+self.rolle+")" if self.rolle else "")+" i "+str(self.produksjon)
+				return (str(self.verv) if self.verv else self.tittel)+" i "+str(self.ar)
 	class Meta:
 		verbose_name_plural = "erfaringer"
-		ordering = ['ar','produksjon__premiere','verv__vtype','verv__tittel']
+		ordering = ['produksjon__premieredato','ar','verv__vtype','verv__erfaringsoverføring','verv__tittel','tittel','medlem__etternavn','navn']
 	def __str__(self):
-		return str(self.medlem)+" som "+self.tittel()
+		return (str(self.medlem) if self.medlem else self.navn)+" som "+self.full_tittel()
+
+
+class Arrangement(models.Model): # holder interne eller eksterne arrangementer som skal vises på forsida (feks kostymesalg, vårball, genfors, ...).
+	ATYPER = ((1,'internt'),(2,'eksternt')) # avgjør om arrangementet skal synes for eksterne lesere.
+	atype = models.IntegerField("arrangementtype",choices=ATYPER)
+	arrangører = models.ManyToManyField(Verv) # holder vervene som skal kunne redigere arrangementet.
+	tittel = models.CharField(max_length=50)
+	tidspunkt = models.DateTimeField()
+	varighet = models.CharField(blank=True,max_length=22)
+	lokale = models.ForeignKey(Lokale,models.PROTECT,related_name="arrangementer")
+	banner = models.ImageField(upload_to='bannere/',default='default/katter.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
+	info = models.TextField("beskrivelse (for eksterne)",blank=True) # holder en beskrivelse av arrangementet for eksterne lesere.
+	memo = models.TextField("ytterligere anekdoter (for interne)",blank=True) # holder ytterligere anekdoter for interne lesere.
+	blurb = models.TextField("blurb (til forsida)",blank=True) # holder en reklametekst til bruk på forsida.
+	blestestart = models.DateField("blæstestart (på forsida)",blank=True,null=True) # avgjør datoen da forsida skal begynne å reklamere for arrangementet.
+	FBlink = models.CharField("Facebook-link",blank=True,max_length=100) # holder en link til et eventuelt Facebook-arrangement.
+	def semester(self): # lager en semesterkode av typen 'H2020'.
+		return ("V" if self.tidspunkt.month < 7 else "H")+str(self.tidspunkt.year)
+	class Meta:
+		verbose_name_plural = "arrangementer"
+		ordering = ['tidspunkt','tittel']
+	def __str__(self):
+		return self.tittel+" ("+self.semester()+")"
+
+
+class Hendelse(models.Model): # holder mindre hendelser som vises sammen med produksjoner, arrangementer og bilder på arkivsida.
+	tittel = models.CharField(max_length=50)
+	dato = models.DateField()
+	beskrivelse = models.TextField()
+	class Meta:
+		verbose_name_plural = "hendelser"
+		ordering = ['dato','tittel']
+	def __str__(self):
+		return self.tittel
+
+
+class Foto(models.Model): # holder bilder fra produksjoner, arrangementer eller sosiale sammenkomster.
+	FTYPER = ((1,'scene'),(2,'kostyme'),(3,'kulisse'),(4,'arbeid'),(5,'gruppe'),(6,'arrangement'),(7,'sosialt'))
+	# Typen 'scene' er ment for bilder fra forestilling, mens typene 'kostyme' og 'kulisse' er ment for nærbilder av kostymer eller kulisser.
+	# Typen 'arbeid' er ment for bilder av sying, bygging, øving eller møter.
+	# Typen 'gruppe' er ment for portrett- eller gruppebilder tatt av FG (feks prodapp-bilde, bandbilde, ...).
+	ftype = models.IntegerField("fototype",choices=FTYPER)
+	medlemmer = models.ManyToManyField(Medlem) # holder ei eventuell liste over medlemmene som er avbilda.
+	produksjon = models.ForeignKey(Produksjon,models.CASCADE,blank=True,null=True,related_name='bilder')
+	arrangement = models.ForeignKey(Arrangement,models.CASCADE,blank=True,null=True,related_name='bilder')
+	dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis bildet ikke er knytta til en produksjon eller et arrangement.
+	FGlink = models.CharField("FG-link",blank=True,max_length=100) # holder en link til bildet i Fotogjengens arkiv.
+	fil = models.ImageField(upload_to='bilder/',blank=True) # holder ei eventuell fil hvis bildet ikke er fra Fotogjengen.
+	kontekst = models.TextField() # holder en bildetekst til bildet (hva, når, hvor, utdypende, ...).
+	class Meta:
+		verbose_name_plural = "fotoer"
+		ordering = ['ftype','produksjon__premieredato','arrangement__tidspunkt','dato']
+	def __str__(self):
+		if (self.produksjon):
+			return self.get_ftype_display()+"bilde fra "+str(self.produksjon)
+		elif (self.arrangement):
+			return self.get_ftype_display()+"bilde fra "+str(self.arrangement)
+		else:
+			return self.get_ftype_display()+"bilde fra den"+str(self.dato)
+
+
+class Uttrykk(models.Model): # holder forklaringer på ord og forkortelser for nye medlemmer (feks "MG", "SIGP", "Store Øvre", ...).
+	tittel = models.CharField(max_length=50)
+	beskrivelse = models.TextField()
+	class Meta:
+		verbose_name_plural = "uttrykk"
+		ordering = ['tittel']
+	def __str__(self):
+		return self.tittel
+
+
+class dTag(models.Model): # holder klassifiseringer for dokumenter (feks referat, sjekkeblekke, instruks, ...).
+	tag = models.CharField(max_length=20)
+	class Meta:
+		verbose_name = "dTag"
+		verbose_name_plural = "dTags"
+		ordering = ['tag']
+	def __str__(self):
+		return self.tag
+
+class Dokument(models.Model): # holder dokumenter og filer som ikke er knytta til noen av modellene ovafor (feks referater, sjekkeblekker, ...).
+	dtags = models.ManyToManyField(dTag)
+	tittel = models.CharField(max_length=50)
+	dato = models.DateField()
+	fil = models.FileField(upload_to='dokumenter/')
+	class Meta:
+		verbose_name_plural = "dokumenter"
+		ordering = ['dato','tittel']
+	def __str__(self):
+		return self.tittel+" ("+str(self.dato)+")"
