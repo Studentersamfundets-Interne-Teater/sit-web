@@ -4,10 +4,12 @@
 *~
 __pycache__
 /.vscode
-db.sqlite3
 .DS_Store
-files
 myvenv
+
+db.sqlite3
+files/*
+!files/default/
 
 ## Hide the production secret key
 SITnett/SITnett/local.py
