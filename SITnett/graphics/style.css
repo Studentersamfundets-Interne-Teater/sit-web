@@ -231,6 +231,7 @@ p {
 	background-color: var(--sit-footer-color);
 	color: var(--sit-grullo-20);
 	padding: 40px 20px; 
+	height: 600px;
 } 
 .footer-flex-wrapper{
 	width: 80%;
@@ -289,6 +290,9 @@ p {
 	.footer-some {
 		padding-top: 1em;
 	}
+	.footer {
+        height: 250px;
+    }
 }
 
 /* 3. REUSABLE COMPONENTS */
@@ -614,6 +618,7 @@ select{
 
 .production-information {
 	margin: 32px;
+	height: 600px; 
 }
 
 .production-extra-info {
@@ -627,6 +632,10 @@ select{
 
 .production-extra-info-box {
 	display: flex;
+}
+.production-extra-info-box img { 
+	/* in Firefox the size of the icons were much bigger than in safari. Setting them to an absolute value fixed this. */ 
+    width: 20px;
 }
 .production-extra-info p {
 	padding-left: 25px;
@@ -649,9 +658,10 @@ select{
 
 .production-category-content {
 	max-height: 0;
-	overflow: hidden;
 	transition: max-height 0.2s ease-out;
 	padding: 15px 0;
+	overflow: auto; 
+    min-height: 500px; 
 }
 .production-category-content h3 {
 	display: none;
@@ -723,7 +733,7 @@ select{
 		position: absolute;
 		height: 100%;
 		top: 0;
-		overflow: visible; 
+		
 		display: none;
 		margin-left: 35%;
 	}
