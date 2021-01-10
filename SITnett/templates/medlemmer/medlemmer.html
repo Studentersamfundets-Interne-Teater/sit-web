@@ -18,100 +18,103 @@
 		<label for="name">Navn
 			<input type="text" id="name" name="name" value={{ name }}>
 		</label>
-		<div class="search-parameter">
-			<h4>Opptaksår</h4>
-			<label for="admission_year_from">Fra
-			<input
-				name="admission_year_from"
-				id="admission_year_from"
-				pattern="\d{4}"
-				value={{ admission_year_from }}
-			>
-			</label>
-			<label for="admission_year_to">Til
-			<input
-				name="admission_year_to"
-				id="admission_year_to"
-				pattern="\d{4}"
-				value={{ admission_year_to }}
-			>
-			</label>
-		</div>
-		<div class="search-parameter">
-			<h4>Undergjeng</h4>
-			<label for="costume_maker">
-			Kostyme
+		<button href="#" class="show-advanced-search-btn" id="show-advanced-search-btn">Avansert søk</button>
+		<div class="advanced-search" id="advanced-search">
+			<div class="search-parameter">
+				<h4>Opptaksår</h4>
+				<label for="admission_year_from">Fra
 				<input
-					type="checkbox"
-					id="costume_maker"
-					name="group"
-					value="1"
-					{% if 1 in groups %}checked{% endif %}
+					name="admission_year_from"
+					id="admission_year_from"
+					pattern="\d{4}"
+					value={{ admission_year_from }}
 				>
-			</label>
-			<label for="set_builder">
-			Kulisse
+				</label>
+				<label for="admission_year_to">Til
 				<input
-					type="checkbox"
-					id="set_builder"
-					name="group"
-					value="2"
-					{% if 2 in groups %}checked{% endif %}
+					name="admission_year_to"
+					id="admission_year_to"
+					pattern="\d{4}"
+					value={{ admission_year_to }}
 				>
-			</label>
-			<label for="actor">
-			Skuespillere
-				<input
-					type="checkbox"
-					id="actor"
-					name="group"
-					value="3"
-					{% if 3 in groups %}checked{% endif %}
-				>
-			</label>
-		</div>
-		<div class="search-parameter">
-			<h4>Gjengstatus</h4>
-			<label for="active_member">
-				Aktiv
-				<input
-					type="checkbox"
-					name="status"
-					id="active_member"
-					value="1"
-					{% if 1 in statuses %}checked{% endif %}
-				>
-			</label>
-			<label for="veteran_member">
-				Veteran
-				<input
-					type="checkbox"
-					name="status"
-					id="veteran_member"
-					value="2"
-					{% if 2 in statuses %}checked{% endif %}
-				>
-			</label>
-			<label for="pensioned_member">
-				Pangsjonist
-				<input
-					type="checkbox"
-					name="status"
-					id="pensioned_member"
-					value="3"
-					{% if 3 in statuses %}checked{% endif %}
-				>
-			</label>
-			<label for="inactive_member">
-				Inaktiv
-				<input
-					type="checkbox"
-					name="status"
-					id="inactive_member"
-					value="4"
-					{% if 4 in statuses %}checked{% endif %}
-				>
-			</label>
+				</label>
+			</div>
+			<div class="search-parameter">
+				<h4>Undergjeng</h4>
+				<label for="costume_maker">
+				Kostyme
+					<input
+						type="checkbox"
+						id="costume_maker"
+						name="group"
+						value="1"
+						{% if 1 in groups %}checked{% endif %}
+					>
+				</label>
+				<label for="set_builder">
+				Kulisse
+					<input
+						type="checkbox"
+						id="set_builder"
+						name="group"
+						value="2"
+						{% if 2 in groups %}checked{% endif %}
+					>
+				</label>
+				<label for="actor">
+				Skuespillere
+					<input
+						type="checkbox"
+						id="actor"
+						name="group"
+						value="3"
+						{% if 3 in groups %}checked{% endif %}
+					>
+				</label>
+			</div>
+			<div class="search-parameter">
+				<h4>Gjengstatus</h4>
+				<label for="active_member">
+					Aktiv
+					<input
+						type="checkbox"
+						name="status"
+						id="active_member"
+						value="1"
+						{% if 1 in statuses %}checked{% endif %}
+					>
+				</label>
+				<label for="veteran_member">
+					Veteran
+					<input
+						type="checkbox"
+						name="status"
+						id="veteran_member"
+						value="2"
+						{% if 2 in statuses %}checked{% endif %}
+					>
+				</label>
+				<label for="pensioned_member">
+					Pangsjonist
+					<input
+						type="checkbox"
+						name="status"
+						id="pensioned_member"
+						value="3"
+						{% if 3 in statuses %}checked{% endif %}
+					>
+				</label>
+				<label for="inactive_member">
+					Inaktiv
+					<input
+						type="checkbox"
+						name="status"
+						id="inactive_member"
+						value="4"
+						{% if 4 in statuses %}checked{% endif %}
+					>
+				</label>
+			</div>
 		</div>
 
 		<input type="submit" value="Søk">
@@ -139,4 +142,6 @@
 	{% endif %}
 </div>
 
+{% load static %}
+<script src={% static 'advanced_search.js' %}></script>
 {% endblock innhold %}
