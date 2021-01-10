@@ -13,15 +13,23 @@
 		<h2>Medlemmer</h2>
 		Se alle SITs medlemmer gjennom tidene
 	</div>
+	<form action="" method="get">
+		<label for="name">Navn
+			<input type="text" id="name" name="name" value={{ name }}>
+		</label>
+	</form>
+
 	<div class="card-wrapper">
 		{% for medlem in mliste %}
-		<a class="card" href="{% url 'medlem_info' medlem.id %}">
-			<img src="{{medlem.portrett.url}}" class="card-image">
-			<div class="card-container">
-			<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
-			<div class="text-info text-strong">{{medlem.get_status_display}}</div> 
-			</div>
-		</a>
+			<a class="card" href="{% url 'medlem_info' medlem.id %}">
+				<img src="{{medlem.portrett.url}}" class="card-image">
+				<div class="card-container">
+				<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
+				<div class="text-info text-strong">{{medlem.get_status_display}}</div> 
+				</div>
+			</a>
+		{% empty %}
+		<p>Fant ingen medlemmer.</p>
 		{% endfor %}
 	</div>
 

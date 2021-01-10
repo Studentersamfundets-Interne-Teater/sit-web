@@ -18,7 +18,22 @@ def view_kontakt(request):
 	return render(request,'kontakt.html')
 
 def view_medlemmer(request):
-	return render(request,'medlemmer/medlemmer.html',{'mliste':models.Medlem.objects.all()})
+	# Lazy evelation of query sets ensure the database isn't queried before the
+	# members variable is evaluated
+    members = models.Medlem.objects.all()
+    name = ""
+    if request.GET:
+        if request.GET.get("name", False):
+            name = request.GET["name"]
+            members = (
+                members.filter(fornavn__icontains=name)
+                | members.filter(mellomnavn__icontains=name)
+                | members.filter(etternavn__icontains=name)
+                | members.filter(kallenavn__icontains=name)
+            )
+
+    return render(request, "medlemmer/medlemmer.html", {"mliste": members, "name": name})
+
 
 @permission_required('SITdata.add_medlem')
 def view_medlem_ny(request):
