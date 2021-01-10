@@ -66,16 +66,24 @@
 		<div class="production-category-content">
 			<h3>Bildegalleri </h3>
 			<div class="image-gallery">
-				<div class="card-wrapper">
-					<img src="{{produksjon.banner.url}}" alt="Nature" style="width:100%" onclick="galleryNavigation(this);">
-					<img src="{{produksjon.banner.url}}" alt="Snow" style="width:100%" onclick="galleryNavigation(this);">
-					<img src="{{produksjon.banner.url}}" alt="Mountains" style="width:100%" onclick="galleryNavigation(this);">
-					<img src="{{produksjon.banner.url}}" alt="Lights" style="width:100%" onclick="galleryNavigation(this);">
+				<nav class="gallery-nav">
+					<a href="#image-1">
+						<img class="image-in-gallery" src="{{produksjon.plakat.url}}" alt="Plakat" onclick="galleryNavigation(this);" />
+					</a>
+					<a href="#image-2">
+						<img class="image-in-gallery" src="{{produksjon.banner.url}}" alt="Banner" onclick="galleryNavigation(this);" />
+					</a>
+					<a href="#image-3">
+						<img class="image-in-gallery" src="{{produksjon.plakat.url}}" alt="Plakat" onclick="galleryNavigation(this);" />
+					</a>
+					<a href="#image-4">
+						<img class="image-in-gallery" src="{{produksjon.banner.url}}" alt="Banner" onclick="galleryNavigation(this);" />
+					</a>
+				</nav>
+				<div class="gallery-focus-container">
+					<img class="gallery-focus" src="{{produksjon.plakat.url}}" id="expandedImg">
+					<div id="imgtext"></div>
 				</div>
-			</div>
-			<div class="container">
-				<img src="{{produksjon.banner.url}}" id="expandedImg" style="width:100%">
-				<div id="imgtext"></div>
 			</div>
 		
 		</div>

@@ -307,10 +307,6 @@ p {
 	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
-.image-gallery .card-wrapper{
-	max-width: 100%;
-}
-
 .card {
 	position: relative;
 	cursor: pointer;
@@ -763,9 +759,28 @@ select{
 }
 
 /* 4.5 Image gallery */
-.container {
+.image-gallery{
+	height: 40vh;
+	display: grid;
+	grid-template-columns: 1fr 5fr;
+	grid-gap: 10px;
+	overflow: hidden;
+}
+
+.image-in-gallery {
+	display: block;
+	max-width: 100%;
+}
+
+.gallery-focus-container {
 	position: relative;
 	display: block;
+	height: 100%;
+}
+
+.gallery-focus{
+	object-fit: contain;
+	width: 100%;
 }
 
 #imgtext {
@@ -774,4 +789,9 @@ select{
 	left: 15px;
 	color: white;
 	font-size: 20px;
+}
+
+.gallery-nav {
+	overflow-y: scroll;
+	overflow-x: hidden;
 }
