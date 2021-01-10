@@ -8,7 +8,7 @@ __pycache__
 myvenv
 
 db.sqlite3
-files/*
+files/
 !files/default/
 
 ## Hide the production secret key
