@@ -784,10 +784,7 @@ select{
 }
 
 #imgtext {
-	position: absolute;
-	bottom: 15px;
-	left: 15px;
-	color: white;
+	display: block;
 	font-size: 20px;
 }
 

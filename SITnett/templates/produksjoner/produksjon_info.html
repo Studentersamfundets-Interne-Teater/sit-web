@@ -67,26 +67,21 @@
 			<h3>Bildegalleri </h3>
 			<div class="image-gallery">
 				<nav class="gallery-nav">
-					<!-- Foreløpig statiske bilder. Neste blir å iterere gjennom backend. Ligger utgangspunkt i image-gallery.js-->
-					<a href="#image-1">
-						<img class="image-in-gallery" src="{{produksjon.plakat.url}}" alt="Plakat" onclick="galleryNavigation(this);" />
-					</a>
-					<a href="#image-2">
-						<img class="image-in-gallery" src="{{produksjon.banner.url}}" alt="Banner" onclick="galleryNavigation(this);" />
-					</a>
-					<a href="#image-3">
-						<img class="image-in-gallery" src="{{produksjon.plakat.url}}" alt="Plakat" onclick="galleryNavigation(this);" />
-					</a>
-					<a href="#image-4">
-						<img class="image-in-gallery" src="{{produksjon.banner.url}}" alt="Banner" onclick="galleryNavigation(this);" />
-					</a>
+					{% if produksjon.bilder.count %}
+						{% for bilde in produksjon.bilder.all %}
+							<img class="image-in-gallery" src="{{bilde.fil.url}}" 
+							alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br/>
+							{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %} <br/>
+							{% if bilde.arrangement %} {{ bilde.arrangement }} {% endif %} 
+							{% if bilde.dato %} {{ bilde.dato }} {% endif %}" onclick="galleryNavigation(this);" />
+						{% endfor %}
+					{% endif %}
 				</nav>
 				<div class="gallery-focus-container">
 					<img class="gallery-focus" src="{{produksjon.plakat.url}}" id="expandedImg">
-					<div id="imgtext"></div>
 				</div>
 			</div>
-		
+			<div id="imgtext">Plakat</div>
 		</div>
 		<div class="divider"></div>
 	</section>
