@@ -20,19 +20,58 @@ def view_kontakt(request):
 def view_medlemmer(request):
 	# Lazy evelation of query sets ensure the database isn't queried before the
 	# members variable is evaluated
-    members = models.Medlem.objects.all()
-    name = ""
-    if request.GET:
-        if request.GET.get("name", False):
-            name = request.GET["name"]
-            members = (
-                members.filter(fornavn__icontains=name)
-                | members.filter(mellomnavn__icontains=name)
-                | members.filter(etternavn__icontains=name)
-                | members.filter(kallenavn__icontains=name)
-            )
+	members = models.Medlem.objects.all()
+	name = ""
+	admission_year_from = ""
+	admission_year_to = ""
+	groups = [1, 2, 3]
+	statuses = [1, 2, 3, 4]
 
-    return render(request, "medlemmer/medlemmer.html", {"mliste": members, "name": name})
+	if request.GET:
+		if request.GET.get("name", False):
+			name = request.GET["name"]
+			members = (
+				members.filter(fornavn__icontains=name)
+				| members.filter(mellomnavn__icontains=name)
+				| members.filter(etternavn__icontains=name)
+				| members.filter(kallenavn__icontains=name)
+			)
+		if request.GET.get("admission_year_from", False):
+			admission_year_from = int(request.GET["admission_year_from"])
+			members = members.filter(opptaksar__gte=admission_year_from)
+		if request.GET.get("admission_year_to", False):
+			try:
+				admission_year_to = int(request.GET["admission_year_to"])
+				members = members.filter(opptaksar__lte=admission_year_to)
+			except ValueError:
+				pass
+		try:
+			groups = [int(x) for x in request.GET.getlist("group")]
+			if len(groups) < 3:
+				members = members.filter(undergjeng__in=groups)
+		except ValueError:
+			pass
+
+		try:
+			statuses = [int(x) for x in request.GET.getlist("status")]
+			if len(statuses) < 4:
+				members = members.filter(status__in=statuses)
+		except ValueError:
+			pass
+
+	return render(
+		request,
+		"medlemmer/medlemmer.html",
+		{
+			"mliste": members,
+			"name": name,
+			"admission_year_from": admission_year_from,
+			"admission_year_to": admission_year_to,
+			"groups": groups,
+			"statuses": statuses,
+		},
+	)
+
 
 
 @permission_required('SITdata.add_medlem')
