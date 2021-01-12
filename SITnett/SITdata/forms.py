@@ -10,14 +10,14 @@ class CustomFileInput(forms.widgets.ClearableFileInput):
 class MedlemAdminForm(forms.ModelForm):
 	class Meta:
 		model = models.Medlem
-		fields = ['fornavn','mellomnavn','etternavn','portrett','undergjeng','opptak','status','fodsel','studium','jobb','telefon','epost','kallenavn']
-		labels = {'opptak':"Opptaksår",'fodsel':"Fødselsdato (DD.MM.ÅÅÅÅ)",'epost':"E-post"}
+		fields = ['fornavn','mellomnavn','etternavn','fodselsdato','opptaksar','undergjeng','status','portrett','telefon','epost','studium','jobb','kallenavn']
+		labels = {'fodselsdato':"Fødselsdato (DD.MM.ÅÅÅÅ)",'opptaksar':"Opptaksår",'epost':"E-post"}
 		widgets = {'portrett':CustomFileInput}
 
 class MedlemOwnForm(forms.ModelForm):
 	class Meta:
 		model = models.Medlem
-		fields = ['portrett','studium','jobb','telefon','epost']
+		fields = ['portrett','telefon','epost','studium','jobb']
 		labels = {'epost':"E-post"}
 		widgets = {'portrett':CustomFileInput}
 
@@ -30,23 +30,23 @@ class MedlemOtherForm(forms.ModelForm):
 class UtmerkelseForm(forms.ModelForm):
 	class Meta:
 		model = models.Utmerkelse
-		fields = ['utype','orden','dato']
-		labels = {'utype':"Utmerkelsestype"}
+		fields = ['tittel','orden','ar']
+		labels = {'ar':"År"}
 
 
 class ProduksjonAdminForm(forms.ModelForm):
 	class Meta:
 		model = models.Produksjon
-		fields = ['tittel','revy','banner','forfatter','opphav','varighet','premiere','lokale','plakat','program','info','memo','film','blestestart','FBlink','billettlink']
-		labels = {'opphav':"Opphavsår",'info':"Beskrivelse",'memo':"Kommentar",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
-		widgets = {'banner':CustomFileInput,'plakat':CustomFileInput}
+		fields = ['tittel','forfatter','opphavsar','premieredato','varighet','lokale','banner','plakat','opptak','program','manus','partitur','visehefte','info','memo','blurb','pris','medlemspris','billettlink','blestestart','FBlink']
+		labels = {'opphavsar':"Opphavsår",'premieredato':"Premieredato (DD.MM.ÅÅÅÅ)",'info':"Beskrivelse (for eksterne)",'memo':"Ytterligere anekdoter (for interne)",'blurb':"Reklame",'pris':"Billettpris (ikke-medlem)",'medlemspris':"Billettpris (medlem)",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
+		widgets = {'banner':CustomFileInput,'plakat':CustomFileInput,'opptak':CustomFileInput,'program':CustomFileInput,'manus':CustomFileInput,'partitur':CustomFileInput,'visehefte':CustomFileInput}
 
 class ProduksjonOwnForm(forms.ModelForm):
 	class Meta:
 		model = models.Produksjon
-		fields = ['banner','varighet','premiere','lokale','plakat','program','info','memo','film','blestestart','FBlink','billettlink']
-		labels = {'info':"Beskrivelse",'memo':"Kommentar",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
-		widgets = {'banner':CustomFileInput,'plakat':CustomFileInput}
+		fields = ['varighet','lokale','banner','plakat','opptak','program','manus','partitur','visehefte','info','memo','blurb','pris','medlemspris','billettlink','blestestart','FBlink']
+		labels = {'info':"Beskrivelse (for eksterne)",'memo':"Ytterligere anekdoter (for interne)",'blurb':"Reklame",'pris':"Billettpris (ikke-medlem)",'medlemspris':"Billettpris (medlem)",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
+		widgets = {'banner':CustomFileInput,'plakat':CustomFileInput,'program':CustomFileInput,'manus':CustomFileInput,'partitur':CustomFileInput,'visehefte':CustomFileInput,}
 
 class ForestillingForm(forms.ModelForm):
 	class Meta:
@@ -58,13 +58,13 @@ class ForestillingForm(forms.ModelForm):
 class ErfaringMedForm(forms.ModelForm):
 	class Meta:
 		model = models.Erfaring
-		fields = ['verv','produksjon','ar','rolle','skriv']
+		fields = ['verv','tittel','produksjon','ar','rolle','skriv']
 		labels = {'ar':"År",'skriv':"Erfaringsskriv"}
 		widgets = {'skriv':CustomFileInput}
 
 class ErfaringProdForm(forms.ModelForm):
 	class Meta:
 		model = models.Erfaring
-		fields = ['medlem','verv','rolle','skriv']
+		fields = ['medlem','verv','tittel','rolle','skriv']
 		labels = {'skriv':"Erfaringsskriv"}
 		widgets = {'skriv':CustomFileInput}

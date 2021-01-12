@@ -42,7 +42,7 @@ content {
 	right: 0;
 }
 
-h1, h2, h3{
+h1, h2, h3, h4{
 	font-family: var(--sit-serif);
 }
 
@@ -62,7 +62,12 @@ h2 {
 }
 
 h3 {
-	font-size: 1.3em;
+	font-size: 1.1em;
+	line-height: 2em;
+}
+
+h4 {
+	font-size: 1.0em;
 	line-height: 2em;
 }
 
@@ -96,7 +101,7 @@ p {
 	}
 	
 	h3 {
-		font-size: 1.5em;
+		font-size: 1.4em;
 		line-height: 2.1em;
 	}
 	
@@ -226,6 +231,7 @@ p {
 	background-color: var(--sit-footer-color);
 	color: var(--sit-grullo-20);
 	padding: 40px 20px; 
+	height: 600px;
 } 
 .footer-flex-wrapper{
 	width: 80%;
@@ -257,9 +263,7 @@ p {
 	justify-content: space-between;
 }
 .some-links{
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+	padding: 4px;
 }
 .footer-some .fa {
 	font-size: 1.5em;
@@ -286,82 +290,88 @@ p {
 	.footer-some {
 		padding-top: 1em;
 	}
+	.footer {
+        height: 250px;
+    }
 }
 
 /* 3. REUSABLE COMPONENTS */
 /* 3.1 CARDS */
 .card-wrapper {
-	width: 80%;
-	min-width: 340px;
-	max-width: 1450px;
+	display: grid;
+	max-width: 1200px;
 	margin: auto;
-	display: flex;
-	flex-flow: row wrap;
-	align-content: flex-start;
-	justify-content: flex-start;
+	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    grid-auto-rows: min-content;
+    grid-gap: 1.0rem 0.5rem;
+    justify-content: center;
 }
 
-.production-card {
-	width: 100%;
-	max-width: 440px;
-	cursor: pointer;
-	background-color: var(--sit-gunmetal-light);
-	margin: 1em;
-	}
-  
-  .production-card:hover {
-	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-  }
+.production-wrapper .card-wrapper{
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
 
-  .production-card-image{
-	  width: 100%;
-	  height: 260px;
-	  object-fit: cover;
-  }
+.card {
+	position: relative;
+	cursor: pointer;
+	width: 100%;
+	background-color: var(--sit-gunmetal-light);
+}
   
-  .production-card-container {
-	height: 140px;
+.card:hover {
+box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-image{
+	width: 100%;
+	object-fit: cover;
+	height: 184px;
+}
+
+.card-container {
+	height: 5em;
+	padding: 0 0.5em;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-content: center;
-  }
- 
-  .production-card-title {
+}
+
+.card-title {
 	line-height: 1.1em;
 	margin: 0 0 0.6em 0;
-  }
+}
 
-  /* 3.1 FORMS */
-  .form-wrapper{
+/* 3.1 FORMS */
+.form-wrapper{
 	display: flex;
-    flex-direction: column;
+	flex-direction: column;
 	width: 80%;
 	min-width: 320px;
 	max-width: 420px;
-    margin: 1em auto;
-  }
+	margin: 1em auto;
+}
 
-  .brukerkonto-wrapper{
-	display: flex;
+.brukerkonto-wrapper{
+display: flex;
+margin: 1em 0 0.5em 0;
+align-items: center;
+}
+
+input{
+	height: 2em;
+	font-size: 0.9em;
+}
+
+label{
 	margin: 1em 0 0.5em 0;
-	align-items: center;
-  }
+}
 
-  input{
-	  height: 2em;
-	  font-size: 0.9em;
-  }
- 
-  label{
-	  margin: 1em 0 0.5em 0;
-  }
-
-  select{
-	  height: 2em;
-	  font-size: 0.9em;
-  }
+select{
+	height: 2em;
+	font-size: 0.9em;
+}
 
 /*3.2 PLACEHOLDERS*/
 .placeholder-content{
@@ -369,11 +379,20 @@ p {
 	max-width: 800px;
 	min-width: 320px;
 	margin: auto;
-	text-align: center;
 	padding-bottom: 2em;
+}
+.placeholder-gif-wrapper {
+	text-align: center;
 }
 .placeholder-content h2{
 	color: var(--sit-gunmetal-dark);
+	text-align: center;
+}
+.placeholder-content h3{
+	margin-bottom: 0px;
+}
+.placeholder-content p{
+	margin-top: 0px;
 }
 .placeholder-content a{
 	text-decoration: underline;
@@ -447,6 +466,7 @@ p {
 	position: relative;
 	width: 100vw;
 	height: 60vh;
+	background: var(--main-text-color);
 
 	/* Displace the padding from the parent container */
 	top: -20px;
@@ -483,17 +503,17 @@ p {
 
 .hero-container {
 	max-width: 746px;
-	height: 350px;
 	max-height: 100%;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: center;
 	align-items: center;
 }
 
 .hero-title {
 	margin: 0;
+	margin-bottom: 30px;
 	line-height: 1.31;
 	z-index: 1;
 }
@@ -504,23 +524,23 @@ p {
 }
 
 /* 4.2 Current shows */
-.card-wrapper__landing {
-	justify-content: space-between;
-	max-width: 1200px;
-	margin-top: 8em;
-}
 
-.production-card__landing {
+.card__landing {
 	max-width: 540px;
-	height: 440px;
+	height: 22em;
 	cursor: default;
-	margin: 1em auto;
 }
 
-.production-card-container__landing {
-	height: calc(100% - 260px);
+.card__landing .card-image {
+	height: 13em;
+}
+
+.card-container__landing {
+	padding: 1em 0.5em;
 	display: flex;
 	flex-direction: column;
+	justify-content: start;
+	align-content: center;
 	align-items: center;
 }
 
@@ -532,26 +552,39 @@ p {
 	display: none;
 }
 
-.production-card__landing p {
-	margin-bottom: 36px;
+.card__landing p {
+	margin: 1em 0;
 }
 
-.production-card__landing:first-of-type {
+.card__landing:first-of-type {
 	background-color: var(--sit-grullo-80);
+}
+
+@media only screen and (min-width: 560px) {
+	.card-image{
+		width: 100%;
+		object-fit: cover;
+		height: 240px;
+	}
+	.card-wrapper {
+		grid-gap: 1.5rem 2.5rem;
+		grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+	}
+	.card-wrapper-production {
+		grid-gap: 1.5rem 2.5rem;
+	}
 }
 
 @media only screen and (min-width: 756px) {
 	.hero-container{
 		height: 450px;
+		padding-bottom: 40px;
 	}
-	.production-card__landing {
-		height: 640px;
+	.card__landing {
+		height: 30em;
 	}
 	.center-text{
 		display: block;
-	}
-	.show-date {
-		margin-bottom: 1.5em;
 	}
 }
 
@@ -559,8 +592,8 @@ p {
 	.hero-container{
 		height: 600px;
 	}
-	.production-card__landing {
-		margin: 1em auto;
+	.card__landing {
+		height: 28em;
 	}
 	.hero {
 		height: 80vh;
@@ -595,6 +628,7 @@ p {
 
 .production-information {
 	margin: 32px;
+	height: 600px; 
 }
 
 .production-extra-info {
@@ -608,6 +642,10 @@ p {
 
 .production-extra-info-box {
 	display: flex;
+}
+.production-extra-info-box img { 
+	/* in Firefox the size of the icons were much bigger than in safari. Setting them to an absolute value fixed this. */ 
+    width: 20px;
 }
 .production-extra-info p {
 	padding-left: 25px;
@@ -630,9 +668,10 @@ p {
 
 .production-category-content {
 	max-height: 0;
-	overflow: hidden;
 	transition: max-height 0.2s ease-out;
 	padding: 15px 0;
+	overflow: auto; 
+    min-height: 500px; 
 }
 .production-category-content h3 {
 	display: none;
@@ -704,7 +743,7 @@ p {
 		position: absolute;
 		height: 100%;
 		top: 0;
-		overflow: visible; 
+		
 		display: none;
 		margin-left: 35%;
 	}
@@ -718,4 +757,23 @@ p {
 		width: 30%;
 		margin: 20px 0;
 	}
+}
+
+/* 4.4 Member page/could be reusable */ 
+
+.wrapper {
+	margin: 5vh 5vh 20vh 5vh; 
+}
+.production-wrapper {
+	margin: 5vh 5vh 20vh 5vh; 
+}
+
+.title-wrapper {
+	margin: 5vh; 
+	text-align: center;
+}
+
+.btn-wrapper {
+	text-align: center;
+	margin: auto;
 }

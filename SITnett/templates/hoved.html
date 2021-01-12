@@ -1,20 +1,20 @@
 {% extends "meny.html" %} {% load static %} {% block innhold %}
 
 <section class="hero" id="hero">
-	<img class="hero-image" id="hero-image"
+	{% comment %} <img class="hero-image" id="hero-image"
 	src="{% static "img/spring-awakening-banner.png" %}"
 	alt=""
 	data-landscape="{% static "/img/spring-awakening-banner.png" %}"
 	data-portrait="{% static "/img/spring-awakening-poster.png" %}">
+   {% endcomment %}
   <div class="hero-container">
-    <!--<h1 class="hero-title">Spring<br>Awakening</h1>-->
+  <h1 class="hero-title">Opptaket åpner <br />17. januar klokken 23:59</h1>
     <a
       class="hero-btn btn"
-      href="https://samfundet.no/arrangement"
+      href="{% url 'opptak' %}"
       class="btn"
-      target="_blank"
       ref="noopener noreferrer"
-      >Finn billetter</a
+      >Mer informasjon</a
     >
   </div>
 </section>
@@ -54,26 +54,28 @@
   </div>
 </div>
 
-<!-- <section class="card-wrapper card-wrapper__landing">
-	<div class="production-card production-card__landing">
-		<img class="production-card-image" src="{% static "img/spring-awakening-card.png" %}" alt="Spring Awkening" class="show-image">
-		<div class="production-card-container production-card-container__landing">
-			<h3 class="production-card-title">Spring Awakening</h3>
-			<span class="show-date text-info">4.&ndash;14. oktober 2020</span>
-			<p class="center-text">Stikkordene er sårbarhet, seksualitet og nakenhet.</p>
-			<a href="#" class="btn btn__tickets">Billetter</a>
-		</div>
-	</div>
-	<div class="production-card production-card__landing">
-		<img class="production-card-image" src="{% static "img/dickie-dick-dickens-card.png" %}" alt="Dickie Dick Dickens" class="show-image">
-		<div class="production-card-container production-card-container__landing">
-			<h3 class="production-card-title">Dickie Dick Dickens</h3>
-			<span class="show-date text-info">21.&ndash;22. februar 2021</span>
-			<p class="center-text">Dickie Dick Dickens er «mannen med stålnervene, lynøynene og hjertet av gull».</p>
-			<a href="#" class="btn btn__tickets">Billetter</a>
-		</div>
-	</div>
-</section> -->
+{% comment %} <div class="production-wrapper">
+  <div class="card-wrapper">
+    <div class="card card__landing">
+      <img class="card-image" src="{% static "img/spring-awakening-card.png" %}" alt="Spring Awkening" class="show-image">
+      <div class="card-container card-container__landing">
+        <h3 class="card-title">Spring Awakening</h3>
+        <span class="show-date text-info">4.&ndash;14. oktober 2020</span>
+        <p class="center-text">Stikkordene er sårbarhet, seksualitet og nakenhet.</p>
+        <a href="#" class="btn btn__tickets">Billetter</a>
+      </div>
+    </div>
+    <div class="card card__landing">
+      <img class="card-image" src="{% static "img/dickie-dick-dickens-card.png" %}" alt="Dickie Dick Dickens" class="show-image">
+      <div class="card-container card-container__landing">
+        <h3 class="card-title">Dickie Dick Dickens</h3>
+        <span class="show-date text-info">21.&ndash;22. februar 2021</span>
+        <p class="center-text">Dickie Dick Dickens er «mannen med stålnervene, lynøynene og hjertet av gull».</p>
+        <a href="#" class="btn btn__tickets">Billetter</a>
+      </div>
+    </div>
+  </div>
+</div> {% endcomment %}
 
 <script src="{% static "/hero_img_picker.js" %}"></script>
 {% endblock innhold %}
