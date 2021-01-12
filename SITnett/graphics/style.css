@@ -379,11 +379,20 @@ select{
 	max-width: 800px;
 	min-width: 320px;
 	margin: auto;
-	text-align: center;
 	padding-bottom: 2em;
+}
+.placeholder-gif-wrapper {
+	text-align: center;
 }
 .placeholder-content h2{
 	color: var(--sit-gunmetal-dark);
+	text-align: center;
+}
+.placeholder-content h3{
+	margin-bottom: 0px;
+}
+.placeholder-content p{
+	margin-top: 0px;
 }
 .placeholder-content a{
 	text-decoration: underline;
@@ -457,6 +466,7 @@ select{
 	position: relative;
 	width: 100vw;
 	height: 60vh;
+	background: var(--main-text-color);
 
 	/* Displace the padding from the parent container */
 	top: -20px;
@@ -493,17 +503,17 @@ select{
 
 .hero-container {
 	max-width: 746px;
-	height: 350px;
 	max-height: 100%;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: center;
 	align-items: center;
 }
 
 .hero-title {
 	margin: 0;
+	margin-bottom: 30px;
 	line-height: 1.31;
 	z-index: 1;
 }

@@ -1,14 +1,16 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
-<!-- <div class="placeholder-content">
-	<iframe src="https://giphy.com/embed/hrRJ41JB2zlgZiYcCw" class="giphy-embed" frameBorder="0" style=height:200px></iframe>
-	<p class="text-info"><a href="https://giphy.com/gifs/memecandy-hrRJ41JB2zlgZiYcCw">via GIPHY</a></p>
+<div class="placeholder-content">
+	<div class="placeholder-gif-wrapper">
+		<iframe src="https://giphy.com/embed/hrRJ41JB2zlgZiYcCw" class="giphy-embed" frameBorder="0" style=height:200px></iframe>
+		<p class="text-info"><a href="https://giphy.com/gifs/memecandy-hrRJ41JB2zlgZiYcCw">via GIPHY</a></p>
+	</div>
 	<h2>Under arbeid</h2>
 	<p>Denne siden er under arbeid. Se <a href="http://skrift.no/sit/index.asp?vis=medlem" target="_blank" rel="noreferrer noopener">våre gamle nettsider</a> for å finne denne informasjonen</p>
-</div> -->
+</div>
 
-<div class="wrapper">
+{% comment %} <div class="wrapper">
 	<div class="title-wrapper">
 		<h2>Medlemmer</h2>
 		Se alle SITs medlemmer gjennom tidene
@@ -31,6 +33,6 @@
 		<a class="btn" href="{% url 'medlem_ny' %}">Nytt medlem</a>
 	</div>
 	{% endif %}
-</div>
+</div> {% endcomment %}
 
 {% endblock innhold %}
