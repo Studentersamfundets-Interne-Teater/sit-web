@@ -381,6 +381,9 @@ select{
 	margin: auto;
 	padding-bottom: 2em;
 }
+.placeholder-gif-wrapper {
+	text-align: center;
+}
 .placeholder-content h2{
 	color: var(--sit-gunmetal-dark);
 	text-align: center;
