@@ -466,6 +466,7 @@ select{
 	position: relative;
 	width: 100vw;
 	height: 60vh;
+	background: var(--main-text-color);
 
 	/* Displace the padding from the parent container */
 	top: -20px;
@@ -502,17 +503,17 @@ select{
 
 .hero-container {
 	max-width: 746px;
-	height: 350px;
 	max-height: 100%;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
+	justify-content: center;
 	align-items: center;
 }
 
 .hero-title {
 	margin: 0;
+	margin-bottom: 30px;
 	line-height: 1.31;
 	z-index: 1;
 }
