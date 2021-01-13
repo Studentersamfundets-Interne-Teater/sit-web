@@ -87,7 +87,7 @@ def getForestillingDict(location):
         except:
             continue
 
-    print(data_dict)
+    # print(data_dict)
     return data_dict
 
 
@@ -105,7 +105,7 @@ def getAll(location, type='medlem'):
         except:
             errors.append(filename)
             continue
-    print(list_of_dicts)
+    # print(list_of_dicts)
     dict_of_lists = {}
     for i in range(len(list_of_dicts)):
         for key, value in list_of_dicts[i].items():
@@ -286,10 +286,21 @@ def update_gallery(medlem_dict, new_medlem, arr, location):
 
 
 def get_forestilling(data_dict):
-    # ['p', 'semester', 'aar', 'overskrift', 'sidetekst', 'span', 'br', 'a', 'skildring', 'spelestad',
-    # 'img', 'font', 'opphavsmenn', 'uka', 'strong', 'div', 'h1', 'o:p', 'i', 'em', 'u', 'td', 'b', 'link']
+    # ['p'- div tekst, sjekk om det er i sidetekst et sted
+    # 'semester' - semester,
+    # 'aar'- år satt opp,
+    # 'overskrift',
+    # 'sidetekst' - mesteparten av innholdet på siden,
+    # 'a'- sjekk om det er i sidetekst,
+    # 'skildring' - kort beskrivelse av forestillingen,
+    # 'spelestad' - spillested, mye forskjellig her
+    # 'opphavsmenn' - forfatter(e), replace "av "
+    # 'uka' - ukeproduksjon? ja hvis tagen fins
+    # plakat - plakat(bildelink)
 
     ptype = 1
+
+    tittel = try_get2('overskrift', data_dict, "Ikke funnet")
 
     try:
         if data_dict['uka'] == 'Ja':
@@ -301,10 +312,6 @@ def get_forestilling(data_dict):
     info += try_get('p', data_dict)
     info += "\n\n"
     info += try_get('sidetekst', data_dict)
-    info += "\n\n"
-    info += try_get('span', data_dict)
-    info += "\n\n"
-    info += try_get('br', data_dict)
     info += "\n\n"
     info += try_get('skildring', data_dict)
     info += "\n\n"
@@ -326,11 +333,24 @@ def get_forestilling(data_dict):
     info += "\n\n"
     info += try_get('link', data_dict)
     info += "\n\n"
+    info += try_get('hr', data_dict)
+    info += "\n\n"
+    info += try_get('pre', data_dict)
+    info += "\n\n"
+    info += try_get('tr', data_dict)
+    info += "\n\n"
+    info += try_get('center', data_dict)
+    info += "\n\n"
+    info += try_get('ul', data_dict)
+    info += "\n\n"
+    info += try_get('li', data_dict)
+    info += "\n\n"
+    info += try_get('iframe', data_dict)
+    info += "\n\n"
+
     info += try_get('produksjonstype', data_dict)
 
-    tittel = try_get2('overskrift', data_dict, "Ikke funnet")
-
-    forfatter = try_get2('opphavsmenn', data_dict, "Ikke funnet")
+    forfatter = try_get2('opphavsmenn', data_dict, "Ikke funnet").replace("av ")
 
     revy = False
 
@@ -385,8 +405,8 @@ def try_get(data, data_dict):
 
 def transfer_all_medlemmer(location):
     try:
-        os.mkdir('/Users/jacob/sit-web/SITnett/files/bilder')
-        os.mkdir('/Users/jacob/sit-web/SITnett/files/portretter')
+        os.mkdir(settings.MEDIA_ROOT + '/bilder')
+        os.mkdir(settings.MEDIA_ROOT + '/portretter')
     except:
         pass
     list_of_dicts, dict_of_lists, dict_of_sets, errors = getAll(location+'medlem/')
