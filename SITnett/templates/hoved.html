@@ -1,14 +1,13 @@
 {% extends "meny.html" %} {% load static %} {% block innhold %}
 
 <section class="hero" id="hero">
-	{% comment %} <img class="hero-image" id="hero-image"
-	src="{% static "img/spring-awakening-banner.png" %}"
+  <img class="hero-image" id="hero-image"
+	src="{% static 'assets/digfu7304.jpg' %}"
 	alt=""
-	data-landscape="{% static "/img/spring-awakening-banner.png" %}"
-	data-portrait="{% static "/img/spring-awakening-poster.png" %}">
-   {% endcomment %}
+	data-landscape="{% static 'assets/digfu7304.jpg' %}"
+	data-portrait="{% static 'assets/digfu7304.jpg' %}">
   <div class="hero-container">
-  <h1 class="hero-title">Opptaket åpner <br />17. januar klokken 23:59</h1>
+    <h1 class="hero-title">Opptaket åpner <br />17. januar klokken 23:59</h1>
     <a
       class="hero-btn btn"
       href="{% url 'opptak' %}"
@@ -17,7 +16,9 @@
       >Mer informasjon</a
     >
   </div>
+  <div class="text-info" style="position: absolute; bottom: 1rem; left: 1rem; color: white;">Foto: <a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener" style="color: white;">foto.samfundet.no</a></div>
 </section>
+
 
 <div class="info-wrapper">
   <div class="info-wrapper-content">
