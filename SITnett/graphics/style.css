@@ -466,7 +466,7 @@ select{
 	position: relative;
 	width: 100vw;
 	height: 60vh;
-	background: var(--main-text-color);
+	/*background: var(--main-text-color);*/
 
 	/* Displace the padding from the parent container */
 	top: -20px;
