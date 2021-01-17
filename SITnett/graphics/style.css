@@ -465,7 +465,7 @@ select{
 .hero {
 	position: relative;
 	width: 100vw;
-	height: 60vh;
+	min-height: 60vh;
 	background: rgba(0, 0, 0, 0.3);
 
 	/* Displace the padding from the parent container */
@@ -504,6 +504,7 @@ select{
 .hero-container {
 	max-width: 746px;
 	max-height: 100%;
+	padding: 2rem;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
