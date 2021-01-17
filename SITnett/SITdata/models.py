@@ -300,3 +300,5 @@ class Dokument(models.Model): # holder dokumenter og filer som ikke er knytta ti
 		ordering = ['dato','tittel']
 	def __str__(self):
 		return self.tittel+" ("+str(self.dato)+")"
+
+
