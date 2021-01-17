@@ -22,8 +22,8 @@ try:
     from .local import *
     DEBUG = False
     ALLOWED_HOSTS = [
-    'sit.samfundet.no'
-    'localhost',
+    'sit.samfundet.no',
+    'localhost'
 ]
 except ModuleNotFoundError:
     print("Production environment not found – using local debug settings")
