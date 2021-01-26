@@ -2,70 +2,91 @@
 
 {% block innhold %}
 	
-	{% block medlem_navn %}
-	<h3>{{medlem}}</h3>
-	{% if user.is_authenticated %}
-		{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
-	{% endif %}
-	{% endblock medlem_navn %}
-
-	{% block medlem_info %}
-	<img src="{{medlem.portrett.url}}" height=300>
-	
-	<br><br>
-	<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
-	<b>Opptaksår:</b> {{medlem.opptak}}<br>
-	<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
-	{% if user.is_authenticated %}
-	<br>
-	<b>Telefon:</b> {{medlem.telefon}}<br>
-	<b>E-post:</b> {{medlem.epost}}<br>
-	<br>
-	<b>Fødselsdato:</b> {{medlem.fodsel}}<br>
-	<b>Studium:</b> {{medlem.studium|capfirst}}<br>
-	{% if medlem.jobb %}<b>Jobb:</b> {{medlem.jobb|capfirst}}<br>{% endif %}
-	{% endif %}
-	{% endblock medlem_info %}
-
-	{% if medlem.erfaringer.count %}
-		<h4>Erfaringer</h4>
-		{% for erfaring in medlem.erfaringer.all %}
-			{{erfaring.verv|capfirst}} 
-			{% if erfaring.verv.vtype <= 2 %}
-				i {{erfaring.ar}}
-			{% else %}
-				{% if erfaring.verv.vtype == 3 %}
-					for 
-				{% elif erfaring.rolle %}
-					({{erfaring.rolle}}) i
-				{% else %}
-					i 
-				{% endif %}
-				<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+	<div class="production-banner">
+		<div class="image-container">
+		{% block medlem_info %}
+		<img src="{{medlem.portrett.url}}">
+		</div>
+	</div>
+	<div class="production-extra-info">
+		{% block medlem_navn %}
+		<h3>{{medlem}}</h3>
+		{% if user.is_authenticated %}
+			{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
+		{% endif %}
+		{% endblock medlem_navn %}
+		
+		{{medlem.get_status_display|capfirst}}, {{medlem.get_undergjeng_display}}
+		<div class="divider"></div>
+		<!-- Hvilken type er: Kommandør av og Ridder av  ? -->
+		{% if medlem.utmerkelser.count %}
+			{% for utmerkelse in medlem.utmerkelser.all %}
+					{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} fra {{utmerkelse.dato.year}}
+					{% block utmerkelse_fjern %}
+					
+					{% endblock utmerkelse_fjern %}
+					<br>
+				{% endfor %}
 			{% endif %}
-			{% block erfaring_fjern %}
-			
-			{% endblock erfaring_fjern %}
-			<br>
-		{% endfor %}
-	{% endif %}
-	{% block erfaring_ny %}
+			{% block utmerkelse_ny %}
 
-	{% endblock erfaring_ny %}
+			{% endblock utmerkelse_ny %}
+		
+		<b>Tatt opp:</b> {{medlem.opptak}}
+		<!--
+		<br><br>
+		<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
+		<b>Opptaksår:</b> {{medlem.opptak}}<br>
+		<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
+		-->
+		{% if user.is_authenticated %}
+		<br>
+		<b>Mobil:</b> {{medlem.telefon}}<br>
+		<b>E-post:</b> {{medlem.epost}}<br>
+		<br>
+		<b>Studerer: </b> {{medlem.studium|capfirst}}<br>
+		<b>Bursdag: </b> {{medlem.fodsel}}
+		{% if medlem.jobb %}<b>Jobb:</b> {{medlem.jobb|capfirst}}<br>{% endif %}
+		{% endif %}
+		{% endblock medlem_info %}
+	</div>
 
-	{% if medlem.utmerkelser.count %}
-		<h4>Utmerkelser</h4>
-		{% for utmerkelse in medlem.utmerkelser.all %}
-			{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} fra {{utmerkelse.dato.year}}
-			{% block utmerkelse_fjern %}
-			
-			{% endblock utmerkelse_fjern %}
-			<br>
-		{% endfor %}
-	{% endif %}
-	{% block utmerkelse_ny %}
+	<section class="production-information">
+		<div class="firstDivider"></div>
+		<a class="production-categories">Medvirker i</a>
+		<div class="production-category-content">
+			<h3>Medvirker i</h3>
+			{% if medlem.erfaringer.count %}
+				<h4>Erfaringer</h4>
+				{% for erfaring in medlem.erfaringer.all %}
+					{{erfaring.verv|capfirst}} 
+					{% if erfaring.verv.vtype <= 2 %}
+						i {{erfaring.ar}}
+					{% else %}
+						{% if erfaring.verv.vtype == 3 %}
+							for 
+						{% elif erfaring.rolle %}
+							({{erfaring.rolle}}) i
+						{% else %}
+							i 
+						{% endif %}
+						<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+					{% endif %}
+					{% block erfaring_fjern %}
+					
+					{% endblock erfaring_fjern %}
+					<br>
+				{% endfor %}
+			{% endif %}
+			{% block erfaring_ny %}
 
-	{% endblock utmerkelse_ny %}
+			{% endblock erfaring_ny %}
+
+			</div>
+		<div class="divider"></div>
+		<a class="production-categories">Verv</a>
+	</section>
+
 
 	{% block medlem_nav %}
 	{% if user.is_authenticated %}

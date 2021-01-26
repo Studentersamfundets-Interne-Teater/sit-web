@@ -612,7 +612,7 @@ select{
 	margin: auto;
 	object-fit: cover;
 }
-.production-banner {
+.production-banner { /* Gjenbrukt i medlem_info*/
 	text-align: center;
 	margin-top: -20px;
 }
@@ -625,14 +625,12 @@ select{
 	background-color: var(--sit-grullo-light);
 	padding: 10px 0 10px 0;
 }
-
-.production-information {
+.production-extra-info { /* Gjenbrukt i medlem_info*/
+	margin: 20px;
+}
+.production-information { 
 	margin: 32px;
 	height: 600px; 
-}
-
-.production-extra-info {
-	margin: 20px;
 }
 .button-container{
 	width: 100%;
