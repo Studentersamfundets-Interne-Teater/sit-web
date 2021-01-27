@@ -11,6 +11,11 @@ if (window.innerWidth < 1024) {
       } else {
         content.style.maxHeight = content.scrollHeight + "px";
       } 
+      /* if (this.style.maxHeight) {
+        this.style.maxHeight = null; 
+      } else {
+        this.style.maxHeight = this.scrollHeight + "px";
+      } */
     });
   }
 }

@@ -645,7 +645,7 @@ select{
 }
 .production-information { 
 	margin: 32px;
-	height: 600px; 
+	/* height: 600px;  */
 }
 .production-categories {
 	cursor: pointer;
@@ -664,6 +664,7 @@ select{
 
 .production-category-content {
 	max-height: 0;
+	
 	transition: max-height 0.2s ease-out;
 	padding: 15px 0;
 	overflow: hidden; 
