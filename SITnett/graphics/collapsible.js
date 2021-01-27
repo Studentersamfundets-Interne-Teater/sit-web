@@ -11,11 +11,6 @@ if (window.innerWidth < 1024) {
       } else {
         content.style.maxHeight = content.scrollHeight + "px";
       } 
-      /* if (this.style.maxHeight) {
-        this.style.maxHeight = null; 
-      } else {
-        this.style.maxHeight = this.scrollHeight + "px";
-      } */
     });
   }
 }
@@ -27,6 +22,7 @@ else {
     categories[i].addEventListener("click", function() {
       this.classList.toggle("active");
       var content = this.nextElementSibling; 
+      
       this.style.fontWeight = "600"; //Bold font when active
       for (j = 0; j<categories.length; j++) {
         if (categories[j].nextElementSibling !== content) {

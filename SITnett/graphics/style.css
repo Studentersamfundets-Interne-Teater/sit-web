@@ -664,7 +664,6 @@ select{
 
 .production-category-content {
 	max-height: 0;
-	
 	transition: max-height 0.2s ease-out;
 	padding: 15px 0;
 	overflow: hidden; 
