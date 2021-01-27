@@ -773,3 +773,58 @@ select{
 	text-align: center;
 	margin: auto;
 }
+
+/* 4.5 Member detail view (could reuse production detail view style) */
+
+.member-image-container {
+	height: 350px;
+	text-align: center;
+
+}
+.member-image-container img {
+	height: 100%;
+	max-width: 100%;
+	margin: auto;
+	object-fit: cover;
+}
+.member-general-info { /* Gjenbrukt i medlem_info*/
+	margin: 20px;
+}
+.member-general-info h3 {
+	text-align: center;
+}
+.member-general-info p {
+	padding-left: 25px;
+}
+.member-information { 
+	margin: 32px;
+	/* height: 600px;  */
+}
+.member-categories {
+	cursor: pointer;
+	color: var(--sit-gunmetal-light);
+}
+
+.member-divider, .member-firstDivider {
+	flex-grow: 1;
+	border-top: 2px solid var(--sit-gunmetal-light); 
+	margin-bottom: 25px;
+}
+
+/*Desktop view*/
+@media only screen and (min-width: 1024px) {
+	
+	.member-general-info {
+		width: 50%;
+		margin: auto;
+	}
+	.member-information {
+		width: 50%;
+		margin: auto;
+	}
+	.divider, .firstDivider {
+		flex-grow: 1;
+		border-top: 2px solid var(--sit-gunmetal-light); 
+		margin-bottom: 25px;
+	}
+}

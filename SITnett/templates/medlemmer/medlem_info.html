@@ -2,27 +2,28 @@
 
 {% block innhold %}
 	
-	<div class="production-banner">
-		<div class="image-container">
+	
+	<div class="member-image-container">
 		{% block medlem_info %}
 		<img src="{{medlem.portrett.url}}">
-		</div>
 	</div>
-	<div class="production-extra-info">
+	
+	<div class="member-general-info">
 		{% block medlem_navn %}
-		<h3>{{medlem}}</h3>
+		<h2>{{medlem}}</h2>
 		{% if user.is_authenticated %}
 			{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
 		{% endif %}
 		{% endblock medlem_navn %}
 		
-		{{medlem.get_status_display|capfirst}}, {{medlem.get_undergjeng_display}}
-		<br>
-		<div class="divider"></div><br>
-		
+		<p>{{medlem.get_status_display|capfirst}}, {{medlem.get_undergjeng_display}}
+		</p>
+
+		<div class="member-divider"></div><br>
+		<i>
 		{% if medlem.utmerkelser.count %}
 			{% for utmerkelse in medlem.utmerkelser.all %}
-					{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} fra {{utmerkelse.dato.year}}
+					{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} ({{utmerkelse.dato.year}})
 					{% block utmerkelse_fjern %}
 					
 					{% endblock utmerkelse_fjern %}
@@ -32,33 +33,74 @@
 			{% block utmerkelse_ny %}
 
 			{% endblock utmerkelse_ny %}
-		
+		</i>
+		<br>
 		<b>Tatt opp:</b> {{medlem.opptak}}
+		<br>
 		<!--
 		<br><br>
 		<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
 		<b>Opptaksår:</b> {{medlem.opptak}}<br>
 		<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
 		-->
+		
 		{% if user.is_authenticated %}
 		<br>
-		<b>Mobil:</b> {{medlem.telefon}}<br>
-		<b>E-post:</b> {{medlem.epost}}<br>
+		<table style="width:100%">
+			<tr>
+			  <td><b>Mobil:</b> </td>
+			  <td>{{medlem.telefon}}</td> 
+			</tr>
+			<tr>
+			  <td><b>E-post:</b></td>
+			  <td>{{medlem.epost}}</td> 
+			</tr>
+			<tr>
+				<td><br></td>
+				<td><br></td>
+			</tr>
+				
+			<tr>
+			  <td><b>Studerer:</b></td>
+			  <td>{{medlem.studium|capfirst}}</td> 
+			</tr>
+			<tr>
+			<td><b>Bursdag:</b></td>
+			<td>{{medlem.fodsel}}</td> 
+			</tr>
+		</table>
 		<br>
-		<b>Studerer: </b> {{medlem.studium|capfirst}}<br>
-		<b>Bursdag: </b> {{medlem.fodsel}}
+
 		{% if medlem.jobb %}<b>Jobb:</b> {{medlem.jobb|capfirst}}<br>{% endif %}
 		{% endif %}
 		{% endblock medlem_info %}
 	</div>
 
-	<section class="production-information">
-		<div class="firstDivider"></div>
-		<a class="production-categories">Medvirker i</a>
-		<div class="production-category-content">
-			<h3>Medvirker i</h3>
+	<section class="member-information">
+		<div class="member-firstDivider"></div>
+		<a class="member-categories"><h3>Medvirker i</h3></a>
+		<div class="member-category-content">
 			{% if medlem.erfaringer.count %}
-				<h4>Erfaringer</h4>
+				{% for erfaring in medlem.erfaringer.all %}
+					<table style="width:100%">
+						<tr>
+						<td><h3>{{erfaring.produksjon.semester}} </h3></td>
+						<td>{{erfaring.rolle}}</td> 
+						</tr>
+					</table>
+				{% endfor %}
+			{% endif %}
+		
+			
+			{% block erfaring_ny %}
+
+			{% endblock erfaring_ny %}
+
+		</div>
+		<div class="member-divider"></div>
+		<a class="member-categories"><h3>Verv</h3></a>
+		<div class="member-category-content">
+			{% if medlem.erfaringer.count %}
 				{% for erfaring in medlem.erfaringer.all %}
 					{{erfaring.verv|capfirst}} 
 					{% if erfaring.verv.vtype <= 2 %}
@@ -79,13 +121,7 @@
 					<br>
 				{% endfor %}
 			{% endif %}
-			{% block erfaring_ny %}
-
-			{% endblock erfaring_ny %}
-
-			</div>
-		<div class="divider"></div>
-		<a class="production-categories">Verv</a>
+		</div>
 	</section>
 
 
