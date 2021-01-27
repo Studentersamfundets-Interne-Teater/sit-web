@@ -628,16 +628,11 @@ select{
 .production-extra-info { /* Gjenbrukt i medlem_info*/
 	margin: 20px;
 }
-.production-information { 
-	margin: 32px;
-	height: 600px; 
-}
 .button-container{
 	width: 100%;
 	background-color: var(--sit-grullo-light);
 	padding-bottom: 20px;
 }
-
 .production-extra-info-box {
 	display: flex;
 }
@@ -648,7 +643,10 @@ select{
 .production-extra-info p {
 	padding-left: 25px;
 }
-
+.production-information { 
+	margin: 32px;
+	height: 600px; 
+}
 .production-categories {
 	cursor: pointer;
 	color: var(--sit-grullo-dark);
@@ -659,7 +657,7 @@ select{
 	border-top: 2px solid var(--sit-grullo-dark); 
 	margin-bottom: 25px;
 }
-  
+
 .active, .production-categories:hover {
 	/* Need this even though it is empty for the mobile show category function*/
 }
@@ -668,8 +666,8 @@ select{
 	max-height: 0;
 	transition: max-height 0.2s ease-out;
 	padding: 15px 0;
-	overflow: auto; 
-    min-height: 500px; 
+	overflow: hidden; 
+    /* min-height: 500px;  */
 }
 .production-category-content h3 {
 	display: none;

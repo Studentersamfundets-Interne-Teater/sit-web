@@ -17,8 +17,9 @@
 		{% endblock medlem_navn %}
 		
 		{{medlem.get_status_display|capfirst}}, {{medlem.get_undergjeng_display}}
-		<div class="divider"></div>
-		<!-- Hvilken type er: Kommandør av og Ridder av  ? -->
+		<br>
+		<div class="divider"></div><br>
+		
 		{% if medlem.utmerkelser.count %}
 			{% for utmerkelse in medlem.utmerkelser.all %}
 					{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} fra {{utmerkelse.dato.year}}
