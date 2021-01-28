@@ -23,7 +23,7 @@
 		<i>
 		{% if medlem.utmerkelser.count %}
 			{% for utmerkelse in medlem.utmerkelser.all %}
-					{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} ({{utmerkelse.dato.year}})
+					{{utmerkelse.full_tittel|capfirst}}
 					{% block utmerkelse_fjern %}
 					
 					{% endblock utmerkelse_fjern %}
@@ -35,8 +35,7 @@
 			{% endblock utmerkelse_ny %}
 		</i>
 		<br>
-		<b>Tatt opp:</b> {{medlem.opptak}}
-		<br><br>
+		
 		<!--
 		<br><br>
 		<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
@@ -44,9 +43,18 @@
 		<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
 		-->
 		
-		{% if user.is_authenticated %}
+		
 		<br>
 		<table style="width:100%">
+			<tr>
+				<td><b>Tatt opp:</b> </td>
+				<td>{{medlem.opptaksar}}</td> 
+			  </tr>
+			{% if user.is_authenticated %}
+			<tr>
+				<td><br></td>
+				<td><br></td>
+			</tr>
 			<tr>
 			  <td><b>Mobil:</b> </td>
 			  <td>{{medlem.telefon}}</td> 
@@ -66,13 +74,18 @@
 			</tr>
 			<tr>
 			<td><b>Bursdag:</b></td>
-			<td>{{medlem.fodsel}}</td> 
+			<td>{{medlem.fodselsdato}}</td> 
 			</tr>
+			{% if medlem.jobb %}
+			<tr>
+			<td><b>Jobb:</b></td>
+			<td>{{medlem.jobb|capfirst}}</td> 
+			</tr>
+			{% endif %}
+
+			{% endif %}
 		</table>
 		<br>
-
-		{% if medlem.jobb %}<b>Jobb:</b> {{medlem.jobb|capfirst}}<br>{% endif %}
-		{% endif %}
 		{% endblock medlem_info %}
 	</div>
 
@@ -81,14 +94,19 @@
 		<a class="member-categories"><h3>Medvirker i</h3></a>
 		<div class="member-category-content">
 			{% if medlem.erfaringer.count %}
+				
 				{% for erfaring in medlem.erfaringer.all %}
-					<table style="width:100%">
-						<tr>
-						<td><h3>{{erfaring.produksjon.semester}} </h3></td>
-						<td>{{erfaring.rolle}}</td> 
-						</tr>
-					</table>
+					{% if erfaring.verv.vtype == 3  %}
+					
+						<table style="width:100%">
+							<tr>
+							<td><h3>{{erfaring.produksjon.semester}} </h3></td>
+							<td>{{erfaring.rolle}}</td> 
+							</tr>
+						</table>
+					{% endif %}
 				{% endfor %}
+				
 			{% endif %}
 		
 			
@@ -102,6 +120,11 @@
 		<div class="member-category-content">
 			{% if medlem.erfaringer.count %}
 				{% for erfaring in medlem.erfaringer.all %}
+
+					{% if erfaring.verv.vtype <= 2  %}
+						{{erfaring.full_tittel}}
+					{% endif %}
+<!-- 
 					{{erfaring.verv|capfirst}} 
 					{% if erfaring.verv.vtype <= 2 %}
 						i {{erfaring.ar}}
@@ -114,7 +137,7 @@
 							i 
 						{% endif %}
 						<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
-					{% endif %}
+					{% endif %} -->
 					{% block erfaring_fjern %}
 					
 					{% endblock erfaring_fjern %}
