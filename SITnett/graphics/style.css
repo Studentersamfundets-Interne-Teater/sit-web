@@ -787,7 +787,7 @@ select{
 	margin: auto;
 	object-fit: cover;
 }
-.member-general-info { /* Gjenbrukt i medlem_info*/
+.member-general-info {
 	margin: 20px;
 }
 .member-general-info h2, h2 + p {
@@ -803,9 +803,6 @@ select{
 .member-categories {
 	cursor: pointer;
 	color: var(--sit-gunmetal-light);
-}
-.member-category-content {
-
 }
 .member-divider, .member-firstDivider {
 	flex-grow: 1;
