@@ -36,7 +36,7 @@
 		</i>
 		<br>
 		<b>Tatt opp:</b> {{medlem.opptak}}
-		<br>
+		<br><br>
 		<!--
 		<br><br>
 		<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
@@ -125,7 +125,7 @@
 	</section>
 
 
-	{% block medlem_nav %}
+	<!-- {% block medlem_nav %}
 	{% if user.is_authenticated %}
 		<br><br>
 		<a href="{% url 'medlem_redi' medlem.id %}">Endre medlem</a>
@@ -134,6 +134,6 @@
 		<br><br>
 		<a href="{% url 'medlem_slett' medlem.id %}">Slett medlem</a>
 	{% endif %}
-	{% endblock medlem_nav %}
+	{% endblock medlem_nav %} -->
 
 {% endblock innhold %}

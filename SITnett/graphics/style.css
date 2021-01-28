@@ -790,7 +790,7 @@ select{
 .member-general-info { /* Gjenbrukt i medlem_info*/
 	margin: 20px;
 }
-.member-general-info h3 {
+.member-general-info h2, h2 + p {
 	text-align: center;
 }
 .member-general-info p {
@@ -804,7 +804,9 @@ select{
 	cursor: pointer;
 	color: var(--sit-gunmetal-light);
 }
+.member-category-content {
 
+}
 .member-divider, .member-firstDivider {
 	flex-grow: 1;
 	border-top: 2px solid var(--sit-gunmetal-light); 
@@ -826,5 +828,8 @@ select{
 		flex-grow: 1;
 		border-top: 2px solid var(--sit-gunmetal-light); 
 		margin-bottom: 25px;
+	}
+	.member-information {
+		margin-bottom: 100px;
 	}
 }
