@@ -323,8 +323,7 @@ p {
 box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
-/*Litt hårete med store bokstaver i variabelnavn. Stammer fra backend*/
-.card-Kostyme{
+.card-kostyme{
 	background-color: var(--sit-gunmetal-light);
 	border: none;
 }
