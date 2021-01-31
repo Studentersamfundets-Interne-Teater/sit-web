@@ -5,34 +5,49 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 
 import os
+import datetime
 
 from SITdata import models, forms
 from SITdata import skrift_transfers
 
+features = settings.FEATURES
 
 def view_hoved(request):
-    # skrift_transfers.transfer_all_medlemmer("/Users/jacob/Downloads/sit skrift/sit/")
-    return render(request, 'hoved.html')
+    # Legg inn riktig URL i anførselstegnene for å laste over følgende Skrift-data: 
+    #skrift_transfers.transfer_all_medlemmer("[LEGG INN URL TIL SKRIFT-DATA HER]")
+    return render(request, 'hoved.html', {'FEATURES': features})
 
 
 def view_info(request):
-    return render(request, 'info.html')
+    return render(request, 'info.html', {'FEATURES': features})
 
 
 def view_opptak(request):
-    return render(request, 'opptak.html')
+    return render(request, 'opptak.html', {'FEATURES': features})
 
 
 def view_kontakt(request):
-    return render(request, 'kontakt.html')
+    if not features.TOGGLE_MEDLEMMER:
+        return redirect('hoved')
+    sliste = models.Medlem.objects.filter(erfaringer__verv__vtype=1).filter(erfaringer__ar=datetime.datetime.now().year)
+    mliste = models.Medlem.objects.filter(status__in=[1,2])
+    print(sliste)
+    print(mliste)
+    return render(request, 'kontakt.html', {'FEATURES': features, 'sliste': sliste, 'mliste': mliste})
 
 
 def view_medlemmer(request):
-    return render(request, 'medlemmer/medlemmer.html', {'mliste': models.Medlem.objects.all()})
+    if not features.TOGGLE_MEDLEMMER:
+        return redirect('hoved')
+    mliste = models.Medlem.objects.all()
+    return render(request, 'medlemmer/medlemmer.html', {'FEATURES': features,
+        'mliste': mliste})
 
 
 @permission_required('SITdata.add_medlem')
 def view_medlem_ny(request):
+    if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     if request.method == 'POST':
         mform = forms.MedlemAdminForm(request.POST, request.FILES)
         if mform.is_valid():
@@ -44,10 +59,13 @@ def view_medlem_ny(request):
             return redirect('medlem_info', medlem.id)
     else:
         mform = forms.MedlemAdminForm()
-    return render(request, 'medlemmer/medlem_ny.html', {'mform': mform})
+    return render(request, 'medlemmer/medlem_ny.html', {'FEATURES': features,
+        'mform': mform})
 
 
 def view_medlem_info(request, mid):
+    if not features.TOGGLE_MEDLEMMER:
+        return redirect('hoved')
     medlem = get_object_or_404(models.Medlem, id=mid)
     if request.user.has_perm('SITdata.change_medlem'):
         access = 'admin'
@@ -55,11 +73,14 @@ def view_medlem_info(request, mid):
         access = 'own'
     else:
         access = 'other'
-    return render(request, 'medlemmer/medlem_info.html', {'access': access, 'medlem': medlem})
+    return render(request, 'medlemmer/medlem_info.html', {'FEATURES': features, 'access': access,
+        'medlem': medlem})
 
 
 @login_required
 def view_medlem_redi(request, mid):
+    if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     medlem = get_object_or_404(models.Medlem, id=mid)
     if request.user.has_perm('SITdata.change_medlem'):
         MedlemForm = forms.MedlemAdminForm
@@ -95,31 +116,41 @@ def view_medlem_redi(request, mid):
         mform = MedlemForm(instance=medlem)
         eform = forms.ErfaringMedForm()
         uform = forms.UtmerkelseForm()
-    return render(request, 'medlemmer/medlem_redi.html',
-                  {'medlem': medlem, 'mform': mform, 'uform': uform, 'eform': eform})
+    return render(request, 'medlemmer/medlem_redi.html', {'FEATURES': features,
+        'medlem': medlem, 'mform': mform, 'uform': uform, 'eform': eform})
 
 
 @permission_required('SITdata.delete_medlem')
 def view_medlem_slett(request, mid):
+    if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     medlem = get_object_or_404(models.Medlem, id=mid)
     if (request.method == 'POST'):
         medlem.delete()
         return redirect('medlemmer')
-    return render(request, 'medlemmer/medlem_slett.html', {'medlem': medlem})
+    return render(request, 'medlemmer/medlem_slett.html', {'FEATURES': features,
+        'medlem': medlem})
 
 
 @permission_required('SITdata.delete_utmerkelse')
 def view_utmerkelse_fjern(request, uid):
+    if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     utmerkelse = get_object_or_404(models.Utmerkelse, id=uid)
     if (request.method == 'POST'):
         medlem = utmerkelse.medlem
         utmerkelse.delete()
         return redirect('medlem_info', medlem.id)
-    return render(request, 'medlemmer/utmerkelse_fjern.html', {'utmerkelse': utmerkelse})
+    return render(request, 'medlemmer/utmerkelse_fjern.html', {'FEATURES': features,
+        'utmerkelse': utmerkelse})
 
 
 def view_produksjoner(request):
-    return render(request, 'produksjoner/produksjoner.html', {'pliste': models.Produksjon.objects.all()})
+    if not features.TOGGLE_PRODUKSJONER:
+        return redirect('hoved')
+    pliste = models.Produksjon.objects.all()
+    return render(request, 'produksjoner/produksjoner.html', {'FEATURES': features,
+        'pliste': pliste})
 
 
 def make_voppslag(produksjon):
@@ -130,10 +161,7 @@ def make_voppslag(produksjon):
             continue
         verv = models.Verv.objects.get(pk=vid)
         erfaringer = produksjon.erfaringer.filter(verv=vid)
-        if erfaringer.count() > 1:
-            voppslag[verv.plural()] = erfaringer
-        else:
-            voppslag[verv] = erfaringer
+        voppslag[verv] = erfaringer
     return voppslag
 
 def make_toppslag(produksjon):
@@ -155,6 +183,8 @@ def make_toppslag(produksjon):
 
 @permission_required('SITdata.add_produksjon')
 def view_produksjon_ny(request):
+    if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     if request.method == 'POST':
         pform = forms.ProduksjonAdminForm(request.POST, request.FILES)
         if pform.is_valid():
@@ -162,10 +192,13 @@ def view_produksjon_ny(request):
             return redirect('produksjon_info', produksjon.id)
     else:
         pform = forms.ProduksjonAdminForm()
-    return render(request, 'produksjoner/produksjon_ny.html', {'pform': pform})
+    return render(request, 'produksjoner/produksjon_ny.html', {'FEATURES': features,
+        'pform': pform})
 
 
 def view_produksjon_info(request, pid):
+    if not features.TOGGLE_PRODUKSJONER:
+        return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
     if request.user.has_perm('SITdata.change_produksjon'):
         access = 'admin'
@@ -176,12 +209,14 @@ def view_produksjon_info(request, pid):
         access = 'other'
     voppslag = make_voppslag(produksjon)
     toppslag = make_toppslag(produksjon)
-    return render(request, 'produksjoner/produksjon_info.html',
-                  {'access': access, 'produksjon': produksjon, 'voppslag': voppslag, 'toppslag': toppslag})
+    return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
+        'produksjon': produksjon, 'voppslag': voppslag, 'toppslag': toppslag})
 
 
 @login_required
 def view_produksjon_redi(request, pid):
+    if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
     if request.user.has_perm('SITdata.change_produksjon'):
         ProduksjonForm = forms.ProduksjonAdminForm
@@ -219,22 +254,27 @@ def view_produksjon_redi(request, pid):
         fform = forms.ForestillingForm()
         aform = forms.AnmeldelseForm()
         eform = forms.ErfaringProdForm()
-    return render(request, 'produksjoner/produksjon_redi.html',
-                  {'produksjon': produksjon, 'voppslag': voppslag, 'toppslag': toppslag,
-                  'pform': pform, 'fform': fform, 'aform': aform, 'eform': eform})
+    return render(request, 'produksjoner/produksjon_redi.html', {'FEATURES': features,
+        'produksjon': produksjon, 'voppslag': voppslag, 'toppslag': toppslag,
+        'pform': pform, 'fform': fform, 'aform': aform, 'eform': eform})
 
 
 @permission_required('SITdata.delete_produksjon')
 def view_produksjon_slett(request, pid):
+    if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
     if request.method == 'POST':
         produksjon.delete()
         return redirect('produksjoner')
-    return render(request, 'produksjoner/produksjon_slett.html', {'produksjon': produksjon})
+    return render(request, 'produksjoner/produksjon_slett.html', {'FEATURES': features,
+        'produksjon': produksjon})
 
 
 @login_required
 def view_forestilling_fjern(request, fid):
+    if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     forestilling = get_object_or_404(models.Forestilling, id=fid)
     if request.user.has_perm('SITdata.delete_forestilling') \
         or request.user.medlem.erfaringer.all() & forestilling.produksjon.erfaringer.filter(
@@ -243,13 +283,16 @@ def view_forestilling_fjern(request, fid):
             produksjon = forestilling.produksjon
             forestilling.delete()
             return redirect('produksjon_info', produksjon.id)
-        return render(request, 'produksjoner/forestilling_fjern.html', {'forestilling': forestilling})
+        return render(request, 'produksjoner/forestilling_fjern.html', {'FEATURES': features,
+            'forestilling': forestilling})
     else:
         return redirect('/konto/login?next=%s' % request.path)
 
 
 @login_required
 def view_anmeldelse_fjern(request, aid):
+    if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
+        return redirect('hoved')
     anmeldelse = get_object_or_404(models.Anmeldelse, id=aid)
     if request.user.has_perm('SITdata.delete_anmeldelse') \
         or request.used.medlem.erfaringer.all() & forestilling.produksjon.erfaringer.filter(
@@ -258,18 +301,40 @@ def view_anmeldelse_fjern(request, aid):
             produksjon = anmeldelse.produksjon
             anmeldelse.delete()
             return redirect('produksjon_info', produksjon.id)
-        return render(request, 'produksjoner/anmeldelse_fjern.html', {'anmeldelse': anmeldelse})
+        return render(request, 'produksjoner/anmeldelse_fjern.html', {'FEATURES': features,
+            'anmeldelse': anmeldelse})
     else:
         return redirect('/konto/login?next=%s' % request.path)
 
 
 @login_required
 def view_verv(request):
-    return render(request, 'verv/verv.html', {'vliste': models.Verv.objects.all()})
+    if not features.TOGGLE_VERV:
+        return redirect('hoved')
+    vliste = models.Verv.objects.all()
+    return render(request, 'verv/verv.html', {'FEATURES': features,
+        'vliste': models.Verv.objects.all()})
+
+
+@permission_required('SITdata.add_verv')
+def view_verv_ny(request):
+    if not (features.TOGGLE_VERV and features.TOGGLE_EDIT):
+        return redirect('hoved')
+    if request.method == 'POST':
+        vform = forms.VervAdminForm(request.POST)
+        if vform.is_valid():
+            verv = vform.save()
+            return redirect('verv_info', verv.id)
+    else:
+        vform = forms.VervAdminForm()
+    return render(request, 'verv/verv_ny.html', {'FEATURES': features,
+        'vform': vform})
 
 
 @login_required
 def view_verv_info(request, vid):
+    if not features.TOGGLE_VERV:
+        return redirect('hoved')
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
@@ -279,11 +344,14 @@ def view_verv_info(request, vid):
         access = 'own'
     else:
         access = 'other'
-    return render(request, 'verv/verv_info.html', {'access':access, 'verv': verv})
+    return render(request, 'verv/verv_info.html', {'FEATURES': features, 'access':access,
+        'verv': verv})
 
 
 @login_required
 def view_verv_redi(request, vid):
+    if not (features.TOGGLE_VERV and features.TOGGLE_EDIT):
+        return redirect('hoved')
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
@@ -330,23 +398,29 @@ def view_verv_redi(request, vid):
             sform = forms.ErfaringsskrivForm(instance=serfaring)
         else:
             sform = None
-    return render(request, 'verv/verv_redi.html',
-                  {'verv': verv, 'vform': vform, 'eform': eform, 'sform': sform})
+    return render(request, 'verv/verv_redi.html', {'FEATURES': features,
+        'verv': verv, 'vform': vform, 'eform': eform, 'sform': sform})
 
 
 @login_required
 def view_verv_slett(request, vid):
+    if not (features.TOGGLE_VERV and features.TOGGLE_EDIT):
+        return redirect('hoved')
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
     if request.method == 'POST':
         verv.delete()
         return redirect('verv')
-    return render(request, 'verv/verv_slett.html', {'verv': verv})
+    return render(request, 'verv/verv_slett.html', {'FEATURES': features,
+        'verv': verv})
 
 
 @login_required
 def view_erfaring_fjern(request, eid):
+    if not ((features.TOGGLE_MEDLEMMER or features.TOGGLE_PRODUKSJONER or features.TOGGLE_VERV)
+        and TOGGLE_EDIT):
+        return redirect('hoved')
     erfaring = get_object_or_404(models.Erfaring, id=eid)
     if request.user.has_perm('SITdata.delete_erfaring') \
             or erfaring.produksjon \
@@ -355,21 +429,28 @@ def view_erfaring_fjern(request, eid):
             medlem = erfaring.medlem
             erfaring.delete()
             return redirect('medlem_info', medlem.id)
-        return render(request, 'medlemmer/erfaring_fjern.html', {'erfaring': erfaring})
+        return render(request, 'medlemmer/erfaring_fjern.html', {'FEATURES': features,
+            'erfaring': erfaring})
     else:
         return redirect('/konto/login?next=%s' % request.path)
 
 
 @login_required
 def view_uttrykk(request):
-    return render(request, 'uttrykk.html')
+    if not features.TOGGLE_UTTRYKK:
+        return redirect('hoved')
+    return render(request, 'uttrykk.html', {'FEATURES': features})
 
 
 @login_required
 def view_dokumenter(request):
-    return render(request, 'dokumenter.html')
+    if not features.TOGGLE_DOKUMENTER:
+        return redirect('hoved')
+    return render(request, 'dokumenter.html', {'FEATURES': features})
 
 
 @login_required
 def view_arkiv(request):
-    return render(request, 'arkiv.html')
+    if not features.TOGGLE_ARKIV:
+        return redirect('hoved')
+    return render(request, 'arkiv.html', {'FEATURES': features})

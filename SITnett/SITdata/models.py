@@ -31,7 +31,7 @@ class Medlem(models.Model):
         return (self.fornavn[:3]+self.etternavn[:3]).lower()+str(self.opptaksar)[2:]
     class Meta:
         verbose_name_plural = "medlemmer"
-        ordering = ['mtype','opptaksar','undergjeng','etternavn','fornavn']
+        ordering = ['mtype','-opptaksar','undergjeng','etternavn','fornavn']
     def __str__(self):
         return self.fornavn+(" "+self.mellomnavn if self.mellomnavn else "")+" "+self.etternavn
     def get_absolute_url(self):

@@ -31,10 +31,13 @@
 			{% else %}
 				{{erfaring.navn}
 			{% endif %}
-			{% if erfaring.rolle %} som {{erfaring.rolle}}{% endif %}
 			{% if erfaring.produksjon %}
-				{% if erfaring.rolle %} i{% else %} for{% endif %}
-				<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+				{% if erfaring.rolle %} som {{erfaring.rolle}} i {% else %} for {% endif %}
+				{% if FEATURES.TOGGLE_PRODUKSJONER %}
+					<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+				{% else %}
+					{{erfaring.produksjon}}
+				{% endif %}
 			{% else %}
 				i {{erfaring.ar}}
 			{% endif %}
@@ -52,13 +55,18 @@
 
 	{% block verv_nav %}
 
-		{% if access == 'admin' or access == 'own' %}
-			<br><br>
-			<a href="{% url 'verv_redi' verv.id %}">Endre verv</a>
-		{% endif %}
-		{% if perms.SITdata.delete_verv %}
-			<br><br>
-			<a href="{% url 'verv_slett' verv.id %}">Slett verv</a>
+		{% if FEATURES.TOGGLE_EDIT %}
+			{% if access == 'admin' or access == 'own' %}
+				<br><br>
+				<a href="{% url 'verv_redi' verv.id %}">Endre verv</a>
+				<br>
+			{% endif %}
+			{% if perms.SITdata.delete_verv %}
+				<br><br>
+				<a href="{% url 'verv_slett' verv.id %}">Slett verv</a>
+				<br>
+			{% endif %}
+			<br>
 		{% endif %}
 
 	{% endblock verv_nav %}
