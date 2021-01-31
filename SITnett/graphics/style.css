@@ -315,11 +315,27 @@ p {
 	position: relative;
 	cursor: pointer;
 	width: 100%;
-	background-color: var(--sit-gunmetal-light);
+	background-color: var(--main-bg-color);
+	border: 2px solid var(--sit-grullo-light);
 }
   
 .card:hover {
 box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-kostyme{
+	background-color: var(--sit-gunmetal-light);
+	border: none;
+}
+
+.card-kulisse{
+	background-color: var(--sit-grullo-light);
+	border: none;
+}
+
+.card-skuespill{
+	background-color: var(--sit-red-light);
+	border: none;
 }
 
 .card-image{
@@ -569,7 +585,7 @@ select{
 	}
 	.card-wrapper {
 		grid-gap: 1.5rem 2.5rem;
-		grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(168px, 2fr));
 	}
 	.card-wrapper-production {
 		grid-gap: 1.5rem 2.5rem;
@@ -613,7 +629,7 @@ select{
 	margin: auto;
 	object-fit: cover;
 }
-.production-banner {
+.production-banner { /* Gjenbrukt i medlem_info*/
 	text-align: center;
 	margin-top: -20px;
 }
@@ -626,13 +642,7 @@ select{
 	background-color: var(--sit-grullo-light);
 	padding: 10px 0 10px 0;
 }
-
-.production-information {
-	margin: 32px;
-	height: 600px; 
-}
-
-.production-extra-info {
+.production-extra-info { /* Gjenbrukt i medlem_info*/
 	margin: 20px;
 }
 .button-container{
@@ -640,7 +650,6 @@ select{
 	background-color: var(--sit-grullo-light);
 	padding-bottom: 20px;
 }
-
 .production-extra-info-box {
 	display: flex;
 }
@@ -651,7 +660,10 @@ select{
 .production-extra-info p {
 	padding-left: 25px;
 }
-
+.production-information { 
+	margin: 32px;
+	/* height: 600px;  */
+}
 .production-categories {
 	cursor: pointer;
 	color: var(--sit-grullo-dark);
@@ -662,7 +674,7 @@ select{
 	border-top: 2px solid var(--sit-grullo-dark); 
 	margin-bottom: 25px;
 }
-  
+
 .active, .production-categories:hover {
 	/* Need this even though it is empty for the mobile show category function*/
 }
@@ -671,8 +683,8 @@ select{
 	max-height: 0;
 	transition: max-height 0.2s ease-out;
 	padding: 15px 0;
-	overflow: auto; 
-    min-height: 500px; 
+	overflow: hidden; 
+    /* min-height: 500px;  */
 }
 .production-category-content h3 {
 	display: none;
@@ -777,4 +789,96 @@ select{
 .btn-wrapper {
 	text-align: center;
 	margin: auto;
+}
+
+/* 4.5 Member detail view (could reuse production detail view style) */
+
+.member-image-container {
+	height: 350px;
+	text-align: center;
+
+}
+.member-image-container img {
+	height: 100%;
+	max-width: 100%;
+	margin: auto;
+	object-fit: cover;
+}
+.member-general-info {
+	margin: 20px;
+}
+.member-general-info h2, h2 + p {
+	text-align: center;
+}
+.member-general-info p {
+	padding-left: 25px;
+}
+.member-information { 
+	margin: 32px;
+	/* height: 600px;  */
+}
+.member-categories {
+	cursor: pointer;
+	color: var(--sit-gunmetal-light);
+}
+.member-divider, .member-firstDivider {
+	flex-grow: 1;
+	border-top: 2px solid var(--sit-gunmetal-light); 
+	margin-bottom: 25px;
+}
+
+/*Desktop view*/
+@media only screen and (min-width: 1024px) {
+	
+	.member-general-info {
+		width: 50%;
+		margin: auto;
+	}
+	.member-information {
+		width: 50%;
+		margin: auto;
+	}
+	.divider, .firstDivider {
+		flex-grow: 1;
+		border-top: 2px solid var(--sit-gunmetal-light); 
+		margin-bottom: 25px;
+	}
+	.member-information {
+		margin-bottom: 100px;
+	}
+}
+
+/* 4.5 Image gallery */
+.image-gallery{
+	height: 40vh;
+	display: grid;
+	grid-template-columns: 1fr 5fr;
+	grid-gap: 10px;
+	overflow: hidden;
+}
+
+.image-in-gallery {
+	display: block;
+	max-width: 100%;
+}
+
+.gallery-focus-container {
+	position: relative;
+	display: block;
+	height: 100%;
+}
+
+.gallery-focus{
+	object-fit: contain;
+	width: 100%;
+}
+
+#imgtext {
+	display: block;
+	font-size: 20px;
+}
+
+.gallery-nav {
+	overflow-y: scroll;
+	overflow-x: hidden;
 }

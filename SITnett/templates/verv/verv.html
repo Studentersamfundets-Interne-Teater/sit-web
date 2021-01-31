@@ -1,0 +1,22 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<div class="wrapper">
+		<div class="title-wrapper">
+			<h2>Verv</h2>
+		</div>
+		{% for verv in vliste %}
+			{% if verv.erfaringsoverforing %}
+			<a href="{% url 'verv_info' verv.id %}">{{verv|capfirst}}</a><br>
+			{% endif %}
+		{% endfor %}
+		{% if FEATURES.TOGGLE_EDIT and perms.SITdata.add_verv %}
+			<br><br>
+			<div class="btn-wrapper">
+				<a class="btn" href="{% url 'verv_ny' %}">Nytt verv</a>
+			</div>
+		{% endif %}
+	</div>
+
+{% endblock innhold %}

@@ -13,20 +13,22 @@
 		{{mform}}
 		{% if perms.SITdata.add_medlem %}
 			<div class="brukerkonto-wrapper">
-				<p>Lag innlogginsdetaljer:</p>
+				<p>Bruker:</p>
 				{% if medlem.brukerkonto %}
 				{{medlem.brukerkonto.get_username}}
 				<input type="checkbox" name='fjern_brukerkonto'>
 				<label for='fjern_brukerkonto'>Fjern</label>
 				{% else %}
 				<input type="checkbox" name='opprett_brukerkonto'>
+				<label for='opprett_brukerkonto'>Opprett</label>
 				{% endif %}
 			</div>
 		{% endif %}
-		<input type="submit" value="Lagre endringer">
+		<input type="submit" name='lagre_medlem' value="Lagre endringer">
 	</form>
 
 {% endblock medlem_info %}
+
 
 {% block erfaring_fjern %}
 
@@ -36,7 +38,6 @@
 			
 {% endblock erfaring_fjern %}
 
-
 {% block erfaring_ny %}
 	
 	{% if perms.SITdata.add_erfaring %}	
@@ -45,7 +46,7 @@
 			{% csrf_token %}
 			<div class="ingress">Ny erfaring</div>
 			{{eform}}
-			<input type="submit" value="Legg til">
+			<input type="submit" name='lagre_erfaring' value="Legg til">
 		</form>
 	{% endif %}
 
@@ -68,15 +69,17 @@
 			{% csrf_token %}
 			<div class="ingress">Ny utmerkelse</div>
 			{{uform}}
-			<input type="submit" value="Legg til">
+			<input type="submit" name='lagre_utmerkelse' value="Legg til">
 		</form>
 	{% endif %}
 
 {% endblock utmerkelse_ny %}
 
+
 {% block medlem_nav %}
 
 	<br><br>
 	<a href="{% url 'medlem_info' medlem.id %}">Vis medlem</a>
+	<br>
 
 {% endblock medlem_nav %}

@@ -8,6 +8,10 @@ verify_ssl = true
 [packages]
 django = "*"
 pillow = "*"
+bs4 = "*"
+requests = "*"
+lxml = "*"
+django-super-deduper = "*"
 
 [requires]
 python_version = "3.8"

@@ -2,7 +2,7 @@
 
 {% block produksjon_tittel %}
 
-	<p>Er du sikker på at du vil slette produksjonen {{produksjon}}? All data knyttet til produksjonen slettes permanent.</p>
+	<p>Er du sikker på at du vil slette produksjonen {{produksjon}}? All data knyttet til produksjonen slettes permanent – inkludert alle medlemmers erfaringer i produksjonen.</p>
 
 	<form action="{% url 'produksjon_slett' produksjon.id %}" method="post">
 		{% csrf_token %}
@@ -17,5 +17,6 @@
 
 	<br><br>
 	<a href="{% url 'produksjon_info' produksjon.id %}">Vis produksjon</a>
+	<br>
 
 {% endblock produksjon_nav %}

@@ -21,28 +21,28 @@
 		<a href="{% url 'hoved' %}"><img src="{% static 'assets/sit_logo_without_text.svg' %}" height=60 id="logo"></a>
 		<div id="menuLinks">
 			<a href="{% url 'info' %}">Om SIT</a>
-			<a href="{% url 'kontakt' %}">Kontakt</a>
-			<a href="{% url 'medlemmer' %}">Medlemmer</a>
-			<a href="{% url 'produksjoner' %}">Produksjoner</a>
-			<!--
-			{% if user.is_authenticated %}
-			<a href="{% url 'verv' %}">Verv</a>
-			<a href="{% url 'uttrykk' %}">Uttrykk</a>
-			<a href="{% url 'dokumenter' %}">Dokumenter</a>
-			<a href="{% url 'arkiv' %}">Arkiv</a>
-			<a href="http://sit-bar.samfundet.no/">Badeportal</a>
+			{% if FEATURES.TOGGLE_MEDLEMMER %}
+				<a href="{% url 'kontakt' %}">Kontakt</a>
+				<a href="{% url 'medlemmer' %}">Medlemmer</a>
 			{% endif %}
-			-->
+			{% if FEATURES.TOGGLE_PRODUKSJONER %}<a href="{% url 'produksjoner' %}">Produksjoner</a>{% endif %}
+			{% if user.is_authenticated %}
+				{% if FEATURES.TOGGLE_VERV %}<a href="{% url 'verv' %}">Verv</a>{% endif %}
+				{% if FEATURES.TOGGLE_UTTRYKK %}<a href="{% url 'uttrykk' %}">Uttrykk</a>{% endif %}
+				{% if FEATURES.TOGGLE_DOKUMENTER %}<a href="{% url 'dokumenter' %}">Dokumenter</a>{% endif %}
+				{% if FEATURES.TOGGLE_ARKIV %}<a href="{% url 'arkiv' %}">Arkiv</a>{% endif %}
+				<a href="http://sit-bar.samfundet.no/">Badeportal</a>
+			{% endif %}
 			{% if not user.is_authenticated %}
-			<a href="{% url 'opptak' %}">Søk SIT</a>
+				<a href="{% url 'opptak' %}">Søk SIT</a>
 			{% endif %}
 		</div>
 
 		<status id="status">
 			{% if user.is_authenticated %}
-			<a href="{% url 'logout' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">  Logg ut</a>
+			<a href="{% url 'logout' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">{{user.username}} Logg ut</a>
 			{% else %}
-			<a href="{% url 'login' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">  Logg inn </a>
+			<a href="{% url 'login' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">  Logg inn</a>
 			{% endif %}
 		</status>
 		<a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerFunction()">
