@@ -78,7 +78,27 @@
 		<div class="production-category-content">
 		{% if produksjon.erfaringer.count %}
 			{% for verv, erfaringer in voppslag.items %}
-				<b>{{verv|capfirst}}:</b><br>
+				{% if FEATURES.TOGGLE_VERV %}
+					{% if verv.erfaringsoverforing and user.is_authenticated %}
+						{% if erfaringer.count > 1 %}
+							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a><br>
+						{% else %}
+							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a><br>
+						{% endif %}
+					{% else %}
+						{% if erfaringer.count > 1 %}
+							<b>{{verv.plural|capfirst}}:</b><br>
+						{% else %}
+							<b>{{verv.tittel|capfirst}}:</b><br>
+						{% endif %}
+					{% endif %}
+				{% else %}
+					{% if erfaringer.count > 1 %}
+						<b>{{verv.plural|capfirst}}:</b><br>
+					{% else %}
+						<b>{{verv.tittel|capfirst}}:</b><br>
+					{% endif %}
+				{% endif %}
 				{% for erfaring in erfaringer %}
 					<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
 					{% if erfaring.rolle %}
@@ -159,13 +179,18 @@
 
 	{% block produksjon_nav %}
 
-		{% if access == 'admin' or access == 'own' %}
-			<br><br>
-			<a href="{% url 'produksjon_redi' produksjon.id %}">Endre produksjon</a>
-		{% endif %}
-		{% if perms.SITdata.delete_produksjon %}
-			<br><br>
-			<a href="{% url 'produksjon_slett' produksjon.id %}">Slett produksjon</a>
+		{% if FEATURES.TOGGLE_EDIT %}
+			{% if access == 'admin' or access == 'own' %}
+				<br><br>
+				<a href="{% url 'produksjon_redi' produksjon.id %}">Endre produksjon</a>
+				<br>
+			{% endif %}
+			{% if perms.SITdata.delete_produksjon %}
+				<br><br>
+				<a href="{% url 'produksjon_slett' produksjon.id %}">Slett produksjon</a>
+				<br>
+			{% endif %}
+			<br>
 		{% endif %}
 
 	{% endblock produksjon_nav %}

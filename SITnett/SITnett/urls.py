@@ -40,6 +40,7 @@ urlpatterns = [
     path('forestilling/<int:fid>/fjern',views.view_forestilling_fjern,name='forestilling_fjern'),
     path('anmeldelse/<int:aid>/fjern',views.view_anmeldelse_fjern,name='anmeldelse_fjern'),
     path('verv/',views.view_verv,name='verv'),
+    path('verv/ny/',views.view_verv_ny,name='verv_ny'),
     path('verv/<int:vid>/',views.view_verv_info,name='verv_info'),
     path('verv/<int:vid>/redi',views.view_verv_redi,name='verv_redi'),
     path('verv/<int:vid>/slett',views.view_verv_slett,name='verv_slett'),

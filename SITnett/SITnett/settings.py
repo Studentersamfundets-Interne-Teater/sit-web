@@ -40,8 +40,6 @@ except ModuleNotFoundError:
 # SECURITY WARNING: don't run with debug turned on in production!
 
 
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -85,6 +83,20 @@ TEMPLATES = [
 WSGI_APPLICATION = 'SITnett.wsgi.application'
 
 
+# FUNKSJONALITET
+# Skru av og på funksjonalitet her:
+
+class FEATURE_SETTINGS():
+    TOGGLE_MEDLEMMER = True # skrur på medlemsoversikt og medlemssider.
+    TOGGLE_PRODUKSJONER = False # skrur på produksjonsoversikt og produksjonssider.
+    TOGGLE_VERV = False # skrur på vervoversikt og vervsider.
+    TOGGLE_UTTRYKK = False # skrur på uttrykksliste.
+    TOGGLE_ARKIV = False # skrur på Arkivet.
+    TOGGLE_DOKUMENTER = False # skrur på dokumentoversikt.
+    TOGGLE_EDIT = True # skrur på redigeringsfunksjonalitet.
+
+FEATURES = FEATURE_SETTINGS()
+
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
@@ -95,8 +107,18 @@ WSGI_APPLICATION = 'SITnett.wsgi.application'
 #     }
 # }
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATIC_URL = '/graphics/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR,'graphics'),]
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
 MEDIA_URL = '/files/'
+
+
+# Format på tidsrelaterte felter:
 
 DATETIME_FORMAT = r"d.m.Y \k\l\o\k\k\a H.i"
 DATETIME_INPUT_FORMATS = ["%d.%m.%Y %H.%M"]
@@ -104,6 +126,26 @@ DATE_FORMAT = r"d.m.Y"
 DATE_INPUT_FORMATS = ["%d.%m.%Y"]
 TIME_FORMAT = r"H.i"
 TIME_INPUT_FORMATS = ["%H.%M"]
+
+
+# Internationalization
+# https://docs.djangoproject.com/en/3.0/topics/i18n/
+
+LANGUAGE_CODE = 'en-us'
+
+TIME_ZONE = 'Europe/Oslo'
+
+USE_I18N = True
+
+USE_TZ = True
+
+
+# Brukerkonto-relatert:
+
+LOGIN_URL = '/konto/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -122,27 +164,3 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.0/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'Europe/Oslo'
-
-USE_I18N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/graphics/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR,'graphics'),]
-
-LOGIN_URL = '/konto/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

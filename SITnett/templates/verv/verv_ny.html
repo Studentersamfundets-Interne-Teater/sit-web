@@ -1,0 +1,11 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<form action="{% url 'verv_ny' %}" method="post" class="form-wrapper">
+		{% csrf_token %}
+		{{vform}}
+		<input type="submit" value="Opprett verv">
+	</form>
+
+{% endblock innhold %}
