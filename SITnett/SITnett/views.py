@@ -5,7 +5,6 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 
 import os
-import datetime
 
 from SITdata import models, forms
 from SITdata import skrift_transfers
@@ -29,16 +28,13 @@ def view_opptak(request):
 def view_kontakt(request):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
-    sliste = models.Medlem.objects.filter(erfaringer__verv__vtype=1).filter(erfaringer__ar=datetime.datetime.now().year)
-    mliste = models.Medlem.objects.filter(status__in=[1, 2])
-    return render(request, 'kontakt.html', {'FEATURES': features,
-        'sliste': sliste, 'mliste': mliste})
+    return render(request, 'kontakt.html', {'FEATURES': features})
 
 
 def view_medlemmer(request):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
-    mliste = models.Medlem.objects.filter(mtype=1)
+    mliste = models.Medlem.objects.all()
     return render(request, 'medlemmer/medlemmer.html', {'FEATURES': features,
         'mliste': mliste})
 
