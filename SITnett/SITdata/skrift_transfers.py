@@ -240,7 +240,7 @@ def create_medlem(medlem_dict, arr_for_bilder, location):
 
     # ['fodt_dto', 'fodt_mnd', 'fodt_aar', 'gjeng', 'status', 'opptak_aar', 'e_post', 'mobil', 'foto', 'dgk_ridder']
 
-    telefon = try_get2('mobil', medlem_dict, '')
+    telefon = try_get2('mobil', medlem_dict, '').replace(" ", "")
     kallenavn = try_get2('tidligare_namn', medlem_dict, '')
 
     epost = ''
