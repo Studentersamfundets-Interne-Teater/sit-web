@@ -11,9 +11,9 @@ class Medlem(models.Model):
         (11,'MG'),(12,'ITK'),(13,'ARK'),(14,'FG'),(15,'KSG'),
         (16,'KU'),(17,'KLST'),(18,'LØK'),(19,'DG'),(20,'Profil'),(21,'ekstern'))
     mtype = models.IntegerField("medlemstype",choices=MTYPER,default=1)
-    fornavn = models.CharField(max_length=30)
-    mellomnavn = models.CharField(blank=True,max_length=30)
-    etternavn = models.CharField(max_length=30)
+    fornavn = models.CharField(max_length=60)
+    mellomnavn = models.CharField(blank=True,max_length=60)
+    etternavn = models.CharField(max_length=60)
     fodselsdato = models.DateField("fødselsdato",blank=True,null=True)
     opptaksar = models.IntegerField("opptaksår",blank=True,null=True)
     UNDERGJENGER = ((1,'Kostyme'),(2,'Kulisse'),(3,'Skuespill'))
@@ -21,11 +21,11 @@ class Medlem(models.Model):
     STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsionist'),(4,'inaktiv'))
     status = models.IntegerField(choices=STATUSER,blank=True,null=True)
     portrett = models.ImageField(upload_to='portretter/',default='/default/katt.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
-    kallenavn = models.CharField(blank=True,max_length=30)
+    kallenavn = models.CharField(blank=True,max_length=60)
     telefon = models.CharField("telefonnummer",blank=True,max_length=20)
     epost = models.EmailField("e-postadresse",blank=True,max_length=60)
-    studium = models.CharField(blank=True,max_length=30)
-    jobb = models.CharField(blank=True,max_length=30)
+    studium = models.CharField(blank=True,max_length=60)
+    jobb = models.CharField(blank=True,max_length=60)
     brukerkonto = models.OneToOneField(User,models.SET_NULL,blank=True,null=True)
     def brukernavn(self): # lager et brukernavn ut ifra navn på formen 'jonfla93'.
         return (self.fornavn[:3]+self.etternavn[:3]).lower()+str(self.opptaksar)[2:]
@@ -40,8 +40,8 @@ class Medlem(models.Model):
 
 class Sitat(models.Model): # holder artige sitater gjort av medlemmer.
     medlem = models.ForeignKey(Medlem,models.CASCADE,related_name='sitater')
-    tekst = models.TextField(max_length=100) # holder selve sitatet.
-    kontekst = models.CharField(max_length=50) # holder kontekst for sitatet (når, hvor, utdypende, ...).
+    tekst = models.CharField(max_length=200) # holder selve sitatet.
+    kontekst = models.TextField() # holder kontekst for sitatet (når, hvor, utdypende, ...).
     class Meta:
         verbose_name_plural = "sitater"
     def __str__(self):
@@ -78,7 +78,7 @@ class Verv(models.Model):
     # Typen 'gjeng' er ment for årsvervene som velges på genfors (utenom Styret).
     vtype = models.IntegerField("vervtype",choices=VTYPER)
     vtags = models.ManyToManyField(vTag,"vervtags",blank=True)
-    tittel = models.CharField(max_length=50)
+    tittel = models.CharField(max_length=60)
     erfaringsoverforing = models.BooleanField("erfaringsoverføring") # avgjør om vervet skal ha en egen infoside med mulighet for erfaringsskriv.
     instruks = models.TextField(blank=True) # holder en eventuell instruksfesta beskrivelse av vervet.
     beskrivelse = models.TextField(blank=True) # holder en eventuell grundigere beskrivelse av vervet.
@@ -95,7 +95,7 @@ class Verv(models.Model):
 
 
 class Lokale(models.Model):
-    navn = models.CharField(max_length=50)
+    navn = models.CharField(max_length=60)
     class Meta:
         verbose_name_plural = "lokaler"
         ordering = ['navn']
@@ -116,11 +116,11 @@ class Produksjon(models.Model):
     PTYPER = ((1,'SIT'),(2,'KUP'),(3,'AFEI'),(4,'UKA'))
     ptype = models.IntegerField("produksjonstype",choices=PTYPER,default=1)
     ptags = models.ManyToManyField(pTag,"produksjonstags",blank=True)
-    tittel = models.CharField(max_length=50)
+    tittel = models.CharField(max_length=60)
     forfatter = models.CharField(max_length=100)
     opphavsar = models.IntegerField("opphavsår", blank=True, null=True)
     premieredato = models.DateField()
-    varighet = models.CharField(blank=True,max_length=22)
+    varighet = models.CharField(blank=True,max_length=60)
     lokale = models.ManyToManyField(Lokale,related_name="produksjoner")
     banner = models.ImageField(upload_to='bannere/',default='/default/katter.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
     plakat = models.ImageField(upload_to='plakater/',blank=True)
@@ -160,7 +160,7 @@ class Forestilling(models.Model): # holder forestillingstidspunktene for en gitt
 
 class Nummer(models.Model): # holder spesielle utdrag fra en produksjon (sang, monolog, sketsj, ...).
     produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='numre')
-    tittel = models.CharField(max_length=50)
+    tittel = models.CharField(max_length=60)
     opptak = models.FileField(upload_to='opptak/',blank=True) # holder et eventuelt film- eller lydopptak av nummeret.
     tekst = models.TextField() # holder manus for nummeret.
     noter = models.FileField(upload_to='noter/',blank=True) # holder eventuelle noter for nummeret.
@@ -175,8 +175,8 @@ class Nummer(models.Model): # holder spesielle utdrag fra en produksjon (sang, m
 
 class Anmeldelse(models.Model): # holder anmeldelser av produksjoner.
     produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='anmeldelser')
-    forfatter = models.CharField(max_length=50)
-    medium = models.CharField(max_length=50) # holder mediet der anmeldelsen ble publisert (avis, nettside, ...).
+    forfatter = models.CharField(max_length=100)
+    medium = models.CharField(max_length=60) # holder mediet der anmeldelsen ble publisert (avis, nettside, ...).
     gratis = models.BooleanField() # avgjør om anmeldelsen skal være tilgjengelig for eksterne lesere.
     fil = models.FileField(upload_to='anmeldelser/') # holder ei PDF-fil med den fulle anmeldelsen. 
     utdrag = models.TextField() # holder et utdrag av anmeldelsen for eksterne lesere.
@@ -189,12 +189,12 @@ class Anmeldelse(models.Model): # holder anmeldelser av produksjoner.
 
 class Erfaring(models.Model): # holder konkrete erfaringer gjort av medlemmer i rollen som et gitt verv for en gitt produksjon.
     medlem = models.ForeignKey(Medlem,models.CASCADE,blank=True,null=True,related_name='erfaringer')
-    navn = models.CharField(blank=True,max_length=50) # holder et eventuelt eksternt navn hvis personen ikke er lagra i databasen.
+    navn = models.CharField(blank=True,max_length=100) # holder et eventuelt eksternt navn hvis personen ikke er lagra i databasen.
     verv = models.ForeignKey(Verv,models.CASCADE,blank=True,null=True,related_name='erfaringer')
-    tittel = models.CharField(blank=True,max_length=50) # holder en eventuell spesiell tittel hvis vervet ikke er lagra i databasen.
+    tittel = models.CharField(blank=True,max_length=60) # holder en eventuell spesiell tittel hvis vervet ikke er lagra i databasen.
     produksjon = models.ForeignKey(Produksjon,models.CASCADE,blank=True,null=True,related_name='erfaringer')
     ar = models.IntegerField("år",blank=True,null=True) # holder et eventuelt år hvis vervet ikke er knytta til en produksjon.
-    rolle = models.CharField(blank=True,max_length=30) # holder en utdypende rolle innafor vervet (feks Melchior Gabor, gitar, arbeidsleder eller konsulent).
+    rolle = models.CharField(blank=True,max_length=60) # holder en utdypende rolle innafor vervet (feks Melchior Gabor, gitar, arbeidsleder eller konsulent).
     skriv = models.FileField("erfaringsskriv",upload_to='erfaringsskriv/',blank=True) # holder et eventuelt erfaringsskriv.
     def full_tittel(self): # lager en full tittel for erfaringa av typen "skuespiller (Melchior Gabor) i Spring Awakening".
         if self.produksjon:
@@ -215,9 +215,9 @@ class Arrangement(models.Model): # holder interne eller eksterne arrangementer s
     ATYPER = ((1,'internt'),(2,'eksternt')) # avgjør om arrangementet skal synes for eksterne lesere.
     atype = models.IntegerField("arrangementtype",choices=ATYPER)
     arrangører = models.ManyToManyField(Verv,blank=True) # holder vervene som skal kunne redigere arrangementet.
-    tittel = models.CharField(max_length=50)
+    tittel = models.CharField(max_length=60)
     tidspunkt = models.DateTimeField()
-    varighet = models.CharField(blank=True,max_length=22)
+    varighet = models.CharField(blank=True,max_length=60)
     lokale = models.ForeignKey(Lokale,models.PROTECT,related_name="arrangementer")
     banner = models.ImageField(upload_to='bannere/',default='default/katter.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
     info = models.TextField("beskrivelse (for eksterne)",blank=True) # holder en beskrivelse av arrangementet for eksterne lesere.
@@ -235,7 +235,7 @@ class Arrangement(models.Model): # holder interne eller eksterne arrangementer s
 
 
 class Hendelse(models.Model): # holder mindre hendelser som vises sammen med produksjoner, arrangementer og bilder på arkivsida.
-    tittel = models.CharField(max_length=50)
+    tittel = models.CharField(max_length=60)
     dato = models.DateField()
     beskrivelse = models.TextField()
     class Meta:
@@ -271,7 +271,7 @@ class Foto(models.Model): # holder bilder fra produksjoner, arrangementer eller 
 
 
 class Uttrykk(models.Model): # holder forklaringer på ord og forkortelser for nye medlemmer (feks "MG", "SIGP", "Store Øvre", ...).
-    tittel = models.CharField(max_length=50)
+    tittel = models.CharField(max_length=60)
     beskrivelse = models.TextField()
     class Meta:
         verbose_name_plural = "uttrykk"
@@ -291,7 +291,7 @@ class dTag(models.Model): # holder klassifiseringer for dokumenter (feks referat
 
 class Dokument(models.Model): # holder dokumenter og filer som ikke er knytta til noen av modellene ovafor (feks referater, sjekkeblekker, ...).
     dtags = models.ManyToManyField(dTag,"dokumenttags",blank=True)
-    tittel = models.CharField(max_length=50)
+    tittel = models.CharField(max_length=60)
     dato = models.DateField()
     fil = models.FileField(upload_to='dokumenter/')
     class Meta:
