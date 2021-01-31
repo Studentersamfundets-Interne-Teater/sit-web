@@ -93,7 +93,7 @@ class FEATURE_SETTINGS():
     TOGGLE_UTTRYKK = False # skrur på uttrykksliste.
     TOGGLE_ARKIV = False # skrur på Arkivet.
     TOGGLE_DOKUMENTER = False # skrur på dokumentoversikt.
-    TOGGLE_EDIT = True # skrur på redigeringsfunksjonalitet.
+    TOGGLE_EDIT = False # skrur på redigeringsfunksjonalitet.
 
 FEATURES = FEATURE_SETTINGS()
 
