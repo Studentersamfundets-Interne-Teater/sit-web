@@ -39,30 +39,27 @@
 
 	<div class="production-extra-info">
 		{% if produksjon.ptags.count %}
-		<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
-		<!--Lage eget ikon for sjanger her?-->
-		<p>{{produksjon.ptags.all|join:", "|capfirst}}</p>
-		</div>
+			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
+			<!--Lage eget ikon for sjanger her?-->
+			<p>{{produksjon.ptags.all|join:", "|capfirst}}</p>
+			</div>
 		{% endif %}
 		<div class="production-extra-info-box"><img src="{% static 'assets/location_icon.svg' %}">
 		<p>{{produksjon.lokale.all|join:", "}}</p>
 		</div>
 		{% if produksjon.varighet %}
-		<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
-		<p>{{produksjon.varighet}}</p>
-		</div>
+			<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
+			<p>{{produksjon.varighet}}</p>
+			</div>
 		{% endif %}
-		<!--<b>Opphavsår:</b> {{produksjon.opphavsar}}<br>-->
 		{% if produksjon.pris %}
-		<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
-		<p> {{produksjon.pris}} kr
-		{% if produksjon.medlemspris %}(Medlem: {{produksjon.medlemspris}} kr){% endif %}</p>
-		</div>
+			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
+			<p> {{produksjon.pris}} kr
+			{% if produksjon.medlemspris %}(Medlem: {{produksjon.medlemspris}} kr){% endif %}</p>
+			</div>
 		{% endif %}
-		
 	</div>
 	
-	<!--<b>Semester:</b> {{produksjon.semester}}<br>-->
 	<section class="production-information">
 		<div class="firstDivider"></div>
 		<a class="production-categories">Beskrivelse</a>
