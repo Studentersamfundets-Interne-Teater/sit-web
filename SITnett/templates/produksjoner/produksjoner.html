@@ -2,15 +2,15 @@
 {% load static %}
 
 {% block innhold %}
-<!--
 <div class="placeholder-content">
-	<iframe src="https://giphy.com/embed/mCRJDo24UvJMA" class="giphy-embed" frameBorder="0" style=height:250px></iframe>
-	<p class="text-info"><a href="https://giphy.com/gifs/dog-shiba-inu-typing-mCRJDo24UvJMA">via GIPHY</a></p>
+	<div class="placeholder-gif-wrapper">
+		<iframe src="https://giphy.com/embed/mCRJDo24UvJMA" class="giphy-embed" frameBorder="0" style=height:250px></iframe>
+		<p class="text-info"><a href="https://giphy.com/gifs/dog-shiba-inu-typing-mCRJDo24UvJMA">via GIPHY</a></p>
+	</div>
 	<h2>Under arbeid</h2>
 	<p>Denne siden er under arbeid. Se <a href="http://skrift.no/sit/index.asp?vis=nyheter" target="_blank" rel="noreferrer noopener">våre gamle nettsider</a> for å finne denne informasjonen</p>
 </div>
--->
-<div class="production-wrapper">
+{% comment %} <div class="production-wrapper">
 	<div class="card-wrapper">
 		{% for produksjon in pliste %}
 		<a class="card" href="{% url 'produksjon_info' produksjon.id %}">
@@ -26,6 +26,6 @@
 		<br><br>
 		<a href="{% url 'produksjon_ny' %}">Ny produksjon</a>
 		{% endif %}
-</div>
+</div> {% endcomment %}
 
 {% endblock innhold %}
