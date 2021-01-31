@@ -39,7 +39,7 @@ def view_kontakt(request):
 def view_medlemmer(request):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
-    mliste = models.Medlem.objects.filter(mtype=1)
+    mliste = models.Medlem.objects.all()
     return render(request, 'medlemmer/medlemmer.html', {'FEATURES': features,
         'mliste': mliste})
 

@@ -16,7 +16,9 @@
 				{% endif %}
 				<div class="card-container">
 				<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
-				<div class="text-info text-strong">{{medlem.get_status_display|capfirst}}</div> 
+				<div class="text-info text-strong">
+					{% if medlem.status %}{{medlem.get_status_display|capfirst}}
+					{% else %}{{medlem.get_mtype_display}}{% endif %}</div> 
 				</div>
 			</a>
 			{% endfor %}
