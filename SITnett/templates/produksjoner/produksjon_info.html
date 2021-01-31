@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block innhold %}
-	
-	{% block produksjon_info %}
 
 	<section class="production-banner-container">
 		<div class="production-banner">
@@ -12,110 +10,140 @@
 			</div>
 			<div class="production-banner-info-container">
 				<div class="production-banner-main">
+					{% block produksjon_tittel %}
 					<h2>{{produksjon.tittel}}</h2>
-					<p>Musikal av {{produksjon.forfatter}}</p>
+					<p>av {{produksjon.forfatter}}</p>
+					{% endblock produksjon_tittel %}
+					{% if produksjon.blurb %}<p><b>{{produksjon.blurb}}</b></p>{% endif %}
 				</div>
 				<div class="production-banner-info">
-					<p>{{produksjon.premiere}}</p>
+					{% for forestilling in produksjon.forestillinger.all %}
+						{{forestilling.tidspunkt}}
+						{% block forestilling_fjern %}
+						<br>
+						{% endblock forestilling_fjern %}
+					{% endfor %}
+					
+					{% block forestilling_ny %}
+
+					{% endblock forestilling_ny %}
 				</div>
+				{% if produksjon.billettlink %}
 				<div class="button-container">
-					<a class="btn btn__tickets">Finn billetter</a>
+					<a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</section>	
 
 	<div class="production-extra-info">
+		{% if produksjon.ptags.count %}
+		<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
+		<!--Lage eget ikon for sjanger her?-->
+		<p>{{produksjon.ptags.all|join:", "|capfirst}}</p>
+		</div>
+		{% endif %}
 		<div class="production-extra-info-box"><img src="{% static 'assets/location_icon.svg' %}">
-		<p>Spilles på {{produksjon.lokale}}</p></div>
+		<p>{{produksjon.lokale.all|join:", "}}</p>
+		</div>
 		{% if produksjon.varighet %}
 		<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
-		<p> {{produksjon.varighet}} </p> </div>
-		{% endif %}
-		<!--<b>Opphavsår:</b> {{produksjon.opphav}}<br>-->
-		<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
-		<p> Medlem: 100,-
-		Ikke-medlem: 150,- </p>
+		<p>{{produksjon.varighet}}</p>
 		</div>
+		{% endif %}
+		<!--<b>Opphavsår:</b> {{produksjon.opphavsar}}<br>-->
+		{% if produksjon.pris %}
+		<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
+		<p> {{produksjon.pris}} kr
+		{% if produksjon.medlemspris %}(Medlem: {{produksjon.medlemspris}} kr){% endif %}</p>
+		</div>
+		{% endif %}
 		
 	</div>
 	
 	<!--<b>Semester:</b> {{produksjon.semester}}<br>-->
 	<section class="production-information">
 		<div class="firstDivider"></div>
-		<a class="production-categories">Om stykket</a>
+		<a class="production-categories">Beskrivelse</a>
 		<div class="production-category-content">
-			<h3>Om stykket </h3>
-			<p>{{produksjon.info}}</p>
-			</div>
+			{% block produksjon_info %}
+				{% if produksjon.info %}
+				<p>{{produksjon.info}}</p>
+				{% endif %}
+				{% if user.is_authenticated and produksjon.memo %}
+				<p><i>{{produksjon.memo}}</i></p>
+				{% endif %}
+			{% endblock produksjon_info %}
+		</div>
 		<div class="divider"></div>
 		<a class="production-categories">Medvirkende</a>
 		<div class="production-category-content">
-			<h3>Medvirkende </h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
+		{% if produksjon.erfaringer.count %}
+			{% for verv, erfaringer in voppslag.items %}
+				<b>{{verv|capfirst}}:</b><br>
+				{% for erfaring in erfaringer %}
+					<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+					{% if erfaring.rolle %}
+						 ({{erfaring.rolle}})
+					{% endif %}
+					{% block medvirkende_verv_fjern %}
+					<br>
+					{% endblock medvirkende_verv_fjern %}
+				{% endfor %}
+				<br>
+			{% endfor %}
+			{% for tittel, erfaringer in toppslag.items %}
+				<b>{{tittel|capfirst}}:</b><br>
+				{% for erfaring in erfaringer %}
+					<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+					{% if erfaring.rolle %}
+						 ({{erfaring.rolle}})
+					{% endif %}
+					{% block medvirkende_tittel_fjern %}
+					<br>
+					{% endblock medvirkende_tittel_fjern %}
+				{% endfor %}
+				<br>
+			{% endfor %}
+		{% endif %}
+		{% block medvirkende_ny %}
+
+		{% endblock medvirkende_ny %}
 		</div>
 		<div class="divider"></div>
 		<a class="production-categories">Omtaler</a>
 		<div class="production-category-content">
-			<h3>Omtaler </h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
-		
+		{% if produksjon.anmeldelser.count %}
+			{% for anmeldelse in produksjon.anmeldelser.all %}
+				<p>
+				<i>{{anmeldelse.utdrag}}</i>
+				<p>{{anmeldelse.forfatter}}, {{anmeldelse.medium}}<br>
+				{% if user.is_authenticated or anmeldelse.gratis %}
+					<a href="{{anmeldelse.fil.url}}">Les hele anmeldelsen</a>
+				{% endif %}
+				{% block anmeldelse_fjern %}
+				<br>
+				{% endblock anmeldelse_fjern %}
+				</p>
+				</p>
+			{% endfor %}
+		{% endif %}
+		{% block anmeldelse_ny %}
+
+		{% endblock anmeldelse_ny %}
 		</div>
 		<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
 			<h3>Bildegalleri </h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
+			<p>Her kommer bildegalleri fra produksjonen!</p>
 		
 		</div>
 		<div class="divider"></div>
 	</section>
 
-
-
-	<!--
-	<br>
-	{{produksjon.info}}<br>
-	{% if user.is_authenticated %}
-		{% if produksjon.memo %}<br><i>{{produksjon.memo}}</i><br>{% endif %}
-	{% endif %}
-	<br><img src="{{produksjon.plakat.url}}" height=300>
-	{% endblock produksjon_info %}
-
-	
-	<h4>Forestillinger</h4>
-	
-	{% for forestilling in produksjon.forestillinger.all %}
-		{{forestilling.tidspunkt}}
-		{% block forestilling_fjern %}
-		<br>
-		{% endblock forestilling_fjern %}
-	{% endfor %}
-	
-	{% block forestilling_ny %}
-
-	{% endblock forestilling_ny %}
-
-	{% if produksjon.erfaringer.count %}
-		<h4>Medvirkende</h4>
-		{% for verv, erfaringer in verv_dict.items %}
-			<b>{{verv|capfirst}}:</b>
-			<br>
-			{% for erfaring in erfaringer %}
-				<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
-				{% if erfaring.rolle %}
-					 ({{erfaring.rolle}})
-				{% endif %}
-				{% block medvirkende_fjern %}
-				<br>
-				{% endblock medvirkende_fjern %}
-			{% endfor %}
-			<br>
-		{% endfor %}
-	{% endif %}
-	{% block medvirkende_ny %}
-
-	{% endblock medvirkende_ny %}
+	{% if produksjon.plakat %}<br><img src="{{produksjon.plakat.url}}" height=300>{% endif %}
 
 	{% block produksjon_nav %}
 
@@ -129,7 +157,6 @@
 		{% endif %}
 
 	{% endblock produksjon_nav %}
-
-	-->
+	
 	<script src="{% static 'collapsible.js' %}"></script>
 {% endblock innhold %}

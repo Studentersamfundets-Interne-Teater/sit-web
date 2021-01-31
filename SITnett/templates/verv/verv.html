@@ -1,0 +1,12 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<h1>Verv</h1>
+	{% for verv in vliste %}
+		{% if verv.erfaringsoverforing %}
+		<a href="{% url 'verv_info' verv.id %}">{{verv|capfirst}}</a><br>
+		{% endif %}
+	{% endfor %}
+
+{% endblock innhold %}

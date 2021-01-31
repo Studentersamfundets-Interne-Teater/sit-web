@@ -1,0 +1,14 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<p>Er du sikker på at du vil fjerne {{anmeldelse.forfatter}}s anmeldelse av {{anmeldelse.produksjon.tittel}}? All data knyttet til anmeldelsen slettes permanent.</p>
+
+	<form action="{% url 'anmeldelse_fjern' anmeldelse.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="Ja">
+	</form>
+	<a href="{% url 'produksjon_info' anmeldelse.produksjon.id %}">Nei</a>
+	<br><br>
+
+{% endblock innhold %}

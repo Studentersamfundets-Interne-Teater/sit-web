@@ -24,7 +24,6 @@
 			<a href="{% url 'kontakt' %}">Kontakt</a>
 			<a href="{% url 'medlemmer' %}">Medlemmer</a>
 			<a href="{% url 'produksjoner' %}">Produksjoner</a>
-			<!--
 			{% if user.is_authenticated %}
 			<a href="{% url 'verv' %}">Verv</a>
 			<a href="{% url 'uttrykk' %}">Uttrykk</a>
@@ -32,7 +31,6 @@
 			<a href="{% url 'arkiv' %}">Arkiv</a>
 			<a href="http://sit-bar.samfundet.no/">Badeportal</a>
 			{% endif %}
-			-->
 			{% if not user.is_authenticated %}
 			<a href="{% url 'opptak' %}">Søk SIT</a>
 			{% endif %}
@@ -40,9 +38,9 @@
 
 		<status id="status">
 			{% if user.is_authenticated %}
-			<a href="{% url 'logout' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">  Logg ut</a>
+			<a href="{% url 'logout' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">{{user.username}} Logg ut</a>
 			{% else %}
-			<a href="{% url 'login' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">  Logg inn </a>
+			<a href="{% url 'login' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">  Logg inn</a>
 			{% endif %}
 		</status>
 		<a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerFunction()">
