@@ -3,7 +3,10 @@
 {% block innhold %}
 	
 	<div class="member-image-container">
-		<img src="{{medlem.portrett.url}}">
+		{% if user.is_authenticated %}
+			{% if medlem.portrett.url %}<img src="{{medlem.portrett.url}}">{% endif %}
+			{% else %} <img src="/files/default/katt.png">
+		{% endif %}
 	</div>
 	
 	<div class="member-general-info">
