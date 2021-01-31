@@ -22,7 +22,7 @@ class Medlem(models.Model):
     status = models.IntegerField(choices=STATUSER,blank=True,null=True)
     portrett = models.ImageField(upload_to='portretter/',default='/default/katt.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
     kallenavn = models.CharField(blank=True,max_length=30)
-    telefon = models.CharField("telefonnummer",blank=True,max_length=8)
+    telefon = models.CharField("telefonnummer",blank=True,max_length=20)
     epost = models.EmailField("e-postadresse",blank=True,max_length=60)
     studium = models.CharField(blank=True,max_length=30)
     jobb = models.CharField(blank=True,max_length=30)
