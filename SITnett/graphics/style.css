@@ -315,11 +315,27 @@ p {
 	position: relative;
 	cursor: pointer;
 	width: 100%;
-	background-color: var(--sit-gunmetal-light);
+	background-color: var(--main-bg-color);
+	border: 2px solid var(--sit-grullo-light);
 }
   
 .card:hover {
 box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.card-kostyme{
+	background-color: var(--sit-gunmetal-light);
+	border: none;
+}
+
+.card-kulisse{
+	background-color: var(--sit-grullo-light);
+	border: none;
+}
+
+.card-skuespill{
+	background-color: var(--sit-red-light);
+	border: none;
 }
 
 .card-image{
@@ -568,7 +584,7 @@ select{
 	}
 	.card-wrapper {
 		grid-gap: 1.5rem 2.5rem;
-		grid-template-columns: repeat(auto-fit, minmax(168px, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(168px, 2fr));
 	}
 	.card-wrapper-production {
 		grid-gap: 1.5rem 2.5rem;
@@ -829,4 +845,39 @@ select{
 	.member-information {
 		margin-bottom: 100px;
 	}
+}
+
+/* 4.5 Image gallery */
+.image-gallery{
+	height: 40vh;
+	display: grid;
+	grid-template-columns: 1fr 5fr;
+	grid-gap: 10px;
+	overflow: hidden;
+}
+
+.image-in-gallery {
+	display: block;
+	max-width: 100%;
+}
+
+.gallery-focus-container {
+	position: relative;
+	display: block;
+	height: 100%;
+}
+
+.gallery-focus{
+	object-fit: contain;
+	width: 100%;
+}
+
+#imgtext {
+	display: block;
+	font-size: 20px;
+}
+
+.gallery-nav {
+	overflow-y: scroll;
+	overflow-x: hidden;
 }

@@ -64,13 +64,29 @@
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
 			<h3>Bildegalleri </h3>
-			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.  </p>
-		
+			<div class="image-gallery">
+				<nav class="gallery-nav">
+					{% if produksjon.bilder.count %}
+						{% for bilde in produksjon.bilder.all %}
+							<img class="image-in-gallery" src="{{bilde.fil.url}}" 
+							alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br/>
+							{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %} <br/>
+							{% if bilde.arrangement %} {{ bilde.arrangement }} {% endif %} 
+							{% if bilde.dato %} {{ bilde.dato }} {% endif %}" onclick="galleryNavigation(this);" />
+						{% endfor %}
+					{% endif %}
+				</nav>
+				<div class="gallery-focus-container">
+					<img class="gallery-focus" src="{{produksjon.plakat.url}}" id="expandedImg">
+				</div>
+			</div>
+			<div id="imgtext">Plakat</div>
 		</div>
 		<div class="divider"></div>
 	</section>
 
-
+	{% load static %}
+	<script src="{% static 'image_gallery.js' %}"></script>
 
 	<!--
 	<br>
