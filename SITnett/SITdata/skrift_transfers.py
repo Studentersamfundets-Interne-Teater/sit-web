@@ -1,7 +1,7 @@
 # Some hacky stuff so that we can run scripts with Django packages
 # https://stackoverflow.com/questions/45737387/django-settings-module-no-module-named
 import sys
-sys.path.append("/Users/erik/projects/sit-web/SITnett")
+sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SITnett.settings")
 import django
