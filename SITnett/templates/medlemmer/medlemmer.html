@@ -21,8 +21,8 @@
 		<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
 			<img src="{{medlem.portrett.url}}" class="card-image">
 			<div class="card-container">
-				<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
-				<div class="text-info text-strong">{{medlem.get_status_display}}</div> 
+			<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
+			<div class="text-info text-strong">{{medlem.get_status_display|capfirst}}</div> 
 			</div>
 		</a>
 		{% endfor %}

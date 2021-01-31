@@ -793,3 +793,38 @@ select{
 	text-align: center;
 	margin: auto;
 }
+
+/* 4.5 Image gallery */
+.image-gallery{
+	height: 40vh;
+	display: grid;
+	grid-template-columns: 1fr 5fr;
+	grid-gap: 10px;
+	overflow: hidden;
+}
+
+.image-in-gallery {
+	display: block;
+	max-width: 100%;
+}
+
+.gallery-focus-container {
+	position: relative;
+	display: block;
+	height: 100%;
+}
+
+.gallery-focus{
+	object-fit: contain;
+	width: 100%;
+}
+
+#imgtext {
+	display: block;
+	font-size: 20px;
+}
+
+.gallery-nav {
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
