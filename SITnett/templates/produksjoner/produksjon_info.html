@@ -136,7 +136,6 @@
 		<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
-			<h3>Bildegalleri </h3>
 			<div class="image-gallery">
 				<nav class="gallery-nav">
 					{% if produksjon.bilder.count %}
@@ -149,16 +148,17 @@
 						{% endfor %}
 					{% endif %}
 				</nav>
-				<div class="gallery-focus-container">
-					<img class="gallery-focus" src="{{produksjon.plakat.url}}" id="expandedImg">
-				</div>
+				{% if produksjon.plakat %}
+					<div class="gallery-focus-container">
+						<img class="gallery-focus" src="{{produksjon.plakat.url}}" id="expandedImg">
+					</div>
+				{% endif %}
 			</div>
-			<div id="imgtext">Plakat</div>
+			{% if produksjon.plakat %}<div id="imgtext">Plakat</div>{% endif %}
 		</div>
 		<div class="divider"></div>
 	</section>
 
-	{% if produksjon.plakat %}<br><img src="{{produksjon.plakat.url}}" height=300>{% endif %}
 
 	{% block produksjon_nav %}
 
