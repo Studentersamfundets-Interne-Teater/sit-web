@@ -2,7 +2,7 @@
 
 {% block innhold %}
 
-	<p>Er du sikker på at du vil fjerne {{utmerkelse.medlem}}s utmerkelse som {{utmerkelse.tittel}}? All data knyttet til utmerkelsen slettes permanent.</p>
+	<p>Er du sikker på at du vil fjerne {{utmerkelse.medlem}}s utmerkelse som {{utmerkelse.full_tittel}}? All data knyttet til utmerkelsen slettes permanent.</p>
 
 	<form action="{% url 'utmerkelse_fjern' utmerkelse.id %}" method="post">
 		{% csrf_token %}
