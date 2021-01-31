@@ -2,24 +2,19 @@
 {% load static %}
 
 {% block innhold %}
-<div class="placeholder-content">
-	<div class="placeholder-gif-wrapper">
-		<iframe src="https://giphy.com/embed/hrRJ41JB2zlgZiYcCw" class="giphy-embed" frameBorder="0" style=height:200px></iframe>
-		<p class="text-info"><a href="https://giphy.com/gifs/memecandy-hrRJ41JB2zlgZiYcCw">via GIPHY</a></p>
-	</div>
-	<h2>Under arbeid</h2>
-	<p>Denne siden er under arbeid. Se <a href="http://skrift.no/sit/index.asp?vis=medlem" target="_blank" rel="noreferrer noopener">våre gamle nettsider</a> for å finne denne informasjonen</p>
-</div>
-
-{% comment %} <div class="wrapper">
+<div class="wrapper">
 	<div class="title-wrapper">
 		<h2>Medlemmer</h2>
-		Se alle SITs medlemmer gjennom tidene
+		Se alle SITs medlemmer gjennom tidene. 
+		Logg inn for å se bilder og andre detaljer.
 	</div>
 	<div class="card-wrapper">
 		{% for medlem in mliste %}
 		<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
-			<img src="{{medlem.portrett.url}}" class="card-image">
+			{% if user.is_authenticated %}
+				{% if medlem.portrett.url %}<img src="{{medlem.portrett.url}}" class="card-image">{% endif %}
+				{% else %} <img src="/files/default/katt.png" class="card-image">
+			{% endif %}
 			<div class="card-container">
 			<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
 			<div class="text-info text-strong">{{medlem.get_status_display|capfirst}}</div> 
@@ -34,6 +29,5 @@
 		<a class="btn" href="{% url 'medlem_ny' %}">Nytt medlem</a>
 	</div>
 	{% endif %}
-</div> {% endcomment %}
-
+</div>
 {% endblock innhold %}

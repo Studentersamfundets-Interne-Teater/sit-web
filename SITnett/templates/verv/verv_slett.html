@@ -1,0 +1,22 @@
+{% extends "verv/verv_info.html" %}
+
+{% block verv_tittel %}
+
+	<p>Er du sikker på at du vil slette vervet {{verv}}? All data knyttet til vervet slettes permanent – inkludert alle medlemmers erfaringer med vervet.</p>
+
+	<form action="{% url 'verv_slett' verv.id %}" method="post">
+		{% csrf_token %}
+		<input type="submit" value="Ja">
+	</form>
+	<a href="{% url 'verv_info' verv.id %}">Nei</a>
+	<br><br>
+
+{% endblock verv_tittel %}
+
+
+{% block verv_nav %}
+
+	<br><br>
+	<a href="{% url 'verv_info' verv.id %}">Vis verv</a>
+
+{% endblock verv_nav %}

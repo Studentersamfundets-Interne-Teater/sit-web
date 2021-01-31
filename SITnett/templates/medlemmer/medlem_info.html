@@ -2,10 +2,11 @@
 
 {% block innhold %}
 	
-	
 	<div class="member-image-container">
-		{% block medlem_info %}
-		<img src="{{medlem.portrett.url}}">
+		{% if user.is_authenticated %}
+			{% if medlem.portrett.url %}<img src="{{medlem.portrett.url}}">{% endif %}
+			{% else %} <img src="/files/default/katt.png">
+		{% endif %}
 	</div>
 	
 	<div class="member-general-info">
@@ -28,22 +29,14 @@
 					
 					{% endblock utmerkelse_fjern %}
 					<br>
-				{% endfor %}
-			{% endif %}
-			{% block utmerkelse_ny %}
+			{% endfor %}
+		{% endif %}
+		{% block utmerkelse_ny %}
 
-			{% endblock utmerkelse_ny %}
+		{% endblock utmerkelse_ny %}
 		</i>
+		{% block medlem_info %}
 		<br>
-		
-		<!--
-		<br><br>
-		<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
-		<b>Opptaksår:</b> {{medlem.opptak}}<br>
-		<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
-		-->
-		
-		
 		<br>
 		<table style="width:100%">
 			<tr>
@@ -51,38 +44,37 @@
 				<td>{{medlem.opptaksar}}</td> 
 			  </tr>
 			{% if user.is_authenticated %}
-			<tr>
-				<td><br></td>
-				<td><br></td>
-			</tr>
-			<tr>
-			  <td><b>Mobil:</b> </td>
-			  <td>{{medlem.telefon}}</td> 
-			</tr>
-			<tr>
-			  <td><b>E-post:</b></td>
-			  <td>{{medlem.epost}}</td> 
-			</tr>
-			<tr>
-				<td><br></td>
-				<td><br></td>
-			</tr>
-				
-			<tr>
-			  <td><b>Studerer:</b></td>
-			  <td>{{medlem.studium|capfirst}}</td> 
-			</tr>
-			<tr>
-			<td><b>Bursdag:</b></td>
-			<td>{{medlem.fodselsdato}}</td> 
-			</tr>
-			{% if medlem.jobb %}
-			<tr>
-			<td><b>Jobb:</b></td>
-			<td>{{medlem.jobb|capfirst}}</td> 
-			</tr>
-			{% endif %}
-
+				<tr>
+					<td><br></td>
+					<td><br></td>
+				</tr>
+				<tr>
+				  <td><b>Telefon:</b> </td>
+				  <td>{{medlem.telefon}}</td> 
+				</tr>
+				<tr>
+				  <td><b>E-post:</b></td>
+				  <td>{{medlem.epost}}</td> 
+				</tr>
+				<tr>
+					<td><br></td>
+					<td><br></td>
+				</tr>
+					
+				<tr>
+				  <td><b>Studerer:</b></td>
+				  <td>{{medlem.studium|capfirst}}</td> 
+				</tr>
+				<tr>
+				<td><b>Fødselsdag:</b></td>
+				<td>{{medlem.fodselsdato}}</td> 
+				</tr>
+				{% if medlem.jobb %}
+					<tr>
+					<td><b>Jobb:</b></td>
+					<td>{{medlem.jobb|capfirst}}</td> 
+					</tr>
+				{% endif %}
 			{% endif %}
 		</table>
 		<br>
@@ -91,64 +83,45 @@
 
 	<section class="member-information">
 		<div class="member-firstDivider"></div>
-		<a class="member-categories"><h3>Medvirker i</h3></a>
-		<div class="member-category-content">
-			{% if medlem.erfaringer.count %}
-				
-				{% for erfaring in medlem.erfaringer.all %}
-					{% if erfaring.verv.vtype == 3  %}
-					
-						<table style="width:100%">
-							<tr>
-							<td><h3>{{erfaring.produksjon.semester}} </h3></td>
-							<td><b>{{erfaring.produksjon.tittel}}</b> <br> {{erfaring.rolle}}</td> 
-							</tr>
-						</table>
-					{% endif %}
-				{% endfor %}
-				
-			{% endif %}
-		
-			
-			{% block erfaring_ny %}
-
-			{% endblock erfaring_ny %}
-
-		</div>
-		<div class="member-divider"></div>
-		<a class="member-categories"><h3>Verv</h3></a>
+		<a class="member-categories"><h3>Erfaringer</h3></a>
 		<div class="member-category-content">
 			{% if medlem.erfaringer.count %}
 				{% for erfaring in medlem.erfaringer.all %}
-
-					{% if erfaring.verv.vtype <= 2  %}
-						{{erfaring.full_tittel}}
-					{% endif %}
-<!-- 
-					{{erfaring.verv|capfirst}} 
-					{% if erfaring.verv.vtype <= 2 %}
-						i {{erfaring.ar}}
-					{% else %}
-						{% if erfaring.verv.vtype == 3 %}
-							for 
-						{% elif erfaring.rolle %}
-							({{erfaring.rolle}}) i
+					{% if erfaring.verv %}
+						{% if erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+							<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv|capfirst}}</a>
 						{% else %}
-							i 
+							{{erfaring.verv|capfirst}}
 						{% endif %}
-						<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
-					{% endif %} -->
+						{% if erfaring.ar %}
+							 i {{erfaring.ar}}
+						{% else %}
+							{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+							 for <a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+						{% endif %}
+					{% else %}
+						{{erfaring.tittel|capfirst}}
+						{% if erfaring.ar %}
+							 i {{erfaring.ar}}
+						{% else %}
+							{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+							 for <a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+						{% endif %}
+					{% endif %}
 					{% block erfaring_fjern %}
 					
 					{% endblock erfaring_fjern %}
 					<br>
 				{% endfor %}
 			{% endif %}
+			{% block erfaring_ny %}
+
+			{% endblock erfaring_ny %}
 		</div>
 	</section>
 
 
-	<!-- {% block medlem_nav %}
+	{% block medlem_nav %}
 	{% if user.is_authenticated %}
 		<br><br>
 		<a href="{% url 'medlem_redi' medlem.id %}">Endre medlem</a>
@@ -157,6 +130,6 @@
 		<br><br>
 		<a href="{% url 'medlem_slett' medlem.id %}">Slett medlem</a>
 	{% endif %}
-	{% endblock medlem_nav %} -->
+	{% endblock medlem_nav %}
 
 {% endblock innhold %}
