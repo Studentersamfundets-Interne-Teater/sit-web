@@ -12,6 +12,7 @@ from SITdata import skrift_transfers
 
 def view_hoved(request):
     # skrift_transfers.transfer_all_medlemmer("/Users/jacob/Downloads/sit skrift/sit/")
+    # skrift_transfers.transfer_all_produksjoner("/Users/jacob/Downloads/sit skrift/sit/")
     return render(request, 'hoved.html')
 
 
