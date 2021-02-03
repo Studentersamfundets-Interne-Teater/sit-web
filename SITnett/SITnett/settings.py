@@ -91,6 +91,8 @@ class FEATURE_SETTINGS():
     TOGGLE_PRODUKSJONER = False # skrur på produksjonsoversikt og produksjonssider.
     TOGGLE_VERV = False # skrur på vervoversikt og vervsider.
     TOGGLE_UTTRYKK = False # skrur på uttrykksliste.
+    TOGGLE_KONTAKT = True # skrur på kontaktliste.
+    TOGGLE_HENDELSER = False # skrur på arrangements- og hendelsesoversikt.
     TOGGLE_ARKIV = False # skrur på Arkivet.
     TOGGLE_DOKUMENTER = False # skrur på dokumentoversikt.
     TOGGLE_EDIT = False # skrur på redigeringsfunksjonalitet.

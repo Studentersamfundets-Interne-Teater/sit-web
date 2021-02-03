@@ -68,7 +68,7 @@ class AnmeldelseForm(forms.ModelForm):
 class VervAdminForm(forms.ModelForm):
     class Meta:
         model = models.Verv
-        fields = ['tittel','vtype','vtags','erfaringsoverforing','instruks','beskrivelse']
+        fields = ['tittel','vtype','vtags','erfaringsoverforing','epost','henvendelser','instruks','beskrivelse']
 
 class VervOwnForm(forms.ModelForm):
     class Meta:

@@ -74,16 +74,20 @@ class vTag(models.Model): # holder klassifiseringer for verv (feks prodapp, øva
         return self.tag
 
 class Verv(models.Model):
-    VTYPER = ((1,'styre'),(2,'gjeng'),(3,'produksjons'))
+    VTYPER = ((1,'styre'),(2,'ekstern-gjeng'),(3,'intern-gjeng'),(4,'produksjons'))
     # Typen 'gjeng' er ment for årsvervene som velges på genfors (utenom Styret).
     vtype = models.IntegerField("vervtype",choices=VTYPER)
     vtags = models.ManyToManyField(vTag,"vervtags",blank=True)
     tittel = models.CharField(max_length=60)
     erfaringsoverforing = models.BooleanField("erfaringsoverføring") # avgjør om vervet skal ha en egen infoside med mulighet for erfaringsskriv.
+    epost = models.EmailField("e-postadresse",blank=True,max_length=60) # holder en eventuell e-postadresse for alle med vervet.
+    henvendelser = models.CharField(blank=True,max_length=100) # holder en liste over hvilke henvendelser gjengvervet tar imot (til kontaktsida).
     instruks = models.TextField(blank=True) # holder en eventuell instruksfesta beskrivelse av vervet.
     beskrivelse = models.TextField(blank=True) # holder en eventuell grundigere beskrivelse av vervet.
     def plural(self): # bøyer vervnavnet i flertall (til listevisninger).
-        if self.tittel[-2:] == "er":
+        if self.tittel[-7:] == "gjengis":
+            return self.tittel[:-2]+"en"
+        elif self.tittel[-2:] == "er":
             return self.tittel+"e"
         else:
             return self.tittel+"er"

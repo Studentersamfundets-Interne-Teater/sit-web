@@ -78,19 +78,11 @@
 		<div class="production-category-content">
 		{% if produksjon.erfaringer.count %}
 			{% for verv, erfaringer in voppslag.items %}
-				{% if FEATURES.TOGGLE_VERV %}
-					{% if verv.erfaringsoverforing and user.is_authenticated %}
-						{% if erfaringer.count > 1 %}
-							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a><br>
-						{% else %}
-							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a><br>
-						{% endif %}
+				{% if FEATURES.TOGGLE_VERV and verv.erfaringsoverforing and user.is_authenticated %}
+					{% if erfaringer.count > 1 %}
+						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a><br>
 					{% else %}
-						{% if erfaringer.count > 1 %}
-							<b>{{verv.plural|capfirst}}:</b><br>
-						{% else %}
-							<b>{{verv.tittel|capfirst}}:</b><br>
-						{% endif %}
+						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a><br>
 					{% endif %}
 				{% else %}
 					{% if erfaringer.count > 1 %}
