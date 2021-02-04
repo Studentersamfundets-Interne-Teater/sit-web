@@ -1,13 +1,133 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
-<div class="placeholder-content">
-	<div class="placeholder-gif-wrapper">
-		<iframe src="https://giphy.com/embed/E6jscXfv3AkWQ" class="giphy-embed" frameBorder="0"></iframe>
-		<p class="text-info"><a href="https://giphy.com/gifs/cat-typing-E6jscXfv3AkWQ">via GIPHY</a></p>
-	</div>
-	<h2>Under arbeid</h2>
-	<p>Denne siden er under arbeid. Se <a href="http://skrift.no/sit/index.asp?vis=kontakt" target="_blank" rel="noreferrer noopener">våre gamle nettsider</a> for å finne denne informasjonen</p>
-</div>
+	
+	<h2>Kontakt</h2>
+
+	<b>Generelle henvendelser: </b> sit@samfundet.no
+
+	{% if soppslag %}
+		<h3>Styret</h3>
+		<table style="width:100%">
+			<tr>
+				<td><b>STILLING</b></td>
+				<td><b>NAVN</b></td>
+				<td><b>HENVENDELSER</b></td>
+				<td><b>E-POST</b></td>
+			</tr>
+			{% for verv, erfaringer in soppslag.items %}
+				<tr>
+					{% if erfaringer.count > 1 %}
+						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a></td>
+						{% else %}
+							<td><b>{{verv.plural|capfirst}}:</b></td>
+						{% endif %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						{% else %}
+							<td>{{erfaringer.first.medlem}}</td>
+						{% endif %}
+						{% for erfaring in erfaringer %}
+							{% if forloop.counter > 1 %}
+								<td></td><td></td></tr><tr><td></td>
+								{% if FEATURES.TOGGLE_MEDLEMMER %}
+									<td><a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+								{% else %}
+									<td>{{erfaring.medlem}}</td>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a></td>
+						{% else %}
+							<td><b>{{verv.tittel|capfirst}}:</b></td>
+						{% endif %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						{% else %}
+							<td>{{erfaringer.first.medlem}}</td>
+						{% endif %}
+					{% endif %}
+					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}
+					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
+				</tr>
+			{% endfor %}
+		</table>
+		<br><br>
+	{% endif %}
+
+	{% if goppslag %}
+		<h3>Gjengverv</h3>
+		<table style="width:100%">
+			<tr>
+				<td><b>STILLING</b></td>
+				<td><b>NAVN</b></td>
+				<td><b>HENVENDELSER</b></td>
+				<td><b>E-POST</b></td>
+			</tr>
+			{% for verv, erfaringer in goppslag.items %}
+				<tr>
+					{% if erfaringer.count > 1 %}
+						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a></td>
+						{% else %}
+							<td><b>{{verv.plural|capfirst}}:</b></td>
+						{% endif %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						{% else %}
+							<td>{{erfaringer.first.medlem}}</td>
+						{% endif %}
+						{% for erfaring in erfaringer %}
+							{% if forloop.counter > 1 %}
+								<td></td><td></td></tr><tr><td></td>
+								{% if FEATURES.TOGGLE_MEDLEMMER %}
+									<td><a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+								{% else %}
+									<td>{{erfaring.medlem}}</td>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+					{% else %}
+						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a></td>
+						{% else %}
+							<td><b>{{verv.tittel|capfirst}}:</b></td>
+						{% endif %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						{% else %}
+							<td>{{erfaringer.first.medlem}}</td>
+						{% endif %}
+					{% endif %}
+					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
+					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
+				</tr>
+			{% endfor %}
+		</table><br><br>
+	{% endif %}
+
+	{% if user.is_authenticated %}
+		<h3>Medlemmer</h3>
+		<table style="width:100%">
+			<tr>
+				<td><b>NAVN</b></td>
+				<td><b>TELEFON</b></td>
+				<td><b>E-POST</b></td>
+			</tr>
+			{% for medlem in mliste %}
+				<tr>
+					<td>
+						<a href="{% url 'medlem_info' medlem.id %}"><b>{{medlem.etternavn}}, {{medlem.fornavn}}
+						{% if medlem.mellomnavn %}{{medlem.mellomnavn}}{% endif %}</b></a>
+					</td>
+					<td>{% if medlem.telefon %}{{medlem.telefon}}{% endif %}</td>
+					<td>{% if medlem.epost %}{{medlem.epost}}{% endif %}</td>
+				</tr>
+			{% endfor %}
+		</table><br><br>
+	{% endif %}
 
 {% endblock innhold %}
