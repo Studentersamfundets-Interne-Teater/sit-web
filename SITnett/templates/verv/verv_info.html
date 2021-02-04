@@ -1,0 +1,74 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+	
+	{% block verv_tittel %}
+	<h3>{{verv|capfirst}}</h3>
+	{% endblock verv_tittel %}
+
+	{% block verv_info %}
+	
+		<p><b>Vervtype:</b> {{verv.get_vtype_display|capfirst}}verv
+		{% if verv.vtags.count %} ({{verv.vtags.all|join:", "|capfirst}}){% endif %}</p>
+
+		{% if verv.beskrivelse %}<p>{{verv.beskrivelse}}</p>{% endif %}
+
+		{% if verv.instruks %}<p><b>Fra instruksen:</b> <i>{{verv.instruks}}</i></p>{% endif %}
+
+	{% endblock verv_info %}
+
+
+	{% if verv.erfaringer.count %}
+		<h4>{{verv.plural|capfirst}} gjennom tidene</h4>
+
+		{% block erfaringsskriv_endre %}
+
+		{% endblock erfaringsskriv_endre %}
+
+		{% for erfaring in verv.erfaringer.all %}
+			{% if erfaring.medlem %}
+				<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+			{% else %}
+				{{erfaring.navn}
+			{% endif %}
+			{% if erfaring.produksjon %}
+				{% if erfaring.rolle %} som {{erfaring.rolle}} i {% else %} for {% endif %}
+				{% if FEATURES.TOGGLE_PRODUKSJONER %}
+					<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+				{% else %}
+					{{erfaring.produksjon}}
+				{% endif %}
+			{% else %}
+				i {{erfaring.ar}}
+			{% endif %}
+			{% if erfaring.skriv %}
+				 – <a href="{{erfaring.skriv.url}}">Erfaringsskriv</a>
+			{% endif %}
+			<br>
+		{% endfor %}
+	{% endif %}
+
+	{% block erfaring_ny %}
+
+	{% endblock erfaring_ny %}
+
+
+	{% block verv_nav %}
+
+		{% if FEATURES.TOGGLE_EDIT %}
+			{% if access == 'admin' or access == 'own' %}
+				<br><br>
+				<a href="{% url 'verv_redi' verv.id %}">Endre verv</a>
+				<br>
+			{% endif %}
+			{% if perms.SITdata.delete_verv %}
+				<br><br>
+				<a href="{% url 'verv_slett' verv.id %}">Slett verv</a>
+				<br>
+			{% endif %}
+			<br>
+		{% endif %}
+
+	{% endblock verv_nav %}
+
+{% endblock innhold %}

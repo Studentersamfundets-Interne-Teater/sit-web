@@ -5,10 +5,11 @@
 	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
 		{{pform}}
-		<input type="submit" value="Lagre endringer">
+		<input type="submit" name='lagre_produksjon' value="Lagre endringer">
 	</form>
 
 {% endblock produksjon_info %}
+
 
 {% block forestilling_fjern %}
 
@@ -19,32 +20,64 @@
 {% block forestilling_ny %}
 
 	<br>
-	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+	<form action="{% url 'produksjon_redi' produksjon.id %}" method="post" class="form-wrapper">
 		{% csrf_token %}
 		<div class="ingress">Ny forestilling</div>
 		{{fform}}
-		<input type="submit" value="Legg til">
+		<input type="submit" name='lagre_forestilling' value="Legg til">
 	</form>
 
 {% endblock forestilling_ny %}
 
-{% block medvirkende_fjern %}
+
+{% block medvirkende_verv_fjern %}
+
 	<a href="{% url 'erfaring_fjern' erfaring.id %}">Fjern</a><br>
-{% endblock medvirkende_fjern %}
+
+{% endblock medvirkende_verv_fjern %}
+
+{% block medvirkende_tittel_fjern %}
+
+	<a href="{% url 'erfaring_fjern' erfaring.id %}">Fjern</a><br>
+
+{% endblock medvirkende_tittel_fjern %}
 
 {% block medvirkende_ny %}
+
 	<br>
-	<form action="{% url 'produksjon_redi' produksjon.id %}" method="post" class="form-wrapper">
+	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
 		<div class="ingress">Ny medvirkende</div>
 		{{eform}}
-		<input type="submit" value="Legg til">
+		<input type="submit" name='lagre_erfaring' value="Legg til">
 	</form>
+
 {% endblock medvirkende_ny %}
+
+
+{% block anmeldelse_fjern %}
+
+	<a href="{% url 'anmeldelse_fjern' anmeldelse.id %}">Fjern</a><br>
+
+{% endblock anmeldelse_fjern %}
+
+{% block anmeldelse_ny %}
+
+	<br>
+	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+		{% csrf_token %}
+		<div class="ingress">Ny anmeldelse</div>
+		{{aform}}
+		<input type="submit" name='lagre_anmeldelse' value="Legg til">
+	</form>
+
+{% endblock anmeldelse_ny %}
+
 
 {% block produksjon_nav %}
 
 	<br><br>
 	<a href="{% url 'produksjon_info' produksjon.id %}">Vis produksjon</a>
+	<br>
 
 {% endblock produksjon_nav %}

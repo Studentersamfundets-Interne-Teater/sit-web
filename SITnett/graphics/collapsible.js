@@ -22,6 +22,7 @@ else {
     categories[i].addEventListener("click", function() {
       this.classList.toggle("active");
       var content = this.nextElementSibling; 
+      
       this.style.fontWeight = "600"; //Bold font when active
       for (j = 0; j<categories.length; j++) {
         if (categories[j].nextElementSibling !== content) {

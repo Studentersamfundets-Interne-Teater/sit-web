@@ -1,17 +1,11 @@
 {% extends "meny.html" %}
+{% load static %}
 
 {% block innhold %}
-<!-- <div class="placeholder-content">
-	<iframe src="https://giphy.com/embed/hrRJ41JB2zlgZiYcCw" class="giphy-embed" frameBorder="0" style=height:200px></iframe>
-	<p class="text-info"><a href="https://giphy.com/gifs/memecandy-hrRJ41JB2zlgZiYcCw">via GIPHY</a></p>
-	<h2>Under arbeid</h2>
-	<p>Denne siden er under arbeid. Se <a href="http://skrift.no/sit/index.asp?vis=medlem" target="_blank" rel="noreferrer noopener">våre gamle nettsider</a> for å finne denne informasjonen</p>
-</div> -->
 
 <div class="wrapper">
 	<div class="title-wrapper">
 		<h2>Medlemmer</h2>
-		Se alle SITs medlemmer gjennom tidene
 	</div>
 	<form action="" method="get">
 	<h3>Søk</h3>
@@ -122,26 +116,35 @@
 
 	<div class="card-wrapper">
 		{% for medlem in mliste %}
-			<a class="card" href="{% url 'medlem_info' medlem.id %}">
-				<img src="{{medlem.portrett.url}}" class="card-image">
+			<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
+				{% if user.is_authenticated and medlem.portrett.url %}
+					<img src="{{medlem.portrett.url}}" class="card-image">
+				{% else %}
+					<img src="/files/default/katt.png" class="card-image">
+				{% endif %}
 				<div class="card-container">
-				<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
-				<div class="text-info text-strong">{{medlem.get_status_display}}</div> 
+					<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
+					<div class="text-info text-strong">
+						{% if medlem.status %}
+							{{medlem.get_status_display|capfirst}}
+						{% else %}
+							{{medlem.get_mtype_display|capfirst}}
+						{% endif %}
+					</div> 
 				</div>
 			</a>
 		{% empty %}
-		<p>Fant ingen medlemmer.</p>
+			<p>Fant ingen medlemmer.</p>
 		{% endfor %}
+
+		{% if FEATURES.TOGGLE_EDIT and perms.SITdata.add_medlem %}
+			<br><br>
+			<div class="btn-wrapper">
+				<a class="btn" href="{% url 'medlem_ny' %}">Nytt medlem</a>
+			</div>
+		{% endif %}
 	</div>
 
-	{% if perms.SITdata.add_medlem %}
-	<br><br>
-	<div class="btn-wrapper">
-		<a class="btn" href="{% url 'medlem_ny' %}">Nytt medlem</a>
-	</div>
-	{% endif %}
-</div>
-
-{% load static %}
-<script src={% static 'advanced_search.js' %}></script>
+	{% load static %}
+	<script src={% static 'advanced_search.js' %}></script>
 {% endblock innhold %}

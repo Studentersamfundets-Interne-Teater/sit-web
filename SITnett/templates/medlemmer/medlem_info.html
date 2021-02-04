@@ -2,80 +2,156 @@
 
 {% block innhold %}
 	
-	{% block medlem_navn %}
-	<h3>{{medlem}}</h3>
-	{% if user.is_authenticated %}
-		{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
-	{% endif %}
-	{% endblock medlem_navn %}
-
-	{% block medlem_info %}
-	<img src="{{medlem.portrett.url}}" height=300>
+	<div class="member-image-container">
+		{% if user.is_authenticated %}
+			{% if medlem.portrett.url %}<img src="{{medlem.portrett.url}}">{% endif %}
+			{% else %} <img src="/files/default/katt.png">
+		{% endif %}
+	</div>
 	
-	<br><br>
-	<b>Undergjeng:</b> {{medlem.get_undergjeng_display}}<br>
-	<b>Opptaksår:</b> {{medlem.opptak}}<br>
-	<b>Status:</b> {{medlem.get_status_display|capfirst}}<br>
-	{% if user.is_authenticated %}
-	<br>
-	<b>Telefon:</b> {{medlem.telefon}}<br>
-	<b>E-post:</b> {{medlem.epost}}<br>
-	<br>
-	<b>Fødselsdato:</b> {{medlem.fodsel}}<br>
-	<b>Studium:</b> {{medlem.studium|capfirst}}<br>
-	{% if medlem.jobb %}<b>Jobb:</b> {{medlem.jobb|capfirst}}<br>{% endif %}
-	{% endif %}
-	{% endblock medlem_info %}
+	<div class="member-general-info">
+		{% block medlem_navn %}
+		<h2>{{medlem}}</h2>
+		{% if user.is_authenticated %}
+			{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
+		{% endif %}
+		{% endblock medlem_navn %}
+		
+		<p>{% if medlem.status %}{{medlem.get_status_display|capfirst}}{% endif %}
+			{% if medlem.status and medlem.undergjeng %}, {% endif %}
+			{% if medlem.undergjeng %}{{medlem.get_undergjeng_display}}{% endif %}
+		</p>
 
-	{% if medlem.erfaringer.count %}
-		<h4>Erfaringer</h4>
-		{% for erfaring in medlem.erfaringer.all %}
-			{{erfaring.verv|capfirst}} 
-			{% if erfaring.verv.vtype <= 2 %}
-				i {{erfaring.ar}}
-			{% else %}
-				{% if erfaring.verv.vtype == 3 %}
-					for 
-				{% elif erfaring.rolle %}
-					({{erfaring.rolle}}) i
-				{% else %}
-					i 
-				{% endif %}
-				<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+		<div class="member-divider"></div><br>
+		<i>
+		{% if medlem.utmerkelser.count %}
+			{% for utmerkelse in medlem.utmerkelser.all %}
+					{{utmerkelse.full_tittel|capfirst}}
+					{% block utmerkelse_fjern %}
+					
+					{% endblock utmerkelse_fjern %}
+					<br>
+			{% endfor %}
+		{% endif %}
+		{% block utmerkelse_ny %}
+
+		{% endblock utmerkelse_ny %}
+		</i>
+		{% block medlem_info %}
+		<br>
+		<br>
+		<table style="width:100%">
+			{% if medlem.opptaksar %}
+			<tr>
+				<td><b>Tatt opp:</b> </td>
+				<td>{{medlem.opptaksar}}</td> 
+			</tr>
 			{% endif %}
-			{% block erfaring_fjern %}
-			
-			{% endblock erfaring_fjern %}
-			<br>
-		{% endfor %}
+			{% if user.is_authenticated %}
+				<tr>
+					<td><br></td>
+					<td><br></td>
+				</tr>
+				{% if medlem.telefon %}
+				<tr>
+				  <td><b>Telefon:</b> </td>
+				  <td>{{medlem.telefon}}</td> 
+				</tr>
+				{% endif %}
+				{% if medlem.epost %}
+				<tr>
+				  <td><b>E-post:</b></td>
+				  <td>{{medlem.epost}}</td> 
+				</tr>
+				{% endif %}
+				<tr>
+					<td><br></td>
+					<td><br></td>
+				</tr>
+				{% if medlem.fodselsdato %}
+				<tr>
+				<td><b>Fødselsdag:</b></td>
+				<td>{{medlem.fodselsdato}}</td> 
+				</tr>
+				{% endif %}
+				<tr>
+					<td><br></td>
+					<td><br></td>
+				</tr>
+				{% if medlem.studium %}
+				<tr>
+				  <td><b>Studium:</b></td>
+				  <td>{{medlem.studium|capfirst}}</td> 
+				</tr>
+				{% endif %}
+				{% if medlem.jobb %}
+					<tr>
+					<td><b>Jobb:</b></td>
+					<td>{{medlem.jobb|capfirst}}</td> 
+					</tr>
+				{% endif %}
+			{% endif %}
+		</table>
+		<br>
+		{% endblock medlem_info %}
+	</div>
+
+	{% if FEATURES.TOGGLE_PRODUKSJONER or FEATURES.TOGGLE_VERV %}
+		{% if medlem.erfaringer.count %}
+			<section class="member-information">
+				<div class="member-firstDivider"></div>
+				<a class="member-categories"><h3>Erfaringer</h3></a>
+				<div class="member-category-content">
+					{% for erfaring in medlem.erfaringer.all %}
+						{% if erfaring.verv %}
+							{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+									<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv|capfirst}}</a>
+							{% else %}
+								{{erfaring.verv|capfirst}}
+							{% endif %}
+						{% else %}
+							{{erfaring.tittel|capfirst}}
+						{% endif %}
+						{% if erfaring.ar %}
+							 i {{erfaring.ar}}
+						{% else %}
+							{% if erfaring.rolle %} ({{erfaring.rolle}}) i {% else %} for {% endif %}
+							{% if FEATURES.TOGGLE_PRODUKSJONER %}
+								<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+							{% else %}
+								{{erfaring.produksjon}}
+							{% endif %}
+						{% endif %}
+						{% block erfaring_fjern %}
+						
+						{% endblock erfaring_fjern %}
+						<br>
+					{% endfor %}
+					{% block erfaring_ny %}
+
+					{% endblock erfaring_ny %}
+				</div>
+			</section>
+		{% endif %}
 	{% endif %}
-	{% block erfaring_ny %}
 
-	{% endblock erfaring_ny %}
-
-	{% if medlem.utmerkelser.count %}
-		<h4>Utmerkelser</h4>
-		{% for utmerkelse in medlem.utmerkelser.all %}
-			{{utmerkelse.get_utype_display|capfirst}} av {{utmerkelse.get_orden_display}} fra {{utmerkelse.dato.year}}
-			{% block utmerkelse_fjern %}
-			
-			{% endblock utmerkelse_fjern %}
-			<br>
-		{% endfor %}
-	{% endif %}
-	{% block utmerkelse_ny %}
-
-	{% endblock utmerkelse_ny %}
 
 	{% block medlem_nav %}
-	{% if user.is_authenticated %}
-		<br><br>
-		<a href="{% url 'medlem_redi' medlem.id %}">Endre medlem</a>
-	{% endif %}
-	{% if access == 'admin' %}
-		<br><br>
-		<a href="{% url 'medlem_slett' medlem.id %}">Slett medlem</a>
-	{% endif %}
+		
+		{% if FEATURES.TOGGLE_EDIT %}
+			{% if user.is_authenticated %}
+				<br><br>
+				<a href="{% url 'medlem_redi' medlem.id %}">Endre medlem</a>
+				<br>
+			{% endif %}
+			{% if perms.SITdata.delete_medlem %}
+				<br><br>
+				<a href="{% url 'medlem_slett' medlem.id %}">Slett medlem</a>
+				<br>
+			{% endif %}
+			<br>
+		{% endif %}
+
 	{% endblock medlem_nav %}
 
 {% endblock innhold %}
