@@ -14,7 +14,7 @@ features = settings.FEATURES
 
 def view_hoved(request):
     # Legg inn riktig URL i anførselstegnene for å laste over følgende Skrift-data: 
-    #skrift_transfers.transfer_all_medlemmer("[LEGG INN URL TIL SKRIFT-DATA HER]")
+    # skrift_transfers.transfer_all_medlemmer("/Users/jonas/Desktop/Skriftdata/")
     return render(request, 'hoved.html', {'FEATURES': features})
 
 
@@ -26,14 +26,49 @@ def view_opptak(request):
     return render(request, 'opptak.html', {'FEATURES': features})
 
 
+def make_soppslag(ar):
+    serfaringer = models.Erfaring.objects.filter(verv__vtype=1).filter(ar=ar)
+    if serfaringer.count():
+        vids = serfaringer.values_list('verv', flat=True).distinct().order_by()
+        soppslag = {}
+        for vid in vids:
+            if vid == None:
+                continue
+            verv = models.Verv.objects.get(pk=vid)
+            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar)
+            soppslag[verv] = erfaringer
+    else:
+        soppslag = None
+    return soppslag
+
+def make_goppslag(ar,authenticated):
+    if not authenticated:
+        gerfaringer = models.Erfaring.objects.filter(verv__vtype=2).filter(ar=ar)
+    else:
+        gerfaringer = models.Erfaring.objects.filter(verv__vtype__in=[2,3]).filter(ar=ar)
+    if gerfaringer.count():
+        vids = gerfaringer.values_list('verv', flat=True).distinct().order_by()
+        goppslag = {}
+        for vid in vids:
+            if vid == None:
+                continue
+            verv = models.Verv.objects.get(pk=vid)
+            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar)
+            goppslag[verv] = erfaringer
+    else:
+        goppslag = None
+    return goppslag
+
+
 def view_kontakt(request):
-    if not features.TOGGLE_MEDLEMMER:
+    if not features.TOGGLE_KONTAKT:
         return redirect('hoved')
-    sliste = models.Medlem.objects.filter(erfaringer__verv__vtype=1).filter(erfaringer__ar=datetime.datetime.now().year)
-    mliste = models.Medlem.objects.filter(status__in=[1,2])
-    print(sliste)
-    print(mliste)
-    return render(request, 'kontakt.html', {'FEATURES': features, 'sliste': sliste, 'mliste': mliste})
+    ar = datetime.datetime.now().year
+    soppslag = make_soppslag(ar)
+    goppslag = make_goppslag(ar,request.user.is_authenticated)
+    mliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
+    return render(request, 'kontakt.html', {'FEATURES': features,
+        'soppslag': soppslag, 'goppslag': goppslag, 'mliste': mliste})
 
 
 def view_medlemmer(request):
@@ -419,7 +454,7 @@ def view_verv_slett(request, vid):
 @login_required
 def view_erfaring_fjern(request, eid):
     if not ((features.TOGGLE_MEDLEMMER or features.TOGGLE_PRODUKSJONER or features.TOGGLE_VERV)
-        and TOGGLE_EDIT):
+        and features.TOGGLE_EDIT):
         return redirect('hoved')
     erfaring = get_object_or_404(models.Erfaring, id=eid)
     if request.user.has_perm('SITdata.delete_erfaring') \

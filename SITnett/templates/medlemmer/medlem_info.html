@@ -17,7 +17,8 @@
 		{% endif %}
 		{% endblock medlem_navn %}
 		
-		<p>{% if medlem.status %}{{medlem.get_status_display|capfirst}}, {% endif %}
+		<p>{% if medlem.status %}{{medlem.get_status_display|capfirst}}{% endif %}
+			{% if medlem.status and medlem.undergjeng %}, {% endif %}
 			{% if medlem.undergjeng %}{{medlem.get_undergjeng_display}}{% endif %}
 		</p>
 
@@ -103,12 +104,8 @@
 				<div class="member-category-content">
 					{% for erfaring in medlem.erfaringer.all %}
 						{% if erfaring.verv %}
-							{% if FEATURES.TOGGLE_VERV %}
-								{% if erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+							{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
 									<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv|capfirst}}</a>
-								{% else %}
-									{{erfaring.verv|capfirst}}
-								{% endif %}
 							{% else %}
 								{{erfaring.verv|capfirst}}
 							{% endif %}
