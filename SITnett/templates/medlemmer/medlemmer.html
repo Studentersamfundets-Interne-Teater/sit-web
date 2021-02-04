@@ -10,9 +10,10 @@
 		<div class="card-wrapper">
 			{% for medlem in mliste %}
 				<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
-					{% if user.is_authenticated %}
-						{% if medlem.portrett.url %}<img src="{{medlem.portrett.url}}" class="card-image">{% endif %}
-						{% else %} <img src="/files/default/katt.png" class="card-image">
+					{% if user.is_authenticated and medlem.portrett.url %}
+						<img src="{{medlem.portrett.url}}" class="card-image">
+					{% else %}
+						<img src="/files/default/katt.png" class="card-image">
 					{% endif %}
 					<div class="card-container">
 						<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
@@ -20,9 +21,9 @@
 							{% if medlem.status %}
 								{{medlem.get_status_display|capfirst}}
 							{% else %}
-								{{medlem.get_mtype_display}}
+								{{medlem.get_mtype_display|capfirst}}
 							{% endif %}
-						</div> 
+						</div>
 					</div>
 				</a>
 			{% endfor %}
