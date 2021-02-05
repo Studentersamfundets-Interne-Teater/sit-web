@@ -74,7 +74,7 @@ def view_kontakt(request):
 def view_medlemmer(request):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
-    mliste = models.Medlem.objects.all()
+    mliste = models.Medlem.objects.filter(status__in=[1,2]) # filtrerer ut aktive og veteraner foreløpig.
     return render(request, 'medlemmer/medlemmer.html', {'FEATURES': features,
         'mliste': mliste})
 
