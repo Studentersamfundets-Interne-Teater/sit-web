@@ -18,7 +18,7 @@ class Medlem(models.Model):
     opptaksar = models.IntegerField("opptaksår",blank=True,null=True)
     UNDERGJENGER = ((1,'Kostyme'),(2,'Kulisse'),(3,'Skuespill'))
     undergjeng = models.IntegerField(choices=UNDERGJENGER,blank=True,null=True)
-    STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsionist'),(4,'inaktiv'))
+    STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsjonist'),(4,'inaktiv'))
     status = models.IntegerField(choices=STATUSER,blank=True,null=True)
     portrett = models.ImageField(upload_to='portretter/',default='/default/katt.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
     kallenavn = models.CharField(blank=True,max_length=100)
