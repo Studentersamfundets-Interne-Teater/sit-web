@@ -77,7 +77,7 @@ class Verv(models.Model):
     VTYPER = ((1,'styre'),(2,'ekstern-gjeng'),(3,'intern-gjeng'),(4,'produksjons'))
     # Typen 'gjeng' er ment for årsvervene som velges på genfors (utenom Styret).
     vtype = models.IntegerField("vervtype",choices=VTYPER)
-    vtags = models.ManyToManyField(vTag,"vervtags",blank=True)
+    vtags = models.ManyToManyField(vTag,verbose_name="vervtags",blank=True)
     tittel = models.CharField(max_length=100)
     erfaringsoverforing = models.BooleanField("erfaringsoverføring") # avgjør om vervet skal ha en egen infoside med mulighet for erfaringsskriv.
     epost = models.EmailField("e-postadresse",blank=True,max_length=60) # holder en eventuell e-postadresse for alle med vervet.
@@ -119,7 +119,7 @@ class pTag(models.Model): # holder klassifiseringer for produksjoner (feks komed
 class Produksjon(models.Model):
     PTYPER = ((1,'SIT'),(2,'KUP'),(3,'AFEI'),(4,'UKA'))
     ptype = models.IntegerField("produksjonstype",choices=PTYPER,default=1)
-    ptags = models.ManyToManyField(pTag,"produksjonstags",blank=True)
+    ptags = models.ManyToManyField(pTag,verbose_name="produksjonstags",blank=True)
     tittel = models.CharField(max_length=100)
     forfatter = models.CharField(max_length=200)
     opphavsar = models.IntegerField("opphavsår", blank=True, null=True)
@@ -294,7 +294,7 @@ class dTag(models.Model): # holder klassifiseringer for dokumenter (feks referat
         return self.tag
 
 class Dokument(models.Model): # holder dokumenter og filer som ikke er knytta til noen av modellene ovafor (feks referater, sjekkeblekker, ...).
-    dtags = models.ManyToManyField(dTag,"dokumenttags",blank=True)
+    dtags = models.ManyToManyField(dTag,verbose_name="dokumenttags",blank=True)
     tittel = models.CharField(max_length=100)
     dato = models.DateField()
     fil = models.FileField(upload_to='dokumenter/')
