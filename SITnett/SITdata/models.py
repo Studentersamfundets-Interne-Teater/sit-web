@@ -67,8 +67,8 @@ class Utmerkelse(models.Model): # holder utmerkelser gitt til medlemmer.
 class vTag(models.Model): # holder klassifiseringer for verv (feks prodapp, øvapp, kunstnerisk forum, kulisse, ...).
     tag = models.CharField(max_length=60)
     class Meta:
-        verbose_name = "vTag"
-        verbose_name_plural = "vTags"
+        verbose_name = "vervtag"
+        verbose_name_plural = "vervtags"
         ordering = ['tag']
     def __str__(self):
         return self.tag
@@ -110,8 +110,8 @@ class Lokale(models.Model):
 class pTag(models.Model): # holder klassifiseringer for produksjoner (feks komedie, tragedie, musikal, revy, ...).
     tag = models.CharField(max_length=60)
     class Meta:
-        verbose_name = "pTag"
-        verbose_name_plural = "pTags"
+        verbose_name = "produksjonstag"
+        verbose_name_plural = "produksjonstags"
         ordering = ['tag']
     def __str__(self):
         return self.tag
@@ -287,8 +287,8 @@ class Uttrykk(models.Model): # holder forklaringer på ord og forkortelser for n
 class dTag(models.Model): # holder klassifiseringer for dokumenter (feks referat, sjekkeblekke, instruks, ...).
     tag = models.CharField(max_length=60)
     class Meta:
-        verbose_name = "dTag"
-        verbose_name_plural = "dTags"
+        verbose_name = "dokumenttag"
+        verbose_name_plural = "dokumenttags"
         ordering = ['tag']
     def __str__(self):
         return self.tag
