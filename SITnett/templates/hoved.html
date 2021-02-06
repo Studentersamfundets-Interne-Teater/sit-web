@@ -2,19 +2,20 @@
 
 <section class="hero" id="hero">
   <img class="hero-image" id="hero-image"
-	src="{% static 'assets/digfu7304.jpg' %}"
+	src="{% static 'img/2021_hero.jpg' %}"
 	alt=""
-	data-landscape="{% static 'assets/digfu7304.jpg' %}"
-	data-portrait="{% static 'assets/digfu7304.jpg' %}">
+	data-landscape="{% static 'img/2021_hero.jpg' %}"
+	data-portrait="{% static 'img/2021_hero.jpg' %}">
   <div class="hero-container">
-    <h1 class="hero-title">Vi har opptak!</h1>
-    <a
+    <h1 class="hero-title">Det blir teater våren 2021!</h1>
+    <p>Følg med for mer informasjon</p>
+    {% comment %} <a
       class="hero-btn btn"
       href="{% url 'opptak' %}"
       class="btn"
       ref="noopener noreferrer"
       >Mer informasjon</a
-    >
+    > {% endcomment %}
   </div>
   <div class="text-info" style="position: absolute; bottom: 1rem; left: 1rem; color: white;">Foto: <a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener" style="color: white;">foto.samfundet.no</a></div>
 </section>
