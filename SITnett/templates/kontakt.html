@@ -1,19 +1,24 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
+	<div class="wrapper">
 	
-	<h2>Kontakt</h2>
+	{% if user.is_authenticated %}
+		<h2>Lommelista</h2>
+	{% else %}
+		<h2>Kontakt</h2>
+	{% endif %}
 
 	<b>Generelle henvendelser: </b> sit@samfundet.no
 
 	{% if soppslag %}
 		<h3>Styret</h3>
-		<table style="width:100%">
+		<table class="member-table">
 			<tr>
-				<td><b>STILLING</b></td>
-				<td><b>NAVN</b></td>
-				<td><b>HENVENDELSER</b></td>
-				<td><b>E-POST</b></td>
+				<th class="text-strong">Stilling</td>
+				<th class="text-strong">Navn</td>
+				<th class="text-strong">Henvendelser</td>
+				<th class="text-strong">E-post</td>
 			</tr>
 			{% for verv, erfaringer in soppslag.items %}
 				<tr>
@@ -60,12 +65,12 @@
 
 	{% if goppslag %}
 		<h3>Gjengverv</h3>
-		<table style="width:100%">
+		<table class="member-table">
 			<tr>
-				<td><b>STILLING</b></td>
-				<td><b>NAVN</b></td>
-				<td><b>HENVENDELSER</b></td>
-				<td><b>E-POST</b></td>
+				<th class="text-strong">Stilling</td>
+				<th class="text-strong">Navn</td>
+				<th class="text-strong">Henvendelser</td>
+				<th class="text-strong">E-post</td>
 			</tr>
 			{% for verv, erfaringer in goppslag.items %}
 				<tr>
@@ -111,11 +116,11 @@
 
 	{% if user.is_authenticated %}
 		<h3>Medlemmer</h3>
-		<table style="width:100%">
+		<table class="member-table">
 			<tr>
-				<td><b>NAVN</b></td>
-				<td><b>TELEFON</b></td>
-				<td><b>E-POST</b></td>
+				<th class="text-strong">Navn</td>
+				<th class="text-strong">Telefon</td>
+				<th class="text-strong">E-post</td>
 			</tr>
 			{% for medlem in mliste %}
 				<tr>
@@ -129,5 +134,6 @@
 			{% endfor %}
 		</table><br><br>
 	{% endif %}
+</div>
 
 {% endblock innhold %}

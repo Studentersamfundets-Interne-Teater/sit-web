@@ -146,7 +146,6 @@ p {
 	}
 }
 
-
 /* 2. NAVBAR & FOOTER */ 
 
 /* 2.1 Navbar */
@@ -481,8 +480,8 @@ select{
 .hero {
 	position: relative;
 	width: 100vw;
-	height: 60vh;
-	background: var(--main-text-color);
+	min-height: 60vh;
+	background: rgba(0, 0, 0, 0.3);
 
 	/* Displace the padding from the parent container */
 	top: -20px;
@@ -520,6 +519,7 @@ select{
 .hero-container {
 	max-width: 746px;
 	max-height: 100%;
+	padding: 2rem;
 	text-align: center;
 	display: flex;
 	flex-direction: column;
@@ -880,4 +880,27 @@ select{
 .gallery-nav {
 	overflow-y: scroll;
 	overflow-x: hidden;
+}
+
+.member-table {
+	border-collapse: collapse;
+	width: 100%;
+	min-width: 360px;
+}
+  
+.member-table td {
+	border: 1px solid var(--sit-grullo-dark);
+	padding: 12px;
+}
+
+.member-table tr:hover {
+	background-color: var(--sit-grullo-20);
+}
+
+.member-table th {
+	padding: 16px 12px;
+	text-align: left;
+	background-color: var(--sit-grullo-dark);
+	border: 1px solid var(--main-bg-color);
+	color: var(--main-bg-color);
 }

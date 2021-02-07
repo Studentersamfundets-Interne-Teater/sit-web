@@ -8,13 +8,10 @@ import os
 import datetime
 
 from SITdata import models, forms
-from SITdata import skrift_transfers
 
 features = settings.FEATURES
 
 def view_hoved(request):
-    # Legg inn riktig URL i anførselstegnene for å laste over følgende Skrift-data: 
-    # skrift_transfers.transfer_all_medlemmer("/Users/jonas/Desktop/Skriftdata/")
     return render(request, 'hoved.html', {'FEATURES': features})
 
 
