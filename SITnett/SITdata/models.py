@@ -218,7 +218,7 @@ class Erfaring(models.Model): # holder konkrete erfaringer gjort av medlemmer i 
 class Arrangement(models.Model): # holder interne eller eksterne arrangementer som skal vises på forsida (feks kostymesalg, vårball, genfors, ...).
     ATYPER = ((1,'internt'),(2,'eksternt')) # avgjør om arrangementet skal synes for eksterne lesere.
     atype = models.IntegerField("arrangementtype",choices=ATYPER)
-    arrangører = models.ManyToManyField(Verv,blank=True) # holder vervene som skal kunne redigere arrangementet.
+    arrangorer = models.ManyToManyField(Verv,verbose_name="arrangører",blank=True) # holder vervene som skal kunne redigere arrangementet.
     tittel = models.CharField(max_length=100)
     tidspunkt = models.DateTimeField()
     varighet = models.CharField(blank=True,max_length=100)
