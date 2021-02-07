@@ -19,7 +19,7 @@
 
 
 	{% if verv.erfaringer.count %}
-		<h4>Tidligere {{verv.plural}}</h4>
+		<h4>{{verv.plural|capfirst}} gjennom tidene</h4>
 
 		{% block erfaringsskriv_endre %}
 

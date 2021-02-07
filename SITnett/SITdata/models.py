@@ -67,23 +67,27 @@ class Utmerkelse(models.Model): # holder utmerkelser gitt til medlemmer.
 class vTag(models.Model): # holder klassifiseringer for verv (feks prodapp, øvapp, kunstnerisk forum, kulisse, ...).
     tag = models.CharField(max_length=60)
     class Meta:
-        verbose_name = "vTag"
-        verbose_name_plural = "vTags"
+        verbose_name = "vervtag"
+        verbose_name_plural = "vervtags"
         ordering = ['tag']
     def __str__(self):
         return self.tag
 
 class Verv(models.Model):
-    VTYPER = ((1,'styre'),(2,'gjeng'),(3,'produksjons'))
+    VTYPER = ((1,'styre'),(2,'ekstern-gjeng'),(3,'intern-gjeng'),(4,'produksjons'))
     # Typen 'gjeng' er ment for årsvervene som velges på genfors (utenom Styret).
     vtype = models.IntegerField("vervtype",choices=VTYPER)
-    vtags = models.ManyToManyField(vTag,"vervtags",blank=True)
+    vtags = models.ManyToManyField(vTag,verbose_name="vervtags",blank=True)
     tittel = models.CharField(max_length=100)
     erfaringsoverforing = models.BooleanField("erfaringsoverføring") # avgjør om vervet skal ha en egen infoside med mulighet for erfaringsskriv.
+    epost = models.EmailField("e-postadresse",blank=True,max_length=60) # holder en eventuell e-postadresse for alle med vervet.
+    henvendelser = models.CharField(blank=True,max_length=100) # holder en liste over hvilke henvendelser gjengvervet tar imot (til kontaktsida).
     instruks = models.TextField(blank=True) # holder en eventuell instruksfesta beskrivelse av vervet.
     beskrivelse = models.TextField(blank=True) # holder en eventuell grundigere beskrivelse av vervet.
     def plural(self): # bøyer vervnavnet i flertall (til listevisninger).
-        if self.tittel[-2:] == "er":
+        if self.tittel[-7:] == "gjengis":
+            return self.tittel[:-2]+"en"
+        elif self.tittel[-2:] == "er":
             return self.tittel+"e"
         else:
             return self.tittel+"er"
@@ -106,8 +110,8 @@ class Lokale(models.Model):
 class pTag(models.Model): # holder klassifiseringer for produksjoner (feks komedie, tragedie, musikal, revy, ...).
     tag = models.CharField(max_length=60)
     class Meta:
-        verbose_name = "pTag"
-        verbose_name_plural = "pTags"
+        verbose_name = "produksjonstag"
+        verbose_name_plural = "produksjonstags"
         ordering = ['tag']
     def __str__(self):
         return self.tag
@@ -115,7 +119,7 @@ class pTag(models.Model): # holder klassifiseringer for produksjoner (feks komed
 class Produksjon(models.Model):
     PTYPER = ((1,'SIT'),(2,'KUP'),(3,'AFEI'),(4,'UKA'))
     ptype = models.IntegerField("produksjonstype",choices=PTYPER,default=1)
-    ptags = models.ManyToManyField(pTag,"produksjonstags",blank=True)
+    ptags = models.ManyToManyField(pTag,verbose_name="produksjonstags",blank=True)
     tittel = models.CharField(max_length=100)
     forfatter = models.CharField(max_length=200)
     opphavsar = models.IntegerField("opphavsår", blank=True, null=True)
@@ -283,14 +287,14 @@ class Uttrykk(models.Model): # holder forklaringer på ord og forkortelser for n
 class dTag(models.Model): # holder klassifiseringer for dokumenter (feks referat, sjekkeblekke, instruks, ...).
     tag = models.CharField(max_length=60)
     class Meta:
-        verbose_name = "dTag"
-        verbose_name_plural = "dTags"
+        verbose_name = "dokumenttag"
+        verbose_name_plural = "dokumenttags"
         ordering = ['tag']
     def __str__(self):
         return self.tag
 
 class Dokument(models.Model): # holder dokumenter og filer som ikke er knytta til noen av modellene ovafor (feks referater, sjekkeblekker, ...).
-    dtags = models.ManyToManyField(dTag,"dokumenttags",blank=True)
+    dtags = models.ManyToManyField(dTag,verbose_name="dokumenttags",blank=True)
     tittel = models.CharField(max_length=100)
     dato = models.DateField()
     fil = models.FileField(upload_to='dokumenter/')

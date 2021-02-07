@@ -22,7 +22,11 @@
 		<div id="menuLinks">
 			<a href="{% url 'info' %}">Om SIT</a>
 			{% if FEATURES.TOGGLE_MEDLEMMER %}
-				<a href="{% url 'kontakt' %}">Kontakt</a>
+				{% if user.is_authenticated %}
+					<a href="{% url 'kontakt' %}">Lommelista</a>
+				{% else %}
+					<a href="{% url 'kontakt' %}">Kontakt</a>
+				{% endif %}
 				<a href="{% url 'medlemmer' %}">Medlemmer</a>
 			{% endif %}
 			{% if FEATURES.TOGGLE_PRODUKSJONER %}<a href="{% url 'produksjoner' %}">Produksjoner</a>{% endif %}
