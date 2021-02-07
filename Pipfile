@@ -11,6 +11,7 @@ pillow = "*"
 bs4 = "*"
 requests = "*"
 lxml = "*"
+django-super-deduper = "*"
 
 [requires]
 python_version = "3.8"
