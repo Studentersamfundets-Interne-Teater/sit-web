@@ -76,60 +76,37 @@ def view_kontakt(request):
 def view_medlemmer(request):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
-    # Lazy evelation of query sets ensure the database isn't queried before the
-    # members variable is evaluated
-    members = models.Medlem.objects.all()
-    name = ""
-    admission_year_from = ""
-    admission_year_to = ""
-    groups = [1, 2, 3]
-    statuses = [1, 2, 3, 4]
-
+    mliste = models.Medlem.objects.all()
+    sform = forms.SearchForm(request.GET)
+    mform = forms.MedlemSearchForm(request.GET,initial={'undergjeng':[1,2,3],'status':[1,2],'mtype':[1]})
+    uform = forms.UtmerkelseSearchForm(request.GET)
     if request.GET:
-        if request.GET.get("name", False):
-            name = request.GET["name"]
-            members = (
-                members.filter(fornavn__icontains=name)
-                | members.filter(mellomnavn__icontains=name)
-                | members.filter(etternavn__icontains=name)
-                | members.filter(kallenavn__icontains=name)
-            )
-        if request.GET.get("admission_year_from", False):
-            admission_year_from = int(request.GET["admission_year_from"])
-            members = members.filter(opptaksar__gte=admission_year_from)
-        if request.GET.get("admission_year_to", False):
-            try:
-                admission_year_to = int(request.GET["admission_year_to"])
-                members = members.filter(opptaksar__lte=admission_year_to)
-            except ValueError:
-                pass
-        try:
-            groups = [int(x) for x in request.GET.getlist("group")]
-            if len(groups) < 3:
-                members = members.filter(undergjeng__in=groups)
-        except ValueError:
-            pass
-
-        try:
-            statuses = [int(x) for x in request.GET.getlist("status")]
-            if len(statuses) < 4:
-                members = members.filter(status__in=statuses)
-        except ValueError:
-            pass
-
-    return render(
-        request,
-        "medlemmer/medlemmer.html",
-        {
-            'FEATURES': features,
-            "mliste": members,
-            "name": name,
-            "admission_year_from": admission_year_from,
-            "admission_year_to": admission_year_to,
-            "groups": groups,
-            "statuses": statuses,
-        },
-    )
+        if request.GET['tekst']:
+            tekst = request.GET['tekst']
+            mliste = (mliste.filter(fornavn__icontains=tekst)
+                | mliste.filter(mellomnavn__icontains=tekst)
+                | mliste.filter(etternavn__icontains=tekst)
+                | mliste.filter(kallenavn__icontains=tekst))
+        if request.GET['fra_ar']:
+            fra_ar = request.GET['fra_ar']
+            mliste = mliste.filter(opptaksar__gte=fra_ar)
+        if request.GET['til_ar']:
+            til_ar = request.GET['til_ar']
+            mliste = mliste.filter(opptaksar__gte=til_ar)
+        if 'undergjeng' in request.GET:
+            undergjenger = request.GET.getlist('undergjeng')
+            mliste = mliste.filter(undergjeng__in=undergjenger)
+        if 'status' in request.GET:
+            statuser = request.GET.getlist('status')
+            mliste = mliste.filter(status__in=statuser)
+        if 'tittel' in request.GET:
+            titler = request.GET.getlist('tittel')
+            ordner = request.GET.getlist('orden')
+            uliste = models.Utmerkelse.objects.filter(tittel__in=titler).filter(orden__in=ordner)
+            mids = uliste.values_list('medlem',flat=True).distinct()
+            mliste = mliste.filter(pk__in=mids)
+    return render(request, "medlemmer/medlemmer.html", {'FEATURES': features,
+        'mliste': mliste, 'sform': sform, 'mform': mform, 'uform': uform})
 
 
 @permission_required('SITdata.add_medlem')

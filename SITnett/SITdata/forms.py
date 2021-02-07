@@ -9,6 +9,22 @@ class CustomFileInput(forms.widgets.ClearableFileInput):
     clear_checkbox_label = "Fjern"
 
 
+class SearchForm(forms.Form):
+    tekst = forms.CharField(label="Søk",required=False,max_length=20)
+
+
+class MedlemSearchForm(forms.ModelForm):
+    fra_ar = forms.IntegerField(label="Fra",required=False)
+    til_ar = forms.IntegerField(label="Til",required=False)
+    class Meta:
+        model = models.Medlem
+        fields = ['undergjeng','status','mtype']
+        labels = {'mtype':"Gjeng"}
+        widgets = {'undergjeng': forms.widgets.CheckboxSelectMultiple,
+            'status': forms.widgets.CheckboxSelectMultiple,
+            'mtype': forms.widgets.CheckboxSelectMultiple}
+        required = ['mtype']
+
 class MedlemAdminForm(forms.ModelForm):
     class Meta:
         model = models.Medlem
@@ -28,6 +44,13 @@ class MedlemOtherForm(forms.ModelForm):
         model = models.Medlem
         fields = ['kallenavn']
 
+
+class UtmerkelseSearchForm(forms.ModelForm):
+    class Meta:
+        model = models.Utmerkelse
+        fields = ['tittel','orden']
+        widgets = {'tittel':forms.widgets.CheckboxSelectMultiple,'orden':forms.widgets.CheckboxSelectMultiple}
+        required = ['orden']
 
 class UtmerkelseForm(forms.ModelForm):
     class Meta:
