@@ -1,7 +1,7 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
-	
+	<div class="wrapper">
 	<h2>Kontakt</h2>
 
 	<b>Generelle henvendelser: </b> sit@samfundet.no
@@ -10,7 +10,7 @@
 		<h3>Styret</h3>
 		<table style="width:100%">
 			<tr>
-				<td><b>STILLING</b></td>
+				<td><b></b>STILLING</b></td>
 				<td><b>NAVN</b></td>
 				<td><b>HENVENDELSER</b></td>
 				<td><b>E-POST</b></td>
@@ -111,11 +111,11 @@
 
 	{% if user.is_authenticated %}
 		<h3>Medlemmer</h3>
-		<table style="width:100%">
+		<table class="member-table">
 			<tr>
-				<td><b>NAVN</b></td>
-				<td><b>TELEFON</b></td>
-				<td><b>E-POST</b></td>
+				<th class="text-strong">Navn</td>
+				<th class="text-strong">Telefon</td>
+				<th class="text-strong">E-post</td>
 			</tr>
 			{% for medlem in mliste %}
 				<tr>
@@ -129,5 +129,6 @@
 			{% endfor %}
 		</table><br><br>
 	{% endif %}
+</div>
 
 {% endblock innhold %}
