@@ -2,7 +2,12 @@
 
 {% block innhold %}
 	<div class="wrapper">
-	<h2>Kontakt</h2>
+	
+	{% if user.is_authenticated %}
+		<h2>Lommelista</h2>
+	{% else %}
+		<h2>Kontakt</h2>
+	{% endif %}
 
 	<b>Generelle henvendelser: </b> sit@samfundet.no
 
