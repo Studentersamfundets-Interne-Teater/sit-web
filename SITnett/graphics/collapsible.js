@@ -37,7 +37,6 @@ else {
       }      
       content.style.display = "block";
       content.style.maxHeight = "100%";
-      console.log(content);
     });
   }
   
