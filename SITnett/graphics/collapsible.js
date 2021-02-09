@@ -37,7 +37,7 @@ else {
         }
       }      
       content.style.display = "block";
-      content.style.maxHeight = "100%";
+      content.style.maxHeight = content.scrollHeight + "px";
     });
   }
   
