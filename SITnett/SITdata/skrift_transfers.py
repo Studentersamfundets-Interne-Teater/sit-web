@@ -1,3 +1,12 @@
+# Some hacky stuff so that we can run scripts with Django packages
+# https://stackoverflow.com/questions/45737387/django-settings-module-no-module-named
+import sys
+sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
+import os
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SITnett.settings")
+import django
+django.setup()
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.decorators import login_required, permission_required
@@ -7,7 +16,6 @@ from SITdata import models, forms
 
 from django.conf import settings
 from bs4 import BeautifulSoup
-import os
 import pdb
 import datetime
 import requests
@@ -716,3 +724,6 @@ def fixtext(s):
         return s.lower()
     else:
         return s
+
+if __name__ == "__main__":
+    transfer_all_medlemmer(sys.argv[1])

@@ -11,9 +11,9 @@
 			{% for medlem in mliste %}
 				<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
 					{% if user.is_authenticated and medlem.portrett.url %}
-						<img src="{{medlem.portrett.url}}" class="card-image">
+						<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
 					{% else %}
-						<img src="/files/default/katt.png" class="card-image">
+						<img src="/files/default/katt.png" class="card-image" loading="lazy">
 					{% endif %}
 					<div class="card-container">
 						<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
