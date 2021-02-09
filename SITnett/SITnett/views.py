@@ -13,8 +13,9 @@ from SITdata import skrift_transfers
 features = settings.FEATURES
 
 def view_hoved(request):
-    # Legg inn riktig URL i anførselstegnene for å laste over følgende Skrift-data: 
-    # skrift_transfers.transfer_all_medlemmer("/Users/jonas/Desktop/Skriftdata/")
+    # # Legg inn riktig URL i anførselstegnene for å laste over følgende Skrift-data:
+    # skrift_transfers.transfer_all_medlemmer("/Users/jacob/Downloads/sit skrift/sit/")
+    # skrift_transfers.transfer_all_produksjoner("/Users/jacob/Downloads/sit skrift/sit/")
     return render(request, 'hoved.html', {'FEATURES': features})
 
 

@@ -46,7 +46,7 @@ lokale_dict = {'SIT-hybelen': ['SIT-hybelen'], 'Buss': ['Eksternt', 'skildring']
                'Knaus og fritidsklubber': ['Knaus', 'Eksternt', 'skildring'], 'Graakallbanen': ['Eksternt', 'skildring'],
                'Knaus / Radio Revolt': ['Knaus', 'Radio', 'skildring'], 'Storsalen, Samfundet': ['Storsalen'],
                'Sentrum Kino': ['Eksternt', 'skildring'], 'Studentersamfundet, 19.juni': ['Diverse'],
-               'Edgar, 6 forestillinger': ['Edgar'], 'UKE-senderen': ['Radio', 'skildring'],
+               'Edgar, 6 forestillinger': ['Edgar'], 'UKE-senderen': ['Radio', 'skildring', 'UKA'],
                'Tema88': ['Eksternt', 'skildring'], 'Daglighallen Pub': ['Daglighallen'], 'BUL': ['Eksternt'],
                'lørdagsmøte': ['Storsalen', 'skildring'], 'Sangerhallen': ['Sangerhallen'],
                'Samfundet, Storsalen': ['Storsalen'], 'Samfundet, Knus': ['Knaus'],
@@ -386,9 +386,9 @@ def create_produksjon(data_dict, location):
 
     try:
         if data_dict['semester'] in {'Hosø', 'Hørt', 'høst', 'Høst'}:
-            premieredato = datetime.date(int(data_dict['aar']), 3, 1)
-        else:
             premieredato = datetime.date(int(data_dict['aar']), 10, 1)
+        else:
+            premieredato = datetime.date(int(data_dict['aar']), 3, 1)
     except:
         premieredato = datetime.date(int(data_dict['aar']), 7, 1)
 
@@ -445,12 +445,12 @@ def create_produksjon(data_dict, location):
         r = requests.get(url, allow_redirects=True, stream=True)
         fname = url.split("/")[-1]
         if r.status_code == 200:
-            shutil.copyfileobj(r.raw, open(settings.MEDIA_ROOT + '/portretter/' + fname, 'wb'))
+            shutil.copyfileobj(r.raw, open(settings.MEDIA_ROOT + '/plakater/' + fname, 'wb'))
             plakat = '/plakater/' + fname
     except:
         pass
 
-    new_produksjon = models.Produksjon(tittel=tittel, forfatter=forfatter, premieredato=premieredato, plakat=plakat, info=info)
+    new_produksjon = models.Produksjon(tittel=tittel, forfatter=forfatter, premieredato=premieredato, plakat=plakat, info=info, ptype=ptype)
     new_produksjon.save()
 
     if p_tag_list:
@@ -493,8 +493,11 @@ def create_ptags(p_list):
         elif tag == 'AFEI':
             ptype = 3
         else:
-            ptag = models.pTag(tag=tag)
-            ptag.save()
+            try:
+                ptag = models.pTag.get(tag=tag)
+            except:
+                ptag = models.pTag(tag=tag)
+                ptag.save()
             p_tag_list.append(ptag)
 
     return is_skildring, ptype, p_tag_list
@@ -506,8 +509,11 @@ def create_lokale(lok_list):
         if tag == 'skildring':
             is_skildring = True
         else:
-            lok = models.Lokale(navn=tag)
-            lok.save()
+            try:
+                lok = models.Lokale.get(navn=tag)
+            except:
+                lok = models.Lokale(navn=tag)
+                lok.save()
             lokale_list.append(lok)
     return is_skildring, lokale_list
 
@@ -579,24 +585,26 @@ def create_erfaringer(data_dict, produksjon):
                     rolle = ""
                 if medlem:
                     erfaring = models.Erfaring(medlem=models.Medlem.objects.get(fornavn=fornavn, etternavn=etternavn),
-                                           tittel=value, produksjon=produksjon, rolle=rolle)
+                                           tittel=verv_input, produksjon=produksjon, rolle=rolle)
                 else:
-                    erfaring = models.Erfaring(navn=navn, tittel=value,
+                    erfaring = models.Erfaring(navn=navn, tittel=verv_input,
                                                produksjon=produksjon, rolle=rolle)
             else:
                 rolle = verv_dict[verv_input][1]
                 if rolle == 'ingen':
                     try:
-                        rolle = data_dict[key.replace('verv','karakter')]
+                        rolle = data_dict[key.replace('person','karakter')]
                     except:
                         rolle = ""
                 else:
                     try:
-                        rolle += ", " + data_dict[key.replace('verv','karakter')]
+                        rolle += ", " + data_dict[key.replace('person','karakter')]
                     except:
                         pass
                 typ = verv_dict[verv_input][2]
                 verv = update_verv(verv_name, typ)
+                if verv_name.lower() != verv_input.lower():
+                    update_uttrykk(verv_input, verv_name)
                 if medlem:
                     erfaring = models.Erfaring(medlem=medlem,verv=verv,
                                            rolle=rolle, produksjon=produksjon)
@@ -604,6 +612,14 @@ def create_erfaringer(data_dict, produksjon):
                     erfaring = models.Erfaring(navn=navn, verv=verv,
                                                rolle=rolle, produksjon=produksjon)
             erfaring.save()
+
+def update_uttrykk(verv_input, verv_cleaned):
+    try:
+        uttrykk = models.Uttrykk.objects.get(tittel=verv_input)
+    except:
+        uttrykk = models.Uttrykk(tittel=verv_input, beskrivelse="En annen betegnelse på [["+verv_cleaned+"]]")
+        uttrykk.save()
+
 
 def update_verv(tittel, type):
     try:
