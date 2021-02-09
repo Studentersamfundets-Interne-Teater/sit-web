@@ -1,16 +1,23 @@
 var categories = document.getElementsByClassName("production-categories");
 var i;
+const visiblePadding = "15px 0";
 
 if (window.innerWidth < 1024) {
-  for (i = 0; i < categories.length; i++) {
-    categories[i].addEventListener("click", function() {
+  for (category of categories) {
+    category.nextElementSibling.style.visibility = "hidden";
+    category.addEventListener("click", function() {
       this.classList.toggle("active");
       var content = this.nextElementSibling;
-      if (content.style.maxHeight){
-        content.style.maxHeight = null;
+      var contentIsActive = this.classList.contains("active");
+      content.style.maxHeight = contentIsActive ? content.scrollHeight + "px" : null;
+      if (contentIsActive) {
+        content.style.visibility = "visible";
       } else {
-        content.style.maxHeight = content.scrollHeight + "px";
-      } 
+        // Wait 200 ms before hiding content for smoother UX
+        window.setTimeout(() => {
+          content.style.visibility = "hidden";
+        }, 200);
+      }
     });
   }
 }
@@ -20,17 +27,19 @@ else {
   categories[0].style.fontWeight = "600";
   for (i = 0; i < categories.length; i++) {
     categories[i].addEventListener("click", function() {
-      this.classList.toggle("active");
+      this.classList.add("active");
       var content = this.nextElementSibling; 
-      
-      this.style.fontWeight = "600"; //Bold font when active
-      for (j = 0; j<categories.length; j++) {
-        if (categories[j].nextElementSibling !== content) {
-          categories[j].nextElementSibling.style.display = "none";
-          categories[j].style.fontWeight = "400"; //Normal font weight
+      this.style.fontWeight = "600"; // Bold font when active
+      for (category of categories) {
+        if (category.nextElementSibling !== content) {
+          category.nextElementSibling.style.display = "none";
+          category.style.fontWeight = "400"; // Normal font weight
+          category.classList.remove("active");
         }
       }      
       content.style.display = "block";
+      content.style.maxHeight = "100%";
+      console.log(content);
     });
   }
   
