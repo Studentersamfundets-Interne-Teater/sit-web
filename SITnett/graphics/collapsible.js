@@ -19,9 +19,7 @@ if (window.innerWidth < 1024) {
       }
     });
   }
-}
-
-else {
+} else {
   categories[0].nextElementSibling.style.display = "block";
   categories[0].style.fontWeight = "600";
   for (i = 0; i < categories.length; i++) {
