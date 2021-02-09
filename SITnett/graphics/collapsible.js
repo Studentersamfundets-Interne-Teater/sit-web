@@ -1,5 +1,4 @@
 var categories = document.getElementsByClassName("production-categories");
-var i;
 
 if (window.innerWidth < 1024) {
   for (category of categories) {
