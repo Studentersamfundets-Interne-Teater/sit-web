@@ -7,12 +7,13 @@ if (window.innerWidth < 1024) {
       this.classList.toggle("active");
       var content = this.nextElementSibling;
       var contentIsActive = this.classList.contains("active");
-      content.style.maxHeight = contentIsActive ? content.scrollHeight + "px" : null;
       if (contentIsActive) {
+        content.style.maxHeight = content.scrollHeight + "px";
         content.style.visibility = "visible";
       } else {
         // Wait 200 ms before hiding content for smoother UX
         window.setTimeout(() => {
+          content.style.maxHeight = null;
           content.style.visibility = "hidden";
         }, 200);
       }
