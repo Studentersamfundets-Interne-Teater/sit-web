@@ -1,6 +1,5 @@
 var categories = document.getElementsByClassName("production-categories");
 var i;
-const visiblePadding = "15px 0";
 
 if (window.innerWidth < 1024) {
   for (category of categories) {
