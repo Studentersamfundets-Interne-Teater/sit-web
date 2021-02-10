@@ -22,7 +22,7 @@ if (window.innerWidth < 1024) {
 } else {
   categories[0].nextElementSibling.style.display = "block";
   categories[0].style.fontWeight = "600";
-  for (i = 0; i < categories.length; i++) {
+  for (var i = 0; i < categories.length; i++) {
     categories[i].addEventListener("click", function() {
       this.classList.add("active");
       var content = this.nextElementSibling; 
