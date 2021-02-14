@@ -132,36 +132,42 @@ p {
 	overflow: hidden;
 	position: relative;
 	box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-	padding: 25px;
+	padding: var(--spacing-m);
 }
 
 /* Hide the links inside the navigation menu (except for logo) */
 .topnav #menuLinks {
 	display: none;
+	border-top: 1px solid var(--sit-red-100);
+	margin-top: var(--spacing-m);
 }
 
 /* Style navbar menu and status links */
-.topnav #menuLinks a, #status a {
-	text-decoration: none;
+.topnav #menuLinks a {
 	display: block;
-	padding: 24px;
-	font-weight: 600;
+	padding: var(--spacing-m);
+	font-weight: 700;
+}
+
+#status a {
+	display: block;
+	padding: 0 var(--spacing-m);
+	font-weight: 700;
 }
 
 /* Style the hamburger menu */
 .topnav a.hamburger-icon {
 	display: block;
 	position: absolute;
-	right: 0;
-	top: 50px;
-	margin-right: 25px;
+	right: var(--spacing-m);
+	top: var(--spacing-xl);
 }
 
 /* Style the login icon element */ 
 .topnav #status {
 	position: absolute; 
-	right: 50px;
-	top: 25px;
+	right: var(--spacing-xl);
+	top: var(--spacing-xl);
 }
 
 /* Add bold font to menu links when hovering */
@@ -169,15 +175,11 @@ p {
 	text-decoration: underline;
 }
 
-/* Create space between logo and first menu link */
-#logo {
-	margin-right: 10px;
-	padding: 10px 15px 10px 45px;
-	
-}
-
 /* 2.1.2 Desktop */
-@media only screen and (min-width: 1024px) {
+@media only screen and (min-width: 756px) {
+	.topnav {
+		padding: var(--spacing-l);
+	}
 	.topnav a.hamburger-icon {
 		display: none; 
 	}
@@ -190,11 +192,17 @@ p {
 	}
 
 	.topnav #menuLinks {
-		display: block !important; 
+		display: block !important;
+		border-top: none; 
+	}
+
+	.topnav #menuLinks a {
+		padding: 0 var(--spacing-m);
 	}
 	
 	.topnav #status {
-		float: right; 
+		right: var(--spacing-m);
+		top: var(--spacing-xl);
 	}
 }
 
