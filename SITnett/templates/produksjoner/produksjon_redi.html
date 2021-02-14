@@ -22,7 +22,7 @@
 	<br>
 	<form action="{% url 'produksjon_redi' produksjon.id %}" method="post" class="form-wrapper">
 		{% csrf_token %}
-		<div class="ingress">Ny forestilling</div>
+		<h4>Ny forestilling</h4>
 		{{fform}}
 		<input type="submit" name='lagre_forestilling' value="Legg til">
 	</form>
@@ -47,7 +47,7 @@
 	<br>
 	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
-		<div class="ingress">Ny medvirkende</div>
+		<h4>Ny medvirkende</h4>
 		{{eform}}
 		<input type="submit" name='lagre_erfaring' value="Legg til">
 	</form>
@@ -66,7 +66,7 @@
 	<br>
 	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
-		<div class="ingress">Ny anmeldelse</div>
+		<h4>Ny anmeldelse</h4>
 		{{aform}}
 		<input type="submit" name='lagre_anmeldelse' value="Legg til">
 	</form>

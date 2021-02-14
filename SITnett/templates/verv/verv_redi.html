@@ -30,7 +30,7 @@
 		<br>
 		<form action="{% url 'verv_redi' verv.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
-		<div class="ingress">Ny erfaring</div>
+		<h4>Ny erfaring</h4>
 		{{eform}}
 		<input type="submit" name='lagre_erfaring' value="Legg til">
 		</form>

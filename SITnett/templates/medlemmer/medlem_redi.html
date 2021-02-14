@@ -44,7 +44,7 @@
 		<br>
 		<form action="{% url 'medlem_redi' medlem.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 			{% csrf_token %}
-			<div class="ingress">Ny erfaring</div>
+			<h4>Ny erfaring</h4>
 			{{eform}}
 			<input type="submit" name='lagre_erfaring' value="Legg til">
 		</form>
@@ -67,7 +67,7 @@
 		<br>
 		<form action="{% url 'medlem_redi' medlem.id %}" method="post" class="form-wrapper">
 			{% csrf_token %}
-			<div class="ingress">Ny utmerkelse</div>
+			<h4>Ny utmerkelse</h4>
 			{{uform}}
 			<input type="submit" name='lagre_utmerkelse' value="Legg til">
 		</form>

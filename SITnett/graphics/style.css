@@ -29,6 +29,14 @@
 
 	--sit-sans: Open Sans, sans-serif;
 	--sit-serif: Libre Baskerville, serif;
+
+	--spacing-xxs: 4px;
+	--spacing-xs: 8px;
+	--spacing-s: 16px;
+	--spacing-m: 24px;
+	--spacing-l: 40px;
+	--spacing-xl: 48px;
+	--spacing-xxl: 56px;
 }
 
 /* 1.1 General styles, mobile/default */
@@ -37,8 +45,6 @@ body {
 	color: var(--main-text-color);
 	background-color: var(--main-bg-color);
 	font-family: var(--sit-sans);
-	font-size: 18px; 
-	font-weight: 400;
 	margin: 0;
 	width: 100vw;
 	position: relative; 
@@ -47,114 +53,72 @@ body {
 }
 
 content {
-	/* display: flex; */
 	min-height: 80vh;
-	padding-top: 20px;
 	left: 0;
 	right: 0;
 }
 
-h1, h2, h3, h4{
+h1, h2, h3{
 	font-family: var(--sit-serif);
+	line-height: 1.4em;
+	letter-spacing: 0.02em;
+	font-weight: 400;
 }
 
 a {
 	color: var(--main-text-color);
+	font-size: 18px;
 	font-style: normal;
 	text-decoration: none;
 }
 
 h1 {
-	font-size: 2.7em;
-	line-height: 3.3em;
+	font-size: 48px;
 }
 
 h2 {
-	font-size: 1.9em;
+	font-size: 30px;
 }
 
-h3 {
-	font-size: 1.1em;
-	line-height: 2em;
+h3, h4 {
+	font-size: 18px;
 }
 
 h4 {
-	font-size: 1.0em;
-	line-height: 2em;
-}
-
-.ingress {
-	font-size: 1.3em;
-	line-height: 2em;
+	line-height: 1.5em;
+	letter-spacing: 0.02em;
 }
 
 p {
-	line-height: 1.3em;
+	font-size: 16px;
+	line-height: 1.4em;
 }
 
 .text-strong {
-	font-weight: 600;
+	font-weight: 700;
 }
 
 .text-info {
-	font-size: 0.9em;
-	line-height: 1.3em;
-	color: var(--secondary-text-color);
+	font-size: 14px;
+	line-height: 1.4em;
 }
 
 /* 1.2 General styles, tablet */
 @media only screen and (min-width: 756px) {
-	body {
-		font-size: 20px; 
-	}
-
-	h2 {
-		font-size: 2em;
-	}
-	
-	h3 {
-		font-size: 1.4em;
-		line-height: 2.1em;
-	}
-	
-	.ingress {
-		font-size: 1.5em;
-		line-height: 2.1em;
-	}
-	
-	p {
-		line-height: 1.5em;
-	}
-	
-	.text-info {
-		font-size: 0.8em;
-		line-height: 1.2em;
-	}
-		
-}
-
-/* 1.3 General styles, desktop */
-@media only screen and (min-width: 1024px) {
 	h1 {
-		font-size: 3em;
-		line-height: 3.9em;
+		font-size: 72px;
 	}
 	h2 {
-		font-size: 2.3em;
+		font-size: 48px;
 	}
 	
-	h3 {
-		line-height: 2.4em;
-	}
-	
-	.ingress {
-		font-size: 1.7em;
-		line-height: 2.4em;
+	h3, h4 {
+		font-size: 30px;
 	}
 	
 	.text-info {
-		font-size: 0.9em;
-		line-height: 1.2em;
+		font-size: 14px;
+		line-height: 1.4em;
 	}
 }
 
