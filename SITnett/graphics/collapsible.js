@@ -1,4 +1,5 @@
 var categories = document.getElementsByClassName("production-categories");
+var parent = document.getElementById("production-info");
 
 if (window.innerWidth < 1024) {
   for (category of categories) {
@@ -36,6 +37,8 @@ if (window.innerWidth < 1024) {
       }      
       content.style.display = "block";
       content.style.maxHeight = content.scrollHeight + "px";
+
+      parent.style.height = content.scrollHeight + "px";
     });
   }
   
