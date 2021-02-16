@@ -745,6 +745,7 @@ select{
 		width: 80%;
 		max-width: 1200px;
 		margin: auto;
+		min-height: 320px;
 	}
 	.production-categories {
 		width: 25%;
@@ -753,7 +754,7 @@ select{
 	}
 	.production-category-content {
 		position: absolute;
-		height: 100%;
+		height: min-content;
 		top: 0;
 		
 		display: none;
