@@ -87,15 +87,16 @@ WSGI_APPLICATION = 'SITnett.wsgi.application'
 # Skru av og på funksjonalitet her:
 
 class FEATURE_SETTINGS():
+    TOGGLE_KONTAKT = True # skrur på kontaktliste.
+    TOGGLE_AR = True # skrur på årsider (med gruppefoto, verv, produksjoner og hendelser for et gitt år).
     TOGGLE_MEDLEMMER = True # skrur på medlemsoversikt og medlemssider.
     TOGGLE_PRODUKSJONER = False # skrur på produksjonsoversikt og produksjonssider.
-    TOGGLE_VERV = False # skrur på vervoversikt og vervsider.
+    TOGGLE_ARRANGEMENTER = False # skrur på arrangementssider.
+    TOGGLE_VERV = True # skrur på vervoversikt og vervsider.
     TOGGLE_UTTRYKK = False # skrur på uttrykksliste.
-    TOGGLE_KONTAKT = True # skrur på kontaktliste.
-    TOGGLE_HENDELSER = False # skrur på arrangements- og hendelsesoversikt.
-    TOGGLE_ARKIV = False # skrur på Arkivet.
-    TOGGLE_DOKUMENTER = False # skrur på dokumentoversikt.
-    TOGGLE_EDIT = False # skrur på redigeringsfunksjonalitet.
+    TOGGLE_ARKIV = False # skrur på arkivsida (med tidslinje over produksjoner, arrangementer, bilder og hendelser).
+    TOGGLE_DOKUMENTER = False # skrur på dokumentfunksjonalitet.
+    TOGGLE_EDIT = True # skrur på redigeringsfunksjonalitet.
 
 FEATURES = FEATURE_SETTINGS()
 
@@ -129,17 +130,20 @@ DATE_INPUT_FORMATS = ["%d.%m.%Y"]
 TIME_FORMAT = r"H.i"
 TIME_INPUT_FORMATS = ["%H.%M"]
 
+MONTH_NAMES = {1:"januar",2:"februar",3:"mars",4:"april",5:"mai",6:"juni",7:"juli",
+    8:"august",9:"september",10:"oktober",11:"november",12:"desember"}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nb'
 
 TIME_ZONE = 'Europe/Oslo'
+USE_TZ = False
 
+USE_L10N = False
 USE_I18N = True
-
-USE_TZ = True
 
 
 # Brukerkonto-relatert:
