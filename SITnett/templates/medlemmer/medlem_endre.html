@@ -8,9 +8,10 @@
 
 {% block medlem_info %}
 
-	<form action="{% url 'medlem_redi' medlem.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+	<form action="{% url 'medlem_endre' medlem.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
-		{{mform}}
+		<div class="ingress">Endre medlem</div>
+		{{medlemsform}}
 		{% if perms.SITdata.add_medlem %}
 			<div class="brukerkonto-wrapper">
 				<p>Bruker:</p>
@@ -42,10 +43,10 @@
 	
 	{% if perms.SITdata.add_erfaring %}	
 		<br>
-		<form action="{% url 'medlem_redi' medlem.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+		<form action="{% url 'medlem_endre' medlem.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 			{% csrf_token %}
 			<div class="ingress">Ny erfaring</div>
-			{{eform}}
+			{{erfaringsform}}
 			<input type="submit" name='lagre_erfaring' value="Legg til">
 		</form>
 	{% endif %}
@@ -65,10 +66,10 @@
 
 	{% if perms.SITdata.add_utmerkelse %}
 		<br>
-		<form action="{% url 'medlem_redi' medlem.id %}" method="post" class="form-wrapper">
+		<form action="{% url 'medlem_endre' medlem.id %}" method="post" class="form-wrapper">
 			{% csrf_token %}
 			<div class="ingress">Ny utmerkelse</div>
-			{{uform}}
+			{{utmerkelsesform}}
 			<input type="submit" name='lagre_utmerkelse' value="Legg til">
 		</form>
 	{% endif %}

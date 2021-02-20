@@ -3,40 +3,42 @@
 
 {% block innhold %}
 
+
 <div class="wrapper">
 	<div class="title-wrapper">
 		<h2>Medlemmer</h2>
 	</div>
 	<form method="get">
-		{{sform}}
+		{{sokform}}
 		<br><br>
 		<button href="#" class="show-advanced-search-btn" id="show-advanced-search-btn">Avansert</button>
 		<div class="advanced-search" id="advanced-search">
-			{{mform}}
+			{{medlemsform}}
 			<br>
-			{{uform}}
+			{{utmerkelsesform}}
 			<br>
 		</div>
 		<input type="submit" value="Søk">
 	</form>
-
 	<div class="card-wrapper">
-		{% for medlem in mliste %}
+		{% for medlem in medlemsliste %}
 			<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
-				{% if user.is_authenticated and medlem.portrett.url %}
-					<img src="{{medlem.portrett.url}}" class="card-image">
+				{% if medlem.portrett.url and user.is_authenticated %}
+					<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
+				{% elif medlem.portrett.url and medlem.offentlig_portrett %}
+					<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
 				{% else %}
-					<img src="/files/default/katt.png" class="card-image">
+					<img src="/files/default/katt.png" class="card-image" loading="lazy">
 				{% endif %}
 				<div class="card-container">
 					<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
 					<div class="text-info text-strong">
-						{% if medlem.status %}
+						{% if medlem.status and medlem.undergjeng %}
 							{{medlem.get_status_display|capfirst}}
 						{% else %}
-							{{medlem.get_mtype_display|capfirst}}
+							{{medlem.get_medlemstype_display|capfirst}}
 						{% endif %}
-					</div> 
+					</div>
 				</div>
 			</a>
 		{% empty %}

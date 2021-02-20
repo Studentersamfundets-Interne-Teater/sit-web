@@ -6,7 +6,7 @@
 		<div class="title-wrapper">
 			<h2>Verv</h2>
 		</div>
-		{% for verv in vliste %}
+		{% for verv in vervliste %}
 			{% if verv.erfaringsoverforing %}
 			<a href="{% url 'verv_info' verv.id %}">{{verv|capfirst}}</a><br>
 			{% endif %}

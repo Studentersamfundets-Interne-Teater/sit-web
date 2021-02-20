@@ -2,9 +2,10 @@
 
 {% block produksjon_info %}
 
-	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+	<form action="{% url 'produksjon_endre' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
-		{{pform}}
+		<div class="ingress">Endre produksjon</div>
+		{{produksjonsform}}
 		<input type="submit" name='lagre_produksjon' value="Lagre endringer">
 	</form>
 
@@ -20,10 +21,10 @@
 {% block forestilling_ny %}
 
 	<br>
-	<form action="{% url 'produksjon_redi' produksjon.id %}" method="post" class="form-wrapper">
+	<form action="{% url 'produksjon_endre' produksjon.id %}" method="post" class="form-wrapper">
 		{% csrf_token %}
 		<div class="ingress">Ny forestilling</div>
-		{{fform}}
+		{{forestillingsform}}
 		<input type="submit" name='lagre_forestilling' value="Legg til">
 	</form>
 
@@ -45,10 +46,10 @@
 {% block medvirkende_ny %}
 
 	<br>
-	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+	<form action="{% url 'produksjon_endre' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
 		<div class="ingress">Ny medvirkende</div>
-		{{eform}}
+		{{erfaringsform}}
 		<input type="submit" name='lagre_erfaring' value="Legg til">
 	</form>
 
@@ -64,10 +65,10 @@
 {% block anmeldelse_ny %}
 
 	<br>
-	<form action="{% url 'produksjon_redi' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+	<form action="{% url 'produksjon_endre' produksjon.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
 		<div class="ingress">Ny anmeldelse</div>
-		{{aform}}
+		{{anmeldelsesform}}
 		<input type="submit" name='lagre_anmeldelse' value="Legg til">
 	</form>
 

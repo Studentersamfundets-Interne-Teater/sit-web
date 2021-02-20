@@ -1,7 +1,8 @@
-# Some hacky stuff so that we can run scripts with Django packages
-# https://stackoverflow.com/questions/45737387/django-settings-module-no-module-named
 import sys
-sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
+# FYLL INN DIN LOKALE FILSTI TIL SITNETT HER:
+#sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
+sys.path.append("C:/Users/jonas/Documents/Kode/Django/sit-web/SITnett")
+
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SITnett.settings")
 import django
@@ -251,14 +252,14 @@ def create_medlem(medlem_dict, arr_for_bilder, location):
     except:
         pass
 
-    mtype = 1
+    medlemstype = 1
     undergjeng = None
-    gjeng_mtype_dict = {'skuespiller': 1, 'Regi': 2, 'Kostyme': 1, 'Ekstern': 21, 'UKE-funk': 9, 'UKEfunk/Låftet': 5,
+    gjeng_medlemstype_dict = {'skuespiller': 1, 'Regi': 2, 'Kostyme': 1, 'Ekstern': 21, 'UKE-funk': 9, 'UKEfunk/Låftet': 5,
                         'Kulisse': 1, 'Skuespiller': 1}
     gjeng_undergjeng_dict = {'skuespiller': 3, 'Kostyme': 1, 'Kulisse': 2, 'Skuespiller': 3}
     try:
-        mtype = gjeng_mtype_dict[medlem_dict['gjeng']]
-        if mtype == 1:
+        medlemstype = gjeng_medlemstype_dict[medlem_dict['gjeng']]
+        if medlemstype == 1:
             undergjeng = gjeng_undergjeng_dict[medlem_dict['gjeng']]
     except:
         pass
@@ -286,7 +287,7 @@ def create_medlem(medlem_dict, arr_for_bilder, location):
     except:
         pass
 
-    new_medlem = models.Medlem(mtype=mtype, fornavn=fornavn, mellomnavn=mellomnavn, etternavn=etternavn,
+    new_medlem = models.Medlem(medlemstype=medlemstype, fornavn=fornavn, mellomnavn=mellomnavn, etternavn=etternavn,
                                fodselsdato=fodselsdato,
                                opptaksar=opptaksar, undergjeng=undergjeng, status=status, portrett=portrett,
                                telefon=telefon,
@@ -365,7 +366,7 @@ def update_gallery(medlem_dict, new_medlem, arr, location):
                     shutil.copyfileobj(open(location + url, 'rb'),
                                        open(settings.MEDIA_ROOT + '/bilder/' + fname, 'wb'))
                 fil = '/bilder/' + fname
-                new_foto = models.Foto(fil=fil, kontekst=kontekst, arrangement=arr, ftype=1)
+                new_foto = models.Foto(fil=fil, kontekst=kontekst, arrangement=arr, fototype=1)
                 new_foto.save()
                 new_foto.medlemmer.add(new_medlem)
                 new_foto.save()
@@ -382,11 +383,11 @@ def create_produksjon(data_dict, location):
     # 'skildring' - kort beskrivelse av forestillingen, -->info
     # 'spelestad' - spillested, mye forskjellig her --> create lokale og link til forestillingen
     # 'opphavsmenn' - forfatter(e), replace "av " --> forfatter
-    # 'uka' - ukeproduksjon? ja hvis tagen fins --> ptype = 4
+    # 'uka' - ukeproduksjon? ja hvis tagen fins --> produksjonstype = 4
     # 'plakat' - plakat(bildelink) --> plakat
     # 'galleri_i' og 'galleritxt_i' --> lag Foto og link til produksjonen
     # 'verv_i', 'person_i' + 'karakter_i' --> lag erfaring knyttet til medlem og produksjon, lag medlem om medlem ikke finnes, bruk dict for å få riktige verv
-    # 'produksjonstype' lag ptags, kjør gjennom filter, inneholder også AFEI og KUP --> ptype, enkelte kan kanskje gå som skildring også
+    # 'produksjonstype' lag produksjonstags, kjør gjennom filter, inneholder også AFEI og KUP --> produksjonstype, enkelte kan kanskje gå som skildring også
     # 'produksjonsnamn' - kommer ikke med, men det er egentlig her tittel ligger -->tittel
 
     tittel = try_get2('produksjonsnamn', data_dict, "Ikke funnet")
@@ -400,16 +401,16 @@ def create_produksjon(data_dict, location):
     except:
         premieredato = datetime.date(int(data_dict['aar']), 7, 1)
 
-    ptype = 0
-    p_tag_list = []
+    produksjonstype = 0
+    produksjonstag_list = []
     lokale_list = []
 
     info = ""
     info += try_get('overskrift', data_dict)
 
     try:
-        ptype_is_skildring, ptype, p_tag_list = create_ptags(produksjonstype_dict[data_dict['produksjonstype']])
-        if ptype_is_skildring:
+        produksjonstype_is_skildring, produksjonstype, produksjonstag_list = create_produksjonstags(produksjonstype_dict[data_dict['produksjonstype']])
+        if produksjonstype_is_skildring:
             info += try_get('produksjonstype', data_dict)
     except:
         pass
@@ -423,10 +424,10 @@ def create_produksjon(data_dict, location):
 
     try:
         a = data_dict['uka']
-        ptype = 4
+        produksjonstype = 4
     except:
-        if ptype == 0:
-            ptype = 1
+        if produksjonstype == 0:
+            produksjonstype = 1
 
 
     info += try_get('skildring', data_dict)
@@ -461,9 +462,9 @@ def create_produksjon(data_dict, location):
     new_produksjon = models.Produksjon(tittel=tittel, forfatter=forfatter, premieredato=premieredato, plakat=plakat, info=info)
     new_produksjon.save()
 
-    if p_tag_list:
-        for ptag in p_tag_list:
-            new_produksjon.ptags.add(ptag)
+    if produksjonstag_list:
+        for produksjonstag in produksjonstag_list:
+            new_produksjon.produksjonstags.add(produksjonstag)
     if lokale_list:
         for lokale in lokale_list:
             new_produksjon.lokale.add(lokale)
@@ -487,25 +488,25 @@ def try_get(data, data_dict):
     except:
         return data + ":    " + "\n\n"
 
-def create_ptags(p_list):
+def create_produksjonstags(p_list):
     is_skildring = False
-    ptype = 0
-    p_tag_list = []
+    produksjonstype = 0
+    produksjonstag_list = []
     for tag in p_list:
         if tag == 'skildring':
             is_skildring = True
         elif tag == 'UKA':
-            ptype = 4
+            produksjonstype = 4
         elif tag == 'KUP':
-            ptype = 2
+            produksjonstype = 2
         elif tag == 'AFEI':
-            ptype = 3
+            produksjonstype = 3
         else:
-            ptag = models.pTag(tag=tag)
-            ptag.save()
-            p_tag_list.append(ptag)
+            produksjonstag = models.Produksjonstag(tag=tag)
+            produksjonstag.save()
+            produksjonstag_list.append(produksjonstag)
 
-    return is_skildring, ptype, p_tag_list
+    return is_skildring, produksjonstype, produksjonstag_list
 
 def create_lokale(lok_list):
     is_skildring = False
@@ -558,7 +559,7 @@ def update_produksjon_gallery(produksjon_dict, new_produksjon, location):
                                        open(settings.MEDIA_ROOT + '/bannere/' + fname, 'wb'))
                     banner = '/bannere/' + fname
 
-                new_foto = models.Foto(fil=fil, kontekst=kontekst, produksjon=new_produksjon, ftype=1)
+                new_foto = models.Foto(fil=fil, kontekst=kontekst, produksjon=new_produksjon, fototype=1)
                 new_foto.save()
     return banner
 
@@ -615,27 +616,27 @@ def create_erfaringer(data_dict, produksjon):
 
 def update_verv(tittel, type):
     try:
-        return models.Verv.objects.get(tittel=tittel, vtype=3)
+        return models.Verv.objects.get(tittel=tittel, vervtype=4)
     except:
         if type == 'prodapp':
-            vtag = update_vTag(type)
-            new_verv = models.Verv.objects.create(tittel=tittel, erfaringsoverforing=True, vtype=3)
+            vervtag = update_vervtag(type)
+            new_verv = models.Verv.objects.create(tittel=tittel, erfaringsoverforing=True, vervtype=4)
             new_verv.save()
-            new_verv.vtags.add(vtag)
+            new_verv.vervtags.add(vervtag)
             new_verv.save()
             return new_verv
         else:
-            new_verv = models.Verv.objects.create(tittel=tittel, vtype=3, erfaringsoverforing=False)
+            new_verv = models.Verv.objects.create(tittel=tittel, vervtype=4, erfaringsoverforing=False)
             new_verv.save()
             return new_verv
 
-def update_vTag(tittel):
+def update_vervtag(tittel):
     try:
-        return models.vTag.objects.get(tag=tittel)
+        return models.Vervtag.objects.get(tag=tittel)
     except:
-        vtag = models.vTag.objects.create(tag=tittel)
-        vtag.save()
-        return vtag
+        vervtag = models.Vervtag.objects.create(tag=tittel)
+        vervtag.save()
+        return vervtag
 
 
 
@@ -657,7 +658,7 @@ def transfer_all_medlemmer(location):
     list_of_dicts, dict_of_lists, dict_of_sets, errors = getAll(location + 'medlem/')
     skrift = models.Lokale(navn='skrift.no')
     skrift.save()
-    arr_for_pictures = models.Arrangement(atype=1, tittel='Bilder fra skrift knyttet til medlemmer',
+    arr_for_pictures = models.Arrangement(tittel='Bilder fra skrift knyttet til medlemmer', offentlig=False,
                                           tidspunkt=datetime.date(2020, 12, 31), lokale=skrift)
     arr_for_pictures.save()
 
@@ -709,5 +710,7 @@ def fixtext(s):
     else:
         return s
 
+
 if __name__ == "__main__":
-    transfer_all_medlemmer(sys.argv[1])
+    # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
+    transfer_all_medlemmer('/Users/jonas/Desktop/Skriftdata/')
