@@ -213,13 +213,13 @@ p {
 	margin-top: auto;
 	background-color: var(--main-text-color);
 	color: var(--grullo-20);
-	padding: 40px 20px; 
+	padding: var(--spacing-m); 
 	height: 600px;
 } 
 .footer-flex-wrapper{
-	width: 80%;
+	width: 100%;
 	max-width: 1200px;
-	min-width: 320px;
+	min-width: 300px;
 	margin: auto;
 	display: flex;
 	flex-direction: row;
@@ -229,34 +229,30 @@ p {
 .footer a {
 	color: var(--grullo-20);
 }
-.footer a:hover {
-	text-decoration: underline;
-}
 .footer .footer-section{
 	width: 25%;
 	min-width: 260px;
-	padding-bottom: 1em;
+	padding-bottom: var(--spacing-s);
 }
 .footer-some {
-	padding-top: 2em;
+	padding-top: var(--spacing-m);
 	height: 6em;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
 }
 .some-links{
-	padding: 4px;
+	padding: var(--spacing-xxs);
 }
 .footer-some .fa {
 	font-size: 1.5em;
 	width: 1.2em;
 }
 .feedback-button{
-	margin-top: 1.5em;
+	margin-top: var(--spacing-m);
 	background-color: var(--main-text-color);
     width: 200px;
-    padding: 1em 0;
-	font-size: 0.9em;
+    padding: var(--spacing-s) 0;
 	border: solid 1px var(--grullo-20);
 	text-decoration: none;
 	color: var(--grullo-20);
@@ -270,10 +266,11 @@ p {
 /* 2.2.2 Desktop */
 @media only screen and (min-width: 1024px) {
 	.footer-some {
-		padding-top: 1em;
+		padding-top: var(--spacing-m);
 	}
 	.footer {
         height: 250px;
+		padding: var(--spacing-l);
     }
 }
 
