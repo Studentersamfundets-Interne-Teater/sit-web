@@ -1,5 +1,11 @@
-{% extends "meny.html" %} {% load static %} {% block innhold %}
-
+{% extends "meny.html" %} 
+{% load static %} 
+{% block innhold %}
+  <head>
+    <link rel="stylesheet" href="{% static 'hoved-page.css' %}"/>
+    <link rel="stylesheet" href="{% static 'info.css' %}"/>
+  </head>
+  <body>
 <section class="hero" id="hero">
   <img class="hero-image" id="hero-image"
 	src="{% static 'img/2021_hero.jpg' %}"
@@ -80,4 +86,5 @@
 </div> {% endcomment %}
 
 <script src="{% static "/hero_img_picker.js" %}"></script>
+</body>
 {% endblock innhold %}
