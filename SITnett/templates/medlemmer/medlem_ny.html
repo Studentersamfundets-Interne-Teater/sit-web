@@ -4,7 +4,7 @@
 
 	<form action="{% url 'medlem_ny' %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
-		{{mform}}
+		{{medlemsform}}
 		<div class="brukerkonto-wrapper">
 			<p>Lag innlogginsdetaljer:</p>
 			<input type="checkbox" name='opprett_brukerkonto'>

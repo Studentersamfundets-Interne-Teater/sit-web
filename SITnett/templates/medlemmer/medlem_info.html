@@ -16,10 +16,16 @@
 			{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
 		{% endif %}
 		{% endblock medlem_navn %}
-		
-		<p>{% if medlem.status %}{{medlem.get_status_display|capfirst}}{% endif %}
-			{% if medlem.status and medlem.undergjeng %}, {% endif %}
-			{% if medlem.undergjeng %}{{medlem.get_undergjeng_display}}{% endif %}
+	
+		<p>
+		{% if medlem.status and medlem.undergjeng %}
+			{{medlem.get_status_display|capfirst}}, 
+		{% endif %}
+		{% if medlem.undergjeng %}
+			{{medlem.get_undergjeng_display}}
+		{% else %}
+			{{medlem.get_medlemstype_display}}
+		{% endif %}
 		</p>
 
 		<div class="member-divider"></div><br>
@@ -33,9 +39,6 @@
 					<br>
 			{% endfor %}
 		{% endif %}
-		{% block utmerkelse_ny %}
-
-		{% endblock utmerkelse_ny %}
 		</i>
 		{% block medlem_info %}
 		<br>
@@ -44,7 +47,13 @@
 			{% if medlem.opptaksar %}
 			<tr>
 				<td><b>Tatt opp:</b> </td>
-				<td>{{medlem.opptaksar}}</td> 
+				<td>
+				{% if FEATURES.TOGGLE_AR %}
+					<a href="{% url 'ar_info' medlem.opptaksar %}">{{medlem.opptaksar}}</a>
+				{% else %}
+					{{medlem.opptaksar}}
+				{% endif %}
+				</td> 
 			</tr>
 			{% endif %}
 			{% if user.is_authenticated %}
@@ -96,52 +105,61 @@
 		{% endblock medlem_info %}
 	</div>
 
-	{% if FEATURES.TOGGLE_PRODUKSJONER or FEATURES.TOGGLE_VERV %}
-		{% if medlem.erfaringer.count %}
-			<section class="member-information">
-				<div class="member-firstDivider"></div>
-				<a class="member-categories"><h3>Erfaringer</h3></a>
-				<div class="member-category-content">
-					{% for erfaring in medlem.erfaringer.all %}
-						{% if erfaring.verv %}
-							{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
-									<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv|capfirst}}</a>
-							{% else %}
-								{{erfaring.verv|capfirst}}
-							{% endif %}
+	{% if medlem.erfaringer.count %}
+		<section class="member-information">
+			<div class="member-firstDivider"></div>
+			<a class="member-categories"><h3>Erfaringer</h3></a>
+			<div class="member-category-content">
+				{% for erfaring in medlem.erfaringer.all %}
+					{% if erfaring.verv %}
+						{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+								<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv|capfirst}}</a>
 						{% else %}
-							{{erfaring.tittel|capfirst}}
+							{{erfaring.verv|capfirst}}
 						{% endif %}
-						{% if erfaring.ar %}
-							 i {{erfaring.ar}}
+					{% else %}
+						{{erfaring.tittel|capfirst}}
+					{% endif %}
+					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+					 i 
+					{% if erfaring.produksjon %}
+						{% if FEATURES.TOGGLE_PRODUKSJONER %}
+							<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
 						{% else %}
-							{% if erfaring.rolle %} ({{erfaring.rolle}}) i {% else %} for {% endif %}
-							{% if FEATURES.TOGGLE_PRODUKSJONER %}
-								<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
-							{% else %}
-								{{erfaring.produksjon}}
-							{% endif %}
+							{{erfaring.produksjon}}
 						{% endif %}
-						{% block erfaring_fjern %}
-						
-						{% endblock erfaring_fjern %}
-						<br>
-					{% endfor %}
-					{% block erfaring_ny %}
+					{% else %}
+						{% if FEATURES.TOGGLE_AR %}
+							<a href="{% url 'ar_info' erfaring.ar %}">{{erfaring.ar}}</a>
+						{% else %}
+							{{erfaring.ar}}
+						{% endif %}
+					{% endif %}
+					{% block erfaring_fjern %}
 
-					{% endblock erfaring_ny %}
-				</div>
-			</section>
-		{% endif %}
+					{% endblock erfaring_fjern %}
+					<br>
+				{% endfor %}
+			</div>
+		</section>
 	{% endif %}
+
+	{% block erfaring_ny %}
+
+	{% endblock erfaring_ny %}
+
+
+	{% block utmerkelse_ny %}
+
+	{% endblock utmerkelse_ny %}
 
 
 	{% block medlem_nav %}
-		
+	
 		{% if FEATURES.TOGGLE_EDIT %}
 			{% if user.is_authenticated %}
 				<br><br>
-				<a href="{% url 'medlem_redi' medlem.id %}">Endre medlem</a>
+				<a href="{% url 'medlem_endre' medlem.id %}">Endre medlem</a>
 				<br>
 			{% endif %}
 			{% if perms.SITdata.delete_medlem %}
@@ -149,9 +167,8 @@
 				<a href="{% url 'medlem_slett' medlem.id %}">Slett medlem</a>
 				<br>
 			{% endif %}
-			<br>
 		{% endif %}
-
+	
 	{% endblock medlem_nav %}
 
 {% endblock innhold %}

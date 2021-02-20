@@ -1,0 +1,165 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+	
+	<h2>SIT i {{ar}}</h2>
+	
+	{% block ar_info %}
+
+		{% if ar.gjengfoto %}
+			<section class="hero" id="hero">
+				<img class="hero-image" id="hero-image"
+				src="{{ar.gjengfoto.fil.url}}"
+				alt=""
+				data-landscape="{{ar.gjengfoto.fil.url}}"
+				data-portrait="{{ar.gjengfoto.fil.url}}">
+				<div class="text-info" style="position: absolute; bottom: 1rem; left: 1rem; color: white;">
+					Foto: 
+					{% if ar.gjengfoto.fotograf %}
+						{{ar.gjengfoto.fotograf}}
+					{% else %}
+						<a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener" style="color: white;">foto.samfundet.no</a>
+					{% endif %}
+				</div>
+			</section>
+		{% endif %}
+
+	{% endblock ar_info %}
+
+	{% block ar_erfaringer %}
+		{% if styreoppslag %}
+			<h3>Styret</h3>
+			{% for verv, erfaringer in styreoppslag.items %}
+				{% if erfaringer.count > 1 %}
+					{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a>
+					{% else %}
+						<b>{{verv.plural|capfirst}}:</b>
+					{% endif %}
+					<br>
+					{% for erfaring in erfaringer %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% else %}
+							{{erfaring.medlem}}
+						{% endif %}
+						{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+						<br>
+					{% endfor %}
+				{% else %}
+					{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a>
+					{% else %}
+						<b>{{verv.tittel|capfirst}}:</b>
+					{% endif %}
+					<br>
+					{% if FEATURES.TOGGLE_MEDLEMMER %}
+						<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+					{% else %}
+						{{erfaringer.first.medlem}}
+					{% endif %}
+					{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
+					<br>
+				{% endif %}
+			{% endfor %}
+			<br>
+			{% if ar.styrebilde %}
+				<div class="info-wrapper-image">
+					<img src="{{ar.styrebilde.url}}" width=100%>
+				</div>
+			{% endif %}
+		{% endif %}
+		{% if vervoppslag or titteloppslag %}
+			<h3>Gjengverv</h3>
+		{% endif %}
+		{% if vervoppslag %}
+			{% for verv, erfaringer in vervoppslag.items %}
+				{% if erfaringer.count > 1 %}
+					{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a>
+					{% else %}
+						<b>{{verv.plural|capfirst}}:</b>
+					{% endif %}
+					<br>
+					{% for erfaring in erfaringer %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% else %}
+							{{erfaring.medlem}}
+						{% endif %}
+						{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+						<br>
+					{% endfor %}
+				{% else %}
+					{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
+						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a>
+					{% else %}
+						<b>{{verv.tittel|capfirst}}:</b>
+					{% endif %}
+					<br>
+					{% if FEATURES.TOGGLE_MEDLEMMER %}
+						<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+					{% else %}
+						{{erfaringer.first.medlem}}
+					{% endif %}
+					{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
+					<br>
+				{% endif %}
+				<br>
+			{% endfor %}
+			<br>
+		{% endif %}
+		{% if titteloppslag %}
+			{% for tittel, erfaringer in titteloppslag.items %}
+				<b>{{tittel|capfirst}}:</b><br>
+				{% for erfaring in erfaringer %}
+					{% if FEATURES.TOGGLE_MEDLEMMER %}
+						<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+					{% else %}
+						{{erfaring.medlem}}
+					{% endif %}
+					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+					<br>
+				{% endfor %}
+			{% endfor %}
+			<br>
+		{% endif %}
+
+	{% endblock ar_erfaringer %}
+
+	{% block erfaring_ny %}
+
+	{% endblock erfaring_ny %}
+
+
+	{% block ar_hendelser %}
+
+		{% if produksjonsliste.count %}
+			<h3>Produksjoner</h3>
+			{% for produksjon in produksjonsliste %}
+				{% if FEATURES.TOGGLE_PRODUKSJONER %}
+					<a href="{% url 'produksjon_info' produksjon.id %}">{{produksjon.tittel}}</a>
+				{% else %}
+					{{produksjon.tittel}}
+				{% endif %}
+				({{produksjon.spilleperiode}})<br>
+			{% endfor %}
+			<br>
+		{% endif %}
+
+	{% endblock ar_hendelser %}
+
+
+	{% block ar_nav %}
+		
+		{% if FEATURES.TOGGLE_EDIT %}
+			{% if access == 'admin' or access == 'own' %}
+				<br><br>
+				<a href="{% url 'ar_endre' ar.arstall %}">Kontrollpanel</a>
+				<br>
+			{% endif %}
+		{% endif %}
+
+	{% endblock ar_nav %}
+	
+{% endblock innhold %}

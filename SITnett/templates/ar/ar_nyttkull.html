@@ -1,0 +1,21 @@
+{% extends "ar/ar_info.html" %}
+
+{% block ar_info %}
+	
+	Her kan du etter hvert legge inn et helt kull om gangen!
+	
+{% endblock ar_info %}
+
+
+{% block ar_erfaringer %}
+
+{% endblock ar_erfaringer %}
+
+
+{% block ar_nav %}
+
+	<br><br>
+	<a href="{% url 'ar_info' ar.arstall %}">Vis SIT i {{ar}}</a>
+	<br>
+
+{% endblock ar_nav %}

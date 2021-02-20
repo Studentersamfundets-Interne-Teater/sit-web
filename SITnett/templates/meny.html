@@ -21,23 +21,22 @@
 		<a href="{% url 'hoved' %}"><img src="{% static 'assets/sit_logo_without_text.svg' %}" height=60 id="logo"></a>
 		<div id="menuLinks">
 			<a href="{% url 'info' %}">Om SIT</a>
-			{% if FEATURES.TOGGLE_MEDLEMMER %}
+			{% if FEATURES.TOGGLE_KONTAKT %}
 				{% if user.is_authenticated %}
 					<a href="{% url 'kontakt' %}">Lommelista</a>
 				{% else %}
 					<a href="{% url 'kontakt' %}">Kontakt</a>
 				{% endif %}
-				<a href="{% url 'medlemmer' %}">Medlemmer</a>
 			{% endif %}
+			{% if FEATURES.TOGGLE_MEDLEMMER %}<a href="{% url 'medlemmer' %}">Medlemmer</a>{% endif %}
 			{% if FEATURES.TOGGLE_PRODUKSJONER %}<a href="{% url 'produksjoner' %}">Produksjoner</a>{% endif %}
 			{% if user.is_authenticated %}
 				{% if FEATURES.TOGGLE_VERV %}<a href="{% url 'verv' %}">Verv</a>{% endif %}
 				{% if FEATURES.TOGGLE_UTTRYKK %}<a href="{% url 'uttrykk' %}">Uttrykk</a>{% endif %}
-				{% if FEATURES.TOGGLE_DOKUMENTER %}<a href="{% url 'dokumenter' %}">Dokumenter</a>{% endif %}
 				{% if FEATURES.TOGGLE_ARKIV %}<a href="{% url 'arkiv' %}">Arkiv</a>{% endif %}
+				{% if FEATURES.TOGGLE_DOKUMENTER %}<a href="{% url 'dokumenter' %}">Dokumenter</a>{% endif %}
 				<a href="http://sit-bar.samfundet.no/">Badeportal</a>
-			{% endif %}
-			{% if not user.is_authenticated %}
+			{% else %}
 				<a href="{% url 'opptak' %}">Søk SIT</a>
 			{% endif %}
 		</div>

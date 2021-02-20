@@ -1,27 +1,21 @@
 {% extends "meny.html" %} {% load static %} {% block innhold %}
 
 <div class="placeholder-content">
-  <h2>Opptak</h2>
-  <p>Opptaket 2021 er avsluttet, og vi har tatt opp nye medlemmer.</p>
-  <p>
-    Neste opptak åpner våren 2022, og blir da tilgjengelig på
-    <a href="https://samfundet.no" target="_blank" rel="noreferrer noopener"
-      >Samfundets nettsider</a
-    >
-    tidlig i januar. Da vil det igjen bli anledning til å bli med i en av våre
-    tre undergjenger: Kulissebyggere, kostymesyere og skuespillere.
-  </p>
-  <p>Vi håper på å se deg da!</p>
-  <img src="{% static 'assets/digfx1814.jpg' %}" width="100%" />
-  <div class="text-info">
-    Foto:
-    <a
-      href="https://foto.samfundet.no/"
-      target="_blank"
-      rel="noreferrer noopener"
-      >foto.samfundet.no</a
-    >
-  </div>
-  <br />
+	<h2>Opptak</h2>
+	<p>
+	{% if ar.opptakstekst %}
+		<p>{{ar.opptakstekst}}</p>
+	{% else %}
+		<p>SIT tar ikke opp medlemmer nå, men kom tilbake i januar. Da vil det igjen bli anledning til å bli med i en av våre tre undergjenger Kostyme, Kulisse eller Skuespill.</p>
+		<p>Vi håper å se deg da!</p>
+	{% endif %}
+	</p>
+	<img src="{% static 'assets/digfx1814.jpg' %}" width="100%" />
+	<div class="text-info">
+		Foto:
+		<a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener">
+		foto.samfundet.no</a>
+	</div>
+	<br />
 </div>
 {% endblock innhold %}

@@ -1,0 +1,38 @@
+{% extends "ar/ar_info.html" %}
+
+{% block ar_info %}
+
+	<form action="{% url 'ar_endre' ar.arstall %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+		{% csrf_token %}
+		<div class="ingress">Kontrollpanel for {{ar}}</div>
+		{{arsform}}
+		<input type="submit" name='lagre_ar' value="Lagre endringer">
+	</form>
+	{% if perms.SITdata.add_medlem %}
+		<div class="btn-wrapper">
+			<a class="btn" href="{% url 'ar_nyttkull' ar.arstall %}">Nytt kull</a>
+		</div>
+	{% endif %}
+
+{% endblock ar_info %}
+
+
+{% block erfaring_ny %}
+
+	<form action="{% url 'ar_endre' ar.arstall %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+		{% csrf_token %}
+		<div class="ingress">Ny erfaring</div>
+		{{erfaringsform}}
+		<input type="submit" name='lagre_erfaring' value="Legg til">
+	</form>
+
+{% endblock erfaring_ny %}
+
+
+{% block ar_nav %}
+	
+	<br><br>
+	<a href="{% url 'ar_info' ar.arstall %}">Vis SIT i {{ar.arstall}}</a>
+	<br>
+
+{% endblock ar_nav %}
