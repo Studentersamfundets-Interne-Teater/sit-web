@@ -11,14 +11,14 @@
     <br>
   {% endif %}
   
-  <form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    {{form}}
-    <input type="submit" value="Logg inn" />
-    <input type="hidden" name="next" value="{{next}}" />
-  </form>
-  
-  <br>
-  <a href="{% url 'password_reset' %}">Glemt passordet ditt?</a>
-  
+  <div class="wrapper">
+    <form method="post" action="{% url 'login' %}" class="form-wrapper">
+      {% csrf_token %}
+      {{form}}
+      <input type="submit" value="Logg inn" />
+      <input type="hidden" name="next" value="{{next}}" />
+    </form>
+
+    <a href="{% url 'password_reset' %}">Glemt passordet ditt?</a>
+  </div>
 {% endblock %}

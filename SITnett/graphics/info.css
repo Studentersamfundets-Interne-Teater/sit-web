@@ -1,0 +1,23 @@
+.info-wrapper{
+	display: flex;
+	flex-wrap: wrap-reverse;
+	justify-content: space-between;
+	width: 80%;
+	min-width: 320px;
+	max-width: 1200px;
+	margin: var(--spacing-xl) auto;
+}
+.info-wrapper h2{
+	line-height: 1em;
+	margin: 0;
+	color: var(--gunmetal-80);
+}
+.info-wrapper-content{
+	width: 40%;
+	min-width: 320px;
+}
+.info-wrapper-image{
+	width: 55%;
+	min-width: 320px;
+	margin-bottom: 1em;
+}

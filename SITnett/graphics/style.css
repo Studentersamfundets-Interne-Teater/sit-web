@@ -282,7 +282,7 @@ p {
 	margin: auto;
 	grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
     grid-auto-rows: min-content;
-    grid-gap: 1.0rem 0.5rem;
+    grid-gap: var(--spacing-s) var(--spacing-xs);
     justify-content: center;
 }
 
@@ -325,7 +325,7 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 
 .card-container {
 	height: 5em;
-	padding: 0 0.5em;
+	padding: var(--spacing-xs);
 	text-align: center;
 	display: flex;
 	flex-direction: column;
@@ -334,8 +334,7 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .card-title {
-	line-height: 1.1em;
-	margin: 0 0 0.6em 0;
+	margin: 0 0 var(--spacing-xs) 0;
 }
 
 /* 3.1 FORMS */
@@ -402,30 +401,7 @@ select{
 }
 
 /* 4. SPECIFIC COMPONENTS */
-/* 4.1 INFOPAGE */
-.info-wrapper{
-	display: flex;
-	flex-wrap: wrap-reverse;
-	justify-content: space-between;
-	width: 80%;
-	min-width: 320px;
-	max-width: 1200px;
-	margin: 3em auto;
-}
-.info-wrapper h2{
-	line-height: 1em;
-	margin: 0;
-	color: var(--gunmetal-80);
-}
-.info-wrapper-content{
-	width: 40%;
-	min-width: 320px;
-}
-.info-wrapper-image{
-	width: 55%;
-	min-width: 320px;
-	margin-bottom: 1em;
-}
+
 
 .btn {
 	display: inline-block;
@@ -754,7 +730,7 @@ select{
 /* 4.4 Member page/could be reusable */ 
 
 .wrapper {
-	margin: 5vh 5vh 20vh 5vh; 
+	margin: var(--spacing-s);
 }
 .production-wrapper {
 	margin: 5vh 5vh 20vh 5vh; 
@@ -786,7 +762,7 @@ select{
 .member-general-info {
 	margin: 20px;
 }
-.member-general-info h2, h2 + p {
+.member-general-info h2{
 	text-align: center;
 }
 .member-general-info p {
