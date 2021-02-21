@@ -8,18 +8,41 @@
 	<div class="title-wrapper">
 		<h2>Medlemmer</h2>
 	</div>
-	<form method="get">
-		{{sokform}}
-		<br><br>
-		<button href="#" class="show-advanced-search-btn" id="show-advanced-search-btn">Avansert</button>
-		<div class="advanced-search" id="advanced-search">
-			{{medlemsform}}
-			<br>
-			{{utmerkelsesform}}
-			<br>
+	<form method="get" class="form-wrapper">
+		<div class="ingress">Medlemssøk</div>
+		{{medlemsform1}}
+		<br>
+		<label type="btn" id="opptaksar-section-toggle">Opptaksår</label>
+		<div id="opptaksar-section">
+			{{medlemsform2}}
 		</div>
+		<br>
+		<label type="btn" id="gjeng-section-toggle">Gjeng</label>
+		<div id="gjeng-section">
+			{{medlemsform3.medlemstype}}
+		</div>
+		<br>
+		<label type="btn" id="utmerkelse-section-toggle">Utmerkelse</label>
+		<div id="utmerkelse-section">
+			{{medlemsform4}}
+		</div>
+		<br>
 		<input type="submit" value="Søk">
 	</form>
+	<script>
+		$('#opptaksar-section').hide();
+		$('#opptaksar-section-toggle').click(function(){
+			$('#opptaksar-section').toggle();
+		});
+		$('#gjeng-section').hide();
+		$('#gjeng-section-toggle').click(function(){
+			$('#gjeng-section').toggle();
+		});
+		$('#utmerkelse-section').hide();
+		$('#utmerkelse-section-toggle').click(function(){
+			$('#utmerkelse-section').toggle();
+		});
+	</script>
 	<div class="card-wrapper">
 		{% for medlem in medlemsliste %}
 			<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">

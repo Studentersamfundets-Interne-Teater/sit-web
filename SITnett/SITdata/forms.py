@@ -1,4 +1,5 @@
 from django import forms
+from django_select2.forms import Select2MultipleWidget
 
 from SITdata import models
 
@@ -8,22 +9,6 @@ class CustomFileInput(forms.widgets.ClearableFileInput):
     input_text = "Endre"
     clear_checkbox_label = "Fjern"
 
-
-class SearchForm(forms.Form):
-    tekst = forms.CharField(label="Søk",required=False,max_length=20)
-
-
-class MedlemSearchForm(forms.ModelForm):
-    fra_ar = forms.IntegerField(label="Fra",required=False)
-    til_ar = forms.IntegerField(label="Til",required=False)
-    class Meta:
-        model = models.Medlem
-        fields = ['undergjeng','status','mtype']
-        labels = {'mtype':"Gjeng"}
-        widgets = {'undergjeng': forms.widgets.CheckboxSelectMultiple,
-            'status': forms.widgets.CheckboxSelectMultiple,
-            'mtype': forms.widgets.CheckboxSelectMultiple}
-        required = ['mtype']
 
 class MedlemAdminForm(forms.ModelForm):
     class Meta:
@@ -45,17 +30,35 @@ class MedlemOtherForm(forms.ModelForm):
         fields = ['kallenavn']
 
 
-class UtmerkelseSearchForm(forms.ModelForm):
-    class Meta:
-        model = models.Utmerkelse
-        fields = ['tittel','orden']
-        widgets = {'tittel':forms.widgets.CheckboxSelectMultiple,'orden':forms.widgets.CheckboxSelectMultiple}
-        required = ['orden']
-
 class UtmerkelseForm(forms.ModelForm):
     class Meta:
         model = models.Utmerkelse
         fields = ['tittel','orden','ar']
+
+
+class MedlemSearchForm1(forms.Form):
+    tekst = forms.CharField(label="Søk",required=False,max_length=20)
+    UNDERGJENGER = models.Medlem.UNDERGJENGER+((0,'ukjent'),)
+    undergjeng = forms.MultipleChoiceField(choices=UNDERGJENGER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3])
+    STATUSER = models.Medlem.STATUSER+((0,'ukjent'),)
+    status = forms.MultipleChoiceField(choices=STATUSER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2])
+
+class MedlemSearchForm2(forms.Form):
+    fra_ar = forms.IntegerField(label="Fra",required=False)
+    til_ar = forms.IntegerField(label="Til",required=False)
+    ukjent_ar = forms.BooleanField(label="Ukjent",required=False)
+
+class MedlemSearchForm3(forms.Form):
+    medlemstype = forms.MultipleChoiceField(label="Gjeng",choices=models.Medlem.MEDLEMSTYPER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1])
+
+class MedlemSearchForm4(forms.Form):
+    tittel = forms.MultipleChoiceField(choices=models.Utmerkelse.TITLER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple)
+    orden = forms.MultipleChoiceField(choices=models.Utmerkelse.ORDENER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple)
 
 
 class ProduksjonAdminForm(forms.ModelForm):
