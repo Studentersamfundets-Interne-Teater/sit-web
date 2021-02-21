@@ -16,20 +16,21 @@
 							<p>av {{produksjon.forfatter}}</p>
 						{% endif %}
 					{% endblock produksjon_tittel %}
-					{% if produksjon.reklame %}<p><b>{{produksjon.reklame}}</b></p>{% endif %}
 				</div>
-				<div class="production-banner-info">
-					{% for forestilling in produksjon.forestillinger.all %}
-						{{forestilling.fullt_tidspunkt}}
-						{% block forestilling_fjern %}
-						<br>
-						{% endblock forestilling_fjern %}
-					{% endfor %}
-					
-					{% block forestilling_ny %}
+				{% if produksjon.forestillinger.all %}
+					<div class="production-banner-info">
+						{% for forestilling in produksjon.forestillinger.all %}
+							{{forestilling.fullt_tidspunkt}}
+							{% block forestilling_fjern %}
+							<br>
+							{% endblock forestilling_fjern %}
+						{% endfor %}
+						
+						{% block forestilling_ny %}
 
-					{% endblock forestilling_ny %}
-				</div>
+						{% endblock forestilling_ny %}
+					</div>
+				{% endif %}
 				{% if produksjon.billettlink %}
 				<div class="button-container">
 					<a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
@@ -41,8 +42,7 @@
 
 	<div class="production-extra-info">
 		{% if produksjon.produksjonstags.count %}
-			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
-			<!--Lage eget ikon for sjanger her?-->
+			<div class="production-extra-info-box"><img src="{% static 'assets/genre_icon.svg' %}">
 			<p>{{produksjon.produksjonstags.all|join:", "|capfirst}}</p>
 			</div>
 		{% endif %}
@@ -128,6 +128,25 @@
 
 		{% endblock medvirkende_ny %}
 		</div>
+		
+		{% if produksjon.forestillinger.all %}
+		<div class="divider"></div>
+		<a class="production-categories">Forestillinger</a>
+		<div class="production-category-content">
+			
+				{% for forestilling2 in produksjon.forestillinger.all %}
+					{{forestilling2.fullt_tidspunkt}}
+					{% block forestilling2_fjern %}
+					<br>
+					{% endblock forestilling2_fjern %}
+				{% endfor %}
+				
+				{% block forestilling2_ny %}
+				{% endblock forestilling2_ny %}
+
+		</div>
+		{% endif %}
+
 		<div class="divider"></div>
 		<a class="production-categories">Omtaler</a>
 		<div class="production-category-content">
@@ -150,7 +169,8 @@
 
 		{% endblock anmeldelse_ny %}
 		</div>
-		<div class="divider"></div>
+
+		<!--<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
 			<div class="image-gallery">
@@ -172,7 +192,8 @@
 				{% endif %}
 			</div>
 			{% if produksjon.plakat %}<div id="imgtext">Plakat</div>{% endif %}
-		</div>
+		</div>-->
+
 		<div class="divider"></div>
 	</section>
 
