@@ -36,7 +36,7 @@ class UtmerkelseForm(forms.ModelForm):
         fields = ['tittel','orden','ar']
 
 
-class MedlemSearchForm1(forms.Form):
+class MedlemSearchForm(forms.Form):
     tekst = forms.CharField(label="Søk",required=False,max_length=20)
     UNDERGJENGER = models.Medlem.UNDERGJENGER+((0,'ukjent'),)
     undergjeng = forms.MultipleChoiceField(choices=UNDERGJENGER,required=False,
@@ -44,21 +44,15 @@ class MedlemSearchForm1(forms.Form):
     STATUSER = models.Medlem.STATUSER+((0,'ukjent'),)
     status = forms.MultipleChoiceField(choices=STATUSER,required=False,
         widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2])
-
-class MedlemSearchForm2(forms.Form):
     fra_ar = forms.IntegerField(label="Fra",required=False)
     til_ar = forms.IntegerField(label="Til",required=False)
     ukjent_ar = forms.BooleanField(label="Ukjent",required=False)
-
-class MedlemSearchForm3(forms.Form):
     medlemstype = forms.MultipleChoiceField(label="Gjeng",choices=models.Medlem.MEDLEMSTYPER,required=False,
-        widget = forms.widgets.CheckboxSelectMultiple,initial=[1])
-
-class MedlemSearchForm4(forms.Form):
+        widget = Select2MultipleWidget,initial=[1])
     tittel = forms.MultipleChoiceField(choices=models.Utmerkelse.TITLER,required=False,
-        widget = forms.widgets.CheckboxSelectMultiple)
+        widget = Select2MultipleWidget)
     orden = forms.MultipleChoiceField(choices=models.Utmerkelse.ORDENER,required=False,
-        widget = forms.widgets.CheckboxSelectMultiple)
+        widget = Select2MultipleWidget,initial=[1])
 
 
 class ProduksjonAdminForm(forms.ModelForm):

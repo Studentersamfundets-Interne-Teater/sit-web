@@ -123,8 +123,7 @@ def view_medlemmer(request):
         return redirect('hoved')
     medlemsliste = models.Medlem.objects.all()
     if request.GET:
-        medlemsform = (forms.MedlemSearchForm1(request.GET),forms.MedlemSearchForm2(request.GET),
-            forms.MedlemSearchForm3(request.GET),forms.MedlemSearchForm4(request.GET))
+        medlemsform = forms.MedlemSearchForm(request.GET)
         if request.GET['tekst']:
             tekst = request.GET['tekst']
             medlemsliste = (medlemsliste.filter(fornavn__icontains=tekst)
@@ -167,11 +166,10 @@ def view_medlemmer(request):
             mids = utmerkelsesliste.values_list('medlem',flat=True).distinct()
             medlemsliste = medlemsliste.filter(id__in=mids)
     else:
-        medlemsform = (forms.MedlemSearchForm1(request.GET),forms.MedlemSearchForm2(request.GET),
-            forms.MedlemSearchForm3(request.GET),forms.MedlemSearchForm4(request.GET))
+        medlemsform = forms.MedlemSearchForm()
         medlemsliste = medlemsliste.filter(undergjeng__in=[1,2,3]).filter(status__in=[1,2]).filter(medlemstype=1)
-    return render(request, "medlemmer/medlemmer.html", {'FEATURES': features,'medlemsliste': medlemsliste,
-        'medlemsform1': medlemsform[0],'medlemsform2':medlemsform[1],'medlemsform3':medlemsform[2],'medlemsform4':medlemsform[3]})
+    return render(request, "medlemmer/medlemmer.html", {'FEATURES': features,
+        'medlemsliste': medlemsliste, 'medlemsform': medlemsform})
 
 
 @permission_required('SITdata.add_medlem')
@@ -281,7 +279,8 @@ def view_produksjoner(request):
         return redirect('hoved')
     arstall = datetime.datetime.now().year
     produksjonsliste = models.Produksjon.objects.filter(premieredato__year__gte=(arstall-2)) # filtrerer ut siste 2 år foreløpig.
-    return render(request, 'produksjoner/produksjoner.html', {'FEATURES': features, 'produksjonsliste': produksjonsliste})
+    return render(request, 'produksjoner/produksjoner.html', {'FEATURES': features,
+        'produksjonsliste': produksjonsliste})
 
 
 def make_produksjonsvervoppslag(produksjon):

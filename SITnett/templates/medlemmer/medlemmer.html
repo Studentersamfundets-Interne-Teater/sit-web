@@ -1,72 +1,74 @@
 {% extends "meny.html" %}
-{% load static %}
 
 {% block innhold %}
 
-
-<div class="wrapper">
-	<div class="title-wrapper">
-		<h2>Medlemmer</h2>
-	</div>
-	<form method="get" class="form-wrapper">
-		<div class="ingress">Medlemssøk</div>
-		{{medlemsform1}}
-		<br>
-		<label type="btn" id="opptaksar-section-toggle">Opptaksår</label>
-		<div id="opptaksar-section">
-			{{medlemsform2}}
+	<div class="wrapper">
+		<div class="title-wrapper">
+			<h2>Medlemmer</h2>
 		</div>
-		<br>
-		<label type="btn" id="gjeng-section-toggle">Gjeng</label>
-		<div id="gjeng-section">
-			{{medlemsform3.medlemstype}}
-		</div>
-		<br>
-		<label type="btn" id="utmerkelse-section-toggle">Utmerkelse</label>
-		<div id="utmerkelse-section">
-			{{medlemsform4}}
-		</div>
-		<br>
-		<input type="submit" value="Søk">
-	</form>
-	<script>
-		$('#opptaksar-section').hide();
-		$('#opptaksar-section-toggle').click(function(){
-			$('#opptaksar-section').toggle();
-		});
-		$('#gjeng-section').hide();
-		$('#gjeng-section-toggle').click(function(){
-			$('#gjeng-section').toggle();
-		});
-		$('#utmerkelse-section').hide();
-		$('#utmerkelse-section-toggle').click(function(){
-			$('#utmerkelse-section').toggle();
-		});
-	</script>
-	<div class="card-wrapper">
-		{% for medlem in medlemsliste %}
-			<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
-				{% if medlem.portrett.url and user.is_authenticated %}
-					<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
-				{% elif medlem.portrett.url and medlem.offentlig_portrett %}
-					<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
-				{% else %}
-					<img src="/files/default/katt.png" class="card-image" loading="lazy">
-				{% endif %}
-				<div class="card-container">
-					<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
-					<div class="text-info text-strong">
-						{% if medlem.status and medlem.undergjeng %}
-							{{medlem.get_status_display|capfirst}}
-						{% else %}
-							{{medlem.get_medlemstype_display|capfirst}}
-						{% endif %}
+		{{medlemsform.media.js}}
+		{{medlemsform.media.css}}
+		<form method="get" class="form-wrapper">
+			<div class="ingress">Medlemssøk</div>
+			{{medlemsform.tekst}}<br>
+			{{medlemsform.undergjeng.label_tag}} {{medlemsform.undergjeng}}<br>
+			{{medlemsform.status.label_tag}} {{medlemsform.status}}<br>
+			<label type="btn" id="opptaksar-section-toggle">Opptaksår</label>
+			<div id="opptaksar-section">
+				{{medlemsform.fra_ar.label_tag}} {{medlemsform.fra_ar}}<br>
+				{{medlemsform.til_ar.label_tag}} {{medlemsform.til_ar}}<br>
+				{{medlemsform.ukjent_ar.label_tag}} {{medlemsform.ukjent_ar}}<br>
+			</div>
+			<label type="btn" id="gjeng-section-toggle">Gjeng</label>
+			<div id="gjeng-section">
+				{{medlemsform.medlemstype}}<br>
+			</div>
+			<label type="btn" id="utmerkelse-section-toggle">Utmerkelse</label>
+			<div id="utmerkelse-section">
+				{{medlemsform.tittel.label_tag}} {{medlemsform.tittel}}<br>
+				{{medlemsform.orden.label_tag}} {{medlemsform.orden}}<br>
+			</div>
+			<input type="submit" value="Søk">
+		</form>
+		<script>
+			$('#opptaksar-section').hide();
+			$('#opptaksar-section-toggle').click(function(){
+				$('#opptaksar-section').toggle();
+			});
+			$('#gjeng-section').hide();
+			$('#gjeng-section-toggle').click(function(){
+				$('#gjeng-section').toggle();
+			});
+			$('#utmerkelse-section').hide();
+			$('#utmerkelse-section-toggle').click(function(){
+				$('#utmerkelse-section').toggle();
+			});
+		</script>
+		<div class="card-wrapper">
+			{% for medlem in medlemsliste %}
+				<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
+					{% if medlem.portrett.url and user.is_authenticated %}
+						<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
+					{% elif medlem.portrett.url and medlem.offentlig_portrett %}
+						<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
+					{% else %}
+						<img src="/files/default/katt.png" class="card-image" loading="lazy">
+					{% endif %}
+					<div class="card-container">
+						<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
+						<div class="text-info text-strong">
+							{% if medlem.status and medlem.undergjeng %}
+								{{medlem.get_status_display|capfirst}}
+							{% else %}
+								{{medlem.get_medlemstype_display|capfirst}}
+							{% endif %}
+						</div>
 					</div>
-				</div>
-			</a>
-		{% empty %}
-			<p>Fant ingen medlemmer.</p>
-		{% endfor %}
+				</a>
+			{% empty %}
+				<p>Fant ingen medlemmer.</p>
+			{% endfor %}
+		</div>
 
 		{% if FEATURES.TOGGLE_EDIT and perms.SITdata.add_medlem %}
 			<br><br>
@@ -76,6 +78,4 @@
 		{% endif %}
 	</div>
 
-	{% load static %}
-	<script src={% static 'advanced_search.js' %}></script>
 {% endblock innhold %}
