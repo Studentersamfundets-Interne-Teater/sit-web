@@ -911,3 +911,4 @@ def fixtext(s):
 if __name__ == "__main__":
     # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
     transfer_all_medlemmer('/Users/jonas/Desktop/Skriftdata/')
+    transfer_all_produksjoner('/Users/jonas/Desktop/Skriftdata/')
