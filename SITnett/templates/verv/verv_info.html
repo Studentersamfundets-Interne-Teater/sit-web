@@ -29,7 +29,7 @@
 			{% if erfaring.medlem %}
 				<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
 			{% else %}
-				{{erfaring.navn}
+				{{erfaring.navn}}
 			{% endif %}
 			{% if erfaring.produksjon %}
 				{% if erfaring.rolle %} som {{erfaring.rolle}} i {% else %} for {% endif %}

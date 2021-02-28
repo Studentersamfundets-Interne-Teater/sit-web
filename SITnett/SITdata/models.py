@@ -198,7 +198,7 @@ class Erfaring(models.Model): # holder konkrete erfaringer gjort av medlemmer i 
     tittel = models.CharField(blank=True,max_length=100) # holder en eventuell spesiell tittel hvis vervet ikke er lagra i databasen.
     produksjon = models.ForeignKey(Produksjon,models.CASCADE,blank=True,null=True,related_name='erfaringer')
     ar = models.IntegerField("år",blank=True,null=True) # holder et eventuelt år hvis vervet ikke er knytta til en produksjon.
-    rolle = models.CharField(blank=True, null=True, max_length=100) # holder en utdypende rolle innafor vervet (feks Melchior Gabor, gitar, arbeidsleder eller konsulent).
+    rolle = models.CharField(blank=True, max_length=100) # holder en utdypende rolle innafor vervet (feks Melchior Gabor, gitar, arbeidsleder eller konsulent).
     skriv = models.FileField("erfaringsskriv",upload_to='erfaringsskriv/',blank=True) # holder et eventuelt erfaringsskriv.
     def full_tittel(self): # lager en full tittel for erfaringa av typen "skuespiller (Melchior Gabor) i Spring Awakening".
         if self.produksjon:

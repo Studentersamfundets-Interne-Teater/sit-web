@@ -92,7 +92,11 @@
 					{% endif %}
 				{% endif %}
 				{% for erfaring in erfaringer %}
-					<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+                    {% if erfaring.medlem.id%}
+                        <a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+                    {% else %}
+                        {{ erfaring.navn }}
+                    {% endif %}
 					{% if erfaring.rolle %}
 						 ({{erfaring.rolle}})
 					{% endif %}
@@ -105,8 +109,12 @@
 			{% for tittel, erfaringer in toppslag.items %}
 				<b>{{tittel|capfirst}}:</b><br>
 				{% for erfaring in erfaringer %}
-					<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
-					{% if erfaring.rolle %}
+					{% if erfaring.medlem.id%}
+                        <a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+                    {% else %}
+                        {{ erfaring.navn }}
+                    {% endif %}
+                    {% if erfaring.rolle %}
 						 ({{erfaring.rolle}})
 					{% endif %}
 					{% block medvirkende_tittel_fjern %}

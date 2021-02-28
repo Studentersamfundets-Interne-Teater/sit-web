@@ -12,6 +12,7 @@ bs4 = "*"
 requests = "*"
 lxml = "*"
 django-super-deduper = "*"
+html2text = "*"
 
 [requires]
 python_version = "3.8"
