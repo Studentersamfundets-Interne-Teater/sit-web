@@ -11,14 +11,16 @@
 			<div class="production-banner-info-container">
 				<div class="production-banner-main">
 					{% block produksjon_tittel %}
-					<h2>{{produksjon.tittel}}</h2>
-					<p>av {{produksjon.forfatter}}</p>
+						<h2>{{produksjon.tittel}}</h2>
+						{% if produksjon.forfatter %}
+							<p>av {{produksjon.forfatter}}</p>
+						{% endif %}
 					{% endblock produksjon_tittel %}
-					{% if produksjon.blurb %}<p><b>{{produksjon.blurb}}</b></p>{% endif %}
+					{% if produksjon.reklame %}<p><b>{{produksjon.reklame}}</b></p>{% endif %}
 				</div>
 				<div class="production-banner-info">
 					{% for forestilling in produksjon.forestillinger.all %}
-						{{forestilling.tidspunkt}}
+						{{forestilling.fullt_tidspunkt}}
 						{% block forestilling_fjern %}
 						<br>
 						{% endblock forestilling_fjern %}
@@ -38,10 +40,10 @@
 	</section>	
 
 	<div class="production-extra-info">
-		{% if produksjon.ptags.count %}
+		{% if produksjon.produksjonstags.count %}
 			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
 			<!--Lage eget ikon for sjanger her?-->
-			<p>{{produksjon.ptags.all|join:", "|capfirst}}</p>
+			<p>{{produksjon.produksjonstags.all|join:", "|capfirst}}</p>
 			</div>
 		{% endif %}
 		<div class="production-extra-info-box"><img src="{% static 'assets/location_icon.svg' %}">
@@ -60,24 +62,24 @@
 		{% endif %}
 	</div>
 	
-	<section class="production-information">
+	<section class="production-information" id="production-info">
 		<div class="firstDivider"></div>
 		<a class="production-categories">Beskrivelse</a>
 		<div class="production-category-content">
 			{% block produksjon_info %}
-				{% if produksjon.info %}
-				<p>{{produksjon.info}}</p>
+				{% if produksjon.beskrivelse %}
+				<p>{{produksjon.beskrivelse}}</p>
 				{% endif %}
-				{% if user.is_authenticated and produksjon.memo %}
-				<p><i>{{produksjon.memo}}</i></p>
+				{% if user.is_authenticated and produksjon.anekdoter %}
+				<p><i>{{produksjon.anekdoter}}</i></p>
 				{% endif %}
 			{% endblock produksjon_info %}
 		</div>
 		<div class="divider"></div>
 		<a class="production-categories">Medvirkende</a>
 		<div class="production-category-content">
-		{% if produksjon.erfaringer.count %}
-			{% for verv, erfaringer in voppslag.items %}
+		{% if vervoppslag %}
+			{% for verv, erfaringer in vervoppslag.items %}
 				{% if FEATURES.TOGGLE_VERV and verv.erfaringsoverforing and user.is_authenticated %}
 					{% if erfaringer.count > 1 %}
 						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a><br>
@@ -93,30 +95,40 @@
 				{% endif %}
 				{% for erfaring in erfaringer %}
                     {% if erfaring.medlem.id%}
-                        <a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% else %}
+						{{erfaring.medlem}}
+						{% endif %}
                     {% else %}
                         {{ erfaring.navn }}
                     {% endif %}
 					{% if erfaring.rolle %}
 						 ({{erfaring.rolle}})
-					{% endif %}
+					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_verv_fjern %}
 					<br>
 					{% endblock medvirkende_verv_fjern %}
 				{% endfor %}
 				<br>
 			{% endfor %}
-			{% for tittel, erfaringer in toppslag.items %}
+		{% endif %}
+		{% if titteloppslag %}
+			{% for tittel, erfaringer in titteloppslag.items %}
 				<b>{{tittel|capfirst}}:</b><br>
 				{% for erfaring in erfaringer %}
 					{% if erfaring.medlem.id%}
-                        <a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% else %}
+							{{erfaring.medlem}}
+						{% endif %}                    {% else %}
                     {% else %}
-                        {{ erfaring.navn }}
+						{{ erfaring.navn }}
                     {% endif %}
                     {% if erfaring.rolle %}
 						 ({{erfaring.rolle}})
-					{% endif %}
+					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_tittel_fjern %}
 					<br>
 					{% endblock medvirkende_tittel_fjern %}
@@ -136,7 +148,7 @@
 				<p>
 				<i>{{anmeldelse.utdrag}}</i>
 				<p>{{anmeldelse.forfatter}}, {{anmeldelse.medium}}<br>
-				{% if user.is_authenticated or anmeldelse.gratis %}
+				{% if user.is_authenticated or anmeldelse.offentlig %}
 					<a href="{{anmeldelse.fil.url}}">Les hele anmeldelsen</a>
 				{% endif %}
 				{% block anmeldelse_fjern %}
@@ -182,7 +194,7 @@
 		{% if FEATURES.TOGGLE_EDIT %}
 			{% if access == 'admin' or access == 'own' %}
 				<br><br>
-				<a href="{% url 'produksjon_redi' produksjon.id %}">Endre produksjon</a>
+				<a href="{% url 'produksjon_endre' produksjon.id %}">Endre produksjon</a>
 				<br>
 			{% endif %}
 			{% if perms.SITdata.delete_produksjon %}
@@ -190,10 +202,10 @@
 				<a href="{% url 'produksjon_slett' produksjon.id %}">Slett produksjon</a>
 				<br>
 			{% endif %}
-			<br>
 		{% endif %}
 
 	{% endblock produksjon_nav %}
 	
 	<script src="{% static 'collapsible.js' %}"></script>
+	<script src="{% static 'image_gallery.js' %}"></script>
 {% endblock innhold %}

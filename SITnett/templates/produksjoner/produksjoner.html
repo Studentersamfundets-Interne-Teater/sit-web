@@ -8,12 +8,12 @@
 			<h2>Produksjoner</h2>
 		</div>
 		<div class="card-wrapper">
-			{% for produksjon in pliste %}
+			{% for produksjon in produksjonsliste %}
 			<a class="card" href="{% url 'produksjon_info' produksjon.id %}">
 				<img src="{{produksjon.banner.url}}" class="card-image" loading="lazy">
 				<div class="card-container">
 				<h3 class="card-title">{{produksjon.tittel}}</h3> 
-				<div class="text-info text-strong">{{produksjon.premiere.date}}</div> 
+				<div class="text-info text-strong">{{produksjon.spilleperiode}} {{produksjon.premieredato.year}}</div> 
 				</div>
 			</a>
 			{% endfor %}

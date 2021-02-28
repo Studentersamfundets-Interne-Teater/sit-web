@@ -24,14 +24,14 @@ class AnmeldelseInline(admin.TabularInline):
 
 
 class MedlemAdmin(admin.ModelAdmin):
-    list_display = ['id','etternavn','fornavn','opptaksar','undergjeng','status','brukerkonto']
+    list_display = ['id','etternavn','fornavn','medlemstype','opptaksar','undergjeng','status','brukerkonto']
     inlines = [ErfaringInline,UtmerkelseInline]
 
 admin.site.register(models.Medlem,MedlemAdmin)
 
 
 class SitatAdmin(admin.ModelAdmin):
-    list_display = ['id','tekst','medlem']
+    list_display = ['id','utsagn','medlem']
 
 admin.site.register(models.Sitat,SitatAdmin)
 
@@ -42,13 +42,13 @@ class UtmerkelseAdmin(admin.ModelAdmin):
 admin.site.register(models.Utmerkelse,UtmerkelseAdmin)
 
 
-class vTagAdmin(admin.ModelAdmin):
+class VervtagAdmin(admin.ModelAdmin):
     list_display = ['id','tag']
 
 class VervAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','vtype','erfaringsoverforing']
+    list_display = ['id','tittel','vervtype','erfaringsoverforing']
 
-admin.site.register(models.vTag,vTagAdmin)
+admin.site.register(models.Vervtag,VervtagAdmin)
 admin.site.register(models.Verv,VervAdmin)
 
 
@@ -58,14 +58,14 @@ class LokaleAdmin(admin.ModelAdmin):
 admin.site.register(models.Lokale,LokaleAdmin)
 
 
-class pTagAdmin(admin.ModelAdmin):
+class ProduksjonstagAdmin(admin.ModelAdmin):
     list_display = ['id','tag']
 
 class ProduksjonAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','ptype','premieredato']
+    list_display = ['id','tittel','produksjonstype','premieredato']
     inlines = [ForestillingInline,ErfaringInline,AnmeldelseInline]
 
-admin.site.register(models.pTag,pTagAdmin)
+admin.site.register(models.Produksjonstag,ProduksjonstagAdmin)
 admin.site.register(models.Produksjon,ProduksjonAdmin)
 
 
@@ -82,19 +82,19 @@ admin.site.register(models.Nummer,NummerAdmin)
 
 
 class AnmeldelseAdmin(admin.ModelAdmin):
-    list_display = ['id','produksjon','forfatter','medium']
+    list_display = ['id','produksjon','forfatter','medium','offentlig']
 
 admin.site.register(models.Anmeldelse,AnmeldelseAdmin)
 
 
 class ErfaringAdmin(admin.ModelAdmin):
-    list_display = ['id','medlem','verv','produksjon','ar']
+    list_display = ['id','medlem','navn','verv','tittel','produksjon','ar']
 
 admin.site.register(models.Erfaring,ErfaringAdmin)
 
 
 class ArrangementAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','atype','tidspunkt']
+    list_display = ['id','tittel','offentlig','tidspunkt']
 
 admin.site.register(models.Arrangement,ArrangementAdmin)
 
@@ -106,7 +106,7 @@ admin.site.register(models.Hendelse,HendelseAdmin)
 
 
 class FotoAdmin(admin.ModelAdmin):
-    list_display = ['id','ftype','produksjon','arrangement','dato']
+    list_display = ['id','fototype','produksjon','arrangement','dato']
 
 admin.site.register(models.Foto,FotoAdmin)
 
@@ -117,11 +117,17 @@ class UttrykkAdmin(admin.ModelAdmin):
 admin.site.register(models.Uttrykk,UttrykkAdmin)
 
 
-class dTagAdmin(admin.ModelAdmin):
+class DokumenttagAdmin(admin.ModelAdmin):
     list_display = ['id','tag']
 
 class DokumentAdmin(admin.ModelAdmin):
     list_display = ['id','tittel','dato']
 
-admin.site.register(models.dTag,dTagAdmin)
+admin.site.register(models.Dokumenttag,DokumenttagAdmin)
 admin.site.register(models.Dokument,DokumentAdmin)
+
+
+class ArAdmin(admin.ModelAdmin):
+    list_display = ['arstall']
+
+admin.site.register(models.Ar,ArAdmin)

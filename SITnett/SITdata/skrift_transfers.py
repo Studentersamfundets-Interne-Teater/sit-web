@@ -1,7 +1,8 @@
-# Some hacky stuff so that we can run scripts with Django packages
-# https://stackoverflow.com/questions/45737387/django-settings-module-no-module-named
 import sys
-sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
+# FYLL INN DIN LOKALE FILSTI TIL SITNETT HER:
+#sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
+sys.path.append("C:/Users/jonas/Documents/Kode/Django/sit-web/SITnett")
+
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SITnett.settings")
 import django
@@ -89,7 +90,74 @@ verv_dict = {'Konsulent, lysreklamen': {0: "lysreklamist", 1: 'konsulent', 2:"an
              'Leder forfatterkollegiet': {0: 'forfatter', 1: 'leder', 2: 'annen prod'},
              'Lys': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'konsulent': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
              'UKE-lege': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Danser': {0: 'danser', 1: 'ingen', 2: 'annen prod'},
-             'Markedsføring': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Fotograf': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kullisse': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'MedKUPkoordinator': {0: 'produsent', 1: 'assistent', 2: 'prodapp'}, 'Scenografiansvarlig': {0: 'scenograf', 1: 'ingen', 2: 'prodapp'}, 'Lysreklamekonsulent': {0: 'lysreklamist', 1: 'konsulent', 2: 'annen prod'}, 'Kost- og losjiansvarlig': {0: 'forpleier', 1: 'leder', 2: 'annen prod'}, 'Kulissesjef': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Dotcom': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Bandet': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Lydbrigader': {0: 'lydtekniker', 1: 'konsulent', 2: 'annen prod'}, 'Lyddesigner': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'Trine Skei Grande': {0: 'skuespiller', 1: 'Trine Skei Grande', 2: 'annen prod'}, 'Konsulent': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'kulisse': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Cocktailsyer': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Koreografassistent': {0: 'koreograf', 1: 'assistent', 2: 'prodapp'}, 'Lysdesigner': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Filmarbeider': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Regi-ass.': {0: 'regissør', 1: 'assistent', 2: 'prodapp'}, 'Musikksnupp': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Uspesifisert': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sufflør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'LYD': {0: 'lyddesigner', 1: 'LYD', 2: 'prodapp'}, 'Instruktør ': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Visedirektør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konsulenter lys': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'FFK-koordinator': {0: 'forfatter', 1: 'forfatterkollegieleder', 2: 'annen prod'}, 'Sminkør': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Kulissearbeidsleder': {0: 'kulissebygger', 1: 'arbeidsleder', 2: 'annen prod'}, 'Musiker': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Produksjonsdesigner': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymeassistent': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulissearbeider': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Kulissebygger': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Lydansvarlig': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'Sypike': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Musikk': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Oberst': {0: 'oberst', 1: 'ingen', 2: 'prodapp'}, 'Blondiekomiteen': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'VK-revy': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Regiassistent': {0: 'regissør', 1: 'assistent', 2: 'prodapp'}, 'Instruktør/forfatter': {0: 'regissør/forfatter', 1: 'ingen', 2: 'prodapp'}, 'Festivalstyret': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Skodespelar': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Orkesterinspisient': {0: 'musikalsk inspisient', 1: 'ingen', 2: 'prodapp'}, 'Ukelege': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'undefined': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Plakat / Program / Tegning': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'instruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Kostyme': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Sminkeassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'}, 'Videotekniker': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Fittingsassistent': {0: 'fittings', 1: 'assistent', 2: 'annen prod'}, 'Skuespiller/manus': {0: 'skuespiller/forfatter', 1: 'ingen', 2: 'annen prod'}, 'Teknisk inspisient': {0: 'teknisk inspisient', 1: 'ingen', 2: 'prodapp'}, 'Barneteatersjef': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, '17 mai': {0: 'KUPer', 1: '17. mai', 2: 'annen prod'}, 'Lyssnupp': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Iscenesetter': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sminkeansvarlig': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Publikumsverter': {0: 'publikumsvert', 1: 'ingen', 2: 'annen prod'}, 'Guest 1.assistant director': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysansvarlig': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Følgespotsjef': {0: 'lystekniker', 1: 'følgespot', 2: 'annen prod'}, 'Program': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Leif Ronny': {0: 'skuespiller', 1: 'Leif Ronny', 2: 'annen prod'}, 'Kontentum': {0: 'lyddesigner', 1: 'kontentum', 2: 'prodapp'}, 'NM-ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Komponister': {0: 'komponist', 1: 'ingen', 2: 'prodapp'}, 'Forfatterkollegiekoordinator': {0: 'forfatter', 1: 'leder', 2: 'annen prod'}, 'Regi-assistent': {0: 'regissør', 1: 'assistent', 2: 'prodapp'}, 'Insruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Band (Berits venner)': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Suppelyd': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'Hår- og sminkestylist': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Scenograf og kostymedesigner': {0: 'scenograf/kostymedesigner', 1: 'ingen', 2: 'ingen'}, 'Billettansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Teatersjef/revysjef': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Video v/VK': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Frisør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Forfatterkollegiet': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Skuespiller og musiker': {0: 'skuespiller/musiker', 1: 'ingen', 2: 'annen prod'}, 'Lys.1': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Funksjonær': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kursholder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulissebygger/scenearbeider': {0: 'kulissebygger/scenearbeider', 1: 'ingen', 2: 'annen prod'}, 'ISFiT ledervalg': {0: 'KUPer', 1: 'ISFiT ledervalg', 2: 'annen prod'}, 'Lydkonsulent': {0: 'lydtekniker', 1: 'konsulent', 2: 'annen prod'}, 'Markedsfører og billettansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Grafisk designer': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Trener': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lys ved Regi': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Orkestersjef v/musikerlåfte': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Revysjef': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Inspisientassistent': {0: 'inspisient', 1: 'assistent', 2: 'prodapp'}, 'Lysreklamesjef': {0: 'lysreklamist', 1: 'leder', 2: 'annen prod'}, 'Dramaturg': {0: 'dramaturg', 1: 'ingen', 2: 'annen prod'}, 'Video v/ARK': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Konsulent.1': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Forfatterkollegieleder': {0: 'forfatter', 1: 'leder', 2: 'annen prod'}, 'Hår- og sminkeassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'}, 'Manuskript': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Helseansvarlig': {0: 'helseansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Kostymedesigner': {0: 'kostymedesigner', 1: 'ingen', 2: 'prodapp'}, 'Skuespiller/forfatter': {0: 'skuespiller/forfatter', 1: 'ingen', 2: 'ingen'}, 'Animatør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Videokonsulent': {0: 'videotekniker', 1: 'konsulent', 2: 'annen prod'}, 'Fysisk trener': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Gnark': {0: 'skuespiller', 1: 'gnark', 2: 'annen prod'}, 'Kulissegjengen': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Lyd': {0: 'lyddesigner', 1: 'LYD', 2: 'prodapp'}, 'Arbeidsleder': {0: 'kulissebygger', 1: 'arbeidsleder', 2: 'annen prod'}, 'Suppesnupp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Medinstruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Forpleiningsansvarlig': {0: 'forpleier', 1: 'ingen', 2: 'annen prod'}, 'Lysreklameansvarlig': {0: 'lysreklamist', 1: 'leder', 2: 'annen prod'}, 'Garderobeslusk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konsulent i Lysreklamen': {0: 'lysreklamist', 1: 'konsulent', 2: 'annen prod'}, 'Scenograf ': {0: 'scenograf', 1: 'ingen', 2: 'prodapp'}, 'Band': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Myggslusk': {0: 'myggslusk', 1: 'ingen', 2: 'annen prod'}, 'ULYD': {0: 'lydtekniker', 1: 'uLYD', 2: 'annen prod'}, 'Ein slags regi': {0: 'regissør', 1: 'en slags', 2: 'prodapp'}, 'Forfatterkollegiekonsulent': {0: 'forfatter', 1: 'konsulent', 2: 'annen prod'}, 'Sanger': {0: 'sanger', 1: 'ingen', 2: 'annen prod'}, 'Konsulent lys': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Lydsnupp': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'MEDlyd': {0: 'lydtekniker', 1: 'MedLYD', 2: 'annen prod'}, 'Gjesteartist': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Rekvisitørassistent': {0: 'rekvisitør', 1: 'assistent', 2: 'annen prod'}, 'Komponistkollegieleder': {0: 'komponist', 1: 'leder', 2: 'prodapp'}, 'Korrektur': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Seremoniregissør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sang': {0: 'sanger', 1: 'ingen', 2: 'annen prod'}, 'Komponistkollegiet': {0: 'komponist', 1: 'ingen', 2: 'prodapp'}, 'PR': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyd.1': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'konsulent.1': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Helseansvarlig/trener': {0: 'helseansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Lys v/Regi': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Kostymetegner': {0: 'kostymesyer', 1: 'arbeidsleder', 2: 'annen prod'}, 'Oversetter': {0: 'oversetter', 1: 'ingen', 2: 'prodapp'}, 'VIdeo': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Medlyd': {0: 'lydtekniker', 1: 'MedLYD', 2: 'annen prod'}, 'Kulissekonsulent': {0: 'kulissebygger', 1: 'konsulent', 2: 'annen prod'}, 'Layout': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyssnopp': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Lyd v. FK': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysreklamist': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'KUPkoordinator': {0: 'produsent', 1: 'KUPkoordinator', 2: 'prodapp'}, 'FK': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'Videokunster': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Scenograf/Rekvisitør': {0: 'scenograf/rekvisitør', 1: 'ingen', 2: 'prodapp'}, 'inspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Kostymehospitant': {0: 'kostymesyer', 1: 'hospitant', 2: 'annen prod'}, 'Administrativ assistanse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sminke- og hårassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'}, 'Suppedirektør': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Cocktailarbeidsleder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyd v/FK': {0: 'lyddesigner', 1: 'LYD', 2: 'prodapp'}, 'Suppelys': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Sminkørassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'}, 'Konsulenter lyd': {0: 'lydtekniker', 1: 'konsulent', 2: 'annen prod'}, 'SIT Revy': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Billett-, økonomi- og sikkerhetsansvarlig': {0: 'økonomiansvarlig', 1: 'billett-/sikkerhetsansvarlig', 2: 'prodapp'}, 'Sikkerhetsansvarlig': {0: 'sikkerhetsansvarlig', 1: 'ingen', 2: 'annen prod'}, 'Teatersjef': {0: 'teatersjef', 1: 'ingen', 2: 'styret'}, 'Designkonsulent': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'SIT Blæst': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Forfatter og skuespiller': {0: 'forfatter/skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Piano': {0: 'musiker', 1: 'piano', 2: 'annen prod'}, 'Sangteknisk instruksjon': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'Instuktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Kostymeoberst': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'}, 'Forpleiningssjef': {0: 'forpleier', 1: 'leder', 2: 'annen prod'}, 'Publikumsvert': {0: 'publikumsvert', 1: 'ingen', 2: 'annen prod'}, 'Konsulent Lyslaget': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Skjermbilde': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Grafisk design': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'UKEsjef': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'SIT styret': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Deltaker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sang-instruktør': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'Manusbearbeidelse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Bygdefolk': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'CD': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Performance på Husfest': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sminke- og hårstylist': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Fittings': {0: 'fittings', 1: 'ingen', 2: 'annen prod'}, 'Kulisser': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymesjef': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Rekvisitør': {0: 'rekvisitør', 1: 'ingen', 2: 'annen prod'}, 'Repetitør': {0: 'repetitør', 1: 'ingen', 2: 'annen prod'}, 'Rekvisittassistent': {0: 'rekvisitør', 1: 'assistent', 2: 'annen prod'}, 'Markedsfører': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Illustratør': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Orkestersjef': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'}, 'Videomester': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Festtale': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lydeffekter': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'Administrasjon': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Medvirkende': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymemaker': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Økonomiansvarlig': {0: 'økonomiansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Konsulent.2': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'kostyme': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Stemme på intervju': {0: 'skuespiller', 1: 'stemme på intervju', 2: 'annen prod'}, 'Masker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Dirigent': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymesyer': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Oversettelse': {0: 'oversetter', 1: 'ingen', 2: 'prodapp'}, 'Lyddesign': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'Suppesnuppe': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymekonsulent': {0: 'kostymesyer', 1: 'konsulent', 2: 'annen prod'}, 'Sminke': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Materialforvalter orkester': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Hospitant': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Festdeltaker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Komponist': {0: 'komponist', 1: 'ingen', 2: 'prodapp'}, 'Scenograf': {0: 'scenograf', 1: 'ingen', 2: 'prodapp'}, 'Kostymeslusk': {0: 'kostymeslusk', 1: 'ingen', 2: 'annen prod'}, 'Teknisk Inspisient': {0: 'Teknisk Inspisient', 1: 'ingen', 2: 'prodapp'}, 'Sceneteknikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Komponistkonsulent': {0: 'komponist', 1: 'konsulent', 2: 'prodapp'}, 'Ymse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sangpedagog og repetitør': {0: 'sangpedagog/repetitør', 1: 'ingen', 2: 'prodapp'}, 'Tribuneansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'skuespiller': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Kommentator': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Statist': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'Pianist': {0: 'musiker', 1: 'piano', 2: 'annen prod'}, 'Lystekniker': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Kunstnerisk koordinator': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Instruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Kulissegjeng': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Konsulent.3': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'lysreklamen': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'Produksjonsassistent': {0: 'produsent', 1: 'assistent', 2: 'prodapp'}, 'Manus': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Regissør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Sangpedagog': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'Suppesnupp/-snopp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Produksjonsansvarlig': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Orkesterleder': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'}, 'Sekretær': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Koreograf': {0: 'koreograf', 1: 'ingen', 2: 'prodapp'}, 'Revyorkester': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Skuespillerinspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Rekvisittansvarlig': {0: 'rekvisitør', 1: 'ingen', 2: 'annen prod'}, 'Kostymekoordinator': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'}, 'Musikksnopp': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Kostymegjeng': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Forpleiningsassistent': {0: 'forpleier', 1: 'assistent', 2: 'annen prod'}, 'Turneleder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konsulent video': {0: 'videotekniker', 1: 'konsulent', 2: 'annen prod'}, 'Nød-bærehjelp i tolvte time': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lydsnopp': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'Lydig': {0: 'lydtekniker', 1: 'LYDig', 2: 'annen prod'}, 'Lysbilder v/FG': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymearbeidsleder': {0: 'kostymesyer', 1: 'arbeidsleder', 2: 'annen prod'}, 'Forteller': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Butler': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Grafikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Ouvreuse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'PR-ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyslaget': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Økonomi': {0: 'økonomiansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Scenearbeider': {0: 'scenearbeider', 1: 'ingen', 2: 'annen prod'}, 'Plakat': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Slåssteknikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Skuespiller': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Smikør': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Rekvisitørkonsulent': {0: 'rekvisitør', 1: 'konsulent', 2: 'annen prod'}, 'Følgespotlaget': {0: 'lystekniker', 1: 'følgespot', 2: 'annen prod'}, 'Videografiker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'myggkonsulent': {0: 'myggslusk', 1: 'konsulent', 2: 'annen prod'}, 'Videolaget': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Nestleder': {0: 'nestleder', 1: 'ingen', 2: 'styret'}, 'Videokomiteen': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Oversetter/instruktør/produsent': {0: 'Oversetter/regissør/produsent', 1: 'ingen', 2: 'prodapp'}, 'Koreografisk ass.': {0: 'koreograf', 1: 'assistent', 2: 'prodapp'}, 'Stemmepedagog': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'FFK': {0: 'forfatter', 1: 'konsulent', 2: 'annen prod'}, 'Innbildt suppedirektør': {0: 'produsent', 1: 'innbilt', 2: 'prodapp'}, 'Skuespiller ': {0: 'skuespiller ', 1: 'ingen', 2: 'annen prod'}, 'Musikalsk ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konferansier': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Inspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Eva Person': {0: 'skuespiller', 1: 'Eva Person', 2: 'annen prod'}, 'Musikalsk leder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulissesnekker': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Instruktørveileder': {0: 'regissør', 1: 'konsulent', 2: 'prodapp'}, 'Kommandør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymekommandør': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'}, 'Kostymesyere': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Sminke/parykk': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Orkesteret': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Noteskriver': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Film': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Publikumsinspisient': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Orkester': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Forfatter': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Kostymeskredder': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Pr-gjeng': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulisse': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Produsentassistent': {0: 'produsent', 1: 'assistent', 2: 'prodapp'}, 'Musikkarrangement': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Diverse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymegjengen': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Systemtekniker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Suppesnopp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymer': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Verkstedansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysreklamen': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'Video': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Regiveileder': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Byfolk': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'Arrangementskomité': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysmester': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Jazz på dass': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Personal- og innkjøpsansvarlig - kostyme': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Artist': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyskonsulent': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Kapellmester': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'}, 'Produksjonskonsulent': {0: 'produsent', 1: 'konsulent', 2: 'prodapp'}, 'Dovrefarer': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Regi': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Bilderedaktør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kupper': {0: 'KUPer', 1: 'ingen', 2: 'annen prod'}, 'Lys- og sceneinspisient': {0: 'teknisk inspisient', 1: 'ingen', 2: 'prodapp'}, 'Jørgen Person': {0: 'skuespiller', 1: 'Jørgen Person', 2: 'annen prod'}, 'Direktør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Produsent': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Skuespillere': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Gjendiktning sangtekster': {0: 'gjendikter', 1: 'ingen', 2: 'annen prod'}, 'VK': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Plakattegner': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Forpleining': {0: 'forpleier', 1: 'ingen', 2: 'annen prod'}, 'Skuespiller.1': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Lyslag': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}}
+             'Markedsføring': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Fotograf': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Kullisse': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'MedKUPkoordinator': {0: 'produsent', 1: 'assistent', 2: 'prodapp'},
+             'Scenografiansvarlig': {0: 'scenograf', 1: 'ingen', 2: 'prodapp'}, 'Lysreklamekonsulent': {0: 'lysreklamist', 1: 'konsulent', 2: 'annen prod'},
+             'Kost- og losjiansvarlig': {0: 'forpleier', 1: 'leder', 2: 'annen prod'}, 'Kulissesjef': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Dotcom': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Bandet': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Lydbrigader': {0: 'lydtekniker', 1: 'konsulent', 2: 'annen prod'},
+             'Lyddesigner': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'Trine Skei Grande': {0: 'skuespiller', 1: 'Trine Skei Grande', 2: 'annen prod'}, 'Konsulent': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'kulisse': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Cocktailsyer': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Koreografassistent': {0: 'koreograf', 1: 'assistent', 2: 'prodapp'},
+             'Lysdesigner': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Filmarbeider': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Regi-ass.': {0: 'regissør', 1: 'assistent', 2: 'prodapp'},
+             'Musikksnupp': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Uspesifisert': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sufflør': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'LYD': {0: 'lyddesigner', 1: 'LYD', 2: 'prodapp'}, 'Instruktør ': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Visedirektør': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Konsulenter lys': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'FFK-koordinator': {0: 'forfatter', 1: 'forfatterkollegieleder', 2: 'annen prod'},
+             'Sminkør': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Kulissearbeidsleder': {0: 'kulissebygger', 1: 'arbeidsleder', 2: 'annen prod'},
+             'Musiker': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Produksjonsdesigner': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymeassistent': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Kulissearbeider': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Kulissebygger': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Lydansvarlig': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'},
+             'Sypike': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Musikk': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Oberst': {0: 'oberst', 1: 'ingen', 2: 'prodapp'}, 'Blondiekomiteen': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'VK-revy': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Regiassistent': {0: 'regissør', 1: 'assistent', 2: 'prodapp'}, 'Instruktør/forfatter': {0: 'regissør/forfatter', 1: 'ingen', 2: 'prodapp'},
+             'Festivalstyret': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Skodespelar': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Orkesterinspisient': {0: 'musikalsk inspisient', 1: 'ingen', 2: 'prodapp'},
+             'Ukelege': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'undefined': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Plakat / Program / Tegning': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'},
+             'instruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Kostyme': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Sminkeassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'},
+             'Videotekniker': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Fittingsassistent': {0: 'fittings', 1: 'assistent', 2: 'annen prod'}, 'Skuespiller/manus': {0: 'skuespiller/forfatter', 1: 'ingen', 2: 'annen prod'},
+             'Teknisk inspisient': {0: 'teknisk inspisient', 1: 'ingen', 2: 'prodapp'}, 'Barneteatersjef': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, '17 mai': {0: 'KUPer', 1: '17. mai', 2: 'annen prod'},
+             'Lyssnupp': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Iscenesetter': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sminkeansvarlig': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'},
+             'Publikumsverter': {0: 'publikumsvert', 1: 'ingen', 2: 'annen prod'}, 'Guest 1.assistant director': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysansvarlig': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'},
+             'Følgespotsjef': {0: 'lystekniker', 1: 'følgespot', 2: 'annen prod'}, 'Program': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Leif Ronny': {0: 'skuespiller', 1: 'Leif Ronny', 2: 'annen prod'},
+             'Kontentum': {0: 'lyddesigner', 1: 'kontentum', 2: 'prodapp'}, 'NM-ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Komponister': {0: 'komponist', 1: 'ingen', 2: 'prodapp'},
+             'Forfatterkollegiekoordinator': {0: 'forfatter', 1: 'leder', 2: 'annen prod'}, 'Regi-assistent': {0: 'regissør', 1: 'assistent', 2: 'prodapp'}, 'Insruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'},
+             'Band (Berits venner)': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Suppelyd': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'Hår- og sminkestylist': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'},
+             'Scenograf og kostymedesigner': {0: 'scenograf/kostymedesigner', 1: 'ingen', 2: 'ingen'}, 'Billettansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Teatersjef/revysjef': {0: 'produsent', 1: 'ingen', 2: 'prodapp'},
+             'Video v/VK': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Frisør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Forfatterkollegiet': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'},
+             'Skuespiller og musiker': {0: 'skuespiller/musiker', 1: 'ingen', 2: 'annen prod'}, 'Lys.1': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Funksjonær': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Kursholder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulissebygger/scenearbeider': {0: 'kulissebygger/scenearbeider', 1: 'ingen', 2: 'annen prod'}, 'ISFiT ledervalg': {0: 'KUPer', 1: 'ISFiT ledervalg', 2: 'annen prod'},
+             'Lydkonsulent': {0: 'lydtekniker', 1: 'konsulent', 2: 'annen prod'}, 'Markedsfører og billettansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Grafisk designer': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Trener': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lys ved Regi': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Orkestersjef v/musikerlåfte': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Revysjef': {0: 'produsent', 1: 'ingen', 2: 'prodapp'},
+             'Inspisientassistent': {0: 'inspisient', 1: 'assistent', 2: 'prodapp'}, 'Lysreklamesjef': {0: 'lysreklamist', 1: 'leder', 2: 'annen prod'}, 'Dramaturg': {0: 'dramaturg', 1: 'ingen', 2: 'annen prod'}, 'Video v/ARK': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'},
+             'Konsulent.1': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Forfatterkollegieleder': {0: 'forfatter', 1: 'leder', 2: 'annen prod'}, 'Hår- og sminkeassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'},
+             'Manuskript': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Helseansvarlig': {0: 'helseansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Kostymedesigner': {0: 'kostymedesigner', 1: 'ingen', 2: 'prodapp'},
+             'Skuespiller/forfatter': {0: 'skuespiller/forfatter', 1: 'ingen', 2: 'ingen'}, 'Animatør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Videokonsulent': {0: 'videotekniker', 1: 'konsulent', 2: 'annen prod'},
+             'Fysisk trener': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Gnark': {0: 'skuespiller', 1: 'gnark', 2: 'annen prod'}, 'Kulissegjengen': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Lyd': {0: 'lyddesigner', 1: 'LYD', 2: 'prodapp'},
+             'Arbeidsleder': {0: 'kulissebygger', 1: 'arbeidsleder', 2: 'annen prod'}, 'Suppesnupp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Medinstruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'},
+             'Forpleiningsansvarlig': {0: 'forpleier', 1: 'ingen', 2: 'annen prod'}, 'Lysreklameansvarlig': {0: 'lysreklamist', 1: 'leder', 2: 'annen prod'}, 'Garderobeslusk': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Konsulent i Lysreklamen': {0: 'lysreklamist', 1: 'konsulent', 2: 'annen prod'}, 'Scenograf ': {0: 'scenograf', 1: 'ingen', 2: 'prodapp'}, 'Band': {0: 'musiker', 1: 'ingen', 2: 'annen prod'},
+             'Myggslusk': {0: 'myggslusk', 1: 'ingen', 2: 'annen prod'}, 'ULYD': {0: 'lydtekniker', 1: 'uLYD', 2: 'annen prod'}, 'Ein slags regi': {0: 'regissør', 1: 'en slags', 2: 'prodapp'},
+             'Forfatterkollegiekonsulent': {0: 'forfatter', 1: 'konsulent', 2: 'annen prod'}, 'Sanger': {0: 'sanger', 1: 'ingen', 2: 'annen prod'}, 'Konsulent lys': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'},
+             'Lydsnupp': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'MEDlyd': {0: 'lydtekniker', 1: 'MedLYD', 2: 'annen prod'}, 'Gjesteartist': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Rekvisitørassistent': {0: 'rekvisitør', 1: 'assistent', 2: 'annen prod'}, 'Komponistkollegieleder': {0: 'komponist', 1: 'leder', 2: 'prodapp'}, 'Korrektur': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Seremoniregissør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sang': {0: 'sanger', 1: 'ingen', 2: 'annen prod'}, 'Komponistkollegiet': {0: 'komponist', 1: 'ingen', 2: 'prodapp'}, 'PR': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Lyd.1': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'konsulent.1': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Helseansvarlig/trener': {0: 'helseansvarlig', 1: 'ingen', 2: 'prodapp'},
+             'Lys v/Regi': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Kostymetegner': {0: 'kostymesyer', 1: 'arbeidsleder', 2: 'annen prod'}, 'Oversetter': {0: 'oversetter', 1: 'ingen', 2: 'prodapp'}, 'VIdeo': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'},
+             'Medlyd': {0: 'lydtekniker', 1: 'MedLYD', 2: 'annen prod'}, 'Kulissekonsulent': {0: 'kulissebygger', 1: 'konsulent', 2: 'annen prod'}, 'Layout': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyssnopp': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'},
+             'Lyd v. FK': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysreklamist': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'KUPkoordinator': {0: 'produsent', 1: 'KUPkoordinator', 2: 'prodapp'}, 'FK': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'},
+             'Videokunster': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Scenograf/Rekvisitør': {0: 'scenograf/rekvisitør', 1: 'ingen', 2: 'prodapp'}, 'inspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Kostymehospitant': {0: 'kostymesyer', 1: 'hospitant', 2: 'annen prod'},
+             'Administrativ assistanse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sminke- og hårassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'}, 'Suppedirektør': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Cocktailarbeidsleder': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Lyd v/FK': {0: 'lyddesigner', 1: 'LYD', 2: 'prodapp'}, 'Suppelys': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Sminkørassistent': {0: 'sminkør', 1: 'assistent', 2: 'annen prod'}, 'Konsulenter lyd': {0: 'lydtekniker', 1: 'konsulent', 2: 'annen prod'},
+             'SIT Revy': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Billett-, økonomi- og sikkerhetsansvarlig': {0: 'økonomiansvarlig', 1: 'billett-/sikkerhetsansvarlig', 2: 'prodapp'}, 'Sikkerhetsansvarlig': {0: 'sikkerhetsansvarlig', 1: 'ingen', 2: 'annen prod'}, 'Teatersjef': {0: 'teatersjef', 1: 'ingen', 2: 'styret'}, 'Designkonsulent': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'SIT Blæst': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Forfatter og skuespiller': {0: 'forfatter/skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Piano': {0: 'musiker', 1: 'piano', 2: 'annen prod'}, 'Sangteknisk instruksjon': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'Instuktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Kostymeoberst': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'},
+             'Forpleiningssjef': {0: 'forpleier', 1: 'leder', 2: 'annen prod'}, 'Publikumsvert': {0: 'publikumsvert', 1: 'ingen', 2: 'annen prod'}, 'Konsulent Lyslaget': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Skjermbilde': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Grafisk design': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'UKEsjef': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'SIT styret': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Deltaker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sang-instruktør': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'Manusbearbeidelse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Bygdefolk': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'CD': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Performance på Husfest': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sminke- og hårstylist': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Fittings': {0: 'fittings', 1: 'ingen', 2: 'annen prod'},
+             'Kulisser': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymesjef': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Rekvisitør': {0: 'rekvisitør', 1: 'ingen', 2: 'annen prod'}, 'Repetitør': {0: 'repetitør', 1: 'ingen', 2: 'annen prod'},
+             'Rekvisittassistent': {0: 'rekvisitør', 1: 'assistent', 2: 'annen prod'}, 'Markedsfører': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Illustratør': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Orkestersjef': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'},
+             'Videomester': {0: 'videodesigner', 1: 'ingen', 2: 'prodapp'}, 'Festtale': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lydeffekter': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'Administrasjon': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Medvirkende': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymemaker': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Økonomiansvarlig': {0: 'økonomiansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Konsulent.2': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'kostyme': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Stemme på intervju': {0: 'skuespiller', 1: 'stemme på intervju', 2: 'annen prod'}, 'Masker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Dirigent': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Kostymesyer': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Oversettelse': {0: 'oversetter', 1: 'ingen', 2: 'prodapp'}, 'Lyddesign': {0: 'lyddesigner', 1: 'ingen', 2: 'prodapp'}, 'Suppesnuppe': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Kostymekonsulent': {0: 'kostymesyer', 1: 'konsulent', 2: 'annen prod'}, 'Sminke': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Materialforvalter orkester': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Hospitant': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'Festdeltaker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Komponist': {0: 'komponist', 1: 'ingen', 2: 'prodapp'}, 'Scenograf': {0: 'scenograf', 1: 'ingen', 2: 'prodapp'}, 'Kostymeslusk': {0: 'kostymeslusk', 1: 'ingen', 2: 'annen prod'},
+             'Teknisk Inspisient': {0: 'Teknisk Inspisient', 1: 'ingen', 2: 'prodapp'}, 'Sceneteknikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Komponistkonsulent': {0: 'komponist', 1: 'konsulent', 2: 'prodapp'}, 'Ymse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sangpedagog og repetitør': {0: 'sangpedagog/repetitør', 1: 'ingen', 2: 'prodapp'}, 'Tribuneansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
+             'skuespiller': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Kommentator': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Statist': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'Pianist': {0: 'musiker', 1: 'piano', 2: 'annen prod'}, 'Lystekniker': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Kunstnerisk koordinator': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Instruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Kulissegjeng': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Konsulent.3': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'lysreklamen': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'Produksjonsassistent': {0: 'produsent', 1: 'assistent', 2: 'prodapp'}, 'Manus': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Regissør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Sangpedagog': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'Suppesnupp/-snopp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Produksjonsansvarlig': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Orkesterleder': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'}, 'Sekretær': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Koreograf': {0: 'koreograf', 1: 'ingen', 2: 'prodapp'}, 'Revyorkester': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Skuespillerinspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Rekvisittansvarlig': {0: 'rekvisitør', 1: 'ingen', 2: 'annen prod'}, 'Kostymekoordinator': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'}, 'Musikksnopp': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Kostymegjeng': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Forpleiningsassistent': {0: 'forpleier', 1: 'assistent', 2: 'annen prod'}, 'Turneleder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konsulent video': {0: 'videotekniker', 1: 'konsulent', 2: 'annen prod'}, 'Nød-bærehjelp i tolvte time': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lydsnopp': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'Lydig': {0: 'lydtekniker', 1: 'LYDig', 2: 'annen prod'}, 'Lysbilder v/FG': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymearbeidsleder': {0: 'kostymesyer', 1: 'arbeidsleder', 2: 'annen prod'}, 'Forteller': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Butler': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Grafikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Ouvreuse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'PR-ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyslaget': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Økonomi': {0: 'økonomiansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Scenearbeider': {0: 'scenearbeider', 1: 'ingen', 2: 'annen prod'}, 'Plakat': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Slåssteknikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Skuespiller': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Smikør': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Rekvisitørkonsulent': {0: 'rekvisitør', 1: 'konsulent', 2: 'annen prod'}, 'Følgespotlaget': {0: 'lystekniker', 1: 'følgespot', 2: 'annen prod'}, 'Videografiker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'myggkonsulent': {0: 'myggslusk', 1: 'konsulent', 2: 'annen prod'}, 'Videolaget': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Nestleder': {0: 'nestleder', 1: 'ingen', 2: 'styret'}, 'Videokomiteen': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Oversetter/instruktør/produsent': {0: 'Oversetter/regissør/produsent', 1: 'ingen', 2: 'prodapp'}, 'Koreografisk ass.': {0: 'koreograf', 1: 'assistent', 2: 'prodapp'}, 'Stemmepedagog': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'FFK': {0: 'forfatter', 1: 'konsulent', 2: 'annen prod'}, 'Innbildt suppedirektør': {0: 'produsent', 1: 'innbilt', 2: 'prodapp'}, 'Skuespiller ': {0: 'skuespiller ', 1: 'ingen', 2: 'annen prod'}, 'Musikalsk ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konferansier': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Inspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Eva Person': {0: 'skuespiller', 1: 'Eva Person', 2: 'annen prod'}, 'Musikalsk leder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulissesnekker': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Instruktørveileder': {0: 'regissør', 1: 'konsulent', 2: 'prodapp'}, 'Kommandør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymekommandør': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'}, 'Kostymesyere': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Sminke/parykk': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Orkesteret': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Noteskriver': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Film': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Publikumsinspisient': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Orkester': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Forfatter': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Kostymeskredder': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Pr-gjeng': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulisse': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Produsentassistent': {0: 'produsent', 1: 'assistent', 2: 'prodapp'}, 'Musikkarrangement': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Diverse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymegjengen': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Systemtekniker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Suppesnopp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymer': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Verkstedansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysreklamen': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'Video': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Regiveileder': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Byfolk': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'Arrangementskomité': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysmester': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Jazz på dass': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Personal- og innkjøpsansvarlig - kostyme': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Artist': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyskonsulent': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Kapellmester': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'}, 'Produksjonskonsulent': {0: 'produsent', 1: 'konsulent', 2: 'prodapp'}, 'Dovrefarer': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Regi': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Bilderedaktør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kupper': {0: 'KUPer', 1: 'ingen', 2: 'annen prod'}, 'Lys- og sceneinspisient': {0: 'teknisk inspisient', 1: 'ingen', 2: 'prodapp'}, 'Jørgen Person': {0: 'skuespiller', 1: 'Jørgen Person', 2: 'annen prod'}, 'Direktør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Produsent': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Skuespillere': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Gjendiktning sangtekster': {0: 'gjendikter', 1: 'ingen', 2: 'annen prod'}, 'VK': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Plakattegner': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Forpleining': {0: 'forpleier', 1: 'ingen', 2: 'annen prod'}, 'Skuespiller.1': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Lyslag': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}}
 
 
 
@@ -268,14 +336,14 @@ def create_medlem(medlem_dict, arr_for_bilder, location):
     except:
         pass
 
-    mtype = 1
+    medlemstype = 1
     undergjeng = None
-    gjeng_mtype_dict = {'skuespiller': 1, 'Regi': 2, 'Kostyme': 1, 'Ekstern': 21, 'UKE-funk': 9, 'UKEfunk/Låftet': 5,
+    gjeng_medlemstype_dict = {'skuespiller': 1, 'Regi': 2, 'Kostyme': 1, 'Ekstern': 21, 'UKE-funk': 9, 'UKEfunk/Låftet': 5,
                         'Kulisse': 1, 'Skuespiller': 1}
     gjeng_undergjeng_dict = {'skuespiller': 3, 'Kostyme': 1, 'Kulisse': 2, 'Skuespiller': 3}
     try:
-        mtype = gjeng_mtype_dict[medlem_dict['gjeng']]
-        if mtype == 1:
+        medlemstype = gjeng_medlemstype_dict[medlem_dict['gjeng']]
+        if medlemstype == 1:
             undergjeng = gjeng_undergjeng_dict[medlem_dict['gjeng']]
     except:
         pass
@@ -303,7 +371,7 @@ def create_medlem(medlem_dict, arr_for_bilder, location):
     except:
         pass
 
-    new_medlem = models.Medlem(mtype=mtype, fornavn=fornavn, mellomnavn=mellomnavn, etternavn=etternavn,
+    new_medlem = models.Medlem(medlemstype=medlemstype, fornavn=fornavn, mellomnavn=mellomnavn, etternavn=etternavn,
                                fodselsdato=fodselsdato,
                                opptaksar=opptaksar, undergjeng=undergjeng, status=status, portrett=portrett,
                                telefon=telefon,
@@ -409,11 +477,11 @@ def create_produksjon(data_dict, location):
     # 'skildring' - kort beskrivelse av forestillingen, -->info
     # 'spelestad' - spillested, mye forskjellig her --> create lokale og link til forestillingen
     # 'opphavsmenn' - forfatter(e), replace "av " --> forfatter
-    # 'uka' - ukeproduksjon? ja hvis tagen fins --> ptype = 4
+    # 'uka' - ukeproduksjon? ja hvis tagen fins --> produksjonstype = 4
     # 'plakat' - plakat(bildelink) --> plakat
     # 'galleri_i' og 'galleritxt_i' --> lag Foto og link til produksjonen
     # 'verv_i', 'person_i' + 'karakter_i' --> lag erfaring knyttet til medlem og produksjon, lag medlem om medlem ikke finnes, bruk dict for å få riktige verv
-    # 'produksjonstype' lag ptags, kjør gjennom filter, inneholder også AFEI og KUP --> ptype, enkelte kan kanskje gå som skildring også
+    # 'produksjonstype' lag produksjonstags, kjør gjennom filter, inneholder også AFEI og KUP --> produksjonstype, enkelte kan kanskje gå som skildring også
     # 'produksjonsnamn' - kommer ikke med, men det er egentlig her tittel ligger -->tittel
 
     tittel = try_get2('produksjonsnamn', data_dict, "Ikke funnet")
@@ -428,16 +496,16 @@ def create_produksjon(data_dict, location):
     except:
         premieredato = datetime.date(aar, 7, 1)
 
-    ptype = 0
-    p_tag_list = []
+    produksjonstype = 0
+    produksjonstag_list = []
     lokale_list = []
 
     info = ""
     info += try_get('overskrift', data_dict)
 
     try:
-        ptype_is_skildring, ptype, p_tag_list = create_ptags(produksjonstype_dict[data_dict['produksjonstype']])
-        if ptype_is_skildring:
+        produksjonstype_is_skildring, produksjonstype, produksjonstag_list = create_produksjonstags(produksjonstype_dict[data_dict['produksjonstype']])
+        if produksjonstype_is_skildring:
             info += try_get('produksjonstype', data_dict)
     except:
         pass
@@ -451,10 +519,10 @@ def create_produksjon(data_dict, location):
 
     try:
         a = data_dict['uka']
-        ptype = 4
+        produksjonstype = 4
     except:
-        if ptype == 0:
-            ptype = 1
+        if produksjonstype == 0:
+            produksjonstype = 1
 
 
     info += try_get('skildring', data_dict)
@@ -489,9 +557,9 @@ def create_produksjon(data_dict, location):
     new_produksjon = models.Produksjon(tittel=tittel, forfatter=forfatter, premieredato=premieredato, plakat=plakat, info=info, ptype=ptype)
     new_produksjon.save()
 
-    if p_tag_list:
-        for ptag in p_tag_list:
-            new_produksjon.ptags.add(ptag)
+    if produksjonstag_list:
+        for produksjonstag in produksjonstag_list:
+            new_produksjon.produksjonstags.add(produksjonstag)
     if lokale_list:
         for lokale in lokale_list:
             new_produksjon.lokale.add(lokale)
@@ -515,28 +583,28 @@ def try_get(data, data_dict):
     except:
         return data + ":    " + "\n\n"
 
-def create_ptags(p_list):
+def create_produksjonstags(p_list):
     is_skildring = False
-    ptype = 0
-    p_tag_list = []
+    produksjonstype = 0
+    produksjonstag_list = []
     for tag in p_list:
         if tag == 'skildring':
             is_skildring = True
         elif tag == 'UKA':
-            ptype = 4
+            produksjonstype = 4
         elif tag == 'KUP':
-            ptype = 2
+            produksjonstype = 2
         elif tag == 'AFEI':
-            ptype = 3
+            produksjonstype = 3
         else:
             try:
-                ptag = models.pTag.objects.get(tag=tag)
+                produksjonstag = models.Produksjonstag.objects.get(tag=tag)
             except:
-                ptag = models.pTag(tag=tag)
-                ptag.save()
-            p_tag_list.append(ptag)
+                produksjonstag = models.Produksjonstag(tag=tag)
+                produksjonstag.save()
+            produksjonstag_list.append(produksjonstag)
 
-    return is_skildring, ptype, p_tag_list
+    return is_skildring, produksjonstype, produksjonstag_list
 
 def create_lokale(lok_list):
     is_skildring = False
@@ -703,27 +771,27 @@ def update_uttrykk(verv_input, verv_cleaned):
 
 def update_verv(tittel, type):
     try:
-        return models.Verv.objects.get(tittel=tittel)
+        return models.Verv.objects.get(tittel=tittel, vervtype=4)
     except:
         if type == 'prodapp':
-            vtag = update_vTag(type)
-            new_verv = models.Verv.objects.create(tittel=tittel, erfaringsoverforing=True, vtype=4)
+            vervtag = update_vervtag(type)
+            new_verv = models.Verv.objects.create(tittel=tittel, erfaringsoverforing=True, vervtype=4)
             new_verv.save()
-            new_verv.vtags.add(vtag)
+            new_verv.vervtags.add(vervtag)
             new_verv.save()
             return new_verv
         else:
-            new_verv = models.Verv.objects.create(tittel=tittel, vtype=4, erfaringsoverforing=False)
+            new_verv = models.Verv.objects.create(tittel=tittel, vervtype=4, erfaringsoverforing=False)
             new_verv.save()
             return new_verv
 
-def update_vTag(tittel):
+def update_vervtag(tittel):
     try:
-        return models.vTag.objects.get(tag=tittel)
+        return models.Vervtag.objects.get(tag=tittel)
     except:
-        vtag = models.vTag.objects.create(tag=tittel)
-        vtag.save()
-        return vtag
+        vervtag = models.Vervtag.objects.create(tag=tittel)
+        vervtag.save()
+        return vervtag
 
 
 
@@ -745,7 +813,7 @@ def transfer_all_medlemmer(location):
     list_of_dicts, dict_of_lists, dict_of_sets, errors = getAll(location + 'medlem/')
     skrift = models.Lokale(navn='skrift.no')
     skrift.save()
-    arr_for_pictures = models.Arrangement(atype=1, tittel='Bilder fra skrift knyttet til medlemmer',
+    arr_for_pictures = models.Arrangement(tittel='Bilder fra skrift knyttet til medlemmer', offentlig=False,
                                           tidspunkt=datetime.date(2020, 12, 31), lokale=skrift)
     arr_for_pictures.save()
 
@@ -797,5 +865,7 @@ def fixtext(s):
     else:
         return s
 
+
 if __name__ == "__main__":
-    transfer_all_medlemmer(sys.argv[1])
+    # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
+    transfer_all_medlemmer('/Users/jonas/Desktop/Skriftdata/')

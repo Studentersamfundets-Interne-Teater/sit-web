@@ -8,8 +8,8 @@
 
 	{% block verv_info %}
 	
-		<p><b>Vervtype:</b> {{verv.get_vtype_display|capfirst}}verv
-		{% if verv.vtags.count %} ({{verv.vtags.all|join:", "|capfirst}}){% endif %}</p>
+		<p><b>Vervtype:</b> {{verv.get_vervtype_display|capfirst}}verv
+		{% if verv.vervtags.count %} ({{verv.vervtags.all|join:", "|capfirst}}){% endif %}</p>
 
 		{% if verv.beskrivelse %}<p>{{verv.beskrivelse}}</p>{% endif %}
 
@@ -27,25 +27,35 @@
 
 		{% for erfaring in verv.erfaringer.all %}
 			{% if erfaring.medlem %}
-				<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+				{% if FEATURES.TOGGLE_MEDLEMMER %}
+					<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+				{% else %}
+					{{erfaring.medlem}}
+				{% endif %}
 			{% else %}
 				{{erfaring.navn}}
 			{% endif %}
+			{% if erfaring.rolle %} som {{erfaring.rolle}}{% endif %}
+			 i 
 			{% if erfaring.produksjon %}
-				{% if erfaring.rolle %} som {{erfaring.rolle}} i {% else %} for {% endif %}
 				{% if FEATURES.TOGGLE_PRODUKSJONER %}
 					<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
 				{% else %}
 					{{erfaring.produksjon}}
 				{% endif %}
-			{% else %}
-				i {{erfaring.ar}}
+			{% else %} 
+				{% if FEATURES.TOGGLE_AR %}
+					<a href="{% url 'ar_info' erfaring.ar %}">{{erfaring.ar}}</a>
+				{% else %}
+					{{erfaring.ar}}
+				{% endif %}
 			{% endif %}
-			{% if erfaring.skriv %}
-				 – <a href="{{erfaring.skriv.url}}">Erfaringsskriv</a>
+			{% if erfaring.erfaringsskriv and access == 'own' %}
+				 – <a href="{{erfaring.erfaringsskriv.url}}">Erfaringsskriv</a>
 			{% endif %}
 			<br>
 		{% endfor %}
+		<br>
 	{% endif %}
 
 	{% block erfaring_ny %}
@@ -58,7 +68,7 @@
 		{% if FEATURES.TOGGLE_EDIT %}
 			{% if access == 'admin' or access == 'own' %}
 				<br><br>
-				<a href="{% url 'verv_redi' verv.id %}">Endre verv</a>
+				<a href="{% url 'verv_endre' verv.id %}">Endre verv</a>
 				<br>
 			{% endif %}
 			{% if perms.SITdata.delete_verv %}
@@ -66,7 +76,6 @@
 				<a href="{% url 'verv_slett' verv.id %}">Slett verv</a>
 				<br>
 			{% endif %}
-			<br>
 		{% endif %}
 
 	{% endblock verv_nav %}

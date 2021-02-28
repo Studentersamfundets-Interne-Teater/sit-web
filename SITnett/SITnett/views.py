@@ -8,76 +8,121 @@ import os
 import datetime
 
 from SITdata import models, forms
-from SITdata import skrift_transfers
 
 features = settings.FEATURES
 
+def get_ar(arstall):
+# finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen.
+    if not models.Ar.objects.filter(pk=arstall):
+        ar = models.Ar(pk=arstall)
+        ar.save()
+    else:
+        ar = models.Ar.objects.filter(pk=arstall).first()
+    return ar
+
+
 def view_hoved(request):
-    # # Legg inn riktig URL i anførselstegnene for å laste over følgende Skrift-data:
-    # skrift_transfers.transfer_all_medlemmer("/Users/jacob/Downloads/sit skrift/sit/")
-    # skrift_transfers.transfer_all_produksjoner("/Users/jacob/Downloads/sit skrift/sit/")
-    return render(request, 'hoved.html', {'FEATURES': features})
+    arstall = datetime.datetime.now().year
+    ar = get_ar(arstall)
+    return render(request, 'hoved.html', {'FEATURES': features,
+        'ar': ar})
 
 
 def view_info(request):
-    return render(request, 'info.html', {'FEATURES': features})
+    arstall = datetime.datetime.now().year
+    ar = get_ar(arstall)
+    if models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").count():
+    # henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
+        infotekst = models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first().beskrivelse
+    else:
+        infotekst = ""
+    return render(request, 'info.html', {'FEATURES': features,
+        'ar': ar, 'infotekst': infotekst})
 
 
 def view_opptak(request):
-    return render(request, 'opptak.html', {'FEATURES': features})
+    arstall = datetime.datetime.now().year
+    ar = get_ar(arstall)
+    return render(request, 'opptak.html', {'FEATURES': features,
+        'ar': ar})
 
 
-def make_soppslag(ar):
-    serfaringer = models.Erfaring.objects.filter(verv__vtype=1).filter(ar=ar)
-    if serfaringer.count():
-        vids = serfaringer.values_list('verv', flat=True).distinct().order_by()
-        soppslag = {}
+def make_styrevervoppslag(ar):
+    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år.
+    styreerfaringer = models.Erfaring.objects.filter(verv__vervtype=1).filter(ar=ar)
+    if styreerfaringer.count():
+        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by()
+        vervoppslag = {}
         for vid in vids:
             if vid == None:
                 continue
-            verv = models.Verv.objects.get(pk=vid)
-            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar)
-            soppslag[verv] = erfaringer
+            verv = models.Verv.objects.get(id=vid)
+            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar).order_by('rolle')
+            vervoppslag[verv] = erfaringer
     else:
-        soppslag = None
-    return soppslag
+        vervoppslag = None
+    return vervoppslag
 
-def make_goppslag(ar,authenticated):
+def make_gjengvervoppslag(ar,authenticated):
+    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år.
+    # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
     if not authenticated:
-        gerfaringer = models.Erfaring.objects.filter(verv__vtype=2).filter(ar=ar)
+        gjengerfaringer = models.Erfaring.objects.filter(verv__vervtype=2).filter(ar=ar)
     else:
-        gerfaringer = models.Erfaring.objects.filter(verv__vtype__in=[2,3]).filter(ar=ar)
-    if gerfaringer.count():
-        vids = gerfaringer.values_list('verv', flat=True).distinct().order_by()
-        goppslag = {}
+        gjengerfaringer = models.Erfaring.objects.filter(verv__vervtype__in=[2,3]).filter(ar=ar)
+    if gjengerfaringer.count():
+        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by()
+        vervoppslag = {}
         for vid in vids:
             if vid == None:
                 continue
             verv = models.Verv.objects.get(pk=vid)
-            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar)
-            goppslag[verv] = erfaringer
+            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar).order_by('rolle')
+            vervoppslag[verv] = erfaringer
     else:
-        goppslag = None
-    return goppslag
+        vervoppslag = None
+    return vervoppslag
+
+def make_gjengtitteloppslag(ar,authenticated):
+# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler et gitt år som ikke er registrerte verv.
+# Hvis man ikke er logga inn får man ikke opp noen titler.
+    titler = models.Erfaring.objects.filter(ar=ar).values_list('tittel', flat=True).distinct().order_by()
+    titteloppslag = {}
+    if not authenticated:
+        return titteloppslag
+    for tittel in titler:
+        if tittel == "":
+            continue
+        erfaringer = models.Erfaring.objects.filter(tittel=tittel).order_by('rolle')
+        if erfaringer.count() > 1:
+            if tittel[-2:] == "er":
+                titteloppslag[tittel+"e"] = erfaringer
+            elif tittel[-1:] == "e":
+                titteloppslag[tittel+"r"] = erfaringer
+            else:
+                titteloppslag[tittel+"er"] = erfaringer
+        else:
+            titteloppslag[tittel] = erfaringer
+    return titteloppslag
 
 
 def view_kontakt(request):
     if not features.TOGGLE_KONTAKT:
         return redirect('hoved')
-    ar = datetime.datetime.now().year
-    soppslag = make_soppslag(ar)
-    goppslag = make_goppslag(ar,request.user.is_authenticated)
-    mliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
+    arstall = datetime.datetime.now().year
+    styreoppslag = make_styrevervoppslag(arstall)
+    vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
+    medlemsliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
     return render(request, 'kontakt.html', {'FEATURES': features,
-        'soppslag': soppslag, 'goppslag': goppslag, 'mliste': mliste})
+        'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'medlemsliste': medlemsliste})
 
 
 def view_medlemmer(request):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
-    mliste = models.Medlem.objects.filter(status__in=[1,2]) # filtrerer ut aktive og veteraner foreløpig.
+    medlemsliste = models.Medlem.objects.filter(status__in=[1,2]) # filtrerer ut aktive og veteraner foreløpig.
     return render(request, 'medlemmer/medlemmer.html', {'FEATURES': features,
-        'mliste': mliste})
+        'medlemsliste': medlemsliste})
 
 
 @permission_required('SITdata.add_medlem')
@@ -85,18 +130,18 @@ def view_medlem_ny(request):
     if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
         return redirect('hoved')
     if request.method == 'POST':
-        mform = forms.MedlemAdminForm(request.POST, request.FILES)
-        if mform.is_valid():
-            medlem = mform.save()
+        medlemsform = forms.MedlemAdminForm(request.POST, request.FILES)
+        if medlemsform.is_valid():
+            medlem = medlemsform.save()
             if 'opprett_brukerkonto' in request.POST:
                 brukerkonto = User.objects.create_user(medlem.brukernavn(), medlem.epost, 'ta-de-du!')
                 medlem.brukerkonto = brukerkonto
                 medlem.save()
             return redirect('medlem_info', medlem.id)
     else:
-        mform = forms.MedlemAdminForm()
+        medlemsform = forms.MedlemAdminForm()
     return render(request, 'medlemmer/medlem_ny.html', {'FEATURES': features,
-        'mform': mform})
+        'medlemsform': medlemsform})
 
 
 def view_medlem_info(request, mid):
@@ -114,7 +159,7 @@ def view_medlem_info(request, mid):
 
 
 @login_required
-def view_medlem_redi(request, mid):
+def view_medlem_endre(request, mid):
     if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
         return redirect('hoved')
     medlem = get_object_or_404(models.Medlem, id=mid)
@@ -125,11 +170,11 @@ def view_medlem_redi(request, mid):
     else:
         MedlemForm = forms.MedlemOtherForm
     if request.method == 'POST':
-        mform = MedlemForm(request.POST, request.FILES, instance=medlem)
-        eform = forms.ErfaringMedForm(request.POST,request.FILES)
-        uform = forms.UtmerkelseForm(request.POST)
-        if 'lagre_medlem' in request.POST and mform.is_valid():
-            mform.save()
+        medlemsform = MedlemForm(request.POST, request.FILES, instance=medlem)
+        erfaringsform = forms.ErfaringMedForm(request.POST,request.FILES)
+        utmerkelsesform = forms.UtmerkelseForm(request.POST)
+        if 'lagre_medlem' in request.POST and medlemsform.is_valid():
+            medlemsform.save()
             if 'opprett_brukerkonto' in request.POST:
                 brukerkonto = User.objects.create_user(medlem.brukernavn(), medlem.epost, 'ta-de-du!')
                 medlem.brukerkonto = brukerkonto
@@ -138,22 +183,23 @@ def view_medlem_redi(request, mid):
                 brukerkonto = medlem.brukerkonto
                 brukerkonto.delete()
             return redirect('medlem_info', medlem.id)
-        elif 'lagre_utmerkelse' in request.POST and uform.is_valid():
-            utmerkelse = uform.save(commit=False)
+        elif 'lagre_utmerkelse' in request.POST and utmerkelsesform.is_valid():
+            utmerkelse = utmerkelsesform.save(commit=False)
             utmerkelse.medlem = medlem
             utmerkelse.save()
-            return redirect('medlem_redi', medlem.id)
-        elif 'lagre_erfaring' in request.POST and eform.is_valid():
-            erfaring = eform.save(commit=False)
+            return redirect('medlem_endre', medlem.id)
+        elif 'lagre_erfaring' in request.POST and erfaringsform.is_valid():
+            erfaring = erfaringsform.save(commit=False)
             erfaring.medlem = medlem
             erfaring.save()
-            return redirect('medlem_redi', medlem.id)
+            return redirect('medlem_endre', medlem.id)
     else:
-        mform = MedlemForm(instance=medlem)
-        eform = forms.ErfaringMedForm()
-        uform = forms.UtmerkelseForm()
-    return render(request, 'medlemmer/medlem_redi.html', {'FEATURES': features,
-        'medlem': medlem, 'mform': mform, 'uform': uform, 'eform': eform})
+        medlemsform = MedlemForm(instance=medlem)
+        erfaringsform = forms.ErfaringMedForm()
+        utmerkelsesform = forms.UtmerkelseForm()
+    return render(request, 'medlemmer/medlem_endre.html', {'FEATURES': features,
+        'medlem': medlem, 'medlemsform': medlemsform, 'utmerkelsesform': utmerkelsesform,
+        'erfaringsform': erfaringsform})
 
 
 @permission_required('SITdata.delete_medlem')
@@ -184,37 +230,42 @@ def view_utmerkelse_fjern(request, uid):
 def view_produksjoner(request):
     if not features.TOGGLE_PRODUKSJONER:
         return redirect('hoved')
-    pliste = models.Produksjon.objects.all()
+    arstall = datetime.datetime.now().year
+    produksjonsliste = models.Produksjon.objects.filter(premieredato__year__gte=(arstall-2)) # filtrerer ut siste 2 år foreløpig.
     return render(request, 'produksjoner/produksjoner.html', {'FEATURES': features,
-        'pliste': pliste})
+        'produksjonsliste': produksjonsliste})
 
 
-def make_voppslag(produksjon):
+def make_produksjonsvervoppslag(produksjon):
+# lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon.
     vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by()
-    voppslag = {}
+    vervoppslag = {}
     for vid in vids:
         if vid == None:
             continue
-        verv = models.Verv.objects.get(pk=vid)
-        erfaringer = produksjon.erfaringer.filter(verv=vid)
-        voppslag[verv] = erfaringer
-    return voppslag
+        verv = models.Verv.objects.get(id=vid)
+        erfaringer = produksjon.erfaringer.filter(verv=vid).order_by('rolle')
+        vervoppslag[verv] = erfaringer
+    return vervoppslag
 
-def make_toppslag(produksjon):
+def make_produksjonstitteloppslag(produksjon):
+# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv.
     titler = produksjon.erfaringer.all().values_list('tittel', flat=True).distinct().order_by()
-    toppslag = {}
+    titteloppslag = {}
     for tittel in titler:
         if tittel == "":
             continue
-        erfaringer = produksjon.erfaringer.filter(tittel=tittel)
+        erfaringer = produksjon.erfaringer.filter(tittel=tittel).order_by('rolle')
         if erfaringer.count() > 1:
             if tittel[-2:] == "er":
-                toppslag[tittel+"e"] = erfaringer
+                titteloppslag[tittel+"e"] = erfaringer
+            elif tittel[-1:] == "e":
+                titteloppslag[tittel+"r"] = erfaringer
             else:
-                toppslag[tittel+"er"] = erfaringer
+                titteloppslag[tittel+"er"] = erfaringer
         else:
-            toppslag[tittel] = erfaringer
-    return toppslag
+            titteloppslag[tittel] = erfaringer
+    return titteloppslag
 
 
 @permission_required('SITdata.add_produksjon')
@@ -222,14 +273,14 @@ def view_produksjon_ny(request):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     if request.method == 'POST':
-        pform = forms.ProduksjonAdminForm(request.POST, request.FILES)
-        if pform.is_valid():
-            produksjon = pform.save()
+        produksjonsform = forms.ProduksjonAdminForm(request.POST, request.FILES)
+        if produksjonsform.is_valid():
+            produksjon = produksjonsform.save()
             return redirect('produksjon_info', produksjon.id)
     else:
-        pform = forms.ProduksjonAdminForm()
+        produksjonsform = forms.ProduksjonAdminForm()
     return render(request, 'produksjoner/produksjon_ny.html', {'FEATURES': features,
-        'pform': pform})
+        'produksjonsform': produksjonsform})
 
 
 def view_produksjon_info(request, pid):
@@ -243,14 +294,14 @@ def view_produksjon_info(request, pid):
         access = 'own'
     else:
         access = 'other'
-    voppslag = make_voppslag(produksjon)
-    toppslag = make_toppslag(produksjon)
+    vervoppslag = make_produksjonsvervoppslag(produksjon)
+    titteloppslag = make_produksjonstitteloppslag(produksjon)
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
-        'produksjon': produksjon, 'voppslag': voppslag, 'toppslag': toppslag})
+        'produksjon': produksjon, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
 
 
 @login_required
-def view_produksjon_redi(request, pid):
+def view_produksjon_endre(request, pid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
@@ -260,39 +311,40 @@ def view_produksjon_redi(request, pid):
         ProduksjonForm = forms.ProduksjonOwnForm
     else:
         return redirect('/konto/login/?next=%s' % request.path)
-    voppslag = make_voppslag(produksjon)
-    toppslag = make_toppslag(produksjon)
+    vervoppslag = make_produksjonsvervoppslag(produksjon)
+    titteloppslag = make_produksjonstitteloppslag(produksjon)
     if request.method == 'POST':
-        pform = ProduksjonForm(request.POST, request.FILES, instance=produksjon)
-        fform = forms.ForestillingForm(request.POST)
-        aform = forms.AnmeldelseForm(request.POST, request.FILES)
-        eform = forms.ErfaringProdForm(request.POST, request.FILES)
-        if 'lagre_produksjon' in request.POST and pform.is_valid():
-            pform.save()
+        produksjonsform = ProduksjonForm(request.POST, request.FILES, instance=produksjon)
+        forestillingsform = forms.ForestillingForm(request.POST)
+        anmeldelsesform = forms.AnmeldelseForm(request.POST, request.FILES)
+        erfaringsform = forms.ErfaringProdForm(request.POST, request.FILES)
+        if 'lagre_produksjon' in request.POST and produksjonsform.is_valid():
+            produksjonsform.save()
             return redirect('produksjon_info', produksjon.id)
-        elif 'lagre_forestilling' in request.POST and fform.is_valid():
-            forestilling = fform.save(commit=False)
+        elif 'lagre_forestilling' in request.POST and forestillingsform.is_valid():
+            forestilling = forestillingsform.save(commit=False)
             forestilling.produksjon = produksjon
             forestilling.save()
-            return redirect('produksjon_redi', produksjon.id)
-        elif 'lagre_anmeldelse' in request.POST and aform.is_valid():
-            anmeldelse = aform.save(commit=False)
+            return redirect('produksjon_endre', produksjon.id)
+        elif 'lagre_anmeldelse' in request.POST and anmeldelsesform.is_valid():
+            anmeldelse = anmeldelsesform.save(commit=False)
             anmeldelse.produksjon = produksjon
             anmeldelse.save()
-            return redirect('produksjon_redi', produksjon.id)
-        elif 'lagre_erfaring' in request.POST and eform.is_valid():
-            erfaring = eform.save(commit=False)
+            return redirect('produksjon_endre', produksjon.id)
+        elif 'lagre_erfaring' in request.POST and erfaringsform.is_valid():
+            erfaring = erfaringsform.save(commit=False)
             erfaring.produksjon = produksjon
             erfaring.save()
-            return redirect('produksjon_redi', produksjon.id)
+            return redirect('produksjon_endre', produksjon.id)
     else:
-        pform = ProduksjonForm(instance=produksjon)
-        fform = forms.ForestillingForm()
-        aform = forms.AnmeldelseForm()
-        eform = forms.ErfaringProdForm()
-    return render(request, 'produksjoner/produksjon_redi.html', {'FEATURES': features,
-        'produksjon': produksjon, 'voppslag': voppslag, 'toppslag': toppslag,
-        'pform': pform, 'fform': fform, 'aform': aform, 'eform': eform})
+        produksjonsform = ProduksjonForm(instance=produksjon)
+        forestillingsform = forms.ForestillingForm()
+        anmeldelsesform = forms.AnmeldelseForm()
+        erfaringsform = forms.ErfaringProdForm()
+    return render(request, 'produksjoner/produksjon_endre.html', {'FEATURES': features,
+        'produksjon': produksjon, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+        'produksjonsform': produksjonsform, 'forestillingsform': forestillingsform,
+        'anmeldelsesform': anmeldelsesform, 'erfaringsform': erfaringsform})
 
 
 @permission_required('SITdata.delete_produksjon')
@@ -347,9 +399,9 @@ def view_anmeldelse_fjern(request, aid):
 def view_verv(request):
     if not features.TOGGLE_VERV:
         return redirect('hoved')
-    vliste = models.Verv.objects.all()
+    vervliste = models.Verv.objects.all()
     return render(request, 'verv/verv.html', {'FEATURES': features,
-        'vliste': models.Verv.objects.all()})
+        'vervliste': models.Verv.objects.all()})
 
 
 @permission_required('SITdata.add_verv')
@@ -357,14 +409,14 @@ def view_verv_ny(request):
     if not (features.TOGGLE_VERV and features.TOGGLE_EDIT):
         return redirect('hoved')
     if request.method == 'POST':
-        vform = forms.VervAdminForm(request.POST)
-        if vform.is_valid():
-            verv = vform.save()
+        vervform = forms.VervAdminForm(request.POST)
+        if vervform.is_valid():
+            verv = vervform.save()
             return redirect('verv_info', verv.id)
     else:
-        vform = forms.VervAdminForm()
+        vervform = forms.VervAdminForm()
     return render(request, 'verv/verv_ny.html', {'FEATURES': features,
-        'vform': vform})
+        'vervform': vervform})
 
 
 @login_required
@@ -385,57 +437,58 @@ def view_verv_info(request, vid):
 
 
 @login_required
-def view_verv_redi(request, vid):
+def view_verv_endre(request, vid):
     if not (features.TOGGLE_VERV and features.TOGGLE_EDIT):
         return redirect('hoved')
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
     if models.Medlem.objects.filter(brukerkonto=request.user):
-        serfaring = (request.user.medlem.erfaringer.all() & verv.erfaringer.all()).first()
+        egen_erfaring = (request.user.medlem.erfaringer.all() & verv.erfaringer.all()).first()
     else:
-        serfaring = None
+        egen_erfaring = None
     if request.user.has_perm('SITdata.change_verv'):
         VervForm = forms.VervAdminForm
         access = 'admin'
-    elif serfaring:
+    elif egen_erfaring:
         VervForm = forms.VervOwnForm
         access = 'own'
     else:
         return redirect('/konto/login/?next=%s' % request.path)
     if request.method == 'POST':
-        vform = VervForm(request.POST, instance=verv)
+        vervform = VervForm(request.POST, instance=verv)
         if access == 'admin':
-            eform = forms.ErfaringVervForm(request.POST, request.FILES)
+            erfaringsform = forms.ErfaringVervForm(request.POST, request.FILES)
         else:
-            eform = None
-        if serfaring:
-            sform = forms.ErfaringsskrivForm(request.POST, request.FILES, instance=serfaring)
+            erfaringsform = None
+        if egen_erfaring:
+            erfaringsskrivform = forms.ErfaringsskrivForm(request.POST, request.FILES, instance=egen_erfaring)
         else:
-            sform = None
-        if 'lagre_verv' in request.POST and vform.is_valid():
-            vform.save()
+            erfaringsskrivform = None
+        if 'lagre_verv' in request.POST and vervform.is_valid():
+            vervform.save()
             return redirect('verv_info', verv.id)
-        elif 'lagre_erfaring' in request.POST and eform.is_valid():
-            erfaring = eform.save(commit=False)
+        elif 'lagre_erfaring' in request.POST and erfaringsform.is_valid():
+            erfaring = erfaringsform.save(commit=False)
             erfaring.verv = verv
             erfaring.save()
-            return redirect('verv_redi', verv.id)
-        elif 'lagre_erfaringsskriv' in request.POST and sform.is_valid():
-            sform.save()
-            return redirect('verv_redi', verv.id)
+            return redirect('verv_endre', verv.id)
+        elif 'lagre_erfaringsskriv' in request.POST and erfaringsskrivform.is_valid():
+            erfaringsskrivform.save()
+            return redirect('verv_endre', verv.id)
     else:
-        vform = VervForm(instance=verv)
+        vervform = VervForm(instance=verv)
         if access == 'admin':
-            eform = forms.ErfaringVervForm()
+            erfaringsform = forms.ErfaringVervForm()
         else:
-            eform = None
-        if serfaring:
-            sform = forms.ErfaringsskrivForm(instance=serfaring)
+            erfaringsform = None
+        if egen_erfaring:
+            erfaringsskrivform = forms.ErfaringsskrivForm(instance=egen_erfaring)
         else:
-            sform = None
-    return render(request, 'verv/verv_redi.html', {'FEATURES': features,
-        'verv': verv, 'vform': vform, 'eform': eform, 'sform': sform})
+            erfaringsskrivform = None
+    return render(request, 'verv/verv_endre.html', {'FEATURES': features,
+        'verv': verv, 'vervform': vervform, 'erfaringsform': erfaringsform,
+        'erfaringsskrivform': erfaringsskrivform})
 
 
 @login_required
@@ -479,14 +532,77 @@ def view_uttrykk(request):
 
 
 @login_required
+def view_arkiv(request):
+    if not features.TOGGLE_ARKIV:
+        return redirect('hoved')
+    return render(request, 'arkiv.html', {'FEATURES': features})
+
+
+@login_required
 def view_dokumenter(request):
     if not features.TOGGLE_DOKUMENTER:
         return redirect('hoved')
     return render(request, 'dokumenter.html', {'FEATURES': features})
 
 
-@login_required
-def view_arkiv(request):
-    if not features.TOGGLE_ARKIV:
+def view_ar_info(request, arstall):
+    if not features.TOGGLE_AR:
         return redirect('hoved')
-    return render(request, 'arkiv.html', {'FEATURES': features})
+    if arstall < 1910 or arstall > datetime.datetime.now().year:
+        return redirect('hoved')
+    ar = get_ar(arstall)
+    if request.user.has_perm('SITdata.change_ar'):
+        access = 'admin'
+    elif request.user.is_authenticated \
+            and request.user.medlem.erfaringer.all() & models.Erfaring.objects.filter(ar=ar.arstall).filter(verv__vervtype=1):
+        access = 'own'
+    else:
+        access = 'other'
+    styreoppslag = make_styrevervoppslag(arstall)
+    vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
+    titteloppslag = make_gjengtitteloppslag(arstall,request.user.is_authenticated)
+    produksjonsliste = models.Produksjon.objects.filter(premieredato__year=arstall)
+    return render(request, 'ar/ar_info.html', {'FEATURES': features, 'access': access,
+        'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+        'produksjonsliste': produksjonsliste})
+
+@login_required
+def view_ar_endre(request, arstall):
+    if not (features.TOGGLE_AR and features.TOGGLE_EDIT):
+        return redirect('hoved')
+    ar = get_object_or_404(models.Ar, pk=arstall)
+    if request.user.has_perm('SITdata.change_ar'):
+        access = 'admin'
+    elif request.user.medlem.erfaringer.all() & models.Erfaring.objects.filter(ar=ar.arstall).filter(verv__vervtype=1):
+        access = 'own'
+    else:
+        return redirect('/konto/login/?next=%s' % request.path)
+    styreoppslag = make_styrevervoppslag(arstall)
+    vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
+    titteloppslag = make_gjengtitteloppslag(arstall,request.user.is_authenticated)
+    produksjonsliste = models.Produksjon.objects.filter(premieredato__year=arstall)
+    if request.method == 'POST':
+        arsform = forms.ArForm(request.POST, request.FILES, instance=ar)
+        erfaringsform = forms.ErfaringArForm(request.POST, request.FILES)
+        if 'lagre_ar' in request.POST and arsform.is_valid():
+            arsform.save()
+            return redirect('ar_info', ar.arstall)
+        elif 'lagre_erfaring' in request.POST and erfaringsform.is_valid():
+            erfaring = erfaringsform.save(commit=False)
+            erfaring.ar = ar.arstall
+            erfaring.save()
+            return redirect('ar_endre', ar.arstall)
+    else:
+        arsform = forms.ArForm(instance=ar)
+        erfaringsform = forms.ErfaringArForm()
+    return render(request, 'ar/ar_endre.html', {'FEATURES': features,
+        'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+        'produksjonsliste': produksjonsliste, 'arsform': arsform, 'erfaringsform': erfaringsform})
+
+@permission_required('SITdata.add_medlem')
+def view_ar_nyttkull(request, arstall):
+    if not features.TOGGLE_EDIT:
+        return redirect('hoved')
+    ar = get_object_or_404(models.Ar, pk=arstall)
+    return render(request, 'ar/ar_nyttkull.html', {'FEATURES': features,
+        'ar': ar})
