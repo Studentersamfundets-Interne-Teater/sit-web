@@ -177,11 +177,12 @@ def replace_empty_tags(location):
     a_file.writelines(lines)
     a_file.close()
 
-
+# data collection
 def getMedlemDict(location):
     soup = BeautifulSoup(open(location), features="lxml")
     # print(soup.prettify())
     h = h2t.HTML2Text()
+    h.convert_charrefs = True
     data_dict = {}
     for tag in soup.find_all():
         try:
@@ -222,12 +223,12 @@ def getMedlemDict(location):
     # print(data_dict)
     return data_dict
 
-
 def getForestillingDict(location):
     soup = BeautifulSoup(open(location), features="lxml")
     h = h2t.HTML2Text()
     h.ignore_links = False
     h.ignore_images = True
+    h.convert_charrefs = True
 
     # print(soup.prettify())
     data_dict = {}
@@ -236,12 +237,21 @@ def getForestillingDict(location):
             tag_name = tag.name
             if tag_name == 'sidetekst':
 
-                tag_str = h.handle(str(tag)).replace("  \n", "").replace("\n", " ").replace("  ", " f")
-                images = []
+                tag_str = ""
+                link_dict = {}
+                for atag in tag.find_all('a', href=True):
+                    link_dict[atag.string] = "[" + atag['href'] + "]"
 
+                for sidetekst_tag in tag.find_all(text=True):
+                    tag_str += sidetekst_tag.string + " "
+                    tag_str += link_dict.get(sidetekst_tag.string, "")
+                # tag_str = h.handle(str(tag)).replace("  \n","").replace("\n", " ").replace("  ", " f")
+                # test = " ".join(tag.find_all(text=True))
+                images = []
                 for imgtag in tag.find_all('img'):
                     images.append(imgtag['src'])
                 data_dict['images'] = images
+                tag_str = tag_str.replace("  ", " ").replace("\xa0", "").replace("**","")
             else:
                 tag_str = tag.string
             data_dict[tag_name] = tag_str
@@ -249,14 +259,13 @@ def getForestillingDict(location):
             continue
     f = open(location)
     tekst = f.read()
-    data_dict['produksjonsnamn'] = h.handle(tekst[tekst.find('produksjonsnamn')+16:tekst.find('</produksjonsnamn')]).replace("\n","")
+    data_dict['produksjonsnamn'] = h.handle(tekst[tekst.find('produksjonsnamn')+16:tekst.find('</produksjonsnamn')]).replace("\n","").replace('\.', "")
 
     if data_dict['produksjonsnamn'] == "" or tekst.find('produksjonsnamn') == -1:
         data_dict['produksjonsnamn'] = data_dict['overskrift']
 
     # print(data_dict)
     return data_dict
-
 
 def getAll(location, type='medlem'):
     directory = os.fsencode(location)
@@ -269,6 +278,8 @@ def getAll(location, type='medlem'):
                 list_of_dicts.append(getForestillingDict(filename))
             elif type == 'medlem':
                 list_of_dicts.append(getMedlemDict(filename))
+            elif type == 'arsverv':
+                list_of_dicts.append(get_arverv_dict(filename))
         except:
             errors.append(filename)
             continue
@@ -291,6 +302,31 @@ def getAll(location, type='medlem'):
 
     return list_of_dicts, dict_of_lists, dict_of_sets, errors
 
+def get_arverv_dict(location):
+    soup = BeautifulSoup(open(location), features="lxml")
+    # print(soup.prettify())
+    # h = h2t.HTML2Text()
+    # h.convert_charrefs = True
+    data_dict = {}
+    for tag in soup.find_all():
+        try:
+            tag_name = tag.name
+            tag_str = tag.string
+            data_dict[tag_name] = tag_str
+        except:
+            continue
+    try:
+        navn = data_dict['verv_1']
+    except:
+        if open(location, 'r').readlines().index('%>') < 5:
+            return data_dict
+        replace_empty_tags(location)
+        return get_arverv_dict(location)
+
+    # print(data_dict)
+    return data_dict
+
+
 
 def check_data(medlem=True, forestilling=False):
     if medlem:
@@ -310,7 +346,7 @@ def check_data(medlem=True, forestilling=False):
 
         print(f_dict_of_lists.keys())
 
-
+# medlemsfunksjoner
 def create_medlem(medlem_dict, arr_for_bilder, location):
     fornavn = try_get2('fornamn', medlem_dict, '')
     if fornavn == '':
@@ -384,7 +420,6 @@ def create_medlem(medlem_dict, arr_for_bilder, location):
 
     print(new_medlem)
 
-
 def hent_fodsel(medlem_dict):
     try:
         f_aar = medlem_dict['fodt_aar']
@@ -408,7 +443,6 @@ def hent_fodsel(medlem_dict):
     except:
         return None
 
-
 def create_utmerkelser(medlem_dict, new_medlem):
     try:
         ridder_ar = medlem_dict['dgk_ridder']
@@ -427,7 +461,6 @@ def create_utmerkelser(medlem_dict, new_medlem):
             utmerkelse.save()
     except:
         pass
-
 
 def update_gallery(medlem_dict, new_medlem, arr, location):
     # print(medlem_dict)
@@ -460,21 +493,22 @@ def update_gallery(medlem_dict, new_medlem, arr, location):
                         kontekst += "(foto.samfundet.no)"
                 except:
                     pass
-                new_foto = models.Foto(fil=fil, kontekst=kontekst, arrangement=arr, ftype=1)
+                new_foto = models.Foto(fil=fil, kontekst=kontekst, arrangement=arr, fototype=1)
                 new_foto.save()
                 new_foto.medlemmer.add(new_medlem)
                 new_foto.save()
 
 
+# produksjonsfunksjoner
 def create_produksjon(data_dict, location):
-    # 'p'- div tekst, sjekk om det er i sidetekst et sted --> info
+    # 'p'- div tekst, sjekk om det er i sidetekst et sted --> beskrivelse
     # 'semester' - semester, --> premieredato
     # 'aar'- år satt opp, --> premieredato
-    # 'overskrift' - overskrift på siden, vanligvis det samme som produksjonsnavnet --> info?
-    # 'sidetekst' - mesteparten av innholdet på siden, -->info
-    # 'a'- sjekk om det er i sidetekst, -->info
-    # 'b' - sjekk om det er i sidetekst, -->info
-    # 'skildring' - kort beskrivelse av forestillingen, -->info
+    # 'overskrift' - overskrift på siden, vanligvis det samme som produksjonsnavnet --> beskrivelse?
+    # 'sidetekst' - mesteparten av innholdet på siden, -->beskrivelse
+    # 'a'- sjekk om det er i sidetekst, -->beskrivelse
+    # 'b' - sjekk om det er i sidetekst, -->beskrivelse
+    # 'skildring' - kort beskrivelse av forestillingen, -->beskrivelse
     # 'spelestad' - spillested, mye forskjellig her --> create lokale og link til forestillingen
     # 'opphavsmenn' - forfatter(e), replace "av " --> forfatter
     # 'uka' - ukeproduksjon? ja hvis tagen fins --> produksjonstype = 4
@@ -485,7 +519,7 @@ def create_produksjon(data_dict, location):
     # 'produksjonsnamn' - kommer ikke med, men det er egentlig her tittel ligger -->tittel
 
     tittel = try_get2('produksjonsnamn', data_dict, "Ikke funnet")
-    forfatter = try_get2('opphavsmenn', data_dict, "Ikke funnet").replace("av ","")
+    forfatter = try_get2('opphavsmenn', data_dict, "").replace("av ","")
 
     aar = int(data_dict.get('aar',1985))
     try:
@@ -500,20 +534,20 @@ def create_produksjon(data_dict, location):
     produksjonstag_list = []
     lokale_list = []
 
-    info = ""
-    info += try_get('overskrift', data_dict)
+    beskrivelse = ""
+    beskrivelse += try_get('overskrift', data_dict)
 
     try:
         produksjonstype_is_skildring, produksjonstype, produksjonstag_list = create_produksjonstags(produksjonstype_dict[data_dict['produksjonstype']])
         if produksjonstype_is_skildring:
-            info += try_get('produksjonstype', data_dict)
+            beskrivelse += try_get('produksjonstype', data_dict)
     except:
         pass
 
     try:
         lokale_is_skildring, lokale_list = create_lokale(lokale_dict[data_dict['spelestad']])
         if lokale_is_skildring:
-            info += try_get('spelestad', data_dict)
+            beskrivelse += try_get('spelestad', data_dict)
     except:
         pass
 
@@ -525,19 +559,19 @@ def create_produksjon(data_dict, location):
             produksjonstype = 1
 
 
-    info += try_get('skildring', data_dict)
+    beskrivelse += try_get('skildring', data_dict)
 
-    info += try_get('sidetekst', data_dict)
+    beskrivelse += data_dict.get("sidetekst", "")
 
-    info += check_sidetekst('p', data_dict)
+    beskrivelse += check_sidetekst('p', data_dict)
 
-    info += check_sidetekst('a', data_dict)
+    beskrivelse += check_sidetekst('a', data_dict)
 
-    info += check_sidetekst('b', data_dict)
+    beskrivelse += check_sidetekst('b', data_dict)
 
 
     try:
-        if data_dict['produksjonstype'] == 'UKE-revy' and forfatter == "Ikke funnet":
+        if data_dict['produksjonstype'] == 'UKE-revy' and forfatter == "":
 
             forfatter = "Forfatterkollegiet"
     except:
@@ -554,7 +588,7 @@ def create_produksjon(data_dict, location):
     except:
         pass
 
-    new_produksjon = models.Produksjon(tittel=tittel, forfatter=forfatter, premieredato=premieredato, plakat=plakat, info=info, ptype=ptype)
+    new_produksjon = models.Produksjon(tittel=tittel, forfatter=forfatter, premieredato=premieredato, plakat=plakat, beskrivelse=beskrivelse, produksjonstype=produksjonstype)
     new_produksjon.save()
 
     if produksjonstag_list:
@@ -576,12 +610,21 @@ def try_get2(data, data_dict, default=None):
     except:
         return default
 
-
 def try_get(data, data_dict):
     try:
         return data + ":    " + data_dict[data] + "\n\n"
     except:
-        return data + ":    " + "\n\n"
+        return ""
+
+def check_sidetekst(data, data_dict, data_check='sidetekst'):
+    try:
+        if data_dict[data_check].find(data_dict[data]) == -1:
+            return data + ":    " + data_dict[data] + "\n\n"
+        else:
+            return ""
+    except:
+        return ""
+
 
 def create_produksjonstags(p_list):
     is_skildring = False
@@ -596,7 +639,7 @@ def create_produksjonstags(p_list):
             produksjonstype = 2
         elif tag == 'AFEI':
             produksjonstype = 3
-        else:
+        elif tag != 'nei':
             try:
                 produksjonstag = models.Produksjonstag.objects.get(tag=tag)
             except:
@@ -621,6 +664,8 @@ def create_lokale(lok_list):
             lokale_list.append(lok)
     return is_skildring, lokale_list
 
+
+#produksjonsbilder
 def update_old_produksjon_foto(fname, new_produksjon):
     old_foto = models.Foto.objects.get(fil='/bilder/' + fname)
     old_foto.arrangement = None
@@ -637,7 +682,7 @@ def create_new_produksjon_foto(fname, new_produksjon, url, kontekst, location):
                            open(settings.MEDIA_ROOT + '/bilder/' + fname, 'wb'))
     fil = '/bilder/' + fname
 
-    new_foto = models.Foto(fil=fil, kontekst=kontekst, produksjon=new_produksjon, ftype=1)
+    new_foto = models.Foto(fil=fil, kontekst=kontekst, produksjon=new_produksjon, fototype=1)
     new_foto.save()
 
 def get_url_filename(value):
@@ -698,6 +743,8 @@ def update_produksjon_gallery(produksjon_dict, new_produksjon, location):
 
     return banner
 
+
+# lage erfaringer & verv
 def create_erfaringer(data_dict, produksjon):
     for key, value in data_dict.items():
         if key[:7] == 'person_':
@@ -721,19 +768,17 @@ def create_erfaringer(data_dict, produksjon):
 
 def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem):
     if verv_name == "tittel":
-        try:
-            rolle = data_dict[key.replace('person', 'karakter')]
-            if rolle == None:
-                rolle = ""
-        except:
+        rolle = data_dict.get(key.replace('person', 'karakter'), "")
+        if rolle == None:
             rolle = ""
+
         if medlem:
             erfaring = models.Erfaring(medlem=medlem,
                                        tittel=verv_input, produksjon=produksjon, rolle=rolle)
         else:
             erfaring = models.Erfaring(navn=navn, tittel=verv_input,
                                        produksjon=produksjon, rolle=rolle)
-            erfaring.save()
+        erfaring.save()
     else:
         rolle = verv_dict[verv_input][1]
         if rolle == 'ingen':
@@ -752,7 +797,7 @@ def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, med
             verv = update_verv(verv_lst[i], typ)
             if i == 0:
                 if verv_lst[i].lower() != verv_input.split("/")[i].lower():
-                    update_uttrykk(verv_input.split("/")[i], verv_lst[i])
+                    update_uttrykk(verv_input.split("/")[i], verv_lst[i], rolle)
             if medlem:
                 erfaring = models.Erfaring(medlem=medlem, rolle=rolle, produksjon=produksjon)
             else:
@@ -761,13 +806,15 @@ def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, med
             erfaring.verv = verv
             erfaring.save()
 
-def update_uttrykk(verv_input, verv_cleaned):
+def update_uttrykk(verv_input, verv_cleaned, rolle):
     try:
         uttrykk = models.Uttrykk.objects.get(tittel=verv_input)
     except:
-        uttrykk = models.Uttrykk(tittel=verv_input, beskrivelse="En annen betegnelse på [["+verv_cleaned+"]]")
+        beskrivelse = "En annen betegnelse på [[" + verv_cleaned + "]]"
+        if rolle:
+            beskrivelse += " med rolle som "+rolle
+        uttrykk = models.Uttrykk(tittel=verv_input, beskrivelse=beskrivelse)
         uttrykk.save()
-
 
 def update_verv(tittel, type):
     try:
@@ -795,15 +842,8 @@ def update_vervtag(tittel):
 
 
 
-def check_sidetekst(data, data_dict, data_check='sidetekst'):
-    try:
-        if data_dict[data_check].find(data_dict[data]) == -1:
-            return data + ":    " + data_dict[data] + "\n\n"
-        else:
-            return ""
-    except:
-        return ""
 
+#main functions
 def transfer_all_medlemmer(location):
     try:
         os.mkdir(settings.MEDIA_ROOT + '/bilder')

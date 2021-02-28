@@ -7,7 +7,7 @@ from django.conf import settings
 import os
 import datetime
 
-from SITdata import models, forms
+from SITdata import models, forms, skrift_transfers
 
 features = settings.FEATURES
 
@@ -24,6 +24,8 @@ def get_ar(arstall):
 def view_hoved(request):
     arstall = datetime.datetime.now().year
     ar = get_ar(arstall)
+    # skrift_transfers.transfer_all_medlemmer("/Users/jacob/Downloads/sit skrift/sit/")
+    # skrift_transfers.transfer_all_produksjoner("/Users/jacob/Downloads/sit skrift/sit/")
     return render(request, 'hoved.html', {'FEATURES': features,
         'ar': ar})
 

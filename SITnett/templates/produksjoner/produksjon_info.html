@@ -98,14 +98,14 @@
 						{% if FEATURES.TOGGLE_MEDLEMMER %}
 							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
 						{% else %}
-						{{erfaring.medlem}}
+							{{erfaring.medlem}}
 						{% endif %}
                     {% else %}
                         {{ erfaring.navn }}
                     {% endif %}
 					{% if erfaring.rolle %}
 						 ({{erfaring.rolle}})
-					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+					{% endif %}
 					{% block medvirkende_verv_fjern %}
 					<br>
 					{% endblock medvirkende_verv_fjern %}
@@ -122,13 +122,13 @@
 							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
 						{% else %}
 							{{erfaring.medlem}}
-						{% endif %}                    {% else %}
+						{% endif %}
                     {% else %}
 						{{ erfaring.navn }}
                     {% endif %}
                     {% if erfaring.rolle %}
 						 ({{erfaring.rolle}})
-					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+					{% endif %}
 					{% block medvirkende_tittel_fjern %}
 					<br>
 					{% endblock medvirkende_tittel_fjern %}
