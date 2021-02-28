@@ -20,15 +20,8 @@
 				{% if produksjon.forestillinger.all %}
 					<div class="production-banner-info">
 						{% for forestilling in produksjon.forestillinger.all %}
-							{{forestilling.fullt_tidspunkt}}
-							{% block forestilling_fjern %}
-							<br>
-							{% endblock forestilling_fjern %}
+							{{forestilling.fullt_tidspunkt}}<br>
 						{% endfor %}
-						
-						{% block forestilling_ny %}
-
-						{% endblock forestilling_ny %}
 					</div>
 				{% endif %}
 				{% if produksjon.billettlink %}
@@ -134,15 +127,16 @@
 		<a class="production-categories">Forestillinger</a>
 		<div class="production-category-content">
 			
-				{% for forestilling2 in produksjon.forestillinger.all %}
-					{{forestilling2.fullt_tidspunkt}}
-					{% block forestilling2_fjern %}
+				{% for forestilling in produksjon.forestillinger.all %}
+					{{forestilling.fullt_tidspunkt}}
+					{% block forestilling_fjern %}
 					<br>
-					{% endblock forestilling2_fjern %}
+					{% endblock forestilling_fjern %}
 				{% endfor %}
 				
-				{% block forestilling2_ny %}
-				{% endblock forestilling2_ny %}
+				{% block forestilling_ny %}
+
+				{% endblock forestilling_ny %}
 
 		</div>
 		{% endif %}
