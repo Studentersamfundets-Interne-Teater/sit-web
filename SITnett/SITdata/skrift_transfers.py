@@ -784,6 +784,8 @@ def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, med
         if rolle == 'ingen':
             try:
                 rolle = data_dict[key.replace('person', 'karakter')]
+                if rolle == None:
+                    rolle = ""
             except:
                 rolle = ""
         else:
