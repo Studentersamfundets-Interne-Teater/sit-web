@@ -1,4 +1,5 @@
 {% extends "meny.html" %}
+{%load static%}
 
 {% block innhold %}
 
@@ -6,30 +7,58 @@
 		<div class="title-wrapper">
 			<h2>Medlemmer</h2>
 		</div>
-		{{medlemsform.media.js}}
-		{{medlemsform.media.css}}
-		<form method="get" class="form-wrapper">
-			<div class="ingress">Medlemssøk</div>
-			{{medlemsform.tekst}}<br>
-			{{medlemsform.undergjeng.label_tag}} {{medlemsform.undergjeng}}<br>
-			{{medlemsform.status.label_tag}} {{medlemsform.status}}<br>
-			<label type="btn" id="opptaksar-section-toggle">Opptaksår</label>
-			<div id="opptaksar-section">
-				{{medlemsform.fra_ar.label_tag}} {{medlemsform.fra_ar}}<br>
-				{{medlemsform.til_ar.label_tag}} {{medlemsform.til_ar}}<br>
-				{{medlemsform.ukjent_ar.label_tag}} {{medlemsform.ukjent_ar}}<br>
-			</div>
-			<label type="btn" id="gjeng-section-toggle">Gjeng</label>
-			<div id="gjeng-section">
-				{{medlemsform.medlemstype}}<br>
-			</div>
-			<label type="btn" id="utmerkelse-section-toggle">Utmerkelse</label>
-			<div id="utmerkelse-section">
-				{{medlemsform.tittel.label_tag}} {{medlemsform.tittel}}<br>
-				{{medlemsform.orden.label_tag}} {{medlemsform.orden}}<br>
-			</div>
-			<input type="submit" value="Søk">
-		</form>
+		<!--{{medlemsform.media.js}}-->
+		<!--{{medlemsform.media.css}}-->
+			  
+		<button class="filter-button" onclick="filterFunction()">Filter</button>
+
+		<div id="filter-container" class="filter-hide">
+
+			<form method="get">
+
+				<div filter-category>
+					{{medlemsform.undergjeng.label_tag}} 
+					{{medlemsform.undergjeng}}
+				</div>
+				
+				<div>
+					{{medlemsform.status.label_tag}} 
+					{{medlemsform.status}}
+				</div>
+
+				<div>
+					<label type="btn" id="opptaksar-section-toggle">Opptaksår</label>
+					<div id="opptaksar-section">
+						{{medlemsform.fra_ar.label_tag}} {{medlemsform.fra_ar}}
+						{{medlemsform.til_ar.label_tag}} {{medlemsform.til_ar}}
+						{{medlemsform.ukjent_ar.label_tag}} {{medlemsform.ukjent_ar}}
+					</div>
+				</div>
+
+				<div>
+					<label type="btn" id="gjeng-section-toggle">Gjeng</label>
+					<div id="gjeng-section">
+						{{medlemsform.medlemstype}}
+					</div>
+				</div>
+
+				<div>
+					<label type="btn" id="utmerkelse-section-toggle">Utmerkelse</label>
+					<div id="utmerkelse-section">
+						{{medlemsform.tittel.label_tag}} {{medlemsform.tittel}}
+						{{medlemsform.orden.label_tag}} {{medlemsform.orden}}
+					</div>
+				</div>
+
+				<div>
+					<div>Medlemssøk</div>
+					<div>{{medlemsform.tekst}}</div>
+				</div>
+
+				<input type="submit" value="Søk">
+			</form>
+		</div>
+
 		<script>
 			$('#opptaksar-section').hide();
 			$('#opptaksar-section-toggle').click(function(){
@@ -44,6 +73,7 @@
 				$('#utmerkelse-section').toggle();
 			});
 		</script>
+
 		<div class="card-wrapper">
 			{% for medlem in medlemsliste %}
 				<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
@@ -77,5 +107,6 @@
 			</div>
 		{% endif %}
 	</div>
+	<script src="{% static "/filter_accordion.js" %}"></script>
 
 {% endblock innhold %}

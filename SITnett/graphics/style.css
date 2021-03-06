@@ -791,6 +791,34 @@ select{
 	margin: auto;
 }
 
+.filter-button{
+	width: 100%;
+	font-size: 18px;
+	text-align: left;
+	height: 56px;
+	margin-bottom: 16px;
+}
+
+.filter-hide{
+	display: none;
+}
+.filter-show{
+	display: block!important;
+}
+
+#id_undergjeng{
+	list-style-type: none;
+	margin-block-start: 0;
+    margin-block-end: 0;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 0;
+}
+
+#id_undergjeng li{
+	
+}
+
 /* 4.5 Member detail view (could reuse production detail view style) */
 
 .member-image-container {
