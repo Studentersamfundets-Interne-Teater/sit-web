@@ -60,21 +60,6 @@
 			</form>
 		</div>
 
-		<script>
-			$('#opptaksar-section').hide();
-			$('#opptaksar-section-toggle').click(function(){
-				$('#opptaksar-section').toggle();
-			});
-			$('#gjeng-section').hide();
-			$('#gjeng-section-toggle').click(function(){
-				$('#gjeng-section').toggle();
-			});
-			$('#utmerkelse-section').hide();
-			$('#utmerkelse-section-toggle').click(function(){
-				$('#utmerkelse-section').toggle();
-			});
-		</script>
-
 		<div class="card-wrapper">
 			{% for medlem in medlemsliste %}
 				<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
