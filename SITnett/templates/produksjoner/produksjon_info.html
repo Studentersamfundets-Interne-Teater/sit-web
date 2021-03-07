@@ -87,7 +87,7 @@
 					{% endif %}
 				{% endif %}
 				{% for erfaring in erfaringer %}
-                    {% if erfaring.medlem.id%}
+                    {% if erfaring.medlem %}
 						{% if FEATURES.TOGGLE_MEDLEMMER %}
 							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
 						{% else %}
@@ -96,9 +96,7 @@
                     {% else %}
                         {{ erfaring.navn }}
                     {% endif %}
-					{% if erfaring.rolle %}
-						 ({{erfaring.rolle}})
-					{% endif %}
+					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_verv_fjern %}
 					<br>
 					{% endblock medvirkende_verv_fjern %}
@@ -110,7 +108,7 @@
 			{% for tittel, erfaringer in titteloppslag.items %}
 				<b>{{tittel|capfirst}}:</b><br>
 				{% for erfaring in erfaringer %}
-					{% if erfaring.medlem.id%}
+					{% if erfaring.medlem %}
 						{% if FEATURES.TOGGLE_MEDLEMMER %}
 							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
 						{% else %}
@@ -119,9 +117,7 @@
                     {% else %}
 						{{ erfaring.navn }}
                     {% endif %}
-                    {% if erfaring.rolle %}
-						 ({{erfaring.rolle}})
-					{% endif %}
+                    {% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_tittel_fjern %}
 					<br>
 					{% endblock medvirkende_tittel_fjern %}
