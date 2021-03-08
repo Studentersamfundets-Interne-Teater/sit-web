@@ -162,17 +162,27 @@ verv_dict = {'Konsulent, lysreklamen': {0: "lysreklamist", 1: 'konsulent', 2:"an
 
 
 def replace_empty_tags(location):
+    file = open(location, 'r', encoding='cp437')
+    full_content = file.read()
+    file.close()
+    full_content = full_content.replace(';¥',"")
+    y_file = open(location, 'w', encoding='cp437')
+    y_file.write(full_content)
+    y_file.close()
+
     file = open(location, 'r')
     lines = file.readlines()
     i = 0
     while i < len(lines):
+
         b = lines[i].find("><")
-        print(lines[i])
+        # print(lines[i])
         if b != -1:
             lines.pop(i)
         else:
             i += 1
 
+    file.close()
     a_file = open(location, "w")
     a_file.writelines(lines)
     a_file.close()
@@ -224,6 +234,7 @@ def getMedlemDict(location):
     return data_dict
 
 def getForestillingDict(location):
+
     soup = BeautifulSoup(open(location), features="lxml")
     h = h2t.HTML2Text()
     h.ignore_links = False
@@ -262,9 +273,11 @@ def getForestillingDict(location):
     data_dict['produksjonsnamn'] = h.handle(tekst[tekst.find('produksjonsnamn')+16:tekst.find('</produksjonsnamn')]).replace("\n","").replace('\.', "")
 
     if data_dict['produksjonsnamn'] == "" or tekst.find('produksjonsnamn') == -1:
-        data_dict['produksjonsnamn'] = data_dict['overskrift']
+        try:
+            data_dict['produksjonsnamn'] = data_dict['overskrift']
+        except:
+            data_dict['produksjonsnamn'] = h.handle(tekst[tekst.find('overskrift')+11:tekst.find('</overskrift>')]).replace("\n", "").replace('\.',"")
 
-    # print(data_dict)
     return data_dict
 
 def getAll(location, type='medlem'):
@@ -281,8 +294,17 @@ def getAll(location, type='medlem'):
             elif type == 'arsverv':
                 list_of_dicts.append(get_arverv_dict(filename))
         except:
-            errors.append(filename)
-            continue
+            replace_empty_tags(filename)
+            try:
+                if type == 'forestilling':
+                    list_of_dicts.append(getForestillingDict(filename))
+                elif type == 'medlem':
+                    list_of_dicts.append(getMedlemDict(filename))
+                elif type == 'arsverv':
+                    list_of_dicts.append(get_arverv_dict(filename))
+            except:
+                errors.append(filename)
+                continue
     # print(list_of_dicts)
     dict_of_lists = {}
     for i in range(len(list_of_dicts)):
@@ -299,6 +321,8 @@ def getAll(location, type='medlem'):
             print(dict_of_sets[key])
         except:
             pass
+
+    print("Errors: ", errors)
 
     return list_of_dicts, dict_of_lists, dict_of_sets, errors
 
@@ -910,4 +934,5 @@ def fixtext(s):
 
 if __name__ == "__main__":
     # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
-    transfer_all_medlemmer('/Users/jonas/Desktop/Skriftdata/')
+    transfer_all_medlemmer("/Users/jacob/Downloads/sit skrift/sit/")
+    transfer_all_produksjoner("/Users/jacob/Downloads/sit skrift/sit/")

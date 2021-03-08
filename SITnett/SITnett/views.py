@@ -45,8 +45,7 @@ def view_info(request):
 def view_opptak(request):
     arstall = datetime.datetime.now().year
     ar = get_ar(arstall)
-    return render(request, 'opptak.html', {'FEATURES': features,
-        'ar': ar})
+    return render(request, 'opptak.html', {'FEATURES': features, 'ar': ar})
 
 
 def make_styrevervoppslag(ar):
