@@ -2,6 +2,9 @@
 {%load static%}
 
 {% block innhold %}
+	<head>
+		<link rel="stylesheet" href="{% static 'select2.css' %}"/>
+	</head>
 
 	<div class="wrapper">
 		<div class="title-wrapper">
@@ -9,7 +12,7 @@
 		</div>
 
 		{{medlemsform.media.js}}
-		{{medlemsform.media.css}}
+		<!--{{medlemsform.media.css}}-->
 			  
 		<button class="filter-button" onclick="filterFunction()">Filter</button>
 
@@ -17,35 +20,33 @@
 
 			<form method="get">
 
-				<div filter-category>
+				<div class="filter-category">
 					{{medlemsform.undergjeng.label_tag}} 
 					{{medlemsform.undergjeng}}
 				</div>
 				
-				<div>
+				<div class="filter-category">
 					{{medlemsform.status.label_tag}} 
 					{{medlemsform.status}}
 				</div>
 
-				<div>
-					<label type="btn" id="opptaksar-section-toggle">Opptaksår</label>
-					<div id="opptaksar-section">
-						{{medlemsform.fra_ar.label_tag}} {{medlemsform.fra_ar}}
-						{{medlemsform.til_ar.label_tag}} {{medlemsform.til_ar}}
-						{{medlemsform.ukjent_ar.label_tag}} {{medlemsform.ukjent_ar}}
+				<div class="filter-category">
+					<label type="btn">Opptaksår</label>
+					<div class="year-search-container">
+						<p>Se de som er tatt opp mellom</p> 
+						<div>{{medlemsform.fra_ar}} og {{medlemsform.til_ar}}</div>
+						<div class="unknown-year-filter">{{medlemsform.ukjent_ar}} Inkludér ukjent opptaksår</div>
 					</div>
 				</div>
 
-				<div>
-					<label type="btn" id="gjeng-section-toggle">Gjeng</label>
-					<div id="gjeng-section">
-						{{medlemsform.medlemstype}}
-					</div>
+				<div class="filter-category">
+					<label type="btn">Gjeng</label>
+					<div>{{medlemsform.medlemstype}}</div>
 				</div>
 
 				<div>
-					<label type="btn" id="utmerkelse-section-toggle">Utmerkelse</label>
-					<div id="utmerkelse-section">
+					<label type="btn">Utmerkelse</label>
+					<div>
 						{{medlemsform.tittel.label_tag}} {{medlemsform.tittel}}
 						{{medlemsform.orden.label_tag}} {{medlemsform.orden}}
 					</div>
