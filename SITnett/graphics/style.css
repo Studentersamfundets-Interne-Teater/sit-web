@@ -815,6 +815,9 @@ select{
 	padding-bottom: 8px;
 	border-bottom: solid 1px var(--sit-gunmetal-dark);
 }
+.filter-label-no-border{
+	border-bottom: none;
+}
 .filter-category>ul {
 	list-style-type: none;
 	margin-block-start: 0;
@@ -838,6 +841,9 @@ select{
 .year-search-container>div>input[type="number"]{
 	display: inline-block;
 	width: 100px;
+}
+.filter-category-content{
+	margin-top: 8px;
 }
 
 /* 4.5 Member detail view (could reuse production detail view style) */
