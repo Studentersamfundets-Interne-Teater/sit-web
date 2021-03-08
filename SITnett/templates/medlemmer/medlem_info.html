@@ -120,8 +120,7 @@
 					{% else %}
 						{{erfaring.tittel|capfirst}}
 					{% endif %}
-					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
-					 i 
+					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %} i 
 					{% if erfaring.produksjon %}
 						{% if FEATURES.TOGGLE_PRODUKSJONER %}
 							<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>

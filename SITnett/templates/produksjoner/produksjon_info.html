@@ -16,20 +16,14 @@
 							<p>av {{produksjon.forfatter}}</p>
 						{% endif %}
 					{% endblock produksjon_tittel %}
-					{% if produksjon.reklame %}<p><b>{{produksjon.reklame}}</b></p>{% endif %}
 				</div>
-				<div class="production-banner-info">
-					{% for forestilling in produksjon.forestillinger.all %}
-						{{forestilling.fullt_tidspunkt}}
-						{% block forestilling_fjern %}
-						<br>
-						{% endblock forestilling_fjern %}
-					{% endfor %}
-					
-					{% block forestilling_ny %}
-
-					{% endblock forestilling_ny %}
-				</div>
+				{% if produksjon.forestillinger.all %}
+					<div class="production-banner-info">
+						{% for forestilling in produksjon.forestillinger.all %}
+							{{forestilling.fullt_tidspunkt}}<br>
+						{% endfor %}
+					</div>
+				{% endif %}
 				{% if produksjon.billettlink %}
 				<div class="button-container">
 					<a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
@@ -41,8 +35,7 @@
 
 	<div class="production-extra-info">
 		{% if produksjon.produksjonstags.count %}
-			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
-			<!--Lage eget ikon for sjanger her?-->
+			<div class="production-extra-info-box"><img src="{% static 'assets/genre_icon.svg' %}">
 			<p>{{produksjon.produksjonstags.all|join:", "|capfirst}}</p>
 			</div>
 		{% endif %}
@@ -94,7 +87,7 @@
 					{% endif %}
 				{% endif %}
 				{% for erfaring in erfaringer %}
-                    {% if erfaring.medlem.id%}
+                    {% if erfaring.medlem %}
 						{% if FEATURES.TOGGLE_MEDLEMMER %}
 							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
 						{% else %}
@@ -103,9 +96,7 @@
                     {% else %}
                         {{ erfaring.navn }}
                     {% endif %}
-					{% if erfaring.rolle %}
-						 ({{erfaring.rolle}})
-					{% endif %}
+					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_verv_fjern %}
 					<br>
 					{% endblock medvirkende_verv_fjern %}
@@ -117,7 +108,7 @@
 			{% for tittel, erfaringer in titteloppslag.items %}
 				<b>{{tittel|capfirst}}:</b><br>
 				{% for erfaring in erfaringer %}
-					{% if erfaring.medlem.id%}
+					{% if erfaring.medlem %}
 						{% if FEATURES.TOGGLE_MEDLEMMER %}
 							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
 						{% else %}
@@ -126,9 +117,7 @@
                     {% else %}
 						{{ erfaring.navn }}
                     {% endif %}
-                    {% if erfaring.rolle %}
-						 ({{erfaring.rolle}})
-					{% endif %}
+                    {% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_tittel_fjern %}
 					<br>
 					{% endblock medvirkende_tittel_fjern %}
@@ -140,6 +129,26 @@
 
 		{% endblock medvirkende_ny %}
 		</div>
+		
+		{% if produksjon.forestillinger.all %}
+		<div class="divider"></div>
+		<a class="production-categories">Forestillinger</a>
+		<div class="production-category-content">
+			
+				{% for forestilling in produksjon.forestillinger.all %}
+					{{forestilling.fullt_tidspunkt}}
+					{% block forestilling_fjern %}
+					<br>
+					{% endblock forestilling_fjern %}
+				{% endfor %}
+				
+				{% block forestilling_ny %}
+
+				{% endblock forestilling_ny %}
+
+		</div>
+		{% endif %}
+
 		<div class="divider"></div>
 		<a class="production-categories">Omtaler</a>
 		<div class="production-category-content">
@@ -162,7 +171,8 @@
 
 		{% endblock anmeldelse_ny %}
 		</div>
-		<div class="divider"></div>
+
+		<!--<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
 			<div class="image-gallery">
@@ -184,7 +194,8 @@
 				{% endif %}
 			</div>
 			{% if produksjon.plakat %}<div id="imgtext">Plakat</div>{% endif %}
-		</div>
+		</div>-->
+
 		<div class="divider"></div>
 	</section>
 

@@ -262,7 +262,7 @@ class Erfaring(models.Model):
         return tittel
     class Meta:
         verbose_name_plural = "erfaringer"
-        ordering = ['produksjon__premieredato','ar','verv__vervtype','verv__erfaringsoverforing','verv__tittel','tittel','medlem__etternavn','navn']
+        ordering = ['-produksjon__premieredato','-ar','verv__vervtype','verv__erfaringsoverforing','verv__tittel','tittel','medlem__etternavn','navn']
     def __str__(self):
         return (str(self.medlem) if self.medlem else self.navn)+" som "+self.full_tittel()
 
