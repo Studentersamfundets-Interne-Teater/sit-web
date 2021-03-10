@@ -165,7 +165,7 @@ arsverv_dict = {'input': {0: 'Verv', 1: 'Rolle', 2: 'Type'}, 'Sekretær': {0: 'n
 
 def replace_empty_tags(location):
     file = open(location, 'r', encoding='cp437')
-    content = file.read().replace(";¥")
+    content = file.read().replace(";¥", "")
     file.close()
     w_file = open(location, 'w')
     w_file.write(content)
@@ -350,7 +350,9 @@ def get_arverv_dict(location):
         f = open(location)
         tekst = f.read()
         data_dict['verv_0'] = h.handle(tekst[tekst.find('verv_0') + 5:tekst.find('</verv_0')]).replace("\n", "").replace('\.', "")
-    # print(data_dict)
+
+    data_dict['ar'] = location.split("/")[-1].replace(".asp","")
+
     return data_dict
 
 
@@ -772,7 +774,7 @@ def update_produksjon_gallery(produksjon_dict, new_produksjon, location):
 
 
 # lage erfaringer & verv
-def create_erfaringer(data_dict, produksjon, verv_dict=verv_dict1):
+def create_erfaringer(data_dict, produksjon=False, verv_dict=verv_dict1, arsverv=False):
     for key, value in data_dict.items():
         if key[:7] == 'person_':
             navn = value
@@ -790,8 +792,10 @@ def create_erfaringer(data_dict, produksjon, verv_dict=verv_dict1):
                     medlem = models.Medlem.objects.get(fornavn=fornavn+" "+navn_lst[1], etternavn=etternavn)
                 except:
                     medlem = False
-
-            create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem)
+            if arsverv:
+                create_arsverv_erfaring(verv_name, key, data_dict, verv_input, navn, medlem)
+            else:
+                create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem)
 
 def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem, verv_dict=verv_dict1):
     rolle = verv_dict[verv_input][1]
@@ -832,6 +836,49 @@ def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, med
             erfaring.verv = verv
             erfaring.save()
 
+def create_arsverv_erfaring(verv_name, key, data_dict, verv_input, navn, medlem, verv_dict=arsverv_dict):
+    rolle = verv_dict[verv_input][1]
+    periode = data_dict.get(key.replace('person', 'periode'),"")
+    if periode in {'hele', 'Hele'}:
+        periode = ""
+    if periode == None:
+        periode = ""
+    if rolle == 'ingen':
+            rolle = periode
+    elif periode:
+        rolle += ", " + periode
+
+    if verv_name == "tittel":
+        if medlem:
+            erfaring = models.Erfaring(medlem=medlem,
+                                       tittel=verv_input, ar=data_dict['ar'], rolle=rolle)
+        else:
+            erfaring = models.Erfaring(navn=navn, tittel=verv_input,
+                                       ar=data_dict['ar'], rolle=rolle)
+        erfaring.save()
+    else:
+        typ = verv_dict[verv_input][2]
+        styre = data_dict.get(key.replace('person', 'styre'),"")
+        if styre in {"ja", "Ja"}:
+            typ = 'styre'
+        elif styre in {'nei', 'Nei'} and typ == 'styre':
+            typ = 'intern-gjeng'
+
+        verv_lst = verv_name.split("/")
+        for i in range(len(verv_lst)):
+            verv = update_verv(verv_lst[i], typ)
+            if i == 0:
+                if verv_lst[i].lower() != verv_input.split("/")[i].lower():
+                    update_uttrykk(verv_input.split("/")[i], verv_lst[i], rolle)
+            if medlem:
+                erfaring = models.Erfaring(medlem=medlem, rolle=rolle, ar=data_dict['ar'])
+            else:
+                erfaring = models.Erfaring(navn=navn, rolle=rolle, ar=data_dict['ar'])
+            erfaring.save()
+            erfaring.verv = verv
+            erfaring.save()
+
+
 def update_uttrykk(verv_input, verv_cleaned, rolle):
     try:
         uttrykk = models.Uttrykk.objects.get(tittel=verv_input)
@@ -842,19 +889,28 @@ def update_uttrykk(verv_input, verv_cleaned, rolle):
         uttrykk = models.Uttrykk(tittel=verv_input, beskrivelse=beskrivelse)
         uttrykk.save()
 
-def update_verv(tittel, type):
+def update_verv(tittel, type, prod=True):
+    if type in {'styre', 'ekstern-gjeng', 'intern-gjeng'}:
+        vtype_dict = {'styre': 1, 'ekstern-gjeng': 2, 'intern-gjeng': 3}
+        vtype = vtype_dict[type]
+    else:
+        vtype = 4
     try:
-        return models.Verv.objects.get(tittel=tittel, vervtype=4)
+        return models.Verv.objects.get(tittel=tittel, vervtype=vtype)
     except:
         if type == 'prodapp':
             vervtag = update_vervtag(type)
-            new_verv = models.Verv.objects.create(tittel=tittel, erfaringsoverforing=True, vervtype=4)
+            new_verv = models.Verv.objects.create(tittel=tittel, erfaringsoverforing=True, vervtype=vtype)
             new_verv.save()
             new_verv.vervtags.add(vervtag)
             new_verv.save()
             return new_verv
+        elif type == 'styre':
+            new_verv = models.Verv.objects.create(tittel=tittel, erfaringsoverforing=True, vervtype=vtype)
+            new_verv.save()
+            return new_verv
         else:
-            new_verv = models.Verv.objects.create(tittel=tittel, vervtype=4, erfaringsoverforing=False)
+            new_verv = models.Verv.objects.create(tittel=tittel, vervtype=vtype, erfaringsoverforing=False)
             new_verv.save()
             return new_verv
 
@@ -867,8 +923,7 @@ def update_vervtag(tittel):
         return vervtag
 
 # arsverv
-def create_arsverv_erfaringer(arsverv_dict, location):
-    pass
+
 
 
 
@@ -930,9 +985,11 @@ def transfer_all_produksjoner(location):
 def transfer_all_arsverv(location):
 
     list_of_dicts, dict_of_lists, dict_of_sets, errors = getAll(location + 'verv/', 'arsverv')
+    print("Errors: ", errors)
 
     for dict in list_of_dicts:
-        create_arsverv_erfaringer(dict, location)
+        create_erfaringer(dict, verv_dict=arsverv_dict, arsverv=True)
+        print(dict['ar'])
 
     print("Errors: ", errors)
 
