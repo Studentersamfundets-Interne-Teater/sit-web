@@ -79,7 +79,7 @@ lokale_dict = {'SIT-hybelen': ['SIT-hybelen'], 'Buss': ['Eksternt', 'skildring']
                'Kunstindustrimuseet / Storsalen': ['Storsalen', 'Eksternt', 'skildring'],
                'Teaterbygningen i Prinsens gate': ['Eksternt', 'skildring'], 'Her og der': ['Diverse']}
 
-verv_dict = {'Konsulent, lysreklamen': {0: "lysreklamist", 1: 'konsulent', 2:"annen prod"}, 'Konsulent, kostyme': {0: "kostymesyer", 1: 'konsulent', 2:"annen prod"},
+verv_dict1 = {'Konsulent, lysreklamen': {0: "lysreklamist", 1: 'konsulent', 2:"annen prod"}, 'Konsulent, kostyme': {0: "kostymesyer", 1: 'konsulent', 2:"annen prod"},
              'Konsulent, kulisse': {0: "kulissebygger", 1: 'konsulent', 2:"annen prod"},'Konsulent, FFK': {0: "forfatter", 1: 'konsulent', 2:"annen prod"},
              'Lys, konsulent': {0: "lystekniker", 1: 'konsulent', 2:"annen prod"}, 'Lyd, myggkonsulent':{0: "lydtekniker", 1: 'konsulent', 2:"annen prod"},
              'Lyd, konsulent': {0: "lydtekniker", 1: 'konsulent', 2:"annen prod"}, 'Skuespiller, Guest Star': {0: 'skuespiller', 1:"guest star", 2:"annen prod"},
@@ -159,10 +159,20 @@ verv_dict = {'Konsulent, lysreklamen': {0: "lysreklamist", 1: 'konsulent', 2:"an
              'Teknisk Inspisient': {0: 'Teknisk Inspisient', 1: 'ingen', 2: 'prodapp'}, 'Sceneteknikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Komponistkonsulent': {0: 'komponist', 1: 'konsulent', 2: 'prodapp'}, 'Ymse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Sangpedagog og repetitør': {0: 'sangpedagog/repetitør', 1: 'ingen', 2: 'prodapp'}, 'Tribuneansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'},
              'skuespiller': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Kommentator': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Statist': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'Pianist': {0: 'musiker', 1: 'piano', 2: 'annen prod'}, 'Lystekniker': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Kunstnerisk koordinator': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Instruktør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Kulissegjeng': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Konsulent.3': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'lysreklamen': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'Produksjonsassistent': {0: 'produsent', 1: 'assistent', 2: 'prodapp'}, 'Manus': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Regissør': {0: 'regissør', 1: 'ingen', 2: 'prodapp'}, 'Sangpedagog': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'Suppesnupp/-snopp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Produksjonsansvarlig': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Orkesterleder': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'}, 'Sekretær': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Koreograf': {0: 'koreograf', 1: 'ingen', 2: 'prodapp'}, 'Revyorkester': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Skuespillerinspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Rekvisittansvarlig': {0: 'rekvisitør', 1: 'ingen', 2: 'annen prod'}, 'Kostymekoordinator': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'}, 'Musikksnopp': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Kostymegjeng': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Forpleiningsassistent': {0: 'forpleier', 1: 'assistent', 2: 'annen prod'}, 'Turneleder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konsulent video': {0: 'videotekniker', 1: 'konsulent', 2: 'annen prod'}, 'Nød-bærehjelp i tolvte time': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lydsnopp': {0: 'lydtekniker', 1: 'ingen', 2: 'annen prod'}, 'Lydig': {0: 'lydtekniker', 1: 'LYDig', 2: 'annen prod'}, 'Lysbilder v/FG': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymearbeidsleder': {0: 'kostymesyer', 1: 'arbeidsleder', 2: 'annen prod'}, 'Forteller': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Butler': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Grafikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Ouvreuse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'PR-ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyslaget': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}, 'Økonomi': {0: 'økonomiansvarlig', 1: 'ingen', 2: 'prodapp'}, 'Scenearbeider': {0: 'scenearbeider', 1: 'ingen', 2: 'annen prod'}, 'Plakat': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Slåssteknikk': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Skuespiller': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Smikør': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Rekvisitørkonsulent': {0: 'rekvisitør', 1: 'konsulent', 2: 'annen prod'}, 'Følgespotlaget': {0: 'lystekniker', 1: 'følgespot', 2: 'annen prod'}, 'Videografiker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'myggkonsulent': {0: 'myggslusk', 1: 'konsulent', 2: 'annen prod'}, 'Videolaget': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Nestleder': {0: 'nestleder', 1: 'ingen', 2: 'styret'}, 'Videokomiteen': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Oversetter/instruktør/produsent': {0: 'Oversetter/regissør/produsent', 1: 'ingen', 2: 'prodapp'}, 'Koreografisk ass.': {0: 'koreograf', 1: 'assistent', 2: 'prodapp'}, 'Stemmepedagog': {0: 'sangpedagog', 1: 'ingen', 2: 'prodapp'}, 'FFK': {0: 'forfatter', 1: 'konsulent', 2: 'annen prod'}, 'Innbildt suppedirektør': {0: 'produsent', 1: 'innbilt', 2: 'prodapp'}, 'Skuespiller ': {0: 'skuespiller ', 1: 'ingen', 2: 'annen prod'}, 'Musikalsk ansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Konferansier': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Inspisient': {0: 'inspisient', 1: 'ingen', 2: 'prodapp'}, 'Eva Person': {0: 'skuespiller', 1: 'Eva Person', 2: 'annen prod'}, 'Musikalsk leder': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulissesnekker': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Instruktørveileder': {0: 'regissør', 1: 'konsulent', 2: 'prodapp'}, 'Kommandør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymekommandør': {0: 'kostymekommandør', 1: 'ingen', 2: 'prodapp'}, 'Kostymesyere': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Sminke/parykk': {0: 'sminkør', 1: 'ingen', 2: 'annen prod'}, 'Orkesteret': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Noteskriver': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Film': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Publikumsinspisient': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Orkester': {0: 'musiker', 1: 'ingen', 2: 'annen prod'}, 'Forfatter': {0: 'forfatter', 1: 'ingen', 2: 'annen prod'}, 'Kostymeskredder': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Pr-gjeng': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kulisse': {0: 'kulissebygger', 1: 'ingen', 2: 'annen prod'}, 'Produsentassistent': {0: 'produsent', 1: 'assistent', 2: 'prodapp'}, 'Musikkarrangement': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Diverse': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymegjengen': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Systemtekniker': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Suppesnopp': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kostymer': {0: 'kostymesyer', 1: 'ingen', 2: 'annen prod'}, 'Verkstedansvarlig': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysreklamen': {0: 'lysreklamist', 1: 'ingen', 2: 'annen prod'}, 'Video': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Regiveileder': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Byfolk': {0: 'statist', 1: 'ingen', 2: 'annen prod'}, 'Arrangementskomité': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lysmester': {0: 'lysdesigner', 1: 'ingen', 2: 'prodapp'}, 'Jazz på dass': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Personal- og innkjøpsansvarlig - kostyme': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Artist': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Lyskonsulent': {0: 'lystekniker', 1: 'konsulent', 2: 'annen prod'}, 'Kapellmester': {0: 'musiker', 1: 'kapellmester', 2: 'annen prod'}, 'Produksjonskonsulent': {0: 'produsent', 1: 'konsulent', 2: 'prodapp'}, 'Dovrefarer': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Regi': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Bilderedaktør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Kupper': {0: 'KUPer', 1: 'ingen', 2: 'annen prod'}, 'Lys- og sceneinspisient': {0: 'teknisk inspisient', 1: 'ingen', 2: 'prodapp'}, 'Jørgen Person': {0: 'skuespiller', 1: 'Jørgen Person', 2: 'annen prod'}, 'Direktør': {0: 'tittel', 1: 'ingen', 2: 'ingen'}, 'Produsent': {0: 'produsent', 1: 'ingen', 2: 'prodapp'}, 'Skuespillere': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Gjendiktning sangtekster': {0: 'gjendikter', 1: 'ingen', 2: 'annen prod'}, 'VK': {0: 'videotekniker', 1: 'ingen', 2: 'annen prod'}, 'Plakattegner': {0: 'grafiker', 1: 'ingen', 2: 'annen prod'}, 'Forpleining': {0: 'forpleier', 1: 'ingen', 2: 'annen prod'}, 'Skuespiller.1': {0: 'skuespiller', 1: 'ingen', 2: 'annen prod'}, 'Lyslag': {0: 'lystekniker', 1: 'ingen', 2: 'annen prod'}}
 
+arsverv_dict = {'input': {0: 'Verv', 1: 'Rolle', 2: 'Type'}, 'Sekretær': {0: 'nestleder', 1: 'ingen', 2: 'styre'}, 'Hybelassistent': {0: 'hybelassistent', 1: 'ingen', 2: 'intern-gjeng'}, 'VK-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Teaterkontakt': {0: 'teaterkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Nestleder Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Nestleder Revy Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kunstnersik råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Klubbens Fortjenestemedalje i Stål': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'FK-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Filmgjengen': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk Råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Web-gjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kulissesjef': {0: 'kulissesjef', 1: 'ingen', 2: 'styre'}, 'Repertoiransvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'Hybelgjengen': {0: 'hybelgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'WEB-gjeng': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'PR-gjengen': {0: 'PR-gjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Julefestkomitéen (JFK)': {0: 'medlem av Julefestkomiteen', 1: 'ingen', 2: 'intern-gjeng'}, 'Nestleder': {0: 'nestleder', 1: 'ingen', 2: 'styre'}, 'REGI-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kunstneriskansvarlig': {0: 'Tittel', 1: 'ansvar for kunstnerisker', 2: 'ingen'}, 'Idrettsoppkvinne': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'SIT-Web': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Teatersjef UKA-11': {0: 'UKEteatersjef', 1: 'ingen', 2: 'styre'}, 'Hybelgjeng': {0: 'hybelgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Baksidakontakt ': {0: 'baksidekontakt', 1: 'ingen', 2: 'intern-gjeng'}, 'Rekvisittgjengen': {0: 'rekvisittansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Økonomisjef': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Ballsjef': {0: 'ballerina', 1: 'ingen', 2: 'intern-gjeng'}, 'Rekvisittansvarlig': {0: 'rekvisittansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Idrettsoppkvinner': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'PR- og produksjonskoordinator': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}, 'Videogjeng': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Web-gjeng': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kulturutvalget': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Videogjengen': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Repertoirutvalg': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Ballerina': {0: 'ballerina', 1: 'ingen', 2: 'intern-gjeng'}, 'SIT-web': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'PR-gjeng': {0: 'PR-gjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Styremedlem': {0: 'styremedlem', 1: 'ingen', 2: 'styre'}, 'SOS-kontakt': {0: 'veldedighetskontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'SIT-arkivet': {0: 'arkivar', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Hybelsjef': {0: 'hybelsjef', 1: 'ingen', 2: 'styre'}, 'Idrettsoppmann': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'Seksjonsassistent UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Webgjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Plateselskapet': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'SIT Brannmann': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Økonomiansvarlig': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Kosymearkivar': {0: 'kostymearkivar', 1: 'ingen', 2: 'intern-gjeng'}, 'Arkivar': {0: 'arkivar', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Soddgjengen': {0: 'soddgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk koordinator': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kasserer': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Baksidekontakt': {0: 'baksidekontakt', 1: 'ingen', 2: 'intern-gjeng'}, 'Kostymesjef': {0: 'kostymesjef', 1: 'ingen', 2: 'styre'}, 'WEB-gjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Ukeplakattegner': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Teatersjef': {0: 'teatersjef', 1: 'ingen', 2: 'styre'}, 'Sminkeansvarlig': {0: 'sminkeansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kunstnerisk råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'NATF-kontakt': {0: 'teaterkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Veldedighetskontakt': {0: 'veldedighetskontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kunstnerisk Ansvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'PR og Produksjonskoordinator': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}, 'Skuespillerkontakt': {0: 'skuespillerkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Teaterkomite': {0: 'styremedlem', 1: 'Teaterkomiteen', 2: 'styre'}, 'Kostymearkivar': {0: 'kostymearkivar', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk ansvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'PR- og produksjonsansvarlig': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}}
+
 
 
 def replace_empty_tags(location):
+    file = open(location, 'r', encoding='cp437')
+    content = file.read().replace(";¥")
+    file.close()
+    w_file = open(location, 'w')
+    w_file.write(content)
+    w_file.close()
+
     file = open(location, 'r')
+
     lines = file.readlines()
     i = 0
     while i < len(lines):
@@ -262,7 +272,10 @@ def getForestillingDict(location):
     data_dict['produksjonsnamn'] = h.handle(tekst[tekst.find('produksjonsnamn')+16:tekst.find('</produksjonsnamn')]).replace("\n","").replace('\.', "")
 
     if data_dict['produksjonsnamn'] == "" or tekst.find('produksjonsnamn') == -1:
-        data_dict['produksjonsnamn'] = data_dict['overskrift']
+        try:
+            data_dict['produksjonsnamn'] = data_dict['overskrift']
+        except:
+            data_dict['produksjonsnamn'] = h.handle(tekst[tekst.find('overskrift') + 11:tekst.find('</overskrift')]).replace("\n", "").replace('\.', "")
 
     # print(data_dict)
     return data_dict
@@ -281,8 +294,17 @@ def getAll(location, type='medlem'):
             elif type == 'arsverv':
                 list_of_dicts.append(get_arverv_dict(filename))
         except:
-            errors.append(filename)
-            continue
+            replace_empty_tags(filename)
+            try:
+                if type == 'forestilling':
+                    list_of_dicts.append(getForestillingDict(filename))
+                elif type == 'medlem':
+                    list_of_dicts.append(getMedlemDict(filename))
+                elif type == 'arsverv':
+                    list_of_dicts.append(get_arverv_dict(filename))
+            except:
+                errors.append(filename)
+                continue
     # print(list_of_dicts)
     dict_of_lists = {}
     for i in range(len(list_of_dicts)):
@@ -305,8 +327,8 @@ def getAll(location, type='medlem'):
 def get_arverv_dict(location):
     soup = BeautifulSoup(open(location), features="lxml")
     # print(soup.prettify())
-    # h = h2t.HTML2Text()
-    # h.convert_charrefs = True
+    h = h2t.HTML2Text()
+    h.convert_charrefs = True
     data_dict = {}
     for tag in soup.find_all():
         try:
@@ -322,7 +344,12 @@ def get_arverv_dict(location):
             return data_dict
         replace_empty_tags(location)
         return get_arverv_dict(location)
-
+    try:
+        v = data_dict['verv_0']
+    except:
+        f = open(location)
+        tekst = f.read()
+        data_dict['verv_0'] = h.handle(tekst[tekst.find('verv_0') + 5:tekst.find('</verv_0')]).replace("\n", "").replace('\.', "")
     # print(data_dict)
     return data_dict
 
@@ -745,7 +772,7 @@ def update_produksjon_gallery(produksjon_dict, new_produksjon, location):
 
 
 # lage erfaringer & verv
-def create_erfaringer(data_dict, produksjon):
+def create_erfaringer(data_dict, produksjon, verv_dict=verv_dict1):
     for key, value in data_dict.items():
         if key[:7] == 'person_':
             navn = value
@@ -766,12 +793,22 @@ def create_erfaringer(data_dict, produksjon):
 
             create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem)
 
-def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem):
-    if verv_name == "tittel":
-        rolle = data_dict.get(key.replace('person', 'karakter'), "")
-        if rolle == None:
+def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem, verv_dict=verv_dict1):
+    rolle = verv_dict[verv_input][1]
+    if rolle == 'ingen':
+        try:
+            rolle = data_dict[key.replace('person', 'karakter')]
+            if rolle == None:
+                rolle = ""
+        except:
             rolle = ""
+    else:
+        try:
+            rolle += ", " + data_dict[key.replace('person', 'karakter')]
+        except:
+            pass
 
+    if verv_name == "tittel":
         if medlem:
             erfaring = models.Erfaring(medlem=medlem,
                                        tittel=verv_input, produksjon=produksjon, rolle=rolle)
@@ -780,19 +817,6 @@ def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, med
                                        produksjon=produksjon, rolle=rolle)
         erfaring.save()
     else:
-        rolle = verv_dict[verv_input][1]
-        if rolle == 'ingen':
-            try:
-                rolle = data_dict[key.replace('person', 'karakter')]
-                if rolle == None:
-                    rolle = ""
-            except:
-                rolle = ""
-        else:
-            try:
-                rolle += ", " + data_dict[key.replace('person', 'karakter')]
-            except:
-                pass
         typ = verv_dict[verv_input][2]
         verv_lst = verv_name.split("/")
         for i in range(len(verv_lst)):
@@ -841,6 +865,10 @@ def update_vervtag(tittel):
         vervtag = models.Vervtag.objects.create(tag=tittel)
         vervtag.save()
         return vervtag
+
+# arsverv
+def create_arsverv_erfaringer(arsverv_dict, location):
+    pass
 
 
 
@@ -896,6 +924,15 @@ def transfer_all_produksjoner(location):
 
     for dict in list_of_dicts:
         create_produksjon(dict, location)
+
+    print("Errors: ", errors)
+
+def transfer_all_arsverv(location):
+
+    list_of_dicts, dict_of_lists, dict_of_sets, errors = getAll(location + 'verv/', 'arsverv')
+
+    for dict in list_of_dicts:
+        create_arsverv_erfaringer(dict, location)
 
     print("Errors: ", errors)
 
