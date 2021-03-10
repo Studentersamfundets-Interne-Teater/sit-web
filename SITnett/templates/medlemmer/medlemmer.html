@@ -12,88 +12,93 @@
 		</div>
 
 		{{medlemsform.media.js}}
-			  
-		<button class="filter-button" onclick="filterFunction()">Filter</button>
+		<div class="filter-and-result-container">  
+			<div class="filter-column">
+				<button class="filter-button" onclick="filterFunction()">Filter</button>
 
-		<div id="filter-container" class="filter-hide">
+				<div id="filter-container" class="filter-hide">
 
-			<form method="get">
+					<form method="get">
 
-				<div class="filter-category">
-					{{medlemsform.undergjeng.label_tag}} 
-					{{medlemsform.undergjeng}}
-				</div>
-				
-				<div class="filter-category">
-					{{medlemsform.status.label_tag}} 
-					{{medlemsform.status}}
-				</div>
-
-				<div class="filter-category">
-					<label>Opptaksår</label>
-					<div class="year-search-container">
-						<p>Se de som er tatt opp mellom</p> 
-						<div>{{medlemsform.fra_ar}} og {{medlemsform.til_ar}}</div>
-						<div class="unknown-year-filter">{{medlemsform.ukjent_ar}} Inkludér ukjent opptaksår</div>
-					</div>
-				</div>
-
-				<div class="filter-category">
-					<label>Gjeng</label>
-					<div>{{medlemsform.medlemstype}}</div>
-				</div>
-
-				<div class="filter-category">
-					<label>Den Gyldne Kat</label> 
-					<div>{{medlemsform.tittel}}</div>
-				</div>
-
-				<div class="filter-category">
-					<label>Andre ordener</label> 
-					<div>{{medlemsform.orden}}</div>
-				</div>
-
-				<div class="filter-category">
-					<label>Medlemssøk</label>
-					<div>{{medlemsform.tekst}}</div>
-				</div>
-
-				<input type="submit" value="Søk">
-			</form>
-		</div>
-
-		<div class="card-wrapper">
-			{% for medlem in medlemsliste %}
-				<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
-					{% if medlem.portrett.url and user.is_authenticated %}
-						<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
-					{% elif medlem.portrett.url and medlem.offentlig_portrett %}
-						<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
-					{% else %}
-						<img src="/files/default/katt.png" class="card-image" loading="lazy">
-					{% endif %}
-					<div class="card-container">
-						<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
-						<div class="text-info text-strong">
-							{% if medlem.status and medlem.undergjeng %}
-								{{medlem.get_status_display|capfirst}}
-							{% else %}
-								{{medlem.get_medlemstype_display|capfirst}}
-							{% endif %}
+						<div class="filter-category">
+							{{medlemsform.undergjeng.label_tag}} 
+							{{medlemsform.undergjeng}}
 						</div>
-					</div>
-				</a>
-			{% empty %}
-				<p>Fant ingen medlemmer.</p>
-			{% endfor %}
-		</div>
+						
+						<div class="filter-category">
+							{{medlemsform.status.label_tag}} 
+							{{medlemsform.status}}
+						</div>
 
-		{% if FEATURES.TOGGLE_EDIT and perms.SITdata.add_medlem %}
-			<br><br>
-			<div class="btn-wrapper">
-				<a class="btn" href="{% url 'medlem_ny' %}">Nytt medlem</a>
+						<div class="filter-category">
+							<label>Opptaksår</label>
+							<div class="year-search-container">
+								<p>Se de som er tatt opp mellom</p> 
+								<div>{{medlemsform.fra_ar}} og {{medlemsform.til_ar}}</div>
+								<div class="unknown-year-filter">{{medlemsform.ukjent_ar}} Inkludér ukjent opptaksår</div>
+							</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Gjeng</label>
+							<div>{{medlemsform.medlemstype}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Den Gyldne Kat</label> 
+							<div>{{medlemsform.tittel}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Andre ordener</label> 
+							<div>{{medlemsform.orden}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Medlemssøk</label>
+							<div>{{medlemsform.tekst}}</div>
+						</div>
+
+						<input type="submit" value="Søk">
+					</form>
+				</div>
 			</div>
-		{% endif %}
-	</div>
+			<div class="result-column">
+
+				<div class="card-wrapper">
+					{% for medlem in medlemsliste %}
+						<a class="card card-{{ medlem.get_undergjeng_display|lower }}" href="{% url 'medlem_info' medlem.id %}">
+							{% if medlem.portrett.url and user.is_authenticated %}
+								<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
+							{% elif medlem.portrett.url and medlem.offentlig_portrett %}
+								<img src="{{medlem.portrett.url}}" class="card-image" loading="lazy">
+							{% else %}
+								<img src="/files/default/katt.png" class="card-image" loading="lazy">
+							{% endif %}
+							<div class="card-container">
+								<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
+								<div class="text-info text-strong">
+									{% if medlem.status and medlem.undergjeng %}
+										{{medlem.get_status_display|capfirst}}
+									{% else %}
+										{{medlem.get_medlemstype_display|capfirst}}
+									{% endif %}
+								</div>
+							</div>
+						</a>
+					{% empty %}
+						<p>Fant ingen medlemmer.</p>
+					{% endfor %}
+				</div>
+
+				{% if FEATURES.TOGGLE_EDIT and perms.SITdata.add_medlem %}
+					<br><br>
+					<div class="btn-wrapper">
+						<a class="btn" href="{% url 'medlem_ny' %}">Nytt medlem</a>
+					</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>	
 	<script src="{% static "/filter_accordion.js" %}"></script>
 {% endblock innhold %}
