@@ -196,6 +196,11 @@ class Produksjon(models.Model):
         else:
             datoer = verbose_date(self.premieredato)[:-4]
         return datoer
+    def full_premieredato(self): # lager en premieredato-string på formen "15. februar 2021" hvis datoen er kjent, ellers "Ukjent".
+        if (self.premieredato.month == 1 and self.premieredato.day == 1) or (self.premieredato.month == 12 and self.premieredato.day == 24):
+            return "Ukjent"
+        else:
+            return verbose_date(self.premieredato)
     class Meta:
         verbose_name_plural = "produksjoner"
         ordering = ['-premieredato','tittel']
