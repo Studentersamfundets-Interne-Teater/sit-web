@@ -130,24 +130,23 @@
 		{% endblock medvirkende_ny %}
 		</div>
 		
-		{% if produksjon.forestillinger.all %}
 		<div class="divider"></div>
 		<a class="production-categories">Forestillinger</a>
 		<div class="production-category-content">
-			
-				{% for forestilling in produksjon.forestillinger.all %}
-					{{forestilling.fullt_tidspunkt}}
-					{% block forestilling_fjern %}
-					<br>
-					{% endblock forestilling_fjern %}
-				{% endfor %}
-				
-				{% block forestilling_ny %}
-
-				{% endblock forestilling_ny %}
-
-		</div>
+		{% if produksjon.forestillinger.all %}	
+			{% for forestilling in produksjon.forestillinger.all %}
+				{{forestilling.fullt_tidspunkt}}
+				{% block forestilling_fjern %}
+				<br>
+				{% endblock forestilling_fjern %}
+			{% endfor %}
+		{% else %}
+			<b>Premieredato:</b> {{produksjon.full_premieredato}}
 		{% endif %}
+		{% block forestilling_ny %}
+
+		{% endblock forestilling_ny %}
+		</div>
 
 		<div class="divider"></div>
 		<a class="production-categories">Omtaler</a>
