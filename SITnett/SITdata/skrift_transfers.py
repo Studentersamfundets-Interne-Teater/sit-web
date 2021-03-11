@@ -162,6 +162,10 @@ verv_dict1 = {'Konsulent, lysreklamen': {0: "lysreklamist", 1: 'konsulent', 2:"a
 arsverv_dict = {'input': {0: 'Verv', 1: 'Rolle', 2: 'Type'}, 'Barneteatersjef': {0: 'Barneteatersjef', 1: 'ingen', 2: 'styre'}, 'Sekretær': {0: 'nestleder', 1: 'ingen', 2: 'styre'}, 'Hybelassistent': {0: 'hybelassistent', 1: 'ingen', 2: 'intern-gjeng'}, 'VK-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Teaterkontakt': {0: 'teaterkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Nestleder Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Nestleder Revy Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kunstnersik råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Klubbens Fortjenestemedalje i Stål': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'FK-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Filmgjengen': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk Råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Web-gjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kulissesjef': {0: 'kulissesjef', 1: 'ingen', 2: 'styre'}, 'Repertoiransvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'Hybelgjengen': {0: 'hybelgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'WEB-gjeng': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'PR-gjengen': {0: 'PR-gjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Julefestkomitéen (JFK)': {0: 'medlem av Julefestkomiteen', 1: 'ingen', 2: 'intern-gjeng'}, 'Nestleder': {0: 'nestleder', 1: 'ingen', 2: 'styre'}, 'REGI-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kunstneriskansvarlig': {0: 'Tittel', 1: 'ansvar for kunstnerisker', 2: 'ingen'}, 'Idrettsoppkvinne': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'SIT-Web': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Teatersjef UKA-11': {0: 'UKEteatersjef', 1: 'ingen', 2: 'styre'}, 'Hybelgjeng': {0: 'hybelgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Baksidakontakt ': {0: 'baksidekontakt', 1: 'ingen', 2: 'intern-gjeng'}, 'Rekvisittgjengen': {0: 'rekvisittansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Økonomisjef': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Ballsjef': {0: 'ballerina', 1: 'ingen', 2: 'intern-gjeng'}, 'Rekvisittansvarlig': {0: 'rekvisittansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Idrettsoppkvinner': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'PR- og produksjonskoordinator': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}, 'Videogjeng': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Web-gjeng': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kulturutvalget': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Videogjengen': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Repertoirutvalg': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Ballerina': {0: 'ballerina', 1: 'ingen', 2: 'intern-gjeng'}, 'SIT-web': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'PR-gjeng': {0: 'PR-gjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Styremedlem': {0: 'styremedlem', 1: 'ingen', 2: 'styre'}, 'SOS-kontakt': {0: 'veldedighetskontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'SIT-arkivet': {0: 'arkivar', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Hybelsjef': {0: 'hybelsjef', 1: 'ingen', 2: 'styre'}, 'Idrettsoppmann': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'Seksjonsassistent UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Webgjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Plateselskapet': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'SIT Brannmann': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Økonomiansvarlig': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Kosymearkivar': {0: 'kostymearkivar', 1: 'ingen', 2: 'intern-gjeng'}, 'Arkivar': {0: 'arkivar', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Soddgjengen': {0: 'soddgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk koordinator': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kasserer': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Baksidekontakt': {0: 'baksidekontakt', 1: 'ingen', 2: 'intern-gjeng'}, 'Kostymesjef': {0: 'kostymesjef', 1: 'ingen', 2: 'styre'}, 'WEB-gjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Ukeplakattegner': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Teatersjef': {0: 'teatersjef', 1: 'ingen', 2: 'styre'}, 'Sminkeansvarlig': {0: 'sminkeansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kunstnerisk råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'NATF-kontakt': {0: 'teaterkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Veldedighetskontakt': {0: 'veldedighetskontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kunstnerisk Ansvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'PR og Produksjonskoordinator': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}, 'Skuespillerkontakt': {0: 'skuespillerkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Teaterkomite': {0: 'styremedlem', 1: 'Teaterkomiteen', 2: 'styre'}, 'Kostymearkivar': {0: 'kostymearkivar', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk ansvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'PR- og produksjonsansvarlig': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}}
 
 
+def wipe_members():
+    models.Medlem.objects.filter(opptaksar__lte=2019).delete()
+    models.Medlem.objects.filter(opptaksar__isnull=True).delete()
+
 
 def replace_empty_tags(location, medlem=False):
     # pdb.set_trace()
@@ -347,6 +351,12 @@ def get_arverv_dict(location):
         f = open(location)
         tekst = f.read()
         data_dict['verv_0'] = h.handle(tekst[tekst.find('verv_0') + 7:tekst.find('</verv_0')]).replace("\n", "").replace('\.', "")
+    try:
+        v = data_dict['person_0']
+    except:
+        f = open(location)
+        tekst = f.read()
+        data_dict['person_0'] = h.handle(tekst[tekst.find('person_0') + 7:tekst.find('</person_0')]).replace("\n", "").replace('\.', "")
 
     data_dict['ar'] = location.split("/")[-1].replace(".asp","")
 
@@ -498,6 +508,18 @@ def update_gallery(medlem_dict, new_medlem, arr, location):
                 kontekst = ""
             url = value.replace("""\\""", "/")
 
+            if medlem_dict.get(key.replace('galleri_', 'galleriFG_'), ""):
+                FG = medlem_dict.get(key.replace('galleri_', 'galleriFG_'), "")
+            elif medlem_dict.get(key.replace('galleri_', 'gallerifg_'), ""):
+                FG = medlem_dict.get(key.replace('galleri_', 'gallerifg_'), "")
+            else:
+                FG = ""
+
+            if FG in {"ja", "Ja"}:
+                fotograf = 'Fotogjengen'
+            else:
+                fotograf = ""
+
             if url.split("/")[-2] in {"TG-bilder", "bilder"}:
                 fname = url.split("/")[-1]
             else:
@@ -519,7 +541,7 @@ def update_gallery(medlem_dict, new_medlem, arr, location):
                         kontekst += "(foto.samfundet.no)"
                 except:
                     pass
-                new_foto = models.Foto(fil=fil, kontekst=kontekst, arrangement=arr, fototype=1)
+                new_foto = models.Foto(fil=fil, kontekst=kontekst, arrangement=arr, fototype=1, fotograf=fotograf)
                 new_foto.save()
                 new_foto.medlemmer.add(new_medlem)
                 new_foto.save()
@@ -698,7 +720,7 @@ def update_old_produksjon_foto(fname, new_produksjon):
     old_foto.produksjon = new_produksjon
     old_foto.save()
 
-def create_new_produksjon_foto(fname, new_produksjon, url, kontekst, location):
+def create_new_produksjon_foto(fname, new_produksjon, url, kontekst, location, fotograf):
     try:
         r = requests.get(url, allow_redirects=True, stream=True)
         shutil.copyfileobj(r.raw, open(settings.MEDIA_ROOT + '/bilder/' + fname, 'wb'))
@@ -708,7 +730,7 @@ def create_new_produksjon_foto(fname, new_produksjon, url, kontekst, location):
                            open(settings.MEDIA_ROOT + '/bilder/' + fname, 'wb'))
     fil = '/bilder/' + fname
 
-    new_foto = models.Foto(fil=fil, kontekst=kontekst, produksjon=new_produksjon, fototype=1)
+    new_foto = models.Foto(fil=fil, kontekst=kontekst, produksjon=new_produksjon, fototype=1, fotograf=fotograf)
     new_foto.save()
 
 def get_url_filename(value):
@@ -730,6 +752,18 @@ def update_produksjon_gallery(produksjon_dict, new_produksjon, location):
             except:
                 kontekst = ""
 
+            if produksjon_dict.get(key.replace('galleri_','galleriFG_'), ""):
+                FG = produksjon_dict.get(key.replace('galleri_','galleriFG_'), "")
+            elif produksjon_dict.get(key.replace('galleri_','gallerifg_'), ""):
+                FG = produksjon_dict.get(key.replace('galleri_','gallerifg_'), "")
+            else:
+                FG = ""
+
+            if FG in {"ja", "Ja"}:
+                fotograf = 'Fotogjengen'
+            else:
+                fotograf = ""
+
             url, fname = get_url_filename(value)
             # medlemmer[]
             # try:
@@ -740,10 +774,8 @@ def update_produksjon_gallery(produksjon_dict, new_produksjon, location):
                 update_old_produksjon_foto(fname, new_produksjon)
 
             except:
-                if produksjon_dict.get(key.replace("_", "fg_"), "nei") == "ja":
-                        kontekst += "(foto.samfundet.no)"
 
-                create_new_produksjon_foto(fname, new_produksjon, url, kontekst, location)
+                create_new_produksjon_foto(fname, new_produksjon, url, kontekst, location, fotograf)
 
             if key[-1] == '0' and open(settings.MEDIA_ROOT + '/bilder/' + fname, 'rb'):
                 shutil.copyfileobj(open(settings.MEDIA_ROOT + '/bilder/' + fname, 'rb'),
@@ -757,8 +789,7 @@ def update_produksjon_gallery(produksjon_dict, new_produksjon, location):
         try:
             update_old_produksjon_foto(fname, new_produksjon)
         except:
-
-            create_new_produksjon_foto(fname, new_produksjon, url, "", location)
+            create_new_produksjon_foto(fname, new_produksjon, url, "", location, "")
 
         if banner == '/default/katter.png':
             shutil.copyfileobj(open(settings.MEDIA_ROOT + '/bilder/' + fname, 'rb'),
@@ -942,6 +973,7 @@ def transfer_all_medlemmer(location):
         os.mkdir(settings.MEDIA_ROOT + '/portretter')
     except:
         pass
+    wipe_members()
     list_of_dicts, dict_of_lists, dict_of_sets, errors = getAll(location + 'medlem/')
     skrift = models.Lokale(navn='skrift.no')
     skrift.save()
