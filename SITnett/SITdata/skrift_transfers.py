@@ -166,20 +166,23 @@ def wipe_members():
     models.Medlem.objects.filter(opptaksar__lte=2019).delete()
     models.Medlem.objects.filter(opptaksar__isnull=True).delete()
     models.Foto.objects.all().delete()
-    models.Lokale.objects.all().delete()
     models.Arrangement.objects.all().delete()
+    models.Lokale.objects.all().delete()
 
 
 def replace_empty_tags(location, medlem=False):
     # pdb.set_trace()
-    file = open(location, 'r', encoding='cp437')
-    content = file.read().replace(";¥", "")
-    file.close()
-    w_file = open(location, 'w', encoding='cp437')
-    w_file.write(content)
-    w_file.close()
+    try:
+        file = open(location, 'r', encoding='cp437')
+        content = file.read().replace(";¥", "")
+        file.close()
+        w_file = open(location, 'w', encoding='cp437')
+        w_file.write(content)
+        w_file.close()
+    except:
+        pass
 
-    file = open(location, 'r')
+    file = open(location, 'r', encoding='cp1252')
 
     lines = file.readlines()
     i = 0
@@ -194,13 +197,13 @@ def replace_empty_tags(location, medlem=False):
         else:
             i += 1
 
-    a_file = open(location, "w")
+    a_file = open(location, "w", encoding='cp1252')
     a_file.writelines(lines)
     a_file.close()
 
 # data collection
 def getMedlemDict(location):
-    soup = BeautifulSoup(open(location), features="lxml")
+    soup = BeautifulSoup(open(location, encoding='cp1252'), features="lxml")
     # print(soup.prettify())
     h = h2t.HTML2Text()
     h.convert_charrefs = True
@@ -215,7 +218,7 @@ def getMedlemDict(location):
     try:
         navn = data_dict['etternamn']
     except:
-        if open(location, 'r').readlines().index('%>') < 5:
+        if open(location, 'r', encoding='cp1252').readlines().index('%>') < 5:
             return data_dict
         replace_empty_tags(location, medlem=True)
         return getMedlemDict(location)
@@ -223,7 +226,7 @@ def getMedlemDict(location):
     try:
         navn = data_dict['fornamn']
     except:
-        f = open(location)
+        f = open(location, encoding='cp1252')
         tekst = f.read()
         data_dict['fornamn'] = h.handle(tekst[tekst.find('fornamn') + 8:tekst.find('</fornamn')]).replace("\n", "")
 
@@ -245,7 +248,7 @@ def getMedlemDict(location):
     return data_dict
 
 def getForestillingDict(location):
-    soup = BeautifulSoup(open(location), features="lxml")
+    soup = BeautifulSoup(open(location, encoding='cp1252'), features="lxml")
     h = h2t.HTML2Text()
     h.ignore_links = False
     h.ignore_images = True
@@ -278,7 +281,7 @@ def getForestillingDict(location):
             data_dict[tag_name] = tag_str
         except:
             continue
-    f = open(location)
+    f = open(location, encoding='cp1252')
     tekst = f.read()
     data_dict['produksjonsnamn'] = h.handle(tekst[tekst.find('produksjonsnamn')+16:tekst.find('</produksjonsnamn')]).replace("\n","").replace('\.', "")
 
@@ -336,7 +339,7 @@ def getAll(location, type='medlem'):
     return list_of_dicts, dict_of_lists, dict_of_sets, errors
 
 def get_arverv_dict(location):
-    soup = BeautifulSoup(open(location), features="lxml")
+    soup = BeautifulSoup(open(location, encoding='cp1252'), features="lxml")
     # print(soup.prettify())
     h = h2t.HTML2Text()
     h.convert_charrefs = True
@@ -351,13 +354,13 @@ def get_arverv_dict(location):
     try:
         v = data_dict['verv_0']
     except:
-        f = open(location)
+        f = open(location, encoding='cp1252')
         tekst = f.read()
         data_dict['verv_0'] = h.handle(tekst[tekst.find('verv_0') + 7:tekst.find('</verv_0')]).replace("\n", "").replace('\.', "")
     try:
         v = data_dict['person_0']
     except:
-        f = open(location)
+        f = open(location, encoding='cp1252')
         tekst = f.read()
         data_dict['person_0'] = h.handle(tekst[tekst.find('person_0') + 9:tekst.find('</person_0')]).replace("\n", "").replace('\.', "")
 
