@@ -238,8 +238,6 @@ def getMedlemDict(location):
     return data_dict
 
 def getForestillingDict(location):
-    if location.split("/")[-1] == "1985_forfatterkollegiets_refuserte.asp":
-        pdb.set_trace()
     soup = BeautifulSoup(open(location), features="lxml")
     h = h2t.HTML2Text()
     h.ignore_links = False
@@ -800,7 +798,7 @@ def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, med
     rolle = verv_dict[verv_input][1]
     if rolle == "LYD":
         U = True
-        for ptag in produksjon.produksjonstags:
+        for ptag in produksjon.produksjonstags.all():
             if ptag.tag == 'UKErevy':
                 U = False
         if U:
