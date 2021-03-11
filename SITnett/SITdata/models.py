@@ -121,8 +121,12 @@ class Verv(models.Model):
     def plural(self): # bøyer vervnavnet i flertall (til listevisninger).
         if self.tittel[:10] == "medlem av ":
             return self.tittel[10:]
+        elif self.tittel[-6:] == "medlem":
+            return self.tittel+"mer"
         elif self.tittel[-7:] == "gjengis":
             return self.tittel[:-2]+"en"
+        elif self.tittel[-9:] == "ansvarlig":
+            return self.tittel+"e"
         elif self.tittel[-2:] == "er":
             return self.tittel+"e"
         elif self.tittel[-1:] == "e":
