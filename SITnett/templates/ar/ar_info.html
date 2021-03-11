@@ -38,10 +38,14 @@
 					{% endif %}
 					<br>
 					{% for erfaring in erfaringer %}
-						{% if FEATURES.TOGGLE_MEDLEMMER %}
-							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% if erfaring.medlem %}
+							{% if FEATURES.TOGGLE_MEDLEMMER %}
+								<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+							{% else %}
+								{{erfaring.medlem}}
+							{% endif %}
 						{% else %}
-							{{erfaring.medlem}}
+							{{erfaring.navn}}
 						{% endif %}
 						{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 						<br>
@@ -53,10 +57,14 @@
 						<b>{{verv.tittel|capfirst}}:</b>
 					{% endif %}
 					<br>
-					{% if FEATURES.TOGGLE_MEDLEMMER %}
-						<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+					{% if erfaringer.first.medlem %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+						{% else %}
+							{{erfaringer.first.medlem}}
+						{% endif %}
 					{% else %}
-						{{erfaringer.first.medlem}}
+						{{erfaringer.first.navn}}
 					{% endif %}
 					{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 					<br>
@@ -82,10 +90,14 @@
 					{% endif %}
 					<br>
 					{% for erfaring in erfaringer %}
-						{% if FEATURES.TOGGLE_MEDLEMMER %}
-							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% if erfaring.medlem %}
+							{% if FEATURES.TOGGLE_MEDLEMMER %}
+								<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+							{% else %}
+								{{erfaring.medlem}}
+							{% endif %}
 						{% else %}
-							{{erfaring.medlem}}
+							{{erfaring.navn}}
 						{% endif %}
 						{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 						<br>
@@ -97,10 +109,14 @@
 						<b>{{verv.tittel|capfirst}}:</b>
 					{% endif %}
 					<br>
-					{% if FEATURES.TOGGLE_MEDLEMMER %}
-						<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+					{% if erfaringer.first.medlem %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+						{% else %}
+							{{erfaringer.first.medlem}}
+						{% endif %}
 					{% else %}
-						{{erfaringer.first.medlem}}
+						{{erfaringer.first.navn}}
 					{% endif %}
 					{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 					<br>
@@ -113,10 +129,14 @@
 			{% for tittel, erfaringer in titteloppslag.items %}
 				<b>{{tittel|capfirst}}:</b><br>
 				{% for erfaring in erfaringer %}
-					{% if FEATURES.TOGGLE_MEDLEMMER %}
-						<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+					{% if erfaring.medlem %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% else %}
+							{{erfaring.medlem}}
+						{% endif %}
 					{% else %}
-						{{erfaring.medlem}}
+						{{erfaring.navn}}
 					{% endif %}
 					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					<br>

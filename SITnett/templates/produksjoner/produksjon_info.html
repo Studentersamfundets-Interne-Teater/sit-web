@@ -87,11 +87,15 @@
 					{% endif %}
 				{% endif %}
 				{% for erfaring in erfaringer %}
-					{% if FEATURES.TOGGLE_MEDLEMMER %}
-						<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
-					{% else %}
-						{{erfaring.medlem}}
-					{% endif %}
+                    {% if erfaring.medlem %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% else %}
+							{{erfaring.medlem}}
+						{% endif %}
+                    {% else %}
+                        {{ erfaring.navn }}
+                    {% endif %}
 					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_verv_fjern %}
 					<br>
@@ -104,12 +108,16 @@
 			{% for tittel, erfaringer in titteloppslag.items %}
 				<b>{{tittel|capfirst}}:</b><br>
 				{% for erfaring in erfaringer %}
-					{% if FEATURES.TOGGLE_MEDLEMMER %}
-						<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
-					{% else %}
-						{{erfaring.medlem}}
-					{% endif %}
-					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+					{% if erfaring.medlem %}
+						{% if FEATURES.TOGGLE_MEDLEMMER %}
+							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+						{% else %}
+							{{erfaring.medlem}}
+						{% endif %}
+                    {% else %}
+						{{ erfaring.navn }}
+                    {% endif %}
+                    {% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_tittel_fjern %}
 					<br>
 					{% endblock medvirkende_tittel_fjern %}
@@ -122,24 +130,23 @@
 		{% endblock medvirkende_ny %}
 		</div>
 		
-		{% if produksjon.forestillinger.all %}
 		<div class="divider"></div>
 		<a class="production-categories">Forestillinger</a>
 		<div class="production-category-content">
-			
-				{% for forestilling in produksjon.forestillinger.all %}
-					{{forestilling.fullt_tidspunkt}}
-					{% block forestilling_fjern %}
-					<br>
-					{% endblock forestilling_fjern %}
-				{% endfor %}
-				
-				{% block forestilling_ny %}
-
-				{% endblock forestilling_ny %}
-
-		</div>
+		{% if produksjon.forestillinger.all %}	
+			{% for forestilling in produksjon.forestillinger.all %}
+				{{forestilling.fullt_tidspunkt}}
+				{% block forestilling_fjern %}
+				<br>
+				{% endblock forestilling_fjern %}
+			{% endfor %}
+		{% else %}
+			<b>Premieredato:</b> {{produksjon.full_premieredato}}
 		{% endif %}
+		{% block forestilling_ny %}
+
+		{% endblock forestilling_ny %}
+		</div>
 
 		<div class="divider"></div>
 		<a class="production-categories">Omtaler</a>
@@ -164,7 +171,7 @@
 		{% endblock anmeldelse_ny %}
 		</div>
 
-		<!--<div class="divider"></div>
+		<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
 			<div class="image-gallery">
@@ -186,7 +193,7 @@
 				{% endif %}
 			</div>
 			{% if produksjon.plakat %}<div id="imgtext">Plakat</div>{% endif %}
-		</div>-->
+		</div>
 
 		<div class="divider"></div>
 	</section>

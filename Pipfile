@@ -13,6 +13,8 @@ requests = "*"
 lxml = "*"
 django-super-deduper = "*"
 django-select2 = "*"
+html2text = "*"
+markdown = "*"
 
 [requires]
 python_version = "3.8"

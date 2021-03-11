@@ -121,8 +121,12 @@ class Verv(models.Model):
     def plural(self): # bøyer vervnavnet i flertall (til listevisninger).
         if self.tittel[:10] == "medlem av ":
             return self.tittel[10:]
+        elif self.tittel[-6:] == "medlem":
+            return self.tittel+"mer"
         elif self.tittel[-7:] == "gjengis":
             return self.tittel[:-2]+"en"
+        elif self.tittel[-9:] == "ansvarlig":
+            return self.tittel+"e"
         elif self.tittel[-2:] == "er":
             return self.tittel+"e"
         elif self.tittel[-1:] == "e":
@@ -185,13 +189,17 @@ class Produksjon(models.Model):
         return ("V" if self.premieredato.month < 7 else "H")+str(self.premieredato.year)
     def spilleperiode(self): # lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar".
         if self.forestillinger.count() > 1:
-            print(self.forestillinger.count())
             forste_dato = self.forestillinger.first().tidspunkt.date()
             siste_dato = self.forestillinger.last().tidspunkt.date()
             datoer = verbose_date_span(forste_dato,siste_dato)
         else:
             datoer = verbose_date(self.premieredato)[:-4]
         return datoer
+    def full_premieredato(self): # lager en premieredato-string på formen "15. februar 2021" hvis datoen er kjent, ellers "Ukjent".
+        if ((self.premieredato.month == 1 or self.premieredato.month == 7) and self.premieredato.day == 1) or (self.premieredato.month == 12 and self.premieredato.day == 24):
+            return "Ukjent"
+        else:
+            return verbose_date(self.premieredato)
     class Meta:
         verbose_name_plural = "produksjoner"
         ordering = ['-premieredato','tittel']
@@ -262,7 +270,7 @@ class Erfaring(models.Model):
         return tittel
     class Meta:
         verbose_name_plural = "erfaringer"
-        ordering = ['produksjon__premieredato','ar','verv__vervtype','verv__erfaringsoverforing','verv__tittel','tittel','medlem__etternavn','navn']
+        ordering = ['-produksjon__premieredato','-ar','verv__vervtype','verv__erfaringsoverforing','verv__tittel','tittel','medlem__etternavn','navn']
     def __str__(self):
         return (str(self.medlem) if self.medlem else self.navn)+" som "+self.full_tittel()
 
