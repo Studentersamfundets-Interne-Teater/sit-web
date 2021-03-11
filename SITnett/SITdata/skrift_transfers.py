@@ -550,9 +550,9 @@ def create_produksjon(data_dict, location):
     aar = int(data_dict.get('aar',1985))
     try:
         if data_dict['semester'] in {'Hosø', 'Hørt', 'høst', 'Høst'}:
-            premieredato = datetime.date(aar, 10, 1)
+            premieredato = datetime.date(aar, 12, 24)
         else:
-            premieredato = datetime.date(aar, 3, 1)
+            premieredato = datetime.date(aar, 1, 1)
     except:
         premieredato = datetime.date(aar, 7, 1)
 
