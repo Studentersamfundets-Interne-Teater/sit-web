@@ -181,9 +181,9 @@ def replace_empty_tags(location, medlem=False):
             b = lines[i].find("><")
         else:
             b = lines[i].find("></karakter")
-        print(lines[i])
         if b != -1:
             lines.pop(i)
+            print(lines[i])
         else:
             i += 1
 
@@ -238,6 +238,8 @@ def getMedlemDict(location):
     return data_dict
 
 def getForestillingDict(location):
+    if location.split("/")[-1] == "1985_forfatterkollegiets_refuserte.asp":
+        pdb.set_trace()
     soup = BeautifulSoup(open(location), features="lxml")
     h = h2t.HTML2Text()
     h.ignore_links = False
@@ -321,8 +323,8 @@ def getAll(location, type='medlem'):
     for key, value in dict_of_sets.items():
         try:
             dict_of_sets[key] = set(value)
-            print(key, len(dict_of_sets[key]))
-            print(dict_of_sets[key])
+            # print(key, len(dict_of_sets[key]))
+            # print(dict_of_sets[key])
         except:
             pass
 
@@ -796,6 +798,13 @@ def create_erfaringer(data_dict, produksjon=False, verv_dict=verv_dict1, arsverv
 
 def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, medlem, verv_dict=verv_dict1):
     rolle = verv_dict[verv_input][1]
+    if rolle == "LYD":
+        U = True
+        for ptag in produksjon.produksjonstags:
+            if ptag.tag == 'UKErevy'
+                U = False
+        if U:
+            rolle = 'ingen'
     if rolle == 'ingen':
         try:
             rolle = data_dict[key.replace('person', 'karakter')]
@@ -852,7 +861,7 @@ def create_arsverv_erfaring(verv_name, key, data_dict, verv_input, navn, medlem,
     elif styre in {'nei', 'Nei'} and typ == 'styre':
         typ = 'intern-gjeng'
 
-    if verv_name == "tittel" and typ != 'styre':
+    if verv_name in {"tittel", "Tittel"} and typ != 'styre':
         if medlem:
             erfaring = models.Erfaring(medlem=medlem,
                                        tittel=verv_input, ar=data_dict['ar'], rolle=rolle)
@@ -862,7 +871,7 @@ def create_arsverv_erfaring(verv_name, key, data_dict, verv_input, navn, medlem,
         erfaring.save()
 
     else:
-        if verv_name == "tittel":
+        if verv_name in {"tittel", "Tittel"}:
             verv_name = verv_input
         verv_lst = verv_name.split("/")
         for i in range(len(verv_lst)):
