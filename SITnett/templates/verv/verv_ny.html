@@ -4,8 +4,9 @@
 
 	<form action="{% url 'verv_ny' %}" method="post" class="form-wrapper">
 		{% csrf_token %}
+		<div class="ingress">Nytt verv</div>
 		{{vervform}}
-		<input type="submit" value="Opprett verv">
+		<input type="submit" value="Opprett">
 	</form>
 
 {% endblock innhold %}

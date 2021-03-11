@@ -4,12 +4,13 @@
 
 	<form action="{% url 'medlem_ny' %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 		{% csrf_token %}
+		<div class="ingress">Nytt medlem</div>
 		{{medlemsform}}
 		<div class="brukerkonto-wrapper">
 			<p>Lag innlogginsdetaljer:</p>
 			<input type="checkbox" name='opprett_brukerkonto'>
 		</div>
-		<input type="submit" value="Opprett medlem">
+		<input type="submit" value="Opprett">
 	</form>
 
 {% endblock innhold %}

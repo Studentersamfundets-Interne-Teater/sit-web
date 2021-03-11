@@ -277,7 +277,7 @@ class Erfaring(models.Model):
 
 class Arrangement(models.Model):
 # holder interne eller eksterne arrangementer som skal vises på forsida (feks kostymesalg, vårball, genfors, ...).
-    arrangorer = models.ManyToManyField(Verv,blank=True,verbose_name="arrangører") # holder vervene som skal kunne redigere arrangementet.
+    arrangorer = models.ManyToManyField(Verv,verbose_name="arrangører",blank=True) # holder vervene som skal kunne redigere arrangementet.
     tittel = models.CharField(max_length=100)
     offentlig = models.BooleanField(default=False) # avgjør om arrangementet skal ligge offentlig eller kun for interne.
     tidspunkt = models.DateTimeField()

@@ -62,6 +62,7 @@ def make_styrevervoppslag(ar):
         vervoppslag = None
     return vervoppslag
 
+
 def make_gjengvervoppslag(ar,authenticated):
     # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år.
     # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
@@ -75,7 +76,7 @@ def make_gjengvervoppslag(ar,authenticated):
         for vid in vids:
             if vid == None:
                 continue
-            verv = models.Verv.objects.get(pk=vid)
+            verv = models.Verv.objects.get(id=vid)
             erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar).order_by('rolle')
             vervoppslag[verv] = erfaringer
     else:
@@ -119,9 +120,55 @@ def view_kontakt(request):
 def view_medlemmer(request):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
-    medlemsliste = models.Medlem.objects.filter(status__in=[1,2]) # filtrerer ut aktive og veteraner foreløpig.
-    return render(request, 'medlemmer/medlemmer.html', {'FEATURES': features,
-        'medlemsliste': medlemsliste})
+    medlemsliste = models.Medlem.objects.all()
+    if request.GET:
+        medlemsform = forms.MedlemSearchForm(request.GET)
+        if request.GET['tekst']:
+            tekst = request.GET['tekst']
+            medlemsliste = (medlemsliste.filter(fornavn__icontains=tekst)
+                | medlemsliste.filter(mellomnavn__icontains=tekst)
+                | medlemsliste.filter(etternavn__icontains=tekst)
+                | medlemsliste.filter(kallenavn__icontains=tekst))
+        if 'ukjent_ar' in request.GET:
+            ukjentliste = medlemsliste.filter(opptaksar__isnull=True)
+            if not request.GET['fra_ar'] and not request.GET['til_ar']:
+                medlemsliste = ukjentliste
+        else:
+            ukjentliste = medlemsliste.none()
+        if request.GET['fra_ar']:
+            fra_ar = request.GET['fra_ar']
+            medlemsliste = (medlemsliste.filter(opptaksar__gte=fra_ar) | ukjentliste)
+        if request.GET['til_ar']:
+            til_ar = request.GET['til_ar']
+            medlemsliste = (medlemsliste.filter(opptaksar__lte=til_ar) | ukjentliste)
+        if 'undergjeng' in request.GET:
+            undergjenger = request.GET.getlist('undergjeng')
+            if '0' in undergjenger:
+                ukjentliste = medlemsliste.filter(undergjeng__isnull=True)
+            else:
+                ukjentliste = medlemsliste.none()
+            medlemsliste = (medlemsliste.filter(undergjeng__in=undergjenger) | ukjentliste)
+        if 'status' in request.GET:
+            statuser = request.GET.getlist('status')
+            if '0' in statuser:
+                ukjentliste = medlemsliste.filter(status__isnull=True)
+            else:
+                ukjentliste = medlemsliste.none()
+            medlemsliste = (medlemsliste.filter(status__in=statuser) | ukjentliste)
+        if 'medlemstype' in request.GET:
+            medlemstyper = request.GET.getlist('medlemstype')
+            medlemsliste = medlemsliste.filter(medlemstype__in=medlemstyper)
+        if 'tittel' in request.GET:
+            titler = request.GET.getlist('tittel')
+            ordner = request.GET.getlist('orden')
+            utmerkelsesliste = models.Utmerkelse.objects.filter(tittel__in=titler).filter(orden__in=ordner)
+            mids = utmerkelsesliste.values_list('medlem',flat=True).distinct()
+            medlemsliste = medlemsliste.filter(id__in=mids)
+    else:
+        medlemsform = forms.MedlemSearchForm()
+        medlemsliste = medlemsliste.filter(undergjeng__in=[1,2,3]).filter(status__in=[1,2]).filter(medlemstype=1)
+    return render(request, "medlemmer/medlemmer.html", {'FEATURES': features,
+        'medlemsliste': medlemsliste, 'medlemsform': medlemsform})
 
 
 @permission_required('SITdata.add_medlem')
@@ -246,6 +293,7 @@ def make_produksjonsvervoppslag(produksjon):
         erfaringer = produksjon.erfaringer.filter(verv=vid).order_by('rolle')
         vervoppslag[verv] = erfaringer
     return vervoppslag
+
 
 def make_produksjonstitteloppslag(produksjon):
 # lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv.
@@ -399,8 +447,7 @@ def view_verv(request):
     if not features.TOGGLE_VERV:
         return redirect('hoved')
     vervliste = models.Verv.objects.all()
-    return render(request, 'verv/verv.html', {'FEATURES': features,
-        'vervliste': models.Verv.objects.all()})
+    return render(request, 'verv/verv.html', {'FEATURES': features, 'vervliste': models.Verv.objects.all()})
 
 
 @permission_required('SITdata.add_verv')
@@ -565,6 +612,7 @@ def view_ar_info(request, arstall):
         'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
         'produksjonsliste': produksjonsliste})
 
+
 @login_required
 def view_ar_endre(request, arstall):
     if not (features.TOGGLE_AR and features.TOGGLE_EDIT):
@@ -597,6 +645,7 @@ def view_ar_endre(request, arstall):
     return render(request, 'ar/ar_endre.html', {'FEATURES': features,
         'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
         'produksjonsliste': produksjonsliste, 'arsform': arsform, 'erfaringsform': erfaringsform})
+
 
 @permission_required('SITdata.add_medlem')
 def view_ar_nyttkull(request, arstall):
