@@ -801,7 +801,7 @@ def create_erfaring(verv_name, key, data_dict, produksjon, verv_input, navn, med
     if rolle == "LYD":
         U = True
         for ptag in produksjon.produksjonstags:
-            if ptag.tag == 'UKErevy'
+            if ptag.tag == 'UKErevy':
                 U = False
         if U:
             rolle = 'ingen'
