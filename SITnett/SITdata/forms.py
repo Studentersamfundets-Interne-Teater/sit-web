@@ -1,4 +1,5 @@
 from django import forms
+from django_select2.forms import Select2MultipleWidget
 
 from SITdata import models
 
@@ -33,6 +34,25 @@ class UtmerkelseForm(forms.ModelForm):
     class Meta:
         model = models.Utmerkelse
         fields = ['tittel','orden','ar']
+
+
+class MedlemSearchForm(forms.Form):
+    tekst = forms.CharField(label="Søk",required=False,max_length=20)
+    UNDERGJENGER = models.Medlem.UNDERGJENGER+((0,'ukjent'),)
+    undergjeng = forms.MultipleChoiceField(choices=UNDERGJENGER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3])
+    STATUSER = models.Medlem.STATUSER+((0,'ukjent'),)
+    status = forms.MultipleChoiceField(choices=STATUSER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2])
+    fra_ar = forms.IntegerField(label="Fra",required=False)
+    til_ar = forms.IntegerField(label="Til",required=False)
+    ukjent_ar = forms.BooleanField(label="Ukjent",required=False)
+    medlemstype = forms.MultipleChoiceField(label="Gjeng",choices=models.Medlem.MEDLEMSTYPER,required=False,
+        widget = Select2MultipleWidget,initial=[1])
+    tittel = forms.MultipleChoiceField(choices=models.Utmerkelse.TITLER,required=False,
+        widget = Select2MultipleWidget)
+    orden = forms.MultipleChoiceField(choices=models.Utmerkelse.ORDENER,required=False,
+        widget = Select2MultipleWidget,initial=[1])
 
 
 class ProduksjonAdminForm(forms.ModelForm):

@@ -61,10 +61,10 @@
 		<div class="production-category-content">
 			{% block produksjon_info %}
 				{% if produksjon.beskrivelse %}
-				<p>{{produksjon.beskrivelse}}</p>
+				<p>{{ produksjon.beskrivelse|linebreaks }}</p>
 				{% endif %}
 				{% if user.is_authenticated and produksjon.anekdoter %}
-				<p><i>{{produksjon.anekdoter}}</i></p>
+				<p><i>{{ produksjon.anekdoter|linebreaks }}</i></p>
 				{% endif %}
 			{% endblock produksjon_info %}
 		</div>
