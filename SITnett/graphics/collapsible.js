@@ -22,6 +22,7 @@ if (window.innerWidth < 1024) {
   }
 } else {
   categories[0].nextElementSibling.style.display = "block";
+  categories[0].nextElementSibling.style.maxHeight = categories[0].nextElementSibling.scrollHeight + "px";
   categories[0].style.fontWeight = "600";
   for (var i = 0; i < categories.length; i++) {
     categories[i].addEventListener("click", function() {
