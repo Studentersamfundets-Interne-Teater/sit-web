@@ -88,7 +88,7 @@ admin.site.register(models.Anmeldelse,AnmeldelseAdmin)
 
 
 class ErfaringAdmin(admin.ModelAdmin):
-    list_display = ['id','medlem','navn','verv','tittel','produksjon','ar']
+    list_display = ['id','medlem','navn','verv','tittel','produksjon','ar','rolle']
 
 admin.site.register(models.Erfaring,ErfaringAdmin)
 

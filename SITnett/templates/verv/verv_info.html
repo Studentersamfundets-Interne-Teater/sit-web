@@ -33,10 +33,9 @@
 					{{erfaring.medlem}}
 				{% endif %}
 			{% else %}
-				{{erfaring.navn}
+				{{erfaring.navn}}
 			{% endif %}
-			{% if erfaring.rolle %} som {{erfaring.rolle}}{% endif %}
-			 i 
+			{% if erfaring.rolle %} som {{erfaring.rolle}}{% endif %} i 
 			{% if erfaring.produksjon %}
 				{% if FEATURES.TOGGLE_PRODUKSJONER %}
 					<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>

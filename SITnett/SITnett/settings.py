@@ -87,16 +87,17 @@ WSGI_APPLICATION = 'SITnett.wsgi.application'
 # Skru av og på funksjonalitet her:
 
 class FEATURE_SETTINGS():
-    TOGGLE_KONTAKT = True # skrur på kontaktliste.
-    TOGGLE_AR = True # skrur på årsider (med gruppefoto, verv, produksjoner og hendelser for et gitt år).
-    TOGGLE_MEDLEMMER = True # skrur på medlemsoversikt og medlemssider.
-    TOGGLE_PRODUKSJONER = False # skrur på produksjonsoversikt og produksjonssider.
-    TOGGLE_ARRANGEMENTER = False # skrur på arrangementssider.
-    TOGGLE_VERV = False # skrur på vervoversikt og vervsider.
-    TOGGLE_UTTRYKK = False # skrur på uttrykksliste.
-    TOGGLE_ARKIV = False # skrur på arkivsida (med tidslinje over produksjoner, arrangementer, bilder og hendelser).
-    TOGGLE_DOKUMENTER = False # skrur på dokumentfunksjonalitet.
-    TOGGLE_EDIT = False # skrur på redigeringsfunksjonalitet.
+    TOGGLE_KONTAKT = True  # skrur på kontaktliste.
+    TOGGLE_AR = True  # skrur på årsider (med gruppefoto, verv, produksjoner og hendelser for et gitt år).
+    TOGGLE_MEDLEMMER = True  # skrur på medlemsoversikt og medlemssider.
+    TOGGLE_PRODUKSJONER = True  # skrur på produksjonsoversikt og produksjonssider.
+    TOGGLE_ARRANGEMENTER = False  # skrur på arrangementssider.
+    TOGGLE_VERV = True  # skrur på vervoversikt og vervsider.
+    TOGGLE_UTTRYKK = False  # skrur på uttrykksliste.
+    TOGGLE_ARKIV = False  # skrur på arkivsida (med tidslinje over produksjoner, arrangementer, bilder og hendelser).
+    TOGGLE_DOKUMENTER = False  # skrur på dokumentfunksjonalitet.
+    TOGGLE_EDIT = True  # skrur på redigeringsfunksjonalitet.
+
 
 FEATURES = FEATURE_SETTINGS()
 
