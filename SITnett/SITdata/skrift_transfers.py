@@ -163,11 +163,12 @@ arsverv_dict = {'input': {0: 'Verv', 1: 'Rolle', 2: 'Type'}, 'Barneteatersjef': 
 
 
 
-def replace_empty_tags(location):
+def replace_empty_tags(location, medlem=False):
+    # pdb.set_trace()
     file = open(location, 'r', encoding='cp437')
     content = file.read().replace(";¥", "")
     file.close()
-    w_file = open(location, 'w')
+    w_file = open(location, 'w', encoding='cp437')
     w_file.write(content)
     w_file.close()
 
@@ -176,7 +177,10 @@ def replace_empty_tags(location):
     lines = file.readlines()
     i = 0
     while i < len(lines):
-        b = lines[i].find("><")
+        if medlem:
+            b = lines[i].find("><")
+        else:
+            b = lines[i].find("></karakter")
         print(lines[i])
         if b != -1:
             lines.pop(i)
@@ -206,7 +210,7 @@ def getMedlemDict(location):
     except:
         if open(location, 'r').readlines().index('%>') < 5:
             return data_dict
-        replace_empty_tags(location)
+        replace_empty_tags(location, medlem=True)
         return getMedlemDict(location)
 
     try:
