@@ -9,10 +9,10 @@
 		<h2>Kontakt</h2>
 	{% endif %}
 
-	<b>Generelle henvendelser: </b> sit@samfundet.no
+	<b>Generelle henvendelser:</b> sit@samfundet.no <br>
 
-	{% if soppslag %}
-		<h3>Styret</h3>
+	<h3>Styret</h3>
+	{% if styreoppslag %}
 		<table class="member-table">
 			<tr>
 				<th class="text-strong">Stilling</td>
@@ -20,7 +20,7 @@
 				<th class="text-strong">Henvendelser</td>
 				<th class="text-strong">E-post</td>
 			</tr>
-			{% for verv, erfaringer in soppslag.items %}
+			{% for verv, erfaringer in styreoppslag.items %}
 				<tr>
 					{% if erfaringer.count > 1 %}
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
@@ -28,19 +28,33 @@
 						{% else %}
 							<td><b>{{verv.plural|capfirst}}:</b></td>
 						{% endif %}
-						{% if FEATURES.TOGGLE_MEDLEMMER %}
-							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						<td>
+						{% if erfaringer.first.medlem %}
+							{% if FEATURES.TOGGLE_MEDLEMMER %}
+								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+							{% else %}
+								{{erfaringer.first.medlem}}
+							{% endif %}
 						{% else %}
-							<td>{{erfaringer.first.medlem}}</td>
+							{{erfaringer.first.navn}}
 						{% endif %}
+						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
+						</td>
 						{% for erfaring in erfaringer %}
 							{% if forloop.counter > 1 %}
 								<td></td><td></td></tr><tr><td></td>
-								{% if FEATURES.TOGGLE_MEDLEMMER %}
-									<td><a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+								<td>
+								{% if erfaring.medlem %}
+									{% if FEATURES.TOGGLE_MEDLEMMER %}
+										<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+									{% else %}
+										{{erfaring.medlem}}
+									{% endif %}
 								{% else %}
-									<td>{{erfaring.medlem}}</td>
+									{{erfaring.navn}}
 								{% endif %}
+								{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+								</td>
 							{% endif %}
 						{% endfor %}
 					{% else %}
@@ -49,13 +63,20 @@
 						{% else %}
 							<td><b>{{verv.tittel|capfirst}}:</b></td>
 						{% endif %}
-						{% if FEATURES.TOGGLE_MEDLEMMER %}
-							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						<td>
+						{% if erfaringer.first.medlem %}
+							{% if FEATURES.TOGGLE_MEDLEMMER %}
+								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+							{% else %}
+								{{erfaringer.first.medlem}}
+							{% endif %}
 						{% else %}
-							<td>{{erfaringer.first.medlem}}</td>
+							{{erfaringer.first.navn}}
 						{% endif %}
+						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
+						</td>
 					{% endif %}
-					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}
+					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
 				</tr>
 			{% endfor %}
@@ -63,7 +84,9 @@
 		<br><br>
 	{% endif %}
 
-	{% if goppslag %}
+	<b>Hele SIT-styret:</b> sit-styret@samfundet.no <br>
+
+	{% if vervoppslag %}
 		<h3>Gjengverv</h3>
 		<table class="member-table">
 			<tr>
@@ -72,7 +95,7 @@
 				<th class="text-strong">Henvendelser</td>
 				<th class="text-strong">E-post</td>
 			</tr>
-			{% for verv, erfaringer in goppslag.items %}
+			{% for verv, erfaringer in vervoppslag.items %}
 				<tr>
 					{% if erfaringer.count > 1 %}
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
@@ -80,19 +103,33 @@
 						{% else %}
 							<td><b>{{verv.plural|capfirst}}:</b></td>
 						{% endif %}
-						{% if FEATURES.TOGGLE_MEDLEMMER %}
-							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						<td>
+						{% if erfaringer.first.medlem %}
+							{% if FEATURES.TOGGLE_MEDLEMMER %}
+								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+							{% else %}
+								{{erfaringer.first.medlem}}
+							{% endif %}
 						{% else %}
-							<td>{{erfaringer.first.medlem}}</td>
+							{{erfaringer.first.navn}}
 						{% endif %}
+						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
+						</td>
 						{% for erfaring in erfaringer %}
 							{% if forloop.counter > 1 %}
 								<td></td><td></td></tr><tr><td></td>
-								{% if FEATURES.TOGGLE_MEDLEMMER %}
-									<td><a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
+								<td>
+								{% if erfaring.medlem %}
+									{% if FEATURES.TOGGLE_MEDLEMMER %}
+										<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
+									{% else %}
+										{{erfaring.medlem}}
+									{% endif %}
 								{% else %}
-									<td>{{erfaring.medlem}}</td>
+									{{erfaring.navn}}
 								{% endif %}
+								{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+								</td>
 							{% endif %}
 						{% endfor %}
 					{% else %}
@@ -101,11 +138,18 @@
 						{% else %}
 							<td><b>{{verv.tittel|capfirst}}:</b></td>
 						{% endif %}
-						{% if FEATURES.TOGGLE_MEDLEMMER %}
-							<td><a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a></td>
+						<td>
+						{% if erfaringer.first.medlem %}
+							{% if FEATURES.TOGGLE_MEDLEMMER %}
+								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
+							{% else %}
+								{{erfaringer.first.medlem}}
+							{% endif %}
 						{% else %}
-							<td>{{erfaringer.first.medlem}}</td>
+							{{erfaringer.first.navn}}
 						{% endif %}
+						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
+						</td>
 					{% endif %}
 					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
@@ -122,7 +166,7 @@
 				<th class="text-strong">Telefon</td>
 				<th class="text-strong">E-post</td>
 			</tr>
-			{% for medlem in mliste %}
+			{% for medlem in medlemsliste %}
 				<tr>
 					<td>
 						<a href="{% url 'medlem_info' medlem.id %}"><b>{{medlem.etternavn}}, {{medlem.fornavn}}

@@ -1,0 +1,49 @@
+{% extends "verv/verv_info.html" %}
+
+{% block verv_info %}
+
+	<form action="{% url 'verv_endre' verv.id %}" method="post" class="form-wrapper">
+		{% csrf_token %}
+		<div class="ingress">Endre verv</div>
+		{{vervform}}
+		<input type="submit" name='lagre_verv' value="Lagre endringer">
+	</form>
+
+{% endblock verv_info %}
+
+
+
+{% block erfaringsskriv_endre %}
+
+	{% if erfaringsskrivform %}
+		<form action="{% url 'verv_endre' verv.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+			{% csrf_token %}
+			<div class="ingress">Ditt erfaringsskriv</div>
+			{{erfaringsskrivform}}
+			<input type="submit" name='lagre_erfaringsskriv' value="Lagre endringer">
+		</form>
+	{% endif %}
+
+{% endblock erfaringsskriv_endre %}
+
+{% block erfaring_ny %}
+
+	{% if erfaringsform %}
+		<form action="{% url 'verv_endre' verv.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
+			{% csrf_token %}
+			<div class="ingress">Ny erfaring</div>
+			{{erfaringsform}}
+			<input type="submit" name='lagre_erfaring' value="Legg til">
+		</form>
+	{% endif %}
+
+{% endblock erfaring_ny %}
+
+
+{% block verv_nav %}
+
+	<br><br>
+	<a href="{% url 'verv_info' verv.id %}">Vis verv</a>
+	<br>
+
+{% endblock verv_nav %}

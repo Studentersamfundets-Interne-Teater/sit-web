@@ -28,7 +28,7 @@ Launching subshell in virtual environment…
 Deretter kan du starte Django sin utviklingsserver og se prosjektet i sin nåværende tilstand:
 
 ```shell
-$ python sit/manage.py runserver
+$ python SITnett/manage.py runserver
 Django version 3.0.8, using settings 'sit.settings'
 Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
