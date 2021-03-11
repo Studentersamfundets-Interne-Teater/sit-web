@@ -182,8 +182,8 @@ def replace_empty_tags(location, medlem=False):
         else:
             b = lines[i].find("></karakter")
         if b != -1:
-            lines.pop(i)
             print(lines[i])
+            lines.pop(i)
         else:
             i += 1
 
