@@ -189,7 +189,6 @@ class Produksjon(models.Model):
         return ("V" if self.premieredato.month < 7 else "H")+str(self.premieredato.year)
     def spilleperiode(self): # lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar".
         if self.forestillinger.count() > 1:
-            print(self.forestillinger.count())
             forste_dato = self.forestillinger.first().tidspunkt.date()
             siste_dato = self.forestillinger.last().tidspunkt.date()
             datoer = verbose_date_span(forste_dato,siste_dato)
@@ -197,7 +196,7 @@ class Produksjon(models.Model):
             datoer = verbose_date(self.premieredato)[:-4]
         return datoer
     def full_premieredato(self): # lager en premieredato-string på formen "15. februar 2021" hvis datoen er kjent, ellers "Ukjent".
-        if (self.premieredato.month == 1 and self.premieredato.day == 1) or (self.premieredato.month == 12 and self.premieredato.day == 24):
+        if ((self.premieredato.month == 1 or self.premieredato.month == 7) and self.premieredato.day == 1) or (self.premieredato.month == 12 and self.premieredato.day == 24):
             return "Ukjent"
         else:
             return verbose_date(self.premieredato)
