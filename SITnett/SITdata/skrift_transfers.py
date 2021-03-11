@@ -1004,5 +1004,7 @@ def fixtext(s):
 
 if __name__ == "__main__":
     # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
-    transfer_all_medlemmer('/Users/jonas/Desktop/Skriftdata/')
-    transfer_all_produksjoner('/Users/jonas/Desktop/Skriftdata/')
+    Skriftdata_path = '/Users/jonas/Desktop/Skriftdata/'
+    transfer_all_medlemmer(Skriftdata_path)
+    transfer_all_produksjoner(Skriftdata_path)
+    transfer_all_arsverv(Skriftdata_path)
