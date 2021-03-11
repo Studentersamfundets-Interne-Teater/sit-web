@@ -138,13 +138,13 @@ MONTH_NAMES = {1:"januar",2:"februar",3:"mars",4:"april",5:"mai",6:"juni",7:"jul
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nb'
 
 TIME_ZONE = 'Europe/Oslo'
+USE_TZ = False
 
+USE_L10N = False
 USE_I18N = True
-
-USE_TZ = True
 
 
 # Brukerkonto-relatert:
