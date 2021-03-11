@@ -356,7 +356,7 @@ def get_arverv_dict(location):
     except:
         f = open(location)
         tekst = f.read()
-        data_dict['person_0'] = h.handle(tekst[tekst.find('person_0') + 7:tekst.find('</person_0')]).replace("\n", "").replace('\.', "")
+        data_dict['person_0'] = h.handle(tekst[tekst.find('person_0') + 9:tekst.find('</person_0')]).replace("\n", "").replace('\.', "")
 
     data_dict['ar'] = location.split("/")[-1].replace(".asp","")
 
