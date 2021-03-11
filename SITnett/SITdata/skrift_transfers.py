@@ -627,7 +627,7 @@ def create_produksjon(data_dict, location):
 
     plakat = None
     try:
-        url = data_dict['plakat']
+        url, fname = get_url_filename(data_dict['plakat'])
         r = requests.get(url, allow_redirects=True, stream=True)
         fname = url.split("/")[-1]
         if r.status_code == 200:
