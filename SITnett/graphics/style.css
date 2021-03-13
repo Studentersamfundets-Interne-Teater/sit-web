@@ -835,6 +835,10 @@ select{
 	flex: none; 
 	margin: 0 8px 0 0;
 }
+.filter-category>div>input[type="text"]{
+	width: 272px;
+	height: 42px;
+}
 .year-search-container{
 	margin-top: 8px;
 }

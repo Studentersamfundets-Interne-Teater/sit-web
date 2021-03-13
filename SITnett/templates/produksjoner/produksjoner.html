@@ -2,13 +2,14 @@
 {% load static %}
 
 {% block innhold %}
-
+	<head>
+		<link rel="stylesheet" href="{% static 'select2.css' %}"/>
+	</head>
 	<div class="production-wrapper">
 		<div class="title-wrapper">
 			<h2>Produksjoner</h2>
 		</div>
 
-		{{produksjonsform.media.css}}
 		{{produksjonsform.media.js}}
 		<div class="filter-and-result-container">  
 			<div class="filter-column">
@@ -25,7 +26,7 @@
 
 						<div class="filter-category">
 							<label>Tags:</label>
-							<div>{{produksjonsform.produksjonstags}}</div>
+							<div style>{{produksjonsform.produksjonstags}}</div>
 						</div>
 						
 						<div class="filter-category">
@@ -41,8 +42,8 @@
 						<div class="filter-category">
 							<label>Spilleår:</label>
 							<div class="year-search-container">
-								<p>Se det som ble satt opp mellom</p> 
-								<div>{{produksjonsform.fra_ar}} og {{produksjonsform.til_ar}}.</div>
+								<p>Se oppsetninger mellom</p> 
+								<div>{{produksjonsform.fra_ar}} og {{produksjonsform.til_ar}}</div>
 							</div>
 						</div>
 
