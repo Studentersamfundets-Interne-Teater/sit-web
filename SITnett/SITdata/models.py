@@ -92,7 +92,7 @@ class Utmerkelse(models.Model):
         return self.get_tittel_display()+" av "+self.get_orden_display()+" fra "+str(self.ar)
     class Meta:
         verbose_name_plural = "utmerkelser"
-        ordering = ['ar','orden','tittel']
+        ordering = ['orden','-ar','tittel']
     def __str__(self):
         return str(self.medlem)+" som "+self.full_tittel()
 
@@ -161,7 +161,7 @@ class Produksjonstag(models.Model):
         return self.tag
 
 class Produksjon(models.Model):
-    PRODUKSJONSTYPER = ((1,'SIT'),(2,'KUP'),(3,'AFEI'),(4,'UKA'))
+    PRODUKSJONSTYPER = ((1,'SIT'),(2,'KUP'),(3,'AFEI'),(4,'UKA'),(5,'ISFiT'))
     produksjonstype = models.IntegerField(choices=PRODUKSJONSTYPER,default=1)
     produksjonstags = models.ManyToManyField(Produksjonstag,blank=True)
     tittel = models.CharField(max_length=100)
@@ -172,7 +172,6 @@ class Produksjon(models.Model):
     lokale = models.ManyToManyField(Lokale,related_name="produksjoner")
     banner = models.ImageField(upload_to='bannere/',default='/default/katter.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
     plakat = models.ImageField(upload_to='plakater/',blank=True)
-    opptak = models.FileField(upload_to='opptak/',blank=True) # holder et eventuelt film- eller lydopptak av hele forestillinga.
     program = models.FileField(upload_to='programmer/',blank=True)
     manus = models.FileField(upload_to='manus/',blank=True) # holder ei PDF-fil med fullt manus for forestillinga.
     partitur = models.FileField(upload_to='partitur/',blank=True) # holder ei PDF-fil med fullt partitur for forestillinga.
@@ -202,7 +201,7 @@ class Produksjon(models.Model):
             return verbose_date(self.premieredato)
     class Meta:
         verbose_name_plural = "produksjoner"
-        ordering = ['-premieredato','tittel']
+        ordering = ['-premieredato','produksjonstype','tittel']
     def __str__(self):
         return self.tittel+" ("+self.semester()+")"
     def get_absolute_url(self):
@@ -226,14 +225,13 @@ class Nummer(models.Model):
 # holder spesielle utdrag fra en produksjon (sang, monolog, sketsj, ...).
     produksjon = models.ForeignKey(Produksjon,models.PROTECT,related_name='numre')
     tittel = models.CharField(max_length=100)
-    opptak = models.FileField(upload_to='opptak/',blank=True) # holder et eventuelt film- eller lydopptak av nummeret.
     manus = models.TextField() # holder manus for nummeret.
     noter = models.FileField(upload_to='noter/',blank=True) # holder eventuelle noter for nummeret.
     beskrivelse = models.TextField(blank=True) # holder en beskrivelse av nummeret for eksterne lesere.
     anekdoter = models.TextField(blank=True) # holder ytterligere anekdoter for interne lesere.
     class Meta:
         verbose_name_plural = "numre"
-        ordering = ['produksjon__premieredato','tittel']
+        ordering = ['-produksjon__premieredato','tittel']
     def __str__(self):
         return self.tittel
 
@@ -248,7 +246,7 @@ class Anmeldelse(models.Model):
     utdrag = models.TextField() # holder et utdrag av anmeldelsen for eksterne lesere.
     class Meta:
         verbose_name_plural = "anmeldelser"
-        ordering = ['produksjon__premieredato','forfatter']
+        ordering = ['forfatter','-produksjon__premieredato']
     def __str__(self):
         return self.forfatter+" om "+str(self.produksjon)
 
@@ -293,7 +291,7 @@ class Arrangement(models.Model):
         return ("V" if self.tidspunkt.month < 7 else "H")+str(self.tidspunkt.year)
     class Meta:
         verbose_name_plural = "arrangementer"
-        ordering = ['tidspunkt','tittel']
+        ordering = ['-tidspunkt','tittel']
     def __str__(self):
         return self.tittel+" ("+self.semester()+")"
 
@@ -305,13 +303,13 @@ class Hendelse(models.Model):
     beskrivelse = models.TextField()
     class Meta:
         verbose_name_plural = "hendelser"
-        ordering = ['dato','tittel']
+        ordering = ['-dato','tittel']
     def __str__(self):
         return self.tittel
 
 
 class Foto(models.Model):
-# holder bilder fra produksjoner, arrangementer eller sosiale sammenkomster.
+# holder bilder fra produksjoner, numre, arrangementer eller sosiale sammenkomster.
     FOTOTYPER = ((1,'scene'),(2,'kostyme'),(3,'kulisse'),(4,'arbeid'),(5,'dalje'),
         (6,'arrangement'),(7,'gruppe'),(8,'sosialt'))
     # Typen 'scene' er ment for bilder fra forestilling, mens typene 'kostyme' og 'kulisse' er ment for nærbilder av kostymer eller kulisser.
@@ -319,17 +317,17 @@ class Foto(models.Model):
     # Typen 'gruppe' er ment for portrett- eller gruppebilder tatt av FG (feks gjengfoto, prodapp-bilde, bandbilde, ...).
     fototype = models.IntegerField(choices=FOTOTYPER)
     fotograf = models.CharField(blank=True,max_length=200)
-    medlemmer = models.ManyToManyField(Medlem,blank=True) # holder ei eventuell liste over medlemmene som er avbilda.
+    medlemmer = models.ManyToManyField(Medlem,blank=True) # holder ei eventuell liste over medlemmene som er med i fotoet.
     produksjon = models.ForeignKey(Produksjon,models.PROTECT,blank=True,null=True,related_name='bilder')
     nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='bilder')
     arrangement = models.ForeignKey(Arrangement,models.PROTECT,blank=True,null=True,related_name='bilder')
     dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis bildet ikke er knytta til en produksjon, et nummer eller et arrangement.
     FGlink = models.CharField("FG-link",blank=True,max_length=200) # holder en link til bildet i Fotogjengens arkiv.
     fil = models.ImageField(upload_to='bilder/',blank=True) # holder ei eventuell fil hvis bildet ikke er fra Fotogjengen.
-    kontekst = models.TextField() # holder en bildetekst til bildet (hva, når, hvor, utdypende, ...).
+    kontekst = models.TextField() # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
     class Meta:
         verbose_name_plural = "fotoer"
-        ordering = ['fototype','produksjon__premieredato','arrangement__tidspunkt','dato']
+        ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','fototype']
     def __str__(self):
         if (self.produksjon):
             return self.get_fototype_display()+"bilde fra "+str(self.produksjon)
@@ -339,6 +337,31 @@ class Foto(models.Model):
             return self.get_fototype_display()+"bilde fra "+str(self.arrangement)
         else:
             return self.get_fototype_display()+"bilde fra den "+verbose_date(self.dato)
+
+
+class Opptak(models.Model):
+# holder opptak fra produksjoner, numre, arrangementer eller sosiale sammenkomster.
+    OPPTAKSTYPER = ((1,'video'),(2,'lyd'))
+    opptakstype = models.IntegerField(choices=OPPTAKSTYPER)
+    medlemmer = models.ManyToManyField(Medlem,blank=True) # holder ei eventuell liste over medlemmene som er med i opptaket.
+    produksjon = models.ForeignKey(Produksjon,models.PROTECT,blank=True,null=True,related_name='opptak')
+    nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='opptak')
+    arrangement = models.ForeignKey(Arrangement,models.PROTECT,blank=True,null=True,related_name='opptak')
+    dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis opptaket ikke er knytta til en produksjon, et nummer eller et arrangement.
+    fil = models.FileField(upload_to='opptak/') # holder selve fila med opptaket.
+    kontekst = models.TextField() # holder en infotekst til opptaket (hva, når, hvor, utdypende, ...).
+    class Meta:
+        verbose_name_plural = "opptak"
+        ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','opptakstype']
+    def __str__(self):
+        if (self.produksjon):
+            return self.get_opptakstype_display()+"opptak fra "+str(self.produksjon)
+        elif (self.nummer):
+            return self.get_opptakstype_display()+"opptak fra nummeret "+str(self.nummer)+" i "+str(self.nummer.produksjon)
+        elif (self.arrangement):
+            return self.get_opptakstype_display()+"opptak fra "+str(self.arrangement)
+        else:
+            return self.get_opptakstype_display()+"opptak fra den "+verbose_date(self.dato)
 
 
 class Uttrykk(models.Model):
@@ -369,7 +392,7 @@ class Dokument(models.Model):
     fil = models.FileField(upload_to='dokumenter/')
     class Meta:
         verbose_name_plural = "dokumenter"
-        ordering = ['dato','tittel']
+        ordering = ['-dato','tittel']
     def __str__(self):
         return self.tittel+" ("+str(self.dato)+")"
 
@@ -380,11 +403,18 @@ class Ar(models.Model):
     gjengfoto = models.ForeignKey(Foto,models.PROTECT,blank=True,null=True,related_name="ar") # holder et eventuelt gjengfoto av årets SIT.
     styrebilde = models.ImageField(upload_to='styrebilder/',blank=True) # holder et gruppebilde av årets styre.
     forsidetittel = models.CharField(blank=True,max_length=200) # holder en eventuell tittel som ligger ute på forsida.
-    forsidebilde = models.ForeignKey(Foto,models.PROTECT,blank=True,null=True,related_name="brukere") # holder et eventuelt bilde som ligger ute på forsida.
+    forsidebilde = models.ForeignKey(Foto,models.PROTECT,blank=True,null=True,related_name="forsider") # holder et eventuelt bilde som ligger ute på forsida.
     forsidetekst = models.TextField(blank=True) # holder en eventuell tekst som ligger ute på forsida.
     opptaksstart = models.DateField(blank=True,null=True) # holder datoen da forsida skal begynne å reklamere for opptak.
     soknadsfrist = models.DateTimeField("søknadsfrist",blank=True,null=True) # holder årets tidsfrist for å søke SIT.
-    opptakstekst = models.TextField(blank=True) # holder teksten som ligger ute på opptakssida.
+    opptakstekst_kostyme = models.TextField("opptakstekst (kostyme)",blank=True) # holder opptaksteksten for kostyme som ligger ute på opptakssida.
+    opptaksbilde_kostyme = models.ForeignKey(Foto,models.PROTECT,verbose_name="opptaksbilde (kostyme)",blank=True,null=True,related_name="kostymeopptaksar") # holder et bilde til opptaksteksten for kostyme.
+    opptakstekst_kulisse = models.TextField("opptakstekst (kulisse)",blank=True) # holder opptaksteksten for kulisse som ligger ute på opptakssida.
+    opptaksbilde_kulisse = models.ForeignKey(Foto,models.PROTECT,verbose_name="opptaksbilde (kulisse)",blank=True,null=True,related_name="kulisseopptaksar") # holder et bilde til opptaksteksten for kulisse.
+    opptakstekst_skuespill = models.TextField("opptakstekst (skuespill)",blank=True) # holder opptaksteksten for skuespill som ligger ute på opptakssida.
+    opptaksbilde_skuespill = models.ForeignKey(Foto,models.PROTECT,verbose_name="opptaksbilde (skuespill)",blank=True,null=True,related_name="skuespillopptaksar") # holder et bilde til opptaksteksten for skuespill.
+    opptakstekst_annet = models.TextField("opptakstekst (annet)",blank=True) # holder opptaksteksten for andre ansvar som ligger ute på opptakssida.
+    opptaksbilde_annet = models.ForeignKey(Foto,models.PROTECT,verbose_name="opptaksbilde (annet)",blank=True,null=True,related_name="annetopptaksar") # holder et bilde til opptaksteksten for andre ansvar.
     varmotestart = models.DateField("vårmøtestart",blank=True,null=True) # holder datoen for vårens første mandagsmøte.
     varmotestopp = models.DateField("vårmøtestopp",blank=True,null=True) # holder datoen for vårens siste mandagsmøte.
     hostmotestart = models.DateField("høstmøtestart",blank=True,null=True) # holder datoen for høstens første mandagsmøte.
@@ -393,7 +423,7 @@ class Ar(models.Model):
     class Meta:
         verbose_name = "år"
         verbose_name_plural = "år"
-        ordering = ['arstall']
+        ordering = ['-arstall']
     def __str__(self):
         return str(self.arstall)
     def get_absolute_url(self):
