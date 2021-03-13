@@ -111,6 +111,12 @@ class FotoAdmin(admin.ModelAdmin):
 admin.site.register(models.Foto,FotoAdmin)
 
 
+class OpptakAdmin(admin.ModelAdmin):
+    list_display = ['id','opptakstype','produksjon','arrangement','dato']
+
+admin.site.register(models.Opptak,OpptakAdmin)
+
+
 class UttrykkAdmin(admin.ModelAdmin):
     list_display = ['id','tittel']
 

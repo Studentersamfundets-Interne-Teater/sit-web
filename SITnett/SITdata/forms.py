@@ -37,7 +37,7 @@ class UtmerkelseForm(forms.ModelForm):
 
 
 class MedlemSearchForm(forms.Form):
-    tekst = forms.CharField(label="Søk",required=False,max_length=20)
+    navn = forms.CharField(required=False,max_length=20)
     UNDERGJENGER = models.Medlem.UNDERGJENGER+((0,'ukjent'),)
     undergjeng = forms.MultipleChoiceField(choices=UNDERGJENGER,required=False,
         widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3])
@@ -58,17 +58,31 @@ class MedlemSearchForm(forms.Form):
 class ProduksjonAdminForm(forms.ModelForm):
     class Meta:
         model = models.Produksjon
-        fields = ['tittel','produksjonstype','produksjonstags','forfatter','opphavsar','premieredato','varighet','lokale','banner','plakat','opptak','program','manus','partitur','visehefte','beskrivelse','anekdoter','reklame','pris','medlemspris','billettlink','blestestart','FBlink']
+        fields = ['tittel','produksjonstype','produksjonstags','forfatter','opphavsar','premieredato','varighet','lokale','banner','plakat','program','manus','partitur','visehefte','beskrivelse','anekdoter','reklame','pris','medlemspris','billettlink','blestestart','FBlink']
         labels = {'opphavsar':"Opphavsår",'premieredato':"Premieredato (DD.MM.ÅÅÅÅ)",'beskrivelse':"Beskrivelse (for eksterne)",'anekdoter':"Ytterligere anekdoter (for interne)",'reklame':"Reklametekst (til forsida)",'pris':"Billettpris (ikke-medlem)",'medlemspris':"Billettpris (medlem)",'blestestart':"Blæstestart (på forsida)"}
         widgets = {'banner':CustomFileInput,'plakat':CustomFileInput,'opptak':CustomFileInput,'program':CustomFileInput,'manus':CustomFileInput,'partitur':CustomFileInput,'visehefte':CustomFileInput}
 
 class ProduksjonOwnForm(forms.ModelForm):
     class Meta:
         model = models.Produksjon
-        fields = ['produksjonstags','varighet','lokale','banner','plakat','opptak','program','manus','partitur','visehefte','beskrivelse','anekdoter','reklame','pris','medlemspris','billettlink','blestestart','FBlink']
+        fields = ['produksjonstags','varighet','lokale','banner','plakat','program','manus','partitur','visehefte','beskrivelse','anekdoter','reklame','pris','medlemspris','billettlink','blestestart','FBlink']
         labels = {'beskrivelse':"Beskrivelse (for eksterne)",'anekdoter':"Ytterligere anekdoter (for interne)",'reklame':"Reklametekst (til forsida)",'pris':"Billettpris (ikke-medlem)",'medlemspris':"Billettpris (medlem)",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
         widgets = {'banner':CustomFileInput,'plakat':CustomFileInput,'program':CustomFileInput,'manus':CustomFileInput,'partitur':CustomFileInput,'visehefte':CustomFileInput,}
 
+
+class ProduksjonSearchForm(forms.Form):
+    tittel = forms.CharField(required=False,max_length=20)
+    produksjonstags = forms.ModelChoiceField(label="Tags",queryset=models.Produksjonstag.objects.all(),required=False,
+        widget = Select2MultipleWidget)
+    forfatter = forms.CharField(required=False,max_length=20)
+    lokale = forms.ModelChoiceField(queryset=models.Lokale.objects.all(),required=False,
+        widget = Select2MultipleWidget)
+    fra_ar = forms.IntegerField(label="Fra",required=False)
+    til_ar = forms.IntegerField(label="Til",required=False)
+    produksjonstype = forms.MultipleChoiceField(label="Type",choices=models.Produksjon.PRODUKSJONSTYPER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3,4])
+    fritekst = forms.CharField(label="Tekstsøk",required=False,max_length=20)
+    
 
 class ForestillingForm(forms.ModelForm):
     class Meta:
@@ -130,5 +144,8 @@ class ErfaringArForm(forms.ModelForm):
 class ArForm(forms.ModelForm):
     class Meta:
         model = models.Ar
-        fields = ['gjengfoto','styrebilde','forsidetittel','forsidebilde','forsidetekst','opptaksstart','soknadsfrist','opptakstekst','varmotestart','varmotestopp','hostmotestart','hostmotestopp','genforstidspunkt']
+        fields = ['gjengfoto','styrebilde','forsidetittel','forsidebilde','forsidetekst',
+        'opptaksstart','soknadsfrist','opptakstekst_kostyme','opptaksbilde_kostyme','opptakstekst_kulisse','opptaksbilde_kulisse',
+        'opptakstekst_skuespill','opptaksbilde_skuespill','opptakstekst_annet','opptaksbilde_annet',
+        'varmotestart','varmotestopp','hostmotestart','hostmotestopp','genforstidspunkt']
         widgets = {'styrebilde': CustomFileInput}
