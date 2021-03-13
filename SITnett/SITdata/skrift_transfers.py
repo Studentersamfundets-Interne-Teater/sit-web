@@ -161,14 +161,114 @@ verv_dict1 = {'Konsulent, lysreklamen': {0: "lysreklamist", 1: 'konsulent', 2:"a
 
 arsverv_dict = {'input': {0: 'Verv', 1: 'Rolle', 2: 'Type'}, 'Barneteatersjef': {0: 'Barneteatersjef', 1: 'ingen', 2: 'styre'}, 'Sekretær': {0: 'nestleder', 1: 'ingen', 2: 'styre'}, 'Hybelassistent': {0: 'hybelassistent', 1: 'ingen', 2: 'intern-gjeng'}, 'VK-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Teaterkontakt': {0: 'teaterkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Nestleder Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Nestleder Revy Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kunstnersik råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Klubbens Fortjenestemedalje i Stål': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'FK-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Filmgjengen': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk Råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Web-gjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kulissesjef': {0: 'kulissesjef', 1: 'ingen', 2: 'styre'}, 'Repertoiransvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'Hybelgjengen': {0: 'hybelgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'WEB-gjeng': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'PR-gjengen': {0: 'PR-gjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Julefestkomitéen (JFK)': {0: 'medlem av Julefestkomiteen', 1: 'ingen', 2: 'intern-gjeng'}, 'Nestleder': {0: 'nestleder', 1: 'ingen', 2: 'styre'}, 'REGI-sjef Teater-UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kunstneriskansvarlig': {0: 'Tittel', 1: 'ansvar for kunstnerisker', 2: 'ingen'}, 'Idrettsoppkvinne': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'SIT-Web': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Teatersjef UKA-11': {0: 'UKEteatersjef', 1: 'ingen', 2: 'styre'}, 'Hybelgjeng': {0: 'hybelgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Baksidakontakt ': {0: 'baksidekontakt', 1: 'ingen', 2: 'intern-gjeng'}, 'Rekvisittgjengen': {0: 'rekvisittansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Økonomisjef': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Ballsjef': {0: 'ballerina', 1: 'ingen', 2: 'intern-gjeng'}, 'Rekvisittansvarlig': {0: 'rekvisittansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Idrettsoppkvinner': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'PR- og produksjonskoordinator': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}, 'Videogjeng': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Web-gjeng': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kulturutvalget': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Videogjengen': {0: 'filmgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Repertoirutvalg': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Ballerina': {0: 'ballerina', 1: 'ingen', 2: 'intern-gjeng'}, 'SIT-web': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'PR-gjeng': {0: 'PR-gjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Styremedlem': {0: 'styremedlem', 1: 'ingen', 2: 'styre'}, 'SOS-kontakt': {0: 'veldedighetskontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'SIT-arkivet': {0: 'arkivar', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Hybelsjef': {0: 'hybelsjef', 1: 'ingen', 2: 'styre'}, 'Idrettsoppmann': {0: 'idrettsoppkvinne', 1: 'ingen', 2: 'intern-gjeng'}, 'Seksjonsassistent UKA': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Webgjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Plateselskapet': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'SIT Brannmann': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Økonomiansvarlig': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Kosymearkivar': {0: 'kostymearkivar', 1: 'ingen', 2: 'intern-gjeng'}, 'Arkivar': {0: 'arkivar', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Soddgjengen': {0: 'soddgjengis', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk koordinator': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Kasserer': {0: 'økonomisjef', 1: 'ingen', 2: 'styre'}, 'Baksidekontakt': {0: 'baksidekontakt', 1: 'ingen', 2: 'intern-gjeng'}, 'Kostymesjef': {0: 'kostymesjef', 1: 'ingen', 2: 'styre'}, 'WEB-gjengen': {0: 'webgjengis', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Ukeplakattegner': {0: 'Tittel', 1: 'ingen', 2: 'ingen'}, 'Teatersjef': {0: 'teatersjef', 1: 'ingen', 2: 'styre'}, 'Sminkeansvarlig': {0: 'sminkeansvarlig', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kunstnerisk råd': {0: 'medlem av Kunstnerisk råd', 1: 'ingen', 2: 'ekstern-gjeng'}, 'NATF-kontakt': {0: 'teaterkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Veldedighetskontakt': {0: 'veldedighetskontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Kunstnerisk Ansvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'PR og Produksjonskoordinator': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}, 'Skuespillerkontakt': {0: 'skuespillerkontakt', 1: 'ingen', 2: 'ekstern-gjeng'}, 'Teaterkomite': {0: 'styremedlem', 1: 'Teaterkomiteen', 2: 'styre'}, 'Kostymearkivar': {0: 'kostymearkivar', 1: 'ingen', 2: 'intern-gjeng'}, 'Kunstnerisk ansvarlig': {0: 'kunstnerisk ansvarlig', 1: 'ingen', 2: 'styre'}, 'PR- og produksjonsansvarlig': {0: 'PR- og produksjonskoordinator', 1: 'ingen', 2: 'styre'}}
 
+# nummer_functions
 
+def get_lydfil_dicts(url='http://skrift.no/sit/index.asp?vis=lyd', location= '/Users/jacob/OneDrive/Skrivebord/Fra_skrift/'):
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, features='lxml')
+    # file = open("./soup.txt", 'w')
+    # file.write(soup.prettify())
+    # print(soup.prettify())
+    nummere = soup.find_all('p')[8]
+    print(nummere.prettify())
+    dict_of_lydfil_dicts = {}
+    imgs = {}
+    number_refs = {}
+    prod_refs = {}
+    files = {}
+
+    lydfil_file = open(location + "lydfiler.asp", 'r', encoding='cp1252')
+    lydfil_lines = lydfil_file.readlines()
+    for i in range(len(lydfil_lines)):
+        if lydfil_lines[i].find('mp3.flv') != -1:
+            files[i] = lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".flv")+4]
+        elif lydfil_lines[i].find('mp3') != -1:
+            files[i] = lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".mp3")+4]
+        elif lydfil_lines[i].find('.flv') != -1:
+            files[i] = lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".flv")+4]
+        elif lydfil_lines[i].find('m4a') != -1:
+            files[i] = lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".m4a")+4]
+
+
+
+
+    i=-1
+    for tag in nummere.find_all():
+        if tag.name == 'img':
+            i += 1
+            imgs[i] = tag['src']
+        if tag.name == 'a':
+            if tag['href'][:5] == "?lyd=":
+                number_refs[i] = tag['href'][5:]
+            elif tag['href'][:5] == "?prod":
+                prod_refs[i] = tag['href'][12:]
+
+    for j in range(len(imgs)-1):
+        number = number_refs[j]
+        this_number_dict = {}
+
+        l_or_v = ''
+        if imgs[j] == 'img/video.jpg':
+            l_or_v = 'video'
+        elif imgs[j] == 'img/lyd.jpg':
+            l_or_v = 'lyd'
+
+        this_number_dict['produksjon'] = prod_refs.get(j, "")
+        this_number_dict['type'] = l_or_v
+        this_number_dict['fil'] = files[j]
+        dict_of_lydfil_dicts[number] = this_number_dict
+
+    return dict_of_lydfil_dicts
+
+def create_nummer(nummer, nummer_dict, location):
+    tittel = nummer.replace(" (lyd)", "")
+    file = open(location + tittel + ".asp", 'r', encoding='cp1252')
+    h = h2t.HTML2Text()
+    h.convert_charrefs = True
+    h.drop_white_space = 1
+
+    manus = h.handle(file.read())
+    produksjon_input = nummer_dict['produksjon']
+
+    if produksjon_input:
+        produksjon = models.Produksjon.objects.get(premieredato__year=produksjon_input.split("_")[0], tittel__icontains=" ".join(produksjon_input.split("_")[1:]))
+    else:
+        produksjon = models.Produksjon.objects.get(tittel="Opptak fra skrift")
+    try:
+        new_nummer = models.Nummer.objects.get(tittel=tittel)
+    except:
+        new_nummer = models.Nummer.objects.create(tittel=tittel, manus=manus, produksjon=produksjon)
+
+    new_nummer.save()
+    url, fname = get_url_filename(nummer_dict['fil'])
+
+    try:
+        r = requests.get(url, allow_redirects=True, stream=True)
+        shutil.copyfileobj(r.raw, open(settings.MEDIA_ROOT + '/opptak/' + fname, 'wb'))
+    except:
+        url = url.replace("http://localhost/skrift.no", "").replace("//sit", "").replace("/sit", "")
+        shutil.copyfileobj(open(location + url, 'rb'),
+                           open(settings.MEDIA_ROOT + '/opptak/' + fname, 'wb'))
+    fil = '/opptak/' + fname
+
+    if nummer_dict['type'] == 'lyd':
+        opptakstype = 2
+    else:
+        opptakstype = 1
+
+    kontekst = "Opptak fra nummeret "+new_nummer.tittel+" i produksjonen "+produksjon
+
+    new_opptak = models.Opptak.objects.create(fil=fil, nummer=new_nummer, opptakstype=opptakstype, kontekst=kontekst)
+    new_opptak.save()
+
+
+# div
 def wipe_members():
     models.Medlem.objects.filter(opptaksar__lte=2019).delete()
     models.Medlem.objects.filter(opptaksar__isnull=True).delete()
     models.Foto.objects.all().delete()
     models.Arrangement.objects.all().delete()
     models.Lokale.objects.all().delete()
-
 
 def replace_empty_tags(location, medlem=False):
     # pdb.set_trace()
@@ -1038,6 +1138,17 @@ def transfer_all_arsverv(location):
 
     print("Errors: ", errors)
 
+
+def transfer_all_nummere(location):
+    dict_of_lydfil_dicts = get_lydfil_dicts(location=location)
+    # for line in lydfil_file.readlines():
+    models.Produksjon.objects.create(tittel="Opptak fra skrift", premieredato=datetime.date(2020, 12, 31), lokale=models.Lokale.objects.get(navn='Storsalen'))
+    try:
+        os.mkdir(settings.MEDIA_ROOT + '/opptak')
+    except:
+        pass
+    for nummer, nummer_dict in dict_of_lydfil_dicts.items():
+        create_nummer(nummer, nummer_dict, location)
 
 
 def fixtext(s):
