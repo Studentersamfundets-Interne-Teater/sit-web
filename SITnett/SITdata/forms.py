@@ -37,7 +37,7 @@ class UtmerkelseForm(forms.ModelForm):
 
 
 class MedlemSearchForm(forms.Form):
-    tekst = forms.CharField(label="Søk",required=False,max_length=20)
+    navn = forms.CharField(required=False,max_length=20)
     UNDERGJENGER = models.Medlem.UNDERGJENGER+((0,'ukjent'),)
     undergjeng = forms.MultipleChoiceField(choices=UNDERGJENGER,required=False,
         widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3])
@@ -69,6 +69,20 @@ class ProduksjonOwnForm(forms.ModelForm):
         labels = {'beskrivelse':"Beskrivelse (for eksterne)",'anekdoter':"Ytterligere anekdoter (for interne)",'reklame':"Reklametekst (til forsida)",'pris':"Billettpris (ikke-medlem)",'medlemspris':"Billettpris (medlem)",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
         widgets = {'banner':CustomFileInput,'plakat':CustomFileInput,'program':CustomFileInput,'manus':CustomFileInput,'partitur':CustomFileInput,'visehefte':CustomFileInput,}
 
+
+class ProduksjonSearchForm(forms.Form):
+    tittel = forms.CharField(required=False,max_length=20)
+    produksjonstags = forms.ModelChoiceField(label="Tags",queryset=models.Produksjonstag.objects.all(),required=False,
+        widget = Select2MultipleWidget)
+    forfatter = forms.CharField(required=False,max_length=20)
+    lokale = forms.ModelChoiceField(queryset=models.Lokale.objects.all(),required=False,
+        widget = Select2MultipleWidget)
+    fra_ar = forms.IntegerField(label="Fra",required=False)
+    til_ar = forms.IntegerField(label="Til",required=False)
+    produksjonstype = forms.MultipleChoiceField(label="Type",choices=models.Produksjon.PRODUKSJONSTYPER,required=False,
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3,4])
+    fritekst = forms.CharField(label="Tekstsøk",required=False,max_length=20)
+    
 
 class ForestillingForm(forms.ModelForm):
     class Meta:
