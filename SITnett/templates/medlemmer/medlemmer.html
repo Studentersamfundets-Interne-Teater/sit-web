@@ -21,42 +21,42 @@
 					<form method="get">
 
 						<div class="filter-category">
-							{{medlemsform.undergjeng.label_tag}} 
+							<label>Navn</label>
+							<div>{{medlemsform.navn}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Undergjeng</label>
 							{{medlemsform.undergjeng}}
 						</div>
 						
 						<div class="filter-category">
-							{{medlemsform.status.label_tag}} 
+							<label>Status</label>
 							{{medlemsform.status}}
 						</div>
 
 						<div class="filter-category">
-							<label>Opptaksår:</label>
+							<label>Opptaksår</label>
 							<div class="year-search-container">
 								<p>Se de som er tatt opp mellom</p> 
-								<div>{{medlemsform.fra_ar}} og {{medlemsform.til_ar}}.</div>
-								<div class="unknown-year-filter">{{medlemsform.ukjent_ar}} Inkluder ukjent opptaksår</div>
+								<div>{{medlemsform.fra_ar}} og {{medlemsform.til_ar}}</div>
+								<div class="unknown-year-filter">{{medlemsform.ukjent_ar}} Inkludér ukjent opptaksår</div>
 							</div>
 						</div>
 
 						<div class="filter-category">
-							<label>Gjeng:</label>
+							<label>Gjeng</label>
 							<div>{{medlemsform.medlemstype}}</div>
 						</div>
 
 						<div class="filter-category">
-							<label>Utmerkelse:</label> 
+							<label>Utmerkelse</label> 
 							<div>{{medlemsform.tittel}}</div>
 						</div>
 
 						<div class="filter-category">
-							<label>Orden:</label> 
+							<label>Orden</label> 
 							<div>{{medlemsform.orden}}</div>
-						</div>
-
-						<div class="filter-category">
-							<label>Tekstsøk:</label>
-							<div>{{medlemsform.tekst}}</div>
 						</div>
 
 						<input type="submit" value="Søk">

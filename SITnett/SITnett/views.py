@@ -123,12 +123,26 @@ def view_medlemmer(request):
     medlemsliste = models.Medlem.objects.all()
     if request.GET:
         medlemsform = forms.MedlemSearchForm(request.GET)
-        if request.GET['tekst']:
-            tekst = request.GET['tekst']
-            medlemsliste = (medlemsliste.filter(fornavn__icontains=tekst)
-                | medlemsliste.filter(mellomnavn__icontains=tekst)
-                | medlemsliste.filter(etternavn__icontains=tekst)
-                | medlemsliste.filter(kallenavn__icontains=tekst))
+        if request.GET['navn']:
+            navn = request.GET['navn']
+            medlemsliste = (medlemsliste.filter(fornavn__icontains=navn)
+                | medlemsliste.filter(mellomnavn__icontains=navn)
+                | medlemsliste.filter(etternavn__icontains=navn)
+                | medlemsliste.filter(kallenavn__icontains=navn))
+        if 'undergjeng' in request.GET and request.GET['undergjeng'] != '':
+            undergjenger = request.GET.getlist('undergjeng')
+            if '0' in undergjenger:
+                ukjentliste = medlemsliste.filter(undergjeng__isnull=True)
+            else:
+                ukjentliste = medlemsliste.none()
+            medlemsliste = (medlemsliste.filter(undergjeng__in=undergjenger) | ukjentliste)
+        if 'status' in request.GET and request.GET['status'] != '':
+            statuser = request.GET.getlist('status')
+            if '0' in statuser:
+                ukjentliste = medlemsliste.filter(status__isnull=True)
+            else:
+                ukjentliste = medlemsliste.none()
+            medlemsliste = (medlemsliste.filter(status__in=statuser) | ukjentliste)
         if 'ukjent_ar' in request.GET:
             ukjentliste = medlemsliste.filter(opptaksar__isnull=True)
             if not request.GET['fra_ar'] and not request.GET['til_ar']:
@@ -141,23 +155,12 @@ def view_medlemmer(request):
         if request.GET['til_ar']:
             til_ar = request.GET['til_ar']
             medlemsliste = (medlemsliste.filter(opptaksar__lte=til_ar) | ukjentliste)
-        if 'undergjeng' in request.GET:
-            undergjenger = request.GET.getlist('undergjeng')
-            if '0' in undergjenger:
-                ukjentliste = medlemsliste.filter(undergjeng__isnull=True)
-            else:
-                ukjentliste = medlemsliste.none()
-            medlemsliste = (medlemsliste.filter(undergjeng__in=undergjenger) | ukjentliste)
-        if 'status' in request.GET:
-            statuser = request.GET.getlist('status')
-            if '0' in statuser:
-                ukjentliste = medlemsliste.filter(status__isnull=True)
-            else:
-                ukjentliste = medlemsliste.none()
-            medlemsliste = (medlemsliste.filter(status__in=statuser) | ukjentliste)
-        if 'medlemstype' in request.GET:
+        if 'medlemstype' in request.GET and request.GET['medlemstype'] != '':
             medlemstyper = request.GET.getlist('medlemstype')
             medlemsliste = medlemsliste.filter(medlemstype__in=medlemstyper)
+            for medlemstype in medlemstyper: # inkluderer andre medlemmer enn SITere, selv om de ikke har undergjeng, status eller opptaksår.
+                if medlemstype != '1':
+                    medlemsliste = (medlemsliste | models.Medlem.objects.filter(medlemstype=medlemstype))
         if 'tittel' in request.GET:
             titler = request.GET.getlist('tittel')
             ordner = request.GET.getlist('orden')
@@ -276,10 +279,41 @@ def view_utmerkelse_fjern(request, uid):
 def view_produksjoner(request):
     if not features.TOGGLE_PRODUKSJONER:
         return redirect('hoved')
-    arstall = datetime.datetime.now().year
-    produksjonsliste = models.Produksjon.objects.filter(premieredato__year__gte=(arstall-2)) # filtrerer ut siste 2 år foreløpig.
+    produksjonsliste = models.Produksjon.objects.all()
+    if request.GET:
+        produksjonsform = forms.ProduksjonSearchForm(request.GET)
+        if request.GET['tittel']:
+            tittel = request.GET['tittel']
+            produksjonsliste = produksjonsliste.filter(tittel__icontains=tittel)
+        if 'produksjonstags' in request.GET and request.GET['produksjonstags'] != '':
+            produksjonstags = request.GET.getlist('produksjonstags')
+            produksjonsliste = produksjonsliste.filter(produksjonstags__id__in=produksjonstags)
+        if request.GET['forfatter']:
+            forfatter = request.GET['forfatter']
+            produksjonsliste = produksjonsliste.filter(forfatter__icontains=forfatter)
+        if 'lokale' in request.GET and request.GET['lokale'] != '':
+            lokaler = request.GET.getlist('lokale')
+            produksjonsliste = produksjonsliste.filter(lokale__id__in=lokaler)
+        if request.GET['fra_ar']:
+            fra_ar = request.GET['fra_ar']
+            produksjonsliste = produksjonsliste.filter(premieredato__year__gte=fra_ar)
+        if request.GET['til_ar']:
+            til_ar = request.GET['til_ar']
+            produksjonsliste = produksjonsliste.filter(premieredato__year__lte=til_ar)
+        if 'produksjonstype' in request.GET and request.GET['produksjonstype'] != '':
+            produksjonstyper = request.GET.getlist('produksjonstype')
+            produksjonsliste = produksjonsliste.filter(produksjonstype__in=produksjonstyper)
+        if request.GET['fritekst']:
+            fritekst = request.GET['fritekst']
+            produksjonsliste = (produksjonsliste.filter(beskrivelse__icontains=fritekst) |
+                produksjonsliste.filter(anekdoter__icontains=fritekst) |
+                produksjonsliste.filter(reklame__icontains=fritekst))
+    else:
+        arstall = datetime.datetime.now().year
+        produksjonsform = forms.ProduksjonSearchForm(initial={'fra_ar': (arstall-2)})
+        produksjonsliste = produksjonsliste.filter(premieredato__year__gte=(arstall-2))
     return render(request, 'produksjoner/produksjoner.html', {'FEATURES': features,
-        'produksjonsliste': produksjonsliste})
+        'produksjonsliste': produksjonsliste, 'produksjonsform': produksjonsform})
 
 
 def make_produksjonsvervoppslag(produksjon):
