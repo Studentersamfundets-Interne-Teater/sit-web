@@ -369,13 +369,14 @@ def view_produksjon_info(request, pid):
     if not features.TOGGLE_PRODUKSJONER:
         return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
-    try:
-        user_medlem = models.Medlem.objects.get(brukerkonto=request.user)
-    except models.Medlem.DoesNotExist:
-        user_medlem = None
+    if request.user.is_authenticated:
+        try:
+            user_medlem = models.Medlem.objects.get(brukerkonto=request.user)
+        except models.Medlem.DoesNotExist:
+            user_medlem = None
     if request.user.has_perm('SITdata.change_produksjon'):
         access = 'admin'
-    elif user_medlem is not None and request.user.is_authenticated \
+    elif request.user.is_authenticated and user_medlem is not None  \
             and request.user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent"):
         access = 'own'
     else:
