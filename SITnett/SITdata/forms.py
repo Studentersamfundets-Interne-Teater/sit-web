@@ -43,7 +43,7 @@ class MedlemSearchForm(forms.Form):
         widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3])
     STATUSER = models.Medlem.STATUSER+((0,'ukjent'),)
     status = forms.MultipleChoiceField(choices=STATUSER,required=False,
-        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2])
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3])
     fra_ar = forms.IntegerField(label="Fra",required=False)
     til_ar = forms.IntegerField(label="Til",required=False)
     ukjent_ar = forms.BooleanField(label="Ukjent",required=False)
@@ -80,7 +80,7 @@ class ProduksjonSearchForm(forms.Form):
     fra_ar = forms.IntegerField(label="Fra",required=False)
     til_ar = forms.IntegerField(label="Til",required=False)
     produksjonstype = forms.MultipleChoiceField(label="Type",choices=models.Produksjon.PRODUKSJONSTYPER,required=False,
-        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3,4])
+        widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3,4,5])
     fritekst = forms.CharField(label="Tekstsøk",required=False,max_length=20)
     
 
