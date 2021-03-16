@@ -1,7 +1,7 @@
 import sys
 # FYLL INN DIN LOKALE FILSTI TIL SITNETT HER:
 #sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
-sys.path.append("C:/Users/jacob/sit-web/SITnett")
+sys.path.append("C:/Users/jonas/Documents/Kode/Django/sit-web/SITnett")
 
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SITnett.settings")
@@ -1162,7 +1162,7 @@ def transfer_all_arsverv(location):
     print("Errors: ", errors)
 
 
-def transfer_all_nummere(location):
+def transfer_all_numre(location):
     dict_of_lydfil_dicts = get_lydfil_dicts(location=location)
     # for line in lydfil_file.readlines():
     prod = models.Produksjon.objects.create(tittel="Opptak fra skrift", premieredato=datetime.date(2020, 12, 31))
@@ -1185,8 +1185,5 @@ def fixtext(s):
 
 if __name__ == "__main__":
     # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
-    Skriftdata_path = '/Users/jacob/Downloads/sit skrift/sit/'
-    transfer_all_medlemmer(Skriftdata_path)
-    transfer_all_produksjoner(Skriftdata_path)
-    transfer_all_arsverv(Skriftdata_path)
-    transfer_all_nummere(Skriftdata_path)
+    Skriftdata_path = '/Users/jonas/Desktop/Skriftdata/'
+    transfer_all_numre(Skriftdata_path)
