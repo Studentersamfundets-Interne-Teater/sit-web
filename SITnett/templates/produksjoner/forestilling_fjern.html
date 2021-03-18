@@ -8,7 +8,7 @@
 		{% csrf_token %}
 		<input type="submit" value="Ja">
 	</form>
-	<a href="{% url 'produksjon_info' forestilling.produksjon.id %}">Nei</a>
+	<a href="{% url 'produksjon_endre' forestilling.produksjon.id %}">Nei</a>
 	<br><br>
 
 {% endblock innhold %}

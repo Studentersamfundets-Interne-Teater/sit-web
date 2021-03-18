@@ -615,9 +615,21 @@ def view_erfaring_fjern(request, eid):
         produsenterfaring = None
     if request.user.has_perm('SITdata.delete_erfaring') or produsenterfaring:
         if request.method == 'POST':
-            medlem = erfaring.medlem
-            erfaring.delete()
-            return redirect('medlem_info', medlem.id)
+            if erfaring.medlem:
+                medlem = erfaring.medlem
+                erfaring.delete()
+                return redirect('medlem_info', medlem.id)
+            elif erfaring.produksjon:
+                produksjon = erfaring.produksjon
+                erfaring.delete()
+                return redirect('produksjon_info', produksjon.id)
+            elif erfaring.verv:
+                verv = erfaring.verv
+                erfaring.delete()
+                return redirect('verv_info', verv.id)
+            else:
+                erfaring.delete()
+                return redirect('hoved')
         return render(request, 'medlemmer/erfaring_fjern.html', {'FEATURES': features,
             'erfaring': erfaring})
     else:
