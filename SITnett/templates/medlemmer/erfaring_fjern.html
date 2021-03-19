@@ -2,13 +2,23 @@
 
 {% block innhold %}
 
-	<p>Er du sikker på at du vil fjerne {{erfaring.medlem}}s erfaring som {{erfaring.full_tittel}}? All data knyttet til erfaringen slettes permanent.</p>
+	<p>Er du sikker på at du vil fjerne 
+	{% if erfaring.medlem %}{{erfaring.medlem}}{% else %}{{erfaring.navn}}{% endif %}s 
+	erfaring som {{erfaring.full_tittel}}? All data knyttet til erfaringen slettes permanent.</p>
 
 	<form action="{% url 'erfaring_fjern' erfaring.id %}" method="post">
 		{% csrf_token %}
 		<input type="submit" value="Ja">
 	</form>
-	<a href="{% url 'medlem_info' erfaring.medlem.id %}">Nei</a>
+	{% if erfaring.medlem %}
+		<a href="{% url 'medlem_info' erfaring.medlem.id %}">Nei</a>
+	{% elif erfaring.produksjon %}
+		<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">Nei</a>
+	{% elif erfaring.verv %}
+		<a href="{% url 'verv_info' erfaring.verv.id %}">Nei</a>
+	{% else %}
+		<a href="{% url 'hoved' %}">Nei</a>
+	{% endif %}
 	<br><br>
 
 {% endblock innhold %}

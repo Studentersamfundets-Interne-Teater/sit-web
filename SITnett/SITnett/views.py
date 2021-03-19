@@ -11,6 +11,7 @@ from SITdata import models, forms
 
 features = settings.FEATURES
 
+
 def get_ar(arstall):
 # finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen.
     if not models.Ar.objects.filter(pk=arstall):
@@ -169,8 +170,11 @@ def view_medlemmer(request):
             mids = utmerkelsesliste.values_list('medlem',flat=True).distinct()
             medlemsliste = medlemsliste.filter(id__in=mids)
     else:
+        arstall = datetime.datetime.now().year
         medlemsform = forms.MedlemSearchForm()
-        medlemsliste = medlemsliste.filter(undergjeng__in=[1,2,3]).filter(status__in=[1,2]).filter(medlemstype=1)
+        medlemsliste = medlemsliste.filter(undergjeng__in=[1,2,3]).filter(status__in=[1,2,3]).filter(medlemstype=1)
+        medlemsliste = medlemsliste.filter(opptaksar__gte=(arstall-10))
+            # filtrerer ut SITere fra de siste 10 årene som utgangspunkt.
     return render(request, "medlemmer/medlemmer.html", {'FEATURES': features,
         'medlemsliste': medlemsliste, 'medlemsform': medlemsform})
 
@@ -311,8 +315,9 @@ def view_produksjoner(request):
                 produksjonsliste.filter(reklame__icontains=fritekst))
     else:
         arstall = datetime.datetime.now().year
-        produksjonsform = forms.ProduksjonSearchForm(initial={'fra_ar': (arstall-2)})
-        produksjonsliste = produksjonsliste.filter(premieredato__year__gte=(arstall-2))
+        produksjonsform = forms.ProduksjonSearchForm()
+        produksjonsliste = produksjonsliste.filter(premieredato__year__gte=(arstall-10))
+            # filtrerer ut produksjoner fra de siste 10 årene som utgangspunkt.
     return render(request, 'produksjoner/produksjoner.html', {'FEATURES': features,
         'produksjonsliste': produksjonsliste, 'produksjonsform': produksjonsform})
 
@@ -365,18 +370,21 @@ def view_produksjon_ny(request):
         'produksjonsform': produksjonsform})
 
 
+def get_produsenterfaring(user,produksjon):
+# sjekker om en bruker har produsenterfaring i en gitt produksjon, og returnerer den eventuelle erfaringa.
+    if models.Medlem.objects.filter(brukerkonto=user):
+        return (user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent")).first()
+    else:
+        return None
+
 def view_produksjon_info(request, pid):
     if not features.TOGGLE_PRODUKSJONER:
         return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
-    try:
-        user_medlem = models.Medlem.objects.get(brukerkonto=request.user)
-    except models.Medlem.DoesNotExist:
-        user_medlem = None
+    produsenterfaring = get_produsenterfaring(request.user,produksjon)
     if request.user.has_perm('SITdata.change_produksjon'):
         access = 'admin'
-    elif user_medlem is not None and request.user.is_authenticated \
-            and request.user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent"):
+    elif produsenterfaring:
         access = 'own'
     else:
         access = 'other'
@@ -391,9 +399,10 @@ def view_produksjon_endre(request, pid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
+    produsenterfaring = get_produsenterfaring(request.user,produksjon)
     if request.user.has_perm('SITdata.change_produksjon'):
         ProduksjonForm = forms.ProduksjonAdminForm
-    elif request.user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent"):
+    elif produsenterfaring:
         ProduksjonForm = forms.ProduksjonOwnForm
     else:
         return redirect('/konto/login/?next=%s' % request.path)
@@ -450,9 +459,8 @@ def view_forestilling_fjern(request, fid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     forestilling = get_object_or_404(models.Forestilling, id=fid)
-    if request.user.has_perm('SITdata.delete_forestilling') \
-        or request.user.medlem.erfaringer.all() & forestilling.produksjon.erfaringer.filter(
-        verv__tittel="produsent"):
+    produsenterfaring = get_produsenterfaring(request.user,forestilling.produksjon)
+    if request.user.has_perm('SITdata.delete_forestilling') or produsenterfaring:
         if request.method == 'POST':
             produksjon = forestilling.produksjon
             forestilling.delete()
@@ -468,9 +476,8 @@ def view_anmeldelse_fjern(request, aid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     anmeldelse = get_object_or_404(models.Anmeldelse, id=aid)
-    if request.user.has_perm('SITdata.delete_anmeldelse') \
-        or request.used.medlem.erfaringer.all() & forestilling.produksjon.erfaringer.filter(
-        verv__tittel="produsent"):
+    produsenterfaring = get_produsenterfaring(request.user,anmeldelse.produksjon)
+    if request.user.has_perm('SITdata.delete_anmeldelse') or produsenterfaring:
         if request.method == 'POST':
             produksjon = anmeldelse.produksjon
             anmeldelse.delete()
@@ -504,6 +511,14 @@ def view_verv_ny(request):
         'vervform': vervform})
 
 
+def get_ververfaring(user,verv):
+# sjekker om en bruker har erfaring fra et gitt verv, og returnerer den eventuelle erfaringa.
+    if models.Medlem.objects.filter(brukerkonto=user):
+        return (user.medlem.erfaringer.all() & verv.erfaringer.all()).first()
+    else:
+        return None
+
+
 @login_required
 def view_verv_info(request, vid):
     if not features.TOGGLE_VERV:
@@ -511,9 +526,10 @@ def view_verv_info(request, vid):
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
+    ververfaring = get_ververfaring(request.user,verv)
     if request.user.has_perm('SITdata.change_verv'):
         access = 'admin'
-    elif request.user.medlem.erfaringer.all() & verv.erfaringer.all():
+    elif ververfaring:
         access = 'own'
     else:
         access = 'other'
@@ -528,14 +544,11 @@ def view_verv_endre(request, vid):
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
-    if models.Medlem.objects.filter(brukerkonto=request.user):
-        egen_erfaring = (request.user.medlem.erfaringer.all() & verv.erfaringer.all()).first()
-    else:
-        egen_erfaring = None
+    ververfaring = get_ververfaring(request.user,verv)
     if request.user.has_perm('SITdata.change_verv'):
         VervForm = forms.VervAdminForm
         access = 'admin'
-    elif egen_erfaring:
+    elif ververfaring:
         VervForm = forms.VervOwnForm
         access = 'own'
     else:
@@ -546,8 +559,8 @@ def view_verv_endre(request, vid):
             erfaringsform = forms.ErfaringVervForm(request.POST, request.FILES)
         else:
             erfaringsform = None
-        if egen_erfaring:
-            erfaringsskrivform = forms.ErfaringsskrivForm(request.POST, request.FILES, instance=egen_erfaring)
+        if ververfaring:
+            erfaringsskrivform = forms.ErfaringsskrivForm(request.POST, request.FILES, instance=ververfaring)
         else:
             erfaringsskrivform = None
         if 'lagre_verv' in request.POST and vervform.is_valid():
@@ -567,8 +580,8 @@ def view_verv_endre(request, vid):
             erfaringsform = forms.ErfaringVervForm()
         else:
             erfaringsform = None
-        if egen_erfaring:
-            erfaringsskrivform = forms.ErfaringsskrivForm(instance=egen_erfaring)
+        if ververfaring:
+            erfaringsskrivform = forms.ErfaringsskrivForm(instance=ververfaring)
         else:
             erfaringsskrivform = None
     return render(request, 'verv/verv_endre.html', {'FEATURES': features,
@@ -576,7 +589,7 @@ def view_verv_endre(request, vid):
         'erfaringsskrivform': erfaringsskrivform})
 
 
-@login_required
+@permission_required('SITdata.delete_verv')
 def view_verv_slett(request, vid):
     if not (features.TOGGLE_VERV and features.TOGGLE_EDIT):
         return redirect('hoved')
@@ -596,13 +609,27 @@ def view_erfaring_fjern(request, eid):
         and features.TOGGLE_EDIT):
         return redirect('hoved')
     erfaring = get_object_or_404(models.Erfaring, id=eid)
-    if request.user.has_perm('SITdata.delete_erfaring') \
-            or erfaring.produksjon \
-            and request.user.medlem.erfaringer.all() & erfaring.produksjon.erfaringer.filter(verv__tittel="produsent"):
+    if erfaring.produksjon:
+        produsenterfaring = get_produsenterfaring(request.user,erfaring.produksjon)
+    else:
+        produsenterfaring = None
+    if request.user.has_perm('SITdata.delete_erfaring') or produsenterfaring:
         if request.method == 'POST':
-            medlem = erfaring.medlem
-            erfaring.delete()
-            return redirect('medlem_info', medlem.id)
+            if erfaring.medlem:
+                medlem = erfaring.medlem
+                erfaring.delete()
+                return redirect('medlem_info', medlem.id)
+            elif erfaring.produksjon:
+                produksjon = erfaring.produksjon
+                erfaring.delete()
+                return redirect('produksjon_info', produksjon.id)
+            elif erfaring.verv:
+                verv = erfaring.verv
+                erfaring.delete()
+                return redirect('verv_info', verv.id)
+            else:
+                erfaring.delete()
+                return redirect('hoved')
         return render(request, 'medlemmer/erfaring_fjern.html', {'FEATURES': features,
             'erfaring': erfaring})
     else:
@@ -630,16 +657,24 @@ def view_dokumenter(request):
     return render(request, 'dokumenter.html', {'FEATURES': features})
 
 
+def get_styreerfaring(user,arstall):
+# sjekker om en bruker har styreerfaring fra et gitt år, og returnerer den eventuelle erfaringa.
+    if models.Medlem.objects.filter(brukerkonto=user):
+        return (user.medlem.erfaringer.all() & models.Erfaring.objects.filter(ar=arstall).filter(verv__vervtype=1)).first()
+    else:
+        return None
+
+
 def view_ar_info(request, arstall):
     if not features.TOGGLE_AR:
         return redirect('hoved')
     if arstall < 1910 or arstall > datetime.datetime.now().year:
         return redirect('hoved')
     ar = get_ar(arstall)
+    styreerfaring = get_styreerfaring(request.user,ar.arstall)
     if request.user.has_perm('SITdata.change_ar'):
         access = 'admin'
-    elif request.user.is_authenticated \
-            and request.user.medlem.erfaringer.all() & models.Erfaring.objects.filter(ar=ar.arstall).filter(verv__vervtype=1):
+    elif styreerfaring:
         access = 'own'
     else:
         access = 'other'
@@ -657,9 +692,10 @@ def view_ar_endre(request, arstall):
     if not (features.TOGGLE_AR and features.TOGGLE_EDIT):
         return redirect('hoved')
     ar = get_object_or_404(models.Ar, pk=arstall)
+    styreerfaring = get_styreerfaring(request.user,ar.arstall)
     if request.user.has_perm('SITdata.change_ar'):
         access = 'admin'
-    elif request.user.medlem.erfaringer.all() & models.Erfaring.objects.filter(ar=ar.arstall).filter(verv__vervtype=1):
+    elif styreerfaring:
         access = 'own'
     else:
         return redirect('/konto/login/?next=%s' % request.path)
