@@ -372,6 +372,8 @@ def view_produksjon_ny(request):
 
 def get_produsenterfaring(user,produksjon):
 # sjekker om en bruker har produsenterfaring i en gitt produksjon, og returnerer den eventuelle erfaringa.
+    if not user.is_authenticated:
+        return None
     if models.Medlem.objects.filter(brukerkonto=user):
         return (user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent")).first()
     else:
