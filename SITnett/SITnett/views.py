@@ -22,10 +22,12 @@ def get_ar(arstall):
 
 
 def view_hoved(request):
-    arstall = datetime.datetime.now().year
-    ar = get_ar(arstall)
+    dag = datetime.datetime.now().date()
+    ar = get_ar(dag.year)
+    produksjonsliste = models.Produksjon.objects.filter(premieredato__gte=dag)
+    produksjonsliste = produksjonsliste.filter(blestestart__lte=dag)
     return render(request, 'hoved.html', {'FEATURES': features,
-        'ar': ar})
+        'ar': ar, 'produksjonsliste': produksjonsliste})
 
 
 def view_info(request):

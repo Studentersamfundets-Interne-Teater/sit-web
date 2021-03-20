@@ -98,7 +98,6 @@ class FEATURE_SETTINGS():
     TOGGLE_DOKUMENTER = False  # skrur på dokumentfunksjonalitet.
     TOGGLE_EDIT = True  # skrur på redigeringsfunksjonalitet.
 
-
 FEATURES = FEATURE_SETTINGS()
 
 # Database
