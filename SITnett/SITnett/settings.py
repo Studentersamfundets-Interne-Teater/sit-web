@@ -92,11 +92,11 @@ class FEATURE_SETTINGS():
     TOGGLE_MEDLEMMER = True  # skrur på medlemsoversikt og medlemssider.
     TOGGLE_PRODUKSJONER = True  # skrur på produksjonsoversikt og produksjonssider.
     TOGGLE_ARRANGEMENTER = False  # skrur på arrangementssider.
-    TOGGLE_VERV = True  # skrur på vervoversikt og vervsider.
+    TOGGLE_VERV = False  # skrur på vervoversikt og vervsider.
     TOGGLE_UTTRYKK = False  # skrur på uttrykksliste.
     TOGGLE_ARKIV = False  # skrur på arkivsida (med tidslinje over produksjoner, arrangementer, bilder og hendelser).
     TOGGLE_DOKUMENTER = False  # skrur på dokumentfunksjonalitet.
-    TOGGLE_EDIT = True  # skrur på redigeringsfunksjonalitet.
+    TOGGLE_EDIT = False  # skrur på redigeringsfunksjonalitet.
 
 
 FEATURES = FEATURE_SETTINGS()

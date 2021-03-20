@@ -106,9 +106,15 @@ admin.site.register(models.Hendelse,HendelseAdmin)
 
 
 class FotoAdmin(admin.ModelAdmin):
-    list_display = ['id','fototype','produksjon','arrangement','dato']
+    list_display = ['id','fototype','produksjon','nummer','arrangement','dato']
 
 admin.site.register(models.Foto,FotoAdmin)
+
+
+class OpptakAdmin(admin.ModelAdmin):
+    list_display = ['id','opptakstype','produksjon','nummer','arrangement','dato']
+
+admin.site.register(models.Opptak,OpptakAdmin)
 
 
 class UttrykkAdmin(admin.ModelAdmin):

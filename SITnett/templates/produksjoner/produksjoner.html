@@ -2,29 +2,88 @@
 {% load static %}
 
 {% block innhold %}
-
+	<head>
+		<link rel="stylesheet" href="{% static 'select2.css' %}"/>
+	</head>
 	<div class="production-wrapper">
 		<div class="title-wrapper">
 			<h2>Produksjoner</h2>
 		</div>
-		<div class="card-wrapper">
-			{% for produksjon in produksjonsliste %}
-			<a class="card" href="{% url 'produksjon_info' produksjon.id %}">
-				<img src="{{produksjon.banner.url}}" class="card-image" loading="lazy">
-				<div class="card-container">
-				<h3 class="card-title">{{produksjon.tittel}}</h3> 
-				<div class="text-info text-strong">{{produksjon.spilleperiode}} {{produksjon.premieredato.year}}</div> 
+
+		{{produksjonsform.media.js}}
+		<div class="filter-and-result-container">  
+			<div class="filter-column">
+				<button class="filter-button" onclick="filterFunction()">Filter</button>
+
+				<div id="filter-container" class="filter-hide">
+
+					<form method="get">
+
+						<div class="filter-category">
+							<label>Tittel</label>
+							<div>{{produksjonsform.tittel}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Tags</label>
+							<div style>{{produksjonsform.produksjonstags}}</div>
+						</div>
+						
+						<div class="filter-category">
+							<label>Forfatter</label>
+							<div>{{produksjonsform.forfatter}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Lokale</label>
+							<div>{{produksjonsform.lokale}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Spilleår</label>
+							<div class="year-search-container">
+								<p>Se oppsetninger mellom</p> 
+								<div>{{produksjonsform.fra_ar}} og {{produksjonsform.til_ar}}</div>
+							</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Type</label>
+							{{produksjonsform.produksjonstype}}
+						</div>
+
+						<div class="filter-category">
+							<label>Tekstsøk</label>
+							<div>{{produksjonsform.fritekst}}</div>
+						</div>
+
+						<input type="submit" value="Søk">
+					</form>
 				</div>
-			</a>
-			{% endfor %}
-		</div>
+			</div>
+			<div class="result-column">
+				<div class="card-wrapper">
+					{% for produksjon in produksjonsliste %}
+					<a class="card" href="{% url 'produksjon_info' produksjon.id %}">
+						<img src="{{produksjon.banner.url}}" class="card-image" loading="lazy">
+						<div class="card-container">
+						<h3 class="card-title">{{produksjon.tittel}}</h3> 
+						<div class="text-info text-strong">{{produksjon.spilleperiode}} {{produksjon.premieredato.year}}</div> 
+						</div>
+					</a>
+					{% empty %}
+						Fant ingen produksjoner.
+					{% endfor %}
+				</div>
 
-		{% if FEATURES.TOGGLE_EDIT and perms.SITdata.add_produksjon %}
-		<br><br>
-		<div class="btn-wrapper">
-			<a class="btn" href="{% url 'produksjon_ny' %}">Ny produksjon</a>
+				{% if FEATURES.TOGGLE_EDIT and perms.SITdata.add_produksjon %}
+				<br><br>
+				<div class="btn-wrapper">
+					<a class="btn" href="{% url 'produksjon_ny' %}">Ny produksjon</a>
+				</div>
+				{% endif %}
+			</div>
 		</div>
-		{% endif %}
 	</div>
-
+	<script src="{% static "/filter_accordion.js" %}"></script>
 {% endblock innhold %}
