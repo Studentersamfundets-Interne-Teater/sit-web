@@ -44,61 +44,59 @@
 
 <div class="info-wrapper">
   <div class="info-wrapper-content">
-    <h2>110 år i 2020</h2>
+    <h2>Om SIT</h2>
     <p>
-      SIT er teatergruppa på Studentersamfundet i Trondhjem. Dette er en gjeng
-      på ca 70 personer som har innslag på en rekke av styrets lørdagsmøter, og
-      som også setter opp egne produksjoner. Under UKA har SIT ansvaret for alle
-      teaterproduksjonene, ikke minst UKE-revyen.
+    {% if infotekst %}
+      <p>{{infotekst}}</p>
+    {% else %}
+      <p>Studentersamfundets Interne Teater (SIT) ble stiftet i 1910 og er teatergruppa på Samfundet. Vi består av rundt 70 aktive medlemmer fordelt på de tre undergjengene Kostyme, Kulisse og Skuespill.</p>
+      <p>SIT står for teaterproduksjonene som blir satt opp på Studentersamfundet og har forestillinger hvert semester, herunder ansvar for UKErevyen og andre forestillinger under UKA.</p>
+      <p>Vi har i tillegg ansvar for kunstneriske innslag på Samfundsmøtene i likhet med de andre kunstneriske gjengene på Studentersamfundet.</p>
+    {% endif %}
     </p>
-
-    <p>
-      Gruppa ble offisielt stiftet 3. desember 1910 og het da
-      Studentersamfundets Teater (eller Samfundsteatret). Det «interne teater»
-      var i utgangspunktet betegnelsen på «klikker av teatergutter som slår sig
-      sammen og lager forestillinger bare beregnet for underholdning på møtene»
-      (Studentersamfundet i Trondhjem gjennem 25 år). Gradvis ble
-      Studentersamfundets Interne Teater det offisielle navnet. I programmet for
-      Vær-i-tass (1937) står det «Produsent: S.I.T.» og «Kostymene fra atelier
-      S.I.T.».
-    </p>
+    {% if FEATURES.TOGGLE_AR %}
+      <div class="btn-wrapper">
+        <a class="btn" href="{% url 'ar_info' ar.arstall %}">Les om SIT i {{ar}}</a>
+      </div>
+    {% endif %}
   </div>
   <div class="info-wrapper-image">
-    <img src="{% static 'assets/rodhette.jpg' %}" width="100%" />
+    <img src="{% static 'img/default_info.jpg' %}" width=100%>
     <div class="text-info">
-      Barneteater, Rødhette og ulven (1977)
-      <a
-        href="https://foto.samfundet.no/"
-        target="_blank"
-        rel="noreferrer noopener"
-        >foto.samfundet.no</a
-      >
+      Foto: <a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener">foto.samfundet.no</a>
     </div>
   </div>
 </div>
 
-{% comment %} <div class="production-wrapper">
+{% if blesteliste.count %}
+<div class="production-wrapper">
+  <h2>Kommende produksjoner</h2>
   <div class="card-wrapper">
+    {% for produksjon in blesteliste %}
     <div class="card card__landing">
-      <img class="card-image" src="{% static "img/spring-awakening-card.png" %}" alt="Spring Awkening" class="show-image">
-      <div class="card-container card-container__landing">
-        <h3 class="card-title">Spring Awakening</h3>
-        <span class="show-date text-info">4.&ndash;14. oktober 2020</span>
-        <p class="center-text">Stikkordene er sårbarhet, seksualitet og nakenhet.</p>
-        <a href="#" class="btn btn__tickets">Billetter</a>
-      </div>
+      <a href="{% url 'produksjon_info' produksjon.id %}">
+        <img class="card-image" src="{{produksjon.banner.url}}" class="show-image">
+        <div class="card-container card-container__landing">
+          {% if produksjon.premieredato < dag %}
+            <h4>SPILLES NÅ:</h4>
+          {% endif %}
+          <h3 class="card-title">{{produksjon.tittel}}</h3>
+          <span class="show-date text-info">{{produksjon.spilleperiode}}</span>
+          <p class="center-text"><b>{{produksjon.reklame}}</b></p>
+          {% if produksjon.billettlink %}
+            <a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
+          {% endif %}
+          {% if produksjon.FBlink %}
+            <a href="{{produksjon.FBlink}}" class="some-links">
+            <i class="fa fa-facebook"></i>Facebook-arrangement</a>
+          {% endif %}
+        </div>
+      </a>
     </div>
-    <div class="card card__landing">
-      <img class="card-image" src="{% static "img/dickie-dick-dickens-card.png" %}" alt="Dickie Dick Dickens" class="show-image">
-      <div class="card-container card-container__landing">
-        <h3 class="card-title">Dickie Dick Dickens</h3>
-        <span class="show-date text-info">21.&ndash;22. februar 2021</span>
-        <p class="center-text">Dickie Dick Dickens er «mannen med stålnervene, lynøynene og hjertet av gull».</p>
-        <a href="#" class="btn btn__tickets">Billetter</a>
-      </div>
-    </div>
+    {% endfor %}
   </div>
-</div> {% endcomment %}
+</div>
+{% endif %}
 
 <script src="{% static "/hero_img_picker.js" %}"></script>
 {% endblock innhold %}

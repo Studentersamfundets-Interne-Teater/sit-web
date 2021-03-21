@@ -29,6 +29,10 @@
 					<a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
 				</div>
 				{% endif %}
+				{% if produksjon.FBlink %}
+		        	<a href="{{produksjon.FBlink}}" class="some-links">
+		        	<i class="fa fa-facebook"></i>Facebook-arrangement</a>
+		        {% endif %}
 			</div>
 		</div>
 	</section>	

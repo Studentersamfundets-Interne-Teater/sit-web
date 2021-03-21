@@ -27,27 +27,30 @@ def get_blesteliste(dag):
     blesteliste = models.Produksjon.objects.all()
     pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
     blesteliste = blesteliste.filter(id__in=pids)
-    blesteliste = blesteliste.filter(blestestart__isnull=False)
-    blestesliste = blesteliste.filter(blestestart__lte=dag)
+    blesteliste = blesteliste.filter(blestestart__isnull=False).filter(blestestart__lte=dag)
+    blesteliste = blesteliste.order_by('premieredato')
     return blesteliste
+
+def get_infotekst():
+# henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
+    if models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").count():
+        return models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first().beskrivelse
+    else:
+        return ""
 
 def view_hoved(request):
     dag = datetime.datetime.now().date()
     ar = get_ar(dag.year)
     blesteliste = get_blesteliste(dag)
-    print(blesteliste)
+    infotekst = get_infotekst()
     return render(request, 'hoved.html', {'FEATURES': features,
-        'ar': ar, 'blesteliste': blesteliste})
+        'ar': ar, 'infotekst': infotekst, 'dag': dag, 'blesteliste': blesteliste})
 
 
 def view_info(request):
     arstall = datetime.datetime.now().year
     ar = get_ar(arstall)
-    if models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").count():
-    # henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
-        infotekst = models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first().beskrivelse
-    else:
-        infotekst = ""
+    infotekst = get_infotekst()
     return render(request, 'info.html', {'FEATURES': features,
         'ar': ar, 'infotekst': infotekst})
 
