@@ -127,6 +127,8 @@ class Verv(models.Model):
             return self.tittel[:-2]+"en"
         elif self.tittel[-9:] == "ansvarlig":
             return self.tittel+"e"
+        elif self.tittel[-11:] == " inspisient":
+            return self.tittel[:-11]+"e inspisienter"
         elif self.tittel[-2:] == "er":
             return self.tittel+"e"
         elif self.tittel[-1:] == "e":
@@ -196,6 +198,12 @@ class Produksjon(models.Model):
             forste_dato = self.forestillinger.first().tidspunkt.date()
             siste_dato = self.forestillinger.last().tidspunkt.date()
             datoer = verbose_date_span(forste_dato,siste_dato)
+        elif (self.premieredato.month == 1 and self.premieredato.day == 1):
+            datoer = "Våren "
+        elif (self.premieredato.month == 12 and self.premieredato.day == 24):
+            datoer = "Høsten "
+        elif (self.premieredato.month == 7 and self.premieredato.day == 1):
+            datoer = ""
         else:
             datoer = verbose_date(self.premieredato)[:-4]
         return datoer
