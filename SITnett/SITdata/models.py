@@ -425,6 +425,8 @@ class Ar(models.Model):
     hostmotestart = models.DateField("høstmøtestart",blank=True,null=True) # holder datoen for høstens første mandagsmøte.
     hostmotestopp = models.DateField("høstmøtestopp",blank=True,null=True) # holder datoen for høstens siste mandagsmøte.
     genforstidspunkt = models.DateTimeField(blank=True,null=True) # holder tidspunkt for årets generalforsamling.
+    def full_soknadsfrist(self): # lager en søknadsfrist-string på formen "31. januar 2021 klokka 23.59".
+        return verbose_datetime(self.soknadsfrist)
     class Meta:
         verbose_name = "år"
         verbose_name_plural = "år"

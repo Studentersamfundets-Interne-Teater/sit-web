@@ -23,7 +23,7 @@
       {% endif %}
     </h1>
     {% if ar.forsidetekst %}
-      <p>{{ar.forsidetekst}}</p>
+      <p>{{ar.forsidetekst|linebreaks}}</p>
     {% endif %}
     {% comment %}
       <a class="hero-btn btn" href="{% url 'opptak' %}" class="btn" ref="noopener noreferrer">
@@ -47,7 +47,7 @@
     <h2>Om SIT</h2>
     <p>
     {% if infotekst %}
-      <p>{{infotekst}}</p>
+      <p>{{infotekst|linebreaks}}</p>
     {% else %}
       <p>Studentersamfundets Interne Teater (SIT) ble stiftet i 1910 og er teatergruppa på Samfundet. Vi består av rundt 70 aktive medlemmer fordelt på de tre undergjengene Kostyme, Kulisse og Skuespill.</p>
       <p>SIT står for teaterproduksjonene som blir satt opp på Studentersamfundet og har forestillinger hvert semester, herunder ansvar for UKErevyen og andre forestillinger under UKA.</p>
@@ -82,7 +82,7 @@
           {% endif %}
           <h3 class="card-title">{{produksjon.tittel}}</h3>
           <span class="show-date text-info">{{produksjon.spilleperiode}}</span>
-          <p class="center-text"><b>{{produksjon.reklame}}</b></p>
+          <p class="center-text"><b>{{produksjon.reklame|linebreaks}}</b></p>
           {% if produksjon.billettlink %}
             <a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
           {% endif %}
