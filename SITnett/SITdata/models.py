@@ -184,6 +184,11 @@ class Produksjon(models.Model):
     billettlink = models.CharField(blank=True,max_length=200) # holder en link til kjøp av billetter.
     blestestart = models.DateField("blæstestart",blank=True,null=True) # holder datoen da forsida skal begynne å reklamere for produksjonen.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til Facebook-arrangement.
+    def blestestopp(self): # finner datoen da forsida skal slutte å reklamere for produksjonen.
+        if self.forestillinger.count():
+            return self.forestillinger.last().tidspunkt.date()
+        else:
+            return self.premieredato
     def semester(self): # lager en semesterkode av typen 'H2020'.
         return ("V" if self.premieredato.month < 7 else "H")+str(self.premieredato.year)
     def spilleperiode(self): # lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar".

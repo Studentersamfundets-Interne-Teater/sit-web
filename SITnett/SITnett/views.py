@@ -22,13 +22,22 @@ def get_ar(arstall):
     return ar
 
 
+def get_blesteliste(dag):
+# henter ei liste over produksjoner som skal blestes på forsida.
+    blesteliste = models.Produksjon.objects.all()
+    pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
+    blesteliste = blesteliste.filter(id__in=pids)
+    blesteliste = blesteliste.filter(blestestart__isnull=False)
+    blestesliste = blesteliste.filter(blestestart__lte=dag)
+    return blesteliste
+
 def view_hoved(request):
     dag = datetime.datetime.now().date()
     ar = get_ar(dag.year)
-    produksjonsliste = models.Produksjon.objects.filter(premieredato__gte=dag)
-    produksjonsliste = produksjonsliste.filter(blestestart__lte=dag)
+    blesteliste = get_blesteliste(dag)
+    print(blesteliste)
     return render(request, 'hoved.html', {'FEATURES': features,
-        'ar': ar, 'produksjonsliste': produksjonsliste})
+        'ar': ar, 'blesteliste': blesteliste})
 
 
 def view_info(request):
