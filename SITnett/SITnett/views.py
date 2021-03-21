@@ -515,6 +515,8 @@ def view_verv_ny(request):
 
 def get_ververfaring(user,verv):
 # sjekker om en bruker har erfaring fra et gitt verv, og returnerer den eventuelle erfaringa.
+    if not user.is_authenticated:
+        return None
     if models.Medlem.objects.filter(brukerkonto=user):
         return (user.medlem.erfaringer.all() & verv.erfaringer.all()).first()
     else:
@@ -661,6 +663,8 @@ def view_dokumenter(request):
 
 def get_styreerfaring(user,arstall):
 # sjekker om en bruker har styreerfaring fra et gitt år, og returnerer den eventuelle erfaringa.
+    if not user.is_authenticated:
+        return None
     if models.Medlem.objects.filter(brukerkonto=user):
         return (user.medlem.erfaringer.all() & models.Erfaring.objects.filter(ar=arstall).filter(verv__vervtype=1)).first()
     else:
