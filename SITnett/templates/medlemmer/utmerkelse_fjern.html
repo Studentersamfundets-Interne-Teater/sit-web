@@ -8,7 +8,7 @@
 		{% csrf_token %}
 		<input type="submit" value="Ja">
 	</form>
-	<a href="{% url 'medlem_info' utmerkelse.medlem.id %}">Nei</a>
+	<a href="{% url 'medlem_endre' utmerkelse.medlem.id %}">Nei</a>
 	<br><br>
 
 {% endblock innhold %}
