@@ -199,9 +199,9 @@ class Produksjon(models.Model):
             siste_dato = self.forestillinger.last().tidspunkt.date()
             datoer = verbose_date_span(forste_dato,siste_dato)
         elif (self.premieredato.month == 1 and self.premieredato.day == 1):
-            datoer = "Våren "
+            datoer = "Våren"
         elif (self.premieredato.month == 12 and self.premieredato.day == 24):
-            datoer = "Høsten "
+            datoer = "Høsten"
         elif (self.premieredato.month == 7 and self.premieredato.day == 1):
             datoer = ""
         else:
