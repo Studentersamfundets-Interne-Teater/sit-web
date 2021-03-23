@@ -16,6 +16,8 @@
 							<p>av {{produksjon.forfatter}}</p>
 						{% endif %}
 					{% endblock produksjon_tittel %}
+					<br>
+					<p>{{produksjon.spilleperiode}} {{produksjon.premieredato.year}}</p>
 				</div>
 				{% if produksjon.forestillinger.all %}
 					<div class="production-banner-info">
@@ -140,8 +142,6 @@
 				<br>
 				{% endblock forestilling_fjern %}
 			{% endfor %}
-		{% else %}
-			<b>Premieredato:</b> {{produksjon.full_premieredato}}
 		{% endif %}
 		{% block forestilling_ny %}
 
