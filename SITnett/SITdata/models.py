@@ -119,7 +119,9 @@ class Verv(models.Model):
     instruks = models.TextField(blank=True) # holder en eventuell instruksfesta beskrivelse av vervet.
     beskrivelse = models.TextField(blank=True) # holder en eventuell grundigere beskrivelse av vervet.
     def plural(self): # bøyer vervnavnet i flertall (til listevisninger).
-        if self.tittel[:10] == "medlem av ":
+        if self.tittel[-11:] == " inspisient":
+            return self.tittel[:-11]+"e inspisienter"
+        elif self.tittel[:10] == "medlem av ":
             return self.tittel[10:]
         elif self.tittel[-6:] == "medlem":
             return self.tittel+"mer"
@@ -191,6 +193,12 @@ class Produksjon(models.Model):
             forste_dato = self.forestillinger.first().tidspunkt.date()
             siste_dato = self.forestillinger.last().tidspunkt.date()
             datoer = verbose_date_span(forste_dato,siste_dato)
+        elif (self.premieredato.month == 1 and self.premieredato.day == 1):
+            datoer = "Våren "
+        elif (self.premieredato.month == 12 and self.premieredato.day == 24):
+            datoer = "Høsten "
+        elif (self.premieredato.month == 7 and self.premieredato.day == 1):
+            datoer = ""
         else:
             datoer = verbose_date(self.premieredato)[:-4]
         return datoer
