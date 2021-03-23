@@ -97,7 +97,7 @@ def make_gjengtitteloppslag(ar,authenticated):
             continue
         erfaringer = models.Erfaring.objects.filter(tittel=tittel).order_by('rolle')
         if erfaringer.count() > 1:
-            if tittel[-2:] == "er":
+            if tittel[-2:] == "er" or tittel[-3:] == "lig":
                 titteloppslag[tittel+"e"] = erfaringer
             elif tittel[-1:] == "e":
                 titteloppslag[tittel+"r"] = erfaringer
