@@ -22,7 +22,11 @@
 			{{medlem.get_status_display|capfirst}}, 
 		{% endif %}
 		{% if medlem.undergjeng %}
-			{{medlem.get_undergjeng_display}}
+			{% if medlem.medlemstype > 1 %}
+				{{medlem.get_undergjeng_display}}, senere {{medlem.get_medlemstype_display}}
+			{% else %}
+				{{medlem.get_undergjeng_display}}
+			{% endif %}
 		{% else %}
 			{{medlem.get_medlemstype_display}}
 		{% endif %}
