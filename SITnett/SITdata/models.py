@@ -179,8 +179,8 @@ class Produksjon(models.Model):
     beskrivelse = models.TextField(blank=True) # holder en beskrivelse av produksjonen for eksterne lesere.
     anekdoter = models.TextField(blank=True) # holder ytterligere anekdoter for interne lesere. 
     reklame = models.TextField(blank=True) # holder en reklametekst til bruk på forsida.
-    pris = models.IntegerField(blank=True,null=True) # holder billettpris for eksterne.
-    medlemspris = models.IntegerField(blank=True,null=True) # holder billettpris for medlemmer av Samfundet.
+    pris = models.IntegerField("pris (kr)",blank=True,null=True) # holder billettpris (i kr) for eksterne.
+    medlemspris = models.IntegerField("medlempris (kr)",blank=True,null=True) # holder billettpris (i kr) for medlemmer av Samfundet.
     billettlink = models.CharField(blank=True,max_length=200) # holder en link til kjøp av billetter.
     blestestart = models.DateField("blæstestart",blank=True,null=True) # holder datoen da forsida skal begynne å reklamere for produksjonen.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til Facebook-arrangement.

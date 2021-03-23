@@ -50,7 +50,7 @@
 		{% if produksjon.pris %}
 			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
 			<p> {{produksjon.pris}} kr
-			{% if produksjon.medlemspris %}(Medlem: {{produksjon.medlemspris}} kr){% endif %}</p>
+			{% if produksjon.medlemspris %} (ikke-medlem) / {{produksjon.medlemspris}} kr (medlem){% endif %}</p>
 			</div>
 		{% endif %}
 	</div>
