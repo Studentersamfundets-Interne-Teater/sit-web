@@ -127,8 +127,6 @@ class Verv(models.Model):
             return self.tittel[:-2]+"en"
         elif self.tittel[-9:] == "ansvarlig":
             return self.tittel+"e"
-        elif self.tittel[-11:] == " inspisient":
-            return self.tittel[:-11]+"e inspisienter"
         elif self.tittel[-2:] == "er":
             return self.tittel+"e"
         elif self.tittel[-1:] == "e":
