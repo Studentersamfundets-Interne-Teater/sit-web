@@ -114,9 +114,17 @@ def view_kontakt(request):
     arstall = datetime.datetime.now().year
     styreoppslag = make_styrevervoppslag(arstall)
     vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
-    medlemsliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
     return render(request, 'kontakt.html', {'FEATURES': features,
-        'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'medlemsliste': medlemsliste})
+        'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag})
+
+@login_required
+def view_Lommelista(request):
+    if not features.TOGGLE_KONTAKT:
+        return redirect('hoved')
+    arstall = datetime.datetime.now().year
+    lommeliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
+    return render(request, 'Lommelista.html', {'FEATURES': features,
+        'lommeliste': lommeliste})
 
 
 def view_medlemmer(request):

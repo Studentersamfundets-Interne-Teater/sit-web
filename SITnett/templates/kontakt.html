@@ -1,15 +1,20 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
+
 	<div class="wrapper">
 	
-	{% if user.is_authenticated %}
-		<h2>Lommelista</h2>
-	{% else %}
-		<h2>Kontakt</h2>
-	{% endif %}
+	<h2>Kontakt</h2>
 
-	<b>Generelle henvendelser:</b> sit@samfundet.no <br>
+	{% if user.is_authenticated %}
+		<b>Hele SIT:</b> sit-alle@samfundet.no <br>
+		<b>Hele Kostyme:</b> sit-kostyme@samfundet.no <br>
+		<b>Hele Kulisse:</b> sit-kulisse@samfundet.no <br>
+		<b>Hele Skuespill:</b> sit-skodis@samfundet.no <br><br>
+		<a class="btn" href="{% url 'Lommelista' %}">Lommelista</a>
+	{% else %}
+		<b>Generelle henvendelser:</b> sit@samfundet.no <br>
+	{% endif %}
 
 	<h3>Styret</h3>
 	{% if styreoppslag %}
@@ -153,27 +158,6 @@
 			{% endfor %}
 		</table><br><br>
 	{% endif %}
-
-	{% if user.is_authenticated %}
-		<h3>Medlemmer</h3>
-		<table class="member-table">
-			<tr>
-				<th class="text-strong">Navn</td>
-				<th class="text-strong">Telefon</td>
-				<th class="text-strong">E-post</td>
-			</tr>
-			{% for medlem in medlemsliste %}
-				<tr>
-					<td>
-						<a href="{% url 'medlem_info' medlem.id %}"><b>{{medlem.etternavn}}, {{medlem.fornavn}}
-						{% if medlem.mellomnavn %}{{medlem.mellomnavn}}{% endif %}</b></a>
-					</td>
-					<td>{% if medlem.telefon %}{{medlem.telefon}}{% endif %}</td>
-					<td>{% if medlem.epost %}{{medlem.epost}}{% endif %}</td>
-				</tr>
-			{% endfor %}
-		</table><br><br>
-	{% endif %}
-</div>
+	</div>
 
 {% endblock innhold %}
