@@ -44,7 +44,7 @@
 		</div>
 		{% if produksjon.varighet %}
 			<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
-			<p>{{produksjon.varighet}}</p>
+			<p>{{produksjon.varighet|capfirst}}</p>
 			</div>
 		{% endif %}
 		{% if produksjon.pris %}
