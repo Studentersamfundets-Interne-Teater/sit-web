@@ -28,7 +28,7 @@
 						{% else %}
 							<td><b>{{verv.plural|capfirst}}:</b></td>
 						{% endif %}
-						<td>
+						<td><div style="display: inline-block; white-space: nowrap">
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -39,11 +39,9 @@
 							{{erfaringer.first.navn}}
 						{% endif %}
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
-						</td>
 						{% for erfaring in erfaringer %}
 							{% if forloop.counter > 1 %}
-								<td></td><td></td></tr><tr><td></td>
-								<td>
+								,&nbsp;</div><div style="display: inline-block; white-space: nowrap"> 
 								{% if erfaring.medlem %}
 									{% if FEATURES.TOGGLE_MEDLEMMER %}
 										<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
@@ -54,16 +52,16 @@
 									{{erfaring.navn}}
 								{% endif %}
 								{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
-								</td>
 							{% endif %}
 						{% endfor %}
+						</div></td>
 					{% else %}
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
 							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a></td>
 						{% else %}
 							<td><b>{{verv.tittel|capfirst}}:</b></td>
 						{% endif %}
-						<td>
+						<td><div style="display: inline-block; white-space: nowrap">
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -74,7 +72,7 @@
 							{{erfaringer.first.navn}}
 						{% endif %}
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
-						</td>
+						</div></td>
 					{% endif %}
 					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
@@ -103,7 +101,7 @@
 						{% else %}
 							<td><b>{{verv.plural|capfirst}}:</b></td>
 						{% endif %}
-						<td>
+						<td><div style="display: inline-block; white-space: nowrap">
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -114,11 +112,9 @@
 							{{erfaringer.first.navn}}
 						{% endif %}
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
-						</td>
 						{% for erfaring in erfaringer %}
 							{% if forloop.counter > 1 %}
-								<td></td><td></td></tr><tr><td></td>
-								<td>
+								,&nbsp;</div><div style="display: inline-block; white-space: nowrap"> 
 								{% if erfaring.medlem %}
 									{% if FEATURES.TOGGLE_MEDLEMMER %}
 										<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
@@ -129,16 +125,16 @@
 									{{erfaring.navn}}
 								{% endif %}
 								{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
-								</td>
 							{% endif %}
 						{% endfor %}
+						</div></td>
 					{% else %}
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
 							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a></td>
 						{% else %}
 							<td><b>{{verv.tittel|capfirst}}:</b></td>
 						{% endif %}
-						<td>
+						<td><div style="display: inline-block; white-space: nowrap">
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -149,7 +145,7 @@
 							{{erfaringer.first.navn}}
 						{% endif %}
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
-						</td>
+						</div></td>
 					{% endif %}
 					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
