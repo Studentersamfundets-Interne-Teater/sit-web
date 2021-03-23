@@ -400,8 +400,12 @@ def view_produksjon_info(request, pid):
         access = 'other'
     vervoppslag = make_produksjonsvervoppslag(produksjon)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
+    produksjonstags = produksjon.produksjonstags.all()
+    if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
+        produksjonstags = produksjonstags.exclude(tag="revy")
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
-        'produksjon': produksjon, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
+        'produksjon': produksjon, 'produksjonstags': produksjonstags,
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
 
 
 @login_required

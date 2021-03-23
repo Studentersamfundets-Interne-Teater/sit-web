@@ -184,25 +184,58 @@ class Produksjon(models.Model):
     billettlink = models.CharField(blank=True,max_length=200) # holder en link til kjøp av billetter.
     blestestart = models.DateField("blæstestart",blank=True,null=True) # holder datoen da forsida skal begynne å reklamere for produksjonen.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til Facebook-arrangement.
-    def semester(self): # lager en semesterkode av typen 'H2020'.
-        return ("V" if self.premieredato.month < 7 else "H")+str(self.premieredato.year)
+    def UKEtype(self): # returnerer om produksjonen er en UKEproduksjon, og i så fall hvilken type.
+        if self.produksjonstype == 4:
+            if self.produksjonstags.filter(tag="UKErevy"):
+                return "UKErevy"
+            elif self.produksjonstags.filter(tag="supperevy"):
+                return "supperevy"
+            else:
+                return "UKEintim"
+        else:
+            return ""
+    def semester(self): # lager en semesterkode av typen 'H2021' (eller 'UKA-21' hvis produksjonen er en UKEproduksjon).
+        if self.produksjonstype == 4:
+            ar = datetime.datetime.now().year
+            if self.premieredato.year > (ar-98):
+                return "UKA-"+str(self.premieredato.year)[-2:]
+            else:
+                return "UKA-"+str(self.premieredato.year)
+        elif self.produksjonstype == 5:
+            ar = datetime.datetime.now().year
+            if self.premieredato.year > (ar-98):
+                return "ISFiT-"+str(self.premieredato.year)[-2:]
+            else:
+                return "ISFiT-"+str(self.premieredato.year)
+        elif self.premieredato.month == 7 and self.premieredato.day == 1:
+            return str(self.premieredato.year)
+        elif self.premieredato.month < 7:
+            return "V"+str(self.premieredato.year)
+        else:
+            return "H"+str(self.premieredato.year)
     def spilleperiode(self): # lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar".
-        if self.forestillinger.count() > 1:
+        if self.produksjonstype == 4:
+            return "UKA"
+        elif self.produksjonstype == 5:
+            return "ISFiT"
+        elif self.forestillinger.count() > 1:
             forste_dato = self.forestillinger.first().tidspunkt.date()
             siste_dato = self.forestillinger.last().tidspunkt.date()
-            datoer = verbose_date_span(forste_dato,siste_dato)
-        elif (self.premieredato.month == 1 and self.premieredato.day == 1):
-            datoer = "Våren "
-        elif (self.premieredato.month == 12 and self.premieredato.day == 24):
-            datoer = "Høsten "
+            if forste_dato == siste_dato:
+                return verbose_date(forste_dato)[:-5]
+            else:
+                return verbose_date_span(forste_dato,siste_dato)
         elif (self.premieredato.month == 7 and self.premieredato.day == 1):
-            datoer = ""
+            return ""
+        elif (self.premieredato.month == 1 and self.premieredato.day == 1):
+            return "vår"
+        elif (self.premieredato.month == 12 and self.premieredato.day == 24):
+            return "høst"
         else:
-            datoer = verbose_date(self.premieredato)[:-4]
-        return datoer
+            return verbose_date(self.premieredato)[:-5]
     def full_premieredato(self): # lager en premieredato-string på formen "15. februar 2021" hvis datoen er kjent, ellers "Ukjent".
         if ((self.premieredato.month == 1 or self.premieredato.month == 7) and self.premieredato.day == 1) or (self.premieredato.month == 12 and self.premieredato.day == 24):
-            return "Ukjent"
+            return "ukjent"
         else:
             return verbose_date(self.premieredato)
     class Meta:
