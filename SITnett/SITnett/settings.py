@@ -129,8 +129,8 @@ DATETIME_FORMAT = r"d.m.Y \k\l\o\k\k\a H.i"
 DATETIME_INPUT_FORMATS = ["%d.%m.%Y %H.%M"]
 DATE_FORMAT = r"d.m.Y"
 DATE_INPUT_FORMATS = ["%d.%m.%Y"]
-TIME_FORMAT = r"H.i"
-TIME_INPUT_FORMATS = ["%H.%M"]
+TIME_FORMAT = r"H.i.s"
+TIME_INPUT_FORMATS = ["%H.%M.%S"]
 
 MONTH_NAMES = {1:"januar",2:"februar",3:"mars",4:"april",5:"mai",6:"juni",7:"juli",
     8:"august",9:"september",10:"oktober",11:"november",12:"desember"}
