@@ -39,7 +39,7 @@ class Medlem(models.Model):
     MEDLEMSTYPER = ((1,'SIT'),(2,'Regi'),(3,'FK'),(4,'VK'),
         (5,'SO'),(6,'TSS'),(7,'TKS'),(8,'SPO'),(9,'UKA'),(10,'ISFiT'),
         (11,'MG'),(12,'ITK'),(13,'ARK'),(14,'FG'),(15,'KSG'),
-        (16,'KU'),(17,'KLST'),(18,'LØK'),(19,'DG'),(20,'Profil'),(21,'ekstern'))
+        (16,'KU'),(17,'KLST'),(18,'LØK'),(19,'DG'),(20,'SM'),(21,'Profil'),(22,'ekstern'))
     medlemstype = models.IntegerField(choices=MEDLEMSTYPER,default=1)
     fornavn = models.CharField(max_length=100)
     mellomnavn = models.CharField(blank=True,max_length=100)
@@ -281,7 +281,7 @@ class Nummer(models.Model):
         verbose_name_plural = "numre"
         ordering = ['-produksjon__premieredato','tittel']
     def __str__(self):
-        return self.tittel
+        return '"'+self.tittel+'"'+" fra "+str(self.produksjon)
 
 
 class Anmeldelse(models.Model):
@@ -367,6 +367,7 @@ class Foto(models.Model):
     # Typen 'gruppe' er ment for portrett- eller gruppebilder tatt av FG (feks gjengfoto, prodapp-bilde, bandbilde, ...).
     fototype = models.IntegerField(choices=FOTOTYPER)
     fotograf = models.CharField(blank=True,max_length=200)
+    offentlig = models.BooleanField(default=True) # avgjør om bildet skal ligge offentlig eller kun for interne.
     medlemmer = models.ManyToManyField(Medlem,blank=True) # holder ei eventuell liste over medlemmene som er med i fotoet.
     produksjon = models.ForeignKey(Produksjon,models.PROTECT,blank=True,null=True,related_name='bilder')
     nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='bilder')
@@ -382,7 +383,7 @@ class Foto(models.Model):
         if (self.produksjon):
             return self.get_fototype_display()+"bilde fra "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_fototype_display()+"bilde fra nummeret "+str(self.nummer)+" i "+str(self.nummer.produksjon)
+            return self.get_fototype_display()+"bilde fra nummeret "+str(self.nummer)
         elif (self.arrangement):
             return self.get_fototype_display()+"bilde fra "+str(self.arrangement)
         else:
@@ -393,21 +394,25 @@ class Opptak(models.Model):
 # holder opptak fra produksjoner, numre, arrangementer eller sosiale sammenkomster.
     OPPTAKSTYPER = ((1,'video'),(2,'lyd'))
     opptakstype = models.IntegerField(choices=OPPTAKSTYPER)
+    offentlig = models.BooleanField(default=True) # avgjør om opptaket skal ligge offentlig eller kun for interne.
     medlemmer = models.ManyToManyField(Medlem,blank=True) # holder ei eventuell liste over medlemmene som er med i opptaket.
     produksjon = models.ForeignKey(Produksjon,models.PROTECT,blank=True,null=True,related_name='opptak')
     nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='opptak')
     arrangement = models.ForeignKey(Arrangement,models.PROTECT,blank=True,null=True,related_name='opptak')
     dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis opptaket ikke er knytta til en produksjon, et nummer eller et arrangement.
-    fil = models.FileField(upload_to='opptak/') # holder selve fila med opptaket.
+    kilde = models.ForeignKey('self',models.PROTECT,blank=True,null=True,related_name='utdrag') # holder referanse til et eventuelt annet opptak som dette opptaket er utdrag fra.
+    kildestart = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget starter.
+    kildestopp = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget stopper.
+    fil = models.FileField(upload_to='opptak/',blank=True) # holder selve fila med opptaket hvis opptaket ikke er et utdrag.
     kontekst = models.TextField() # holder en infotekst til opptaket (hva, når, hvor, utdypende, ...).
     class Meta:
         verbose_name_plural = "opptak"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','opptakstype']
     def __str__(self):
         if (self.produksjon):
-            return self.get_opptakstype_display()+"opptak fra "+str(self.produksjon)
+            return self.get_opptakstype_display()+"opptak av "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_opptakstype_display()+"opptak fra nummeret "+str(self.nummer)+" i "+str(self.nummer.produksjon)
+            return self.get_opptakstype_display()+"opptak av nummeret "+str(self.nummer)
         elif (self.arrangement):
             return self.get_opptakstype_display()+"opptak fra "+str(self.arrangement)
         else:
