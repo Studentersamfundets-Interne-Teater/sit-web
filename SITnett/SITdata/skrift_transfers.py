@@ -1,12 +1,16 @@
 import sys
 # FYLL INN DIN LOKALE FILSTI TIL SITNETT HER:
 #sys.path.append("/home/cassarossa/sit/web/sit-web-2020/SITnett")
-sys.path.append("C:/Users/jonas/Documents/Kode/Django/sit-web/SITnett")
+sys.path.append("C:/Users/jacob/sit-web/SITnett")
 
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "SITnett.settings")
+import subprocess
+
+
 import django
 django.setup()
+
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
@@ -183,7 +187,15 @@ def get_lydfil_dicts(url='http://skrift.no/sit/index.asp?vis=lyd', location= '/U
     lydfil_lines = lydfil_file.readlines()
     for i in range(len(lydfil_lines)):
         if lydfil_lines[i].find('mp3.flv') != -1:
-            files[i] = lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".flv")+4]
+            files[i] = lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".mp3")+4]
+            url, fname = get_url_filename(lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".flv")+4])
+            try:
+                r = requests.get(url.replace("*", ""), allow_redirects=True, stream=True)
+                shutil.copyfileobj(r.raw, open(settings.MEDIA_ROOT + '/temp/flv_lydopptak/' + fname, 'wb'))
+            except:
+                url = url.replace("http://localhost/skrift.no", "").replace("//sit", "").replace("/sit", "")
+                shutil.copyfileobj(open(location + url, 'rb'),
+                                   open(settings.MEDIA_ROOT + '/temp/flv_lydopptak/' + fname, 'wb'))
         elif lydfil_lines[i].find('mp3') != -1:
             files[i] = lydfil_lines[i][lydfil_lines[i].find("http"):lydfil_lines[i].find(".mp3")+4]
         elif lydfil_lines[i].find('.flv') != -1:
@@ -264,13 +276,21 @@ def create_nummer(nummer, nummer_dict, location, prod_for_opptak):
     url, fname = get_url_filename(nummer_dict['fil'])
     url=url.replace('*','')
     fname=fname.replace('*','')
+
     try:
         r = requests.get(url.replace("*",""), allow_redirects=True, stream=True)
         shutil.copyfileobj(r.raw, open(settings.MEDIA_ROOT + '/opptak/' + fname, 'wb'))
+
     except:
         url = url.replace("http://localhost/skrift.no", "").replace("//sit", "").replace("/sit", "")
         shutil.copyfileobj(open(location + url, 'rb'),
-                           open(settings.MEDIA_ROOT + '/opptak/' + fname, 'wb'))
+                               open(settings.MEDIA_ROOT + '/opptak/' + fname, 'wb'))
+
+    if url[-3:] == 'flv':
+        pdb.set_trace()
+        subprocess.call(['ffmpeg', '-i', (settings.MEDIA_ROOT + '/opptak/' + fname).replace("\\","/"), os.path(settings.MEDIA_ROOT + '/opptak/'+fname.replace('.flv', '.mp4'))])
+        fname = fname.replace('.flv', '.mp4')
+
     fil = '/opptak/' + fname
 
     if nummer_dict['type'] == 'lyd':
@@ -278,7 +298,7 @@ def create_nummer(nummer, nummer_dict, location, prod_for_opptak):
     else:
         opptakstype = 1
 
-    kontekst = "Opptak fra nummeret "+new_nummer.tittel+" i produksjonen "+produksjon.tittel
+    kontekst = "Opptak av nummeret "+new_nummer.tittel+" fra produksjonen "+produksjon.tittel
 
     new_opptak = models.Opptak.objects.create(fil=fil, nummer=new_nummer, opptakstype=opptakstype, kontekst=kontekst)
     new_opptak.save()
@@ -1163,15 +1183,19 @@ def transfer_all_arsverv(location):
 
 
 def transfer_all_numre(location):
-    dict_of_lydfil_dicts = get_lydfil_dicts(location=location)
-    # for line in lydfil_file.readlines():
-    prod = models.Produksjon.objects.create(tittel="Opptak fra skrift", premieredato=datetime.date(2020, 12, 31))
-    prod.save()
     try:
+        os.mkdir(settings.MEDIA_ROOT + '/temp')
+        os.mkdir(settings.MEDIA_ROOT + '/temp/flv_lydopptak')
         os.mkdir(location+'numre')
         os.mkdir(settings.MEDIA_ROOT + '/opptak')
     except:
         pass
+
+    dict_of_lydfil_dicts = get_lydfil_dicts(location=location)
+    # for line in lydfil_file.readlines():
+    prod = models.Produksjon.objects.create(tittel="Opptak fra skrift", premieredato=datetime.date(2020, 12, 31))
+    prod.save()
+
     for nummer, nummer_dict in dict_of_lydfil_dicts.items():
         create_nummer(nummer, nummer_dict, location, prod)
 
@@ -1185,5 +1209,8 @@ def fixtext(s):
 
 if __name__ == "__main__":
     # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
-    Skriftdata_path = '/Users/jonas/Desktop/Skriftdata/'
+    Skriftdata_path = '/Users/jacob/Downloads/sit skrift/sit/'
+    # transfer_all_medlemmer(Skriftdata_path)
+    # transfer_all_produksjoner(Skriftdata_path)
+    # transfer_all_arsverv(Skriftdata_path)
     transfer_all_numre(Skriftdata_path)
