@@ -174,25 +174,22 @@
 		<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
-			<div class="image-gallery">
-				<nav class="gallery-nav">
-					{% if produksjon.bilder.count %}
-						{% for bilde in produksjon.bilder.all %}
-							<img class="image-in-gallery" src="{{bilde.fil.url}}" 
-							alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br/>
-							{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %} <br/>
-							{% if bilde.arrangement %} {{ bilde.arrangement }} {% endif %} 
-							{% if bilde.dato %} {{ bilde.dato }} {% endif %}" onclick="galleryNavigation(this);" />
-						{% endfor %}
-					{% endif %}
-				</nav>
-				{% if produksjon.plakat %}
-					<div class="gallery-focus-container">
-						<img class="gallery-focus" src="{{produksjon.plakat.url}}" id="expandedImg">
-					</div>
+			<div class="gallery">
+				{% if produksjon.bilder.count %}
+					{% for bilde in produksjon.bilder.all %}
+						<figure class="galleryItem">
+							<a href="#"><img src="{{bilde.fil.url}}" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %}
+								{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
+								{% if bilde.arrangement %} {{ bilde.arrangement }} {% endif %} 
+								{% if bilde.dato %} {{ bilde.dato }} {% endif %}"></a>
+								<figcaption>{% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} </br>
+									{% if bilde.medlemmer %}{% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}</br>
+									{% if bilde.arrangement %} {{ bilde.arrangement }} {% endif %} 
+									{% if bilde.dato %} {{ bilde.dato }} {% endif %}</figcaption>
+						</figure>
+					{% endfor %}
 				{% endif %}
 			</div>
-			{% if produksjon.plakat %}<div id="imgtext">Plakat</div>{% endif %}
 		</div>
 
 		<div class="divider"></div>
@@ -215,7 +212,6 @@
 		{% endif %}
 
 	{% endblock produksjon_nav %}
-	
+	<script src="{% static 'gallery.js' %}"></script>
 	<script src="{% static 'collapsible.js' %}"></script>
-	<script src="{% static 'image_gallery.js' %}"></script>
 {% endblock innhold %}
