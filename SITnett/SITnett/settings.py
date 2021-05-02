@@ -129,8 +129,8 @@ DATETIME_FORMAT = r"d.m.Y \k\l\o\k\k\a H.i"
 DATETIME_INPUT_FORMATS = ["%d.%m.%Y %H.%M"]
 DATE_FORMAT = r"d.m.Y"
 DATE_INPUT_FORMATS = ["%d.%m.%Y"]
-TIME_FORMAT = r"H.i"
-TIME_INPUT_FORMATS = ["%H.%M"]
+TIME_FORMAT = r"H.i.s"
+TIME_INPUT_FORMATS = ["%H.%M.%S"]
 
 MONTH_NAMES = {1:"januar",2:"februar",3:"mars",4:"april",5:"mai",6:"juni",7:"juli",
     8:"august",9:"september",10:"oktober",11:"november",12:"desember"}
@@ -172,3 +172,35 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname}, {asctime}. {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'warning_file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': './logs/warnings.txt'
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': './logs/errors.txt'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['warning_file', 'error_file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    }
+}

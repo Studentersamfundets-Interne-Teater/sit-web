@@ -1,0 +1,28 @@
+{% extends "meny.html" %}
+
+{% block innhold %}
+
+	<div class="wrapper">
+	
+	<h2>Lommelista</h2>
+
+	<table class="member-table">
+		<tr>
+			<th class="text-strong">Navn</td>
+			<th class="text-strong">Telefon</td>
+			<th class="text-strong">E-post</td>
+		</tr>
+		{% for medlem in lommeliste %}
+			<tr>
+				<td>
+					<a href="{% url 'medlem_info' medlem.id %}"><b>{{medlem.etternavn}}, {{medlem.fornavn}}
+					{% if medlem.mellomnavn %}{{medlem.mellomnavn}}{% endif %}</b></a>
+				</td>
+				<td>{% if medlem.telefon %}{{medlem.telefon}}{% endif %}</td>
+				<td>{% if medlem.epost %}{{medlem.epost}}{% endif %}</td>
+			</tr>
+		{% endfor %}
+	</table><br><br>
+	</div>
+
+{% endblock innhold %}

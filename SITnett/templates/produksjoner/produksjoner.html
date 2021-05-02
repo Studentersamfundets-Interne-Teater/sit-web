@@ -67,8 +67,16 @@
 					<a class="card" href="{% url 'produksjon_info' produksjon.id %}">
 						<img src="{{produksjon.banner.url}}" class="card-image" loading="lazy">
 						<div class="card-container">
-						<h3 class="card-title">{{produksjon.tittel}}</h3> 
-						<div class="text-info text-strong">{{produksjon.spilleperiode}} {{produksjon.premieredato.year}}</div> 
+							<h3 class="card-title">{{produksjon.tittel}}</h3> 
+							<div class="text-info text-strong">
+								{% if produksjon.produksjonstype == 4 or produksjon.produksjonstype == 5 %}
+									{{produksjon.semester}}
+								{% elif produksjon.spilleperiode %}
+									{{produksjon.spilleperiode|capfirst}} {{produksjon.premieredato.year}}
+								{% else %}
+									{{produksjon.premieredato.year}}
+								{% endif %}
+							</div> 
 						</div>
 					</a>
 					{% empty %}

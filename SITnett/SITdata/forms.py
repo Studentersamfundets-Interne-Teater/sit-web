@@ -59,14 +59,14 @@ class ProduksjonAdminForm(forms.ModelForm):
     class Meta:
         model = models.Produksjon
         fields = ['tittel','produksjonstype','produksjonstags','forfatter','opphavsar','premieredato','varighet','lokale','banner','plakat','program','manus','partitur','visehefte','beskrivelse','anekdoter','reklame','pris','medlemspris','billettlink','blestestart','FBlink']
-        labels = {'opphavsar':"Opphavsår",'premieredato':"Premieredato (DD.MM.ÅÅÅÅ)",'beskrivelse':"Beskrivelse (for eksterne)",'anekdoter':"Ytterligere anekdoter (for interne)",'reklame':"Reklametekst (til forsida)",'pris':"Billettpris (ikke-medlem)",'medlemspris':"Billettpris (medlem)",'blestestart':"Blæstestart (på forsida)"}
+        labels = {'opphavsar':"Opphavsår",'premieredato':"Premieredato (DD.MM.ÅÅÅÅ)",'beskrivelse':"Beskrivelse (for eksterne)",'anekdoter':"Ytterligere anekdoter (for interne)",'reklame':"Reklametekst (til forsida)",'pris':"Billettpris (i kr)",'medlemspris':"Billettpris for medlemmer (i kr)",'blestestart':"Blæstestart (på forsida)"}
         widgets = {'banner':CustomFileInput,'plakat':CustomFileInput,'opptak':CustomFileInput,'program':CustomFileInput,'manus':CustomFileInput,'partitur':CustomFileInput,'visehefte':CustomFileInput}
 
 class ProduksjonOwnForm(forms.ModelForm):
     class Meta:
         model = models.Produksjon
         fields = ['produksjonstags','varighet','lokale','banner','plakat','program','manus','partitur','visehefte','beskrivelse','anekdoter','reklame','pris','medlemspris','billettlink','blestestart','FBlink']
-        labels = {'beskrivelse':"Beskrivelse (for eksterne)",'anekdoter':"Ytterligere anekdoter (for interne)",'reklame':"Reklametekst (til forsida)",'pris':"Billettpris (ikke-medlem)",'medlemspris':"Billettpris (medlem)",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
+        labels = {'beskrivelse':"Beskrivelse (for eksterne)",'anekdoter':"Ytterligere anekdoter (for interne)",'reklame':"Reklametekst (til forsida)",'pris':"Billettpris (i kr)",'medlemspris':"Billettpris for medlemmer (i kr)",'blestestart':"Blæstestart",'FBlink':"Facebook-link"}
         widgets = {'banner':CustomFileInput,'plakat':CustomFileInput,'program':CustomFileInput,'manus':CustomFileInput,'partitur':CustomFileInput,'visehefte':CustomFileInput,}
 
 
