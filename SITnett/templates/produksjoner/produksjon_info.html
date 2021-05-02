@@ -31,7 +31,7 @@
 				{% endif %}
 			</div>
 		</div>
-	</section>	
+	</section>
 
 	<div class="production-extra-info">
 		{% if produksjon.produksjonstags.count %}
@@ -54,7 +54,7 @@
 			</div>
 		{% endif %}
 	</div>
-	
+
 	<section class="production-information" id="production-info">
 		<div class="firstDivider"></div>
 		<a class="production-categories">Beskrivelse</a>
@@ -129,11 +129,11 @@
 
 		{% endblock medvirkende_ny %}
 		</div>
-		
+
 		<div class="divider"></div>
 		<a class="production-categories">Forestillinger</a>
 		<div class="production-category-content">
-		{% if produksjon.forestillinger.all %}	
+		{% if produksjon.forestillinger.all %}
 			{% for forestilling in produksjon.forestillinger.all %}
 				{{forestilling.fullt_tidspunkt}}
 				{% block forestilling_fjern %}
@@ -179,13 +179,10 @@
 					{% for bilde in produksjon.bilder.all %}
 						<figure class="galleryItem">
 							<a href="#"><img src="{{bilde.fil.url}}" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %}
-								{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
-								{% if bilde.arrangement %} {{ bilde.arrangement }} {% endif %} 
-								{% if bilde.dato %} {{ bilde.dato }} {% endif %}"></a>
-								<figcaption>{% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} </br>
-									{% if bilde.medlemmer %}{% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}</br>
-									{% if bilde.arrangement %} {{ bilde.arrangement }} {% endif %} 
-									{% if bilde.dato %} {{ bilde.dato }} {% endif %}</figcaption>
+								{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}"></a>
+								<figcaption>{% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br>
+									{% if bilde.medlemmer %}{% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
+								</figcaption>
 						</figure>
 					{% endfor %}
 				{% endif %}
