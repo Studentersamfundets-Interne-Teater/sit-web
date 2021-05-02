@@ -16,6 +16,19 @@
 							<p>av {{produksjon.forfatter}}</p>
 						{% endif %}
 					{% endblock produksjon_tittel %}
+					<br>
+					<p>
+					{% if produksjon.produksjonstype == 2 or produksjon.produksjonstype == 3 %}
+						{{produksjon.get_produksjonstype_display}}, 
+					{% endif %}
+					{% if produksjon.produksjonstype == 4 or produksjon.produksjonstype == 5 %}
+						{{produksjon.semester}}
+					{% elif produksjon.spilleperiode %}
+						{{produksjon.spilleperiode|capfirst}} {{produksjon.premieredato.year}}
+					{% else %}
+						{{produksjon.premieredato.year}}
+					{% endif %}
+					</p>
 				</div>
 				{% if produksjon.forestillinger.all %}
 					<div class="production-banner-info">
@@ -34,9 +47,9 @@
 	</section>
 
 	<div class="production-extra-info">
-		{% if produksjon.produksjonstags.count %}
+		{% if produksjonstags.count %}
 			<div class="production-extra-info-box"><img src="{% static 'assets/genre_icon.svg' %}">
-			<p>{{produksjon.produksjonstags.all|join:", "|capfirst}}</p>
+			<p>{{produksjonstags|join:", "|capfirst}}</p>
 			</div>
 		{% endif %}
 		<div class="production-extra-info-box"><img src="{% static 'assets/location_icon.svg' %}">
@@ -44,13 +57,13 @@
 		</div>
 		{% if produksjon.varighet %}
 			<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
-			<p>{{produksjon.varighet}}</p>
+			<p>{{produksjon.varighet|capfirst}}</p>
 			</div>
 		{% endif %}
 		{% if produksjon.pris %}
 			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
 			<p> {{produksjon.pris}} kr
-			{% if produksjon.medlemspris %}(Medlem: {{produksjon.medlemspris}} kr){% endif %}</p>
+			{% if produksjon.medlemspris %} (ikke-medlem) / {{produksjon.medlemspris}} kr (medlem){% endif %}</p>
 			</div>
 		{% endif %}
 	</div>
@@ -74,17 +87,91 @@
 		{% if vervoppslag %}
 			{% for verv, erfaringer in vervoppslag.items %}
 				{% if FEATURES.TOGGLE_VERV and verv.erfaringsoverforing and user.is_authenticated %}
-					{% if erfaringer.count > 1 %}
-						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a><br>
+					<a href="{% url 'verv_info' verv.id %}"><b>
+				{% else %}
+					<b>
+				{% endif %}
+				{% if erfaringer.count > 1 %}
+					{% if produksjon.UKEtype == "UKErevy" %}
+						{% if verv.tittel == "forfatter" %}
+							Forfatterkollegiet:
+						{% elif verv.tittel == "komponist" %}
+							Komponistkollegiet:
+						{% elif verv.tittel == "musiker" %}
+							Revybandet:
+						{% elif verv.tittel == "lysdesigner" %}
+							Lysmestere:
+						{% elif verv.tittel == "lystekniker" %}
+							Lyslaget:
+						{% elif verv.tittel == "videodesigner" %}
+							Videomestere:
+						{% elif verv.tittel == "videotekniker" %}
+							Videolaget:
+						{% elif verv.tittel == "lysreklamist" %}
+							Lysreklamen:
+						{% else %}
+							{{verv.plural|capfirst}}:
+						{% endif %}
+					{% elif produksjon.UKEtype == "UKEintim" %}
+						{% if verv.tittel == "forfatter" %}
+							Forfatterkollegiet:
+						{% elif verv.tittel == "komponist" %}
+							Komponistkollegiet:
+						{% elif verv.tittel == "musiker" %}
+							Bandet:
+						{% else %}
+							{{verv.plural|capfirst}}:
+						{% endif %}
+					{% elif produksjon.UKEtype == "supperevy" %}
+						{% if verv.tittel == "produsent" %}
+							Suppedirektører:
+						{% elif verv.tittel == "regissør" %}
+							Supperegissører:
+						{% elif verv.tittel == "lystekniker" %}
+							Suppelys:
+						{% elif verv.tittel == "lydtekniker" %}
+							Suppelyd:
+						{% else %}
+							{{verv.plural|capfirst}}:
+						{% endif %}
 					{% else %}
-						<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a><br>
+						{{verv.plural|capfirst}}:
 					{% endif %}
 				{% else %}
-					{% if erfaringer.count > 1 %}
-						<b>{{verv.plural|capfirst}}:</b><br>
+					{% if produksjon.UKEtype == "UKErevy" %}
+						{% if verv.tittel == "lysdesigner" %}
+							Lysmester:
+						{% elif verv.tittel == "lystekniker" %}
+							Lyslaget:
+						{% elif verv.tittel == "videodesigner" %}
+							Videomester:
+						{% elif verv.tittel == "videotekniker" %}
+							Videolaget:
+						{% elif verv.tittel == "lysreklamist" %}
+							Lysreklamen:
+						{% else %}
+							{{verv.tittel|capfirst}}:
+						{% endif %}
+					{% elif produksjon.UKEtype == "supperevy" %}
+						{% if verv.tittel == "produsent" %}
+							Suppedirektør:
+						{% elif verv.tittel == "regissør" %}
+							Supperegissør:
+						{% elif verv.tittel == "lystekniker" %}
+							Suppelys:
+						{% elif verv.tittel == "lydtekniker" %}
+							Suppelyd:
+						{% else %}
+							{{verv.tittel|capfirst}}:
+						{% endif %}
 					{% else %}
-						<b>{{verv.tittel|capfirst}}:</b><br>
+						{{verv.tittel|capfirst}}:
 					{% endif %}
+				{% endif %}
+				{% if FEATURES.TOGGLE_VERV and verv.erfaringsoverforing and user.is_authenticated %}
+					</b></a><br>
+				{% else %}
+					</b><br>
 				{% endif %}
 				{% for erfaring in erfaringer %}
                     {% if erfaring.medlem %}
@@ -141,7 +228,7 @@
 				{% endblock forestilling_fjern %}
 			{% endfor %}
 		{% else %}
-			<b>Premieredato:</b> {{produksjon.full_premieredato}}
+			<b>Premieredato:</b> {{produksjon.full_premieredato|capfirst}}<br>
 		{% endif %}
 		{% block forestilling_ny %}
 

@@ -8,8 +8,8 @@
 
 	{% block verv_info %}
 	
-		<p><b>Vervtype:</b> {{verv.get_vervtype_display|capfirst}}verv
-		{% if verv.vervtags.count %} ({{verv.vervtags.all|join:", "|capfirst}}){% endif %}</p>
+		<p><b>Vervtype:</b> {{verv.get_vervtype_display|capfirst}}verv</p>
+		{% if verv.vervtags.count %}<p><b>Tags:</b> {{verv.vervtags.all|join:", "|capfirst}}</p>{% endif %}
 
 		{% if verv.beskrivelse %}<p>{{verv.beskrivelse}}</p>{% endif %}
 
@@ -19,7 +19,7 @@
 
 
 	{% if verv.erfaringer.count %}
-		<h4>{{verv.plural|capfirst}} gjennom tidene</h4>
+		<h4>{{verv.plural|capfirst}} gjennom tidene:</h4>
 
 		{% block erfaringsskriv_endre %}
 

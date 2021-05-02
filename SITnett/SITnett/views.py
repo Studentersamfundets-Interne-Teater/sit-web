@@ -50,7 +50,7 @@ def view_opptak(request):
 
 def make_styrevervoppslag(ar):
     # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år.
-    styreerfaringer = models.Erfaring.objects.filter(verv__vervtype=1).filter(ar=ar)
+    styreerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=1)
     if styreerfaringer.count():
         vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by()
         vervoppslag = {}
@@ -58,7 +58,7 @@ def make_styrevervoppslag(ar):
             if vid == None:
                 continue
             verv = models.Verv.objects.get(id=vid)
-            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar).order_by('rolle')
+            erfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__id=vid).order_by('rolle')
             vervoppslag[verv] = erfaringer
     else:
         vervoppslag = None
@@ -69,9 +69,9 @@ def make_gjengvervoppslag(ar,authenticated):
     # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år.
     # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
     if not authenticated:
-        gjengerfaringer = models.Erfaring.objects.filter(verv__vervtype=2).filter(ar=ar)
+        gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=2)
     else:
-        gjengerfaringer = models.Erfaring.objects.filter(verv__vervtype__in=[2,3]).filter(ar=ar)
+        gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype__in=[2,3])
     if gjengerfaringer.count():
         vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by()
         vervoppslag = {}
@@ -79,7 +79,7 @@ def make_gjengvervoppslag(ar,authenticated):
             if vid == None:
                 continue
             verv = models.Verv.objects.get(id=vid)
-            erfaringer = models.Erfaring.objects.filter(verv__id=vid).filter(ar=ar).order_by('rolle')
+            erfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__id=vid).order_by('rolle')
             vervoppslag[verv] = erfaringer
     else:
         vervoppslag = None
@@ -95,9 +95,9 @@ def make_gjengtitteloppslag(ar,authenticated):
     for tittel in titler:
         if tittel == "":
             continue
-        erfaringer = models.Erfaring.objects.filter(tittel=tittel).order_by('rolle')
+        erfaringer = models.Erfaring.objects.filter(ar=ar).filter(tittel=tittel).order_by('rolle')
         if erfaringer.count() > 1:
-            if tittel[-2:] == "er":
+            if tittel[-2:] == "er" or tittel[-3:] == "lig":
                 titteloppslag[tittel+"e"] = erfaringer
             elif tittel[-1:] == "e":
                 titteloppslag[tittel+"r"] = erfaringer
@@ -114,9 +114,17 @@ def view_kontakt(request):
     arstall = datetime.datetime.now().year
     styreoppslag = make_styrevervoppslag(arstall)
     vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
-    medlemsliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
     return render(request, 'kontakt.html', {'FEATURES': features,
-        'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'medlemsliste': medlemsliste})
+        'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag})
+
+@login_required
+def view_Lommelista(request):
+    if not features.TOGGLE_KONTAKT:
+        return redirect('hoved')
+    arstall = datetime.datetime.now().year
+    lommeliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
+    return render(request, 'Lommelista.html', {'FEATURES': features,
+        'lommeliste': lommeliste})
 
 
 def view_medlemmer(request):
@@ -392,8 +400,12 @@ def view_produksjon_info(request, pid):
         access = 'other'
     vervoppslag = make_produksjonsvervoppslag(produksjon)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
+    produksjonstags = produksjon.produksjonstags.all()
+    if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
+        produksjonstags = produksjonstags.exclude(tag="revy")
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
-        'produksjon': produksjon, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
+        'produksjon': produksjon, 'produksjonstags': produksjonstags,
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
 
 
 @login_required
