@@ -3,7 +3,7 @@
 {% block innhold %}
 
 	<div class="wrapper">
-	
+
 	<h2>Kontakt</h2>
 
 	{% if user.is_authenticated %}
@@ -19,10 +19,10 @@
 	{% if styreoppslag %}
 		<table class="member-table">
 			<tr>
-				<th class="text-strong">Stilling</td>
-				<th class="text-strong">Navn</td>
-				<th class="text-strong">Henvendelser</td>
-				<th class="text-strong">E-post</td>
+				<th class="text-strong">Stilling</th>
+				<th class="text-strong">Navn</th>
+				<th class="text-strong">Henvendelser</th>
+				<th class="text-strong">E-post</th>
 			</tr>
 			{% for verv, erfaringer in styreoppslag.items %}
 				<tr>
@@ -45,7 +45,7 @@
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						{% for erfaring in erfaringer %}
 							{% if forloop.counter > 1 %}
-								,&nbsp;</div><div style="display: inline-block; white-space: nowrap"> 
+								,&nbsp;</div><div style="display: inline-block; white-space: nowrap">
 								{% if erfaring.medlem %}
 									{% if FEATURES.TOGGLE_MEDLEMMER %}
 										<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
@@ -92,10 +92,10 @@
 		<h3>Gjengverv</h3>
 		<table class="member-table">
 			<tr>
-				<th class="text-strong">Stilling</td>
-				<th class="text-strong">Navn</td>
-				<th class="text-strong">Henvendelser</td>
-				<th class="text-strong">E-post</td>
+				<th class="text-strong">Stilling</th>
+				<th class="text-strong">Navn</th>
+				<th class="text-strong">Henvendelser</th>
+				<th class="text-strong">E-post</th>
 			</tr>
 			{% for verv, erfaringer in vervoppslag.items %}
 				<tr>
@@ -118,7 +118,7 @@
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						{% for erfaring in erfaringer %}
 							{% if forloop.counter > 1 %}
-								,&nbsp;</div><div style="display: inline-block; white-space: nowrap"> 
+								,&nbsp;</div><div style="display: inline-block; white-space: nowrap">
 								{% if erfaring.medlem %}
 									{% if FEATURES.TOGGLE_MEDLEMMER %}
 										<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a>
