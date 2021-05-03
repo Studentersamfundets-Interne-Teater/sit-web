@@ -1212,7 +1212,7 @@ def fixtext(s):
 if __name__ == "__main__":
     # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
     Skriftdata_path = '/Users/jacob/Downloads/sit skrift/sit/'
-    transfer_all_medlemmer(Skriftdata_path)
-    transfer_all_produksjoner(Skriftdata_path)
-    transfer_all_arsverv(Skriftdata_path)
-    # transfer_all_numre(Skriftdata_path)
+    # transfer_all_medlemmer(Skriftdata_path)
+    # transfer_all_produksjoner(Skriftdata_path)
+    # transfer_all_arsverv(Skriftdata_path)
+    transfer_all_numre(Skriftdata_path)
