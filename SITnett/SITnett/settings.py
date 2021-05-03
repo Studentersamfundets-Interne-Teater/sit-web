@@ -28,7 +28,7 @@ try:
 except ModuleNotFoundError:
     print("Production environment not found – using local debug settings")
     DEBUG = True
-    SECRET_KEY = 'n%8)o@tq63(+aacvf2q-1hx%=mb!^@8d$rs8$pwvw0x0x9#7ko'   
+    SECRET_KEY = 'n%8)o@tq63(+aacvf2q-1hx%=mb!^@8d$rs8$pwvw0x0x9#7ko'
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -111,6 +111,7 @@ FEATURES = FEATURE_SETTINGS()
 #     }
 # }
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -172,3 +173,35 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname}, {asctime}. {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'warning_file': {
+            'level': 'WARNING',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': './logs/warnings.txt'
+        },
+        'error_file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'formatter': 'verbose',
+            'filename': './logs/errors.txt'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['warning_file', 'error_file'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+    }
+}

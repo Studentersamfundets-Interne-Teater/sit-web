@@ -26,6 +26,7 @@ urlpatterns = [
     path('info/',views.view_info,name='info'),
     path('opptak/',views.view_opptak,name='opptak'),
     path('kontakt/',views.view_kontakt,name='kontakt'),
+    path('lommelista/',views.view_Lommelista,name='Lommelista'),
     path('medlemmer/',views.view_medlemmer,name='medlemmer'),
     path('medlem/ny/',views.view_medlem_ny,name='medlem_ny'),
     path('medlem/<int:mid>/',views.view_medlem_info,name='medlem_info'),

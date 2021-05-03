@@ -162,7 +162,10 @@
 				{% else %}
 					{{produksjon.tittel}}
 				{% endif %}
-				({{produksjon.spilleperiode}})<br>
+				{% if produksjon.spilleperiode %}
+					 ({{produksjon.spilleperiode}})
+				{% endif %}
+				<br>
 			{% endfor %}
 			<br>
 		{% endif %}
