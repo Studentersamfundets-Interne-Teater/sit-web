@@ -287,8 +287,10 @@ def create_nummer(nummer, nummer_dict, location, prod_for_opptak):
                                open(settings.MEDIA_ROOT + '/opptak/' + fname, 'wb'))
 
     if url[-3:] == 'flv':
-        pdb.set_trace()
-        subprocess.call(['ffmpeg', '-i', (settings.MEDIA_ROOT + '/opptak/' + fname).replace("\\","/"), os.path(settings.MEDIA_ROOT + '/opptak/'+fname.replace('.flv', '.mp4'))])
+        # pdb.set_trace()
+        inputfile = os.path.join(settings.MEDIA_ROOT, 'opptak', fname)
+        outputfile = os.path.join(settings.MEDIA_ROOT, 'opptak', fname.replace('.flv', '.mp4'))
+        subprocess.call(['ffmpeg', '-i', inputfile, outputfile])
         fname = fname.replace('.flv', '.mp4')
 
     fil = '/opptak/' + fname
@@ -1210,7 +1212,7 @@ def fixtext(s):
 if __name__ == "__main__":
     # FYLL INN DIN LOKALE FILSTI TIL SKRIFTDATA HER:
     Skriftdata_path = '/Users/jacob/Downloads/sit skrift/sit/'
-    # transfer_all_medlemmer(Skriftdata_path)
-    # transfer_all_produksjoner(Skriftdata_path)
-    # transfer_all_arsverv(Skriftdata_path)
-    transfer_all_numre(Skriftdata_path)
+    transfer_all_medlemmer(Skriftdata_path)
+    transfer_all_produksjoner(Skriftdata_path)
+    transfer_all_arsverv(Skriftdata_path)
+    # transfer_all_numre(Skriftdata_path)
