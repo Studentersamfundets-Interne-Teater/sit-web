@@ -991,6 +991,10 @@ select{
 	display: block;
 }
 
+.gallery video {
+	width: 100%;
+}
+
 .lightBoxOverlay {
     display: block;
     position: fixed;
