@@ -264,15 +264,39 @@
 			<div class="gallery">
 				{% if produksjon.bilder.count %}
 					{% for bilde in produksjon.bilder.all %}
-						<figure class="galleryItem">
-							<a href="#"><img src="{{bilde.fil.url}}" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %}
-								{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
-								{% if bilde.fotograf %} Foto: {{ bilde.fotograf }} {% endif %}"></a>
-								<figcaption>{% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br>
-									{% if bilde.medlemmer %}{% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}<br>
-									{% if bilde.fotograf %} Foto: {{ bilde.fotograf }} {% endif %}
-								</figcaption>
-						</figure>
+						{%if bilde.offentlig %}
+							<figure class="galleryItem">
+								<a href="#"><img src="{{bilde.fil.url}}" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %}
+									{% if bilde.medlemmer %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
+									{% if bilde.fotograf %} Foto: {{ bilde.fotograf }} {% endif %}"></a>
+									<figcaption>{% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br>
+										{% if bilde.medlemmer %}{% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}<br>
+										{% if bilde.fotograf %} Foto: {{ bilde.fotograf }} {% endif %}
+									</figcaption>
+							</figure>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+
+		<div class="divider"></div>
+
+		<a class="production-categories">Lyd og video</a>
+		<div class="production-category-content">
+			<div class="gallery">
+				{% if produksjon.opptak.count %}
+					{% for opptak in produksjon.opptak.all %}
+						{%if opptak.offentlig %}
+							<figure class="galleryItem">
+								<video controls alt="{% if opptak.kontekst %} {{ opptak.kontekst }} {% endif %}
+									{% if opptak.medlemmer %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}">
+									<source src="{{opptak.fil.url}}" type="video/mp4">
+									Sorry, your browser doesn't support embedded videos.
+								</video>
+								<div class="mediacaption">Test av videotekst</div>
+							</figure>
+						{% endif %}
 					{% endfor %}
 				{% endif %}
 			</div>

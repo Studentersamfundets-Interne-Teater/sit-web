@@ -977,6 +977,20 @@ select{
 	display: block;
 }
 
+.gallery .mediacaption {
+	display: none;
+	background-color: rgba(0,0,0,.4);
+	color: var(--main-bg-color);
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 1em;
+}
+.galleryItem:hover .mediacaption {
+	display: block;
+}
+
 .lightBoxOverlay {
     display: block;
     position: fixed;
