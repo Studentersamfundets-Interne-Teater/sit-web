@@ -977,6 +977,15 @@ select{
 	display: block;
 }
 
+.gallery figcaption.video-caption {
+	display: block;
+	padding: 0 1rem;
+	font-size: 0.875rem;
+	background-color: inherit;
+	color: var(--main-text-color);
+	position: static;
+}
+
 .gallery .mediacaption {
 	display: none;
 	background-color: rgba(0,0,0,.4);
