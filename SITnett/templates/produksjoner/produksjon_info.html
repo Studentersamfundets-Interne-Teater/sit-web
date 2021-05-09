@@ -294,9 +294,9 @@
 									<source src="{{opptak.fil.url}}" type="video/mp4">
 									Sorry, your browser doesn't support embedded videos.
 								</video>
-								<div class="mediacaption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
+								<!--> <div class="mediacaption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
 									{% if opptak.medlemmer %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
-								</div>
+								</div> </-->
 							</figure>
 						{% endif %}
 					{% endfor %}
@@ -312,9 +312,9 @@
 											<source src="{{opptak.fil.url}}" type="video/mp4">
 											Sorry, your browser doesn't support embedded videos.
 										</video>
-										<div class="mediacaption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
+										<!--> <div class="mediacaption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
 											{% if opptak.medlemmer %} Medlemmer: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
-										</div>
+										</div> </-->
 									</figure>
 								{% endif %}
 							{% endfor %}
