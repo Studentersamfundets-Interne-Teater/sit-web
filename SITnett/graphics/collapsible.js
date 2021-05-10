@@ -1,5 +1,5 @@
 var categories = document.getElementsByClassName("production-categories");
-var parent = document.getElementById("production-info");
+var productionInfo = document.getElementById("production-info");
 
 if (window.innerWidth < 1024) {
   for (category of categories) {
@@ -21,28 +21,33 @@ if (window.innerWidth < 1024) {
     });
   }
 } else {
+  var emtpyHeight = productionInfo.getBoundingClientRect().height;
   categories[0].nextElementSibling.style.display = "block";
   var initialHeight = categories[0].nextElementSibling.scrollHeight + "px";
   categories[0].nextElementSibling.style.maxHeight = initialHeight;
-  parent.style.height = initialHeight;
+  productionInfo.style.height = initialHeight;
   categories[0].style.fontWeight = "600";
   for (var i = 0; i < categories.length; i++) {
-    categories[i].addEventListener("click", function() {
-      this.classList.add("active");
-      var content = this.nextElementSibling; 
-      this.style.fontWeight = "600"; // Bold font when active
+    categories[i].addEventListener("click", function(e) {
+      e.target.classList.add("active");
+      var content = e.target.nextElementSibling;
+      e.target.style.fontWeight = "600"; // Bold font when active
       for (category of categories) {
         if (category.nextElementSibling !== content) {
           category.nextElementSibling.style.display = "none";
           category.style.fontWeight = "400"; // Normal font weight
           category.classList.remove("active");
         }
-      }      
+      }
       content.style.display = "block";
       content.style.maxHeight = content.scrollHeight + "px";
-
-      parent.style.height = content.scrollHeight + "px";
+      console.log(content.scrollHeight);
+      if (content.scrollHeight > emtpyHeight) {
+        console.log("Here")
+        productionInfo.style.height = content.scrollHeight + "px";
+      } else {
+        productionInfo.style.height = null;
+      }
     });
   }
-  
 }
