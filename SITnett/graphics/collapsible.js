@@ -25,7 +25,9 @@ if (window.innerWidth < 1024) {
   categories[0].nextElementSibling.style.display = "block";
   var initialHeight = categories[0].nextElementSibling.scrollHeight + "px";
   categories[0].nextElementSibling.style.maxHeight = initialHeight;
-  productionInfo.style.height = initialHeight;
+  if (initialHeight > emtpyHeight) {
+    productionInfo.style.height = initialHeight;
+  }
   categories[0].style.fontWeight = "600";
   for (var i = 0; i < categories.length; i++) {
     categories[i].addEventListener("click", function(e) {
