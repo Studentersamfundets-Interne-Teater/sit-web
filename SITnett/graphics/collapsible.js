@@ -23,10 +23,11 @@ if (window.innerWidth < 1024) {
 } else {
   var emtpyHeight = productionInfo.getBoundingClientRect().height;
   categories[0].nextElementSibling.style.display = "block";
-  var initialHeight = categories[0].nextElementSibling.scrollHeight + "px";
-  categories[0].nextElementSibling.style.maxHeight = initialHeight;
+  var initialHeight = categories[0].nextElementSibling.scrollHeight;
+  categories[0].nextElementSibling.style.maxHeight = initialHeight + "px";
+  console.log(initialHeight);
   if (initialHeight > emtpyHeight) {
-    productionInfo.style.height = initialHeight;
+    productionInfo.style.height = initialHeight + "px";
   }
   categories[0].style.fontWeight = "600";
   for (var i = 0; i < categories.length; i++) {
