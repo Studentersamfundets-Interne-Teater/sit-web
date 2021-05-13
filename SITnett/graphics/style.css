@@ -756,7 +756,7 @@ select{
 		position: absolute;
 		height: min-content;
 		top: 0;
-
+		transition: none;
 		display: none;
 		margin-left: 35%;
 	}
