@@ -1,4 +1,9 @@
 {% extends "meny.html" %}
+{% load static %}
+
+{% block header_content %}
+	<link rel="stylesheet" href="{% static 'mobile_contact_form.css' %}">
+{% endblock header_content %}
 
 {% block innhold %}
 
@@ -18,21 +23,25 @@
 	<h3>Styret</h3>
 	{% if styreoppslag %}
 		<table class="member-table">
+		<thead>
 			<tr>
 				<th class="text-strong">Stilling</th>
 				<th class="text-strong">Navn</th>
 				<th class="text-strong">Henvendelser</th>
 				<th class="text-strong">E-post</th>
 			</tr>
+			</thead>
 			{% for verv, erfaringer in styreoppslag.items %}
 				<tr>
 					{% if erfaringer.count > 1 %}
+					<td>
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
-							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a></td>
+							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a>
 						{% else %}
-							<td><b>{{verv.plural|capfirst}}:</b></td>
+							<b>{{verv.plural|capfirst}}:</b>
 						{% endif %}
-						<td><span>
+						</td>
+						<td class="cell__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -60,12 +69,14 @@
 						{% endfor %}
 						</span></td>
 					{% else %}
+						<td class="member_table__verv"><a href="{% url 'verv_info' verv.id %}">
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
-							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a></td>
+							<b>{{verv.tittel|capfirst}}:</b></a>
 						{% else %}
-							<td><b>{{verv.tittel|capfirst}}:</b></td>
+							<b>{{verv.tittel|capfirst}}:</b>
 						{% endif %}
-						<td><span>
+						</td>
+						<td class="member_table__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -78,7 +89,7 @@
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						</span></td>
 					{% endif %}
-					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
+					<td class="member_table__henvendelser">{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
 				</tr>
 			{% endfor %}
@@ -91,21 +102,25 @@
 	{% if vervoppslag %}
 		<h3>Gjengverv</h3>
 		<table class="member-table">
-			<tr>
-				<th class="text-strong">Stilling</th>
-				<th class="text-strong">Navn</th>
-				<th class="text-strong">Henvendelser</th>
-				<th class="text-strong">E-post</th>
-			</tr>
+			<thead>
+				<tr>
+					<th class="text-strong">Stilling</th>
+					<th class="text-strong">Navn</th>
+					<th class="text-strong">Henvendelser</th>
+					<th class="text-strong">E-post</th>
+				</tr>
+			</thead>
 			{% for verv, erfaringer in vervoppslag.items %}
 				<tr>
 					{% if erfaringer.count > 1 %}
+					<td class="member_table__verv">
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
-							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a></td>
+							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a>
 						{% else %}
-							<td><b>{{verv.plural|capfirst}}:</b></td>
+							<b>{{verv.plural|capfirst}}:</b>
 						{% endif %}
-						<td><span>
+						</td>
+						<td class="member_table__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -133,12 +148,14 @@
 						{% endfor %}
 						</span></td>
 					{% else %}
+					<td class="member_table__verv">
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
-							<td><a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a></td>
+							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a>
 						{% else %}
-							<td><b>{{verv.tittel|capfirst}}:</b></td>
+							<b>{{verv.tittel|capfirst}}:</b>
 						{% endif %}
-						<td><span>
+						</td>
+						<td class="member_table__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -151,7 +168,7 @@
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						</span></td>
 					{% endif %}
-					<td>{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
+					<td class="member_table__henvendelser">{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
 				</tr>
 			{% endfor %}
