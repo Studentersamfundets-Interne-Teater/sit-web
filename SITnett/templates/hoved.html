@@ -41,54 +41,19 @@
   </div>
 </section>
 
-
-<div class="info-wrapper">
-  <div class="info-wrapper-content">
-    <h2>Om SIT</h2>
-    <p>
-    {% if infotekst %}
-      <p>{{infotekst|linebreaks}}</p>
-    {% else %}
-      <p>Studentersamfundets Interne Teater (SIT) ble stiftet i 1910 og er teatergruppa på Samfundet. Vi består av rundt 70 aktive medlemmer fordelt på de tre undergjengene Kostyme, Kulisse og Skuespill.</p>
-      <p>SIT står for teaterproduksjonene som blir satt opp på Studentersamfundet og har forestillinger hvert semester, herunder ansvar for UKErevyen og andre forestillinger under UKA.</p>
-      <p>Vi har i tillegg ansvar for kunstneriske innslag på Samfundsmøtene i likhet med de andre kunstneriske gjengene på Studentersamfundet.</p>
-    {% endif %}
-    </p>
-    {% if FEATURES.TOGGLE_AR %}
-      <div class="btn-wrapper">
-        <a class="btn" href="{% url 'ar_info' ar.arstall %}">Les om SIT i {{ar}}</a>
-      </div>
-    {% endif %}
-  </div>
-  <div class="info-wrapper-image">
-    <img src="{% static 'img/default_info.jpg' %}" width=100%>
-    <div class="text-info">
-      Foto: <a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener">foto.samfundet.no</a>
-    </div>
-  </div>
-</div>
-
 {% if blesteliste.count %}
 <div class="production-wrapper">
-  <h2>Kommende produksjoner</h2>
-  <div class="card-wrapper">
+  <div class="card-wrapper" id="landing-card-wrapper">
     {% for produksjon in blesteliste %}
     <div class="card card__landing">
       <a href="{% url 'produksjon_info' produksjon.id %}">
         <img class="card-image" src="{{produksjon.banner.url}}" class="show-image">
         <div class="card-container card-container__landing">
-          {% if produksjon.premieredato < dag %}
-            <h4>SPILLES NÅ:</h4>
-          {% endif %}
           <h3 class="card-title">{{produksjon.tittel}}</h3>
-          <span class="show-date text-info">{{produksjon.spilleperiode}}</span>
-          <p class="center-text"><b>{{produksjon.reklame|linebreaks}}</b></p>
+          <span class="text-info">{{produksjon.spilleperiode}}</span>
+          <span class="text-info">{{produksjon.reklame|linebreaks}}</span>
           {% if produksjon.billettlink %}
-            <a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
-          {% endif %}
-          {% if produksjon.FBlink %}
-            <a href="{{produksjon.FBlink}}" class="some-links">
-            <i class="fa fa-facebook"></i>Facebook-arrangement</a>
+            <a href="{{produksjon.billettlink}}" class="btn btn__tickets btn__tickets__landing">Billetter</a>
           {% endif %}
         </div>
       </a>
