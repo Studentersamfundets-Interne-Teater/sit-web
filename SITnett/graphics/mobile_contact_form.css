@@ -1,4 +1,4 @@
-thead, .member_table__henvendelser {
+thead, .member-table__henvendelser {
   display: none;
 }
 
@@ -8,8 +8,8 @@ thead, .member_table__henvendelser {
   margin-bottom: 8px;
 }
 
-.member_table__verv,
-.member_table__name {
+.member-table__verv,
+.member-table__name {
   display: block;
   width: 100%;
 }
@@ -30,9 +30,9 @@ thead, .member_table__henvendelser {
     display: table-row;
   }
 
-  .member_table__verv,
-  .member_table__name,
-  .member_table__henvendelser {
+  .member-table__verv,
+  .member-table__name,
+  .member-table__henvendelser {
     display: table-cell;
     width: auto;
 }

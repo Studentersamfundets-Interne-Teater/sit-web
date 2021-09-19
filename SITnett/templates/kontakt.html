@@ -41,7 +41,7 @@
 							<b>{{verv.plural|capfirst}}:</b>
 						{% endif %}
 						</td>
-						<td class="member_table__name"><span>
+						<td class="member-table__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -69,14 +69,14 @@
 						{% endfor %}
 						</span></td>
 					{% else %}
-						<td class="member_table__verv"><a href="{% url 'verv_info' verv.id %}">
+						<td class="member-table__verv"><a href="{% url 'verv_info' verv.id %}">
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
 							<b>{{verv.tittel|capfirst}}:</b></a>
 						{% else %}
 							<b>{{verv.tittel|capfirst}}:</b>
 						{% endif %}
 						</td>
-						<td class="member_table__name"><span>
+						<td class="member-table__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -89,7 +89,7 @@
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						</span></td>
 					{% endif %}
-					<td class="member_table__henvendelser">{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
+					<td class="member-table__henvendelser">{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
 				</tr>
 			{% endfor %}
@@ -113,14 +113,14 @@
 			{% for verv, erfaringer in vervoppslag.items %}
 				<tr>
 					{% if erfaringer.count > 1 %}
-					<td class="member_table__verv">
+					<td class="member-table__verv">
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
 							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.plural|capfirst}}:</b></a>
 						{% else %}
 							<b>{{verv.plural|capfirst}}:</b>
 						{% endif %}
 						</td>
-						<td class="member_table__name"><span>
+						<td class="member-table__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -148,14 +148,14 @@
 						{% endfor %}
 						</span></td>
 					{% else %}
-					<td class="member_table__verv">
+					<td class="member-table__verv">
 						{% if FEATURES.TOGGLE_VERV and user.is_authenticated and verv.erfaringsoverforing %}
 							<a href="{% url 'verv_info' verv.id %}"><b>{{verv.tittel|capfirst}}:</b></a>
 						{% else %}
 							<b>{{verv.tittel|capfirst}}:</b>
 						{% endif %}
 						</td>
-						<td class="member_table__name"><span>
+						<td class="member-table__name"><span>
 						{% if erfaringer.first.medlem %}
 							{% if FEATURES.TOGGLE_MEDLEMMER %}
 								<a href="{% url 'medlem_info' erfaringer.first.medlem.id %}">{{erfaringer.first.medlem}}</a>
@@ -168,7 +168,7 @@
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						</span></td>
 					{% endif %}
-					<td class="member_table__henvendelser">{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
+					<td class="member-table__henvendelser">{% if verv.henvendelser %}{{verv.henvendelser|capfirst}}{% endif %}</td>
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
 				</tr>
 			{% endfor %}
