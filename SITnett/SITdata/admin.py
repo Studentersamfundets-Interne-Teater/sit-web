@@ -63,7 +63,7 @@ class ProduksjonstagAdmin(admin.ModelAdmin):
 
 class ProduksjonAdmin(admin.ModelAdmin):
     list_display = ['id','tittel','produksjonstype','premieredato']
-    inlines = [ForestillingInline,ErfaringInline,AnmeldelseInline]
+    inlines = [ForestillingInline,AnmeldelseInline]
 
 admin.site.register(models.Produksjonstag,ProduksjonstagAdmin)
 admin.site.register(models.Produksjon,ProduksjonAdmin)

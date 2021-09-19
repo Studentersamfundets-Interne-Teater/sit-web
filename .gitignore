@@ -17,3 +17,9 @@ SITnett/SITnett/local.py
 ## Ignore the production venv
 SITnett/venv/
 SITnett/requirements.txt
+
+# Ignore log files
+logs/*
+SITnett/logs/*
+# Keep log folder
+!logs/.keep

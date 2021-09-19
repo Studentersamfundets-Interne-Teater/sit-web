@@ -22,7 +22,11 @@
 			{{medlem.get_status_display|capfirst}}, 
 		{% endif %}
 		{% if medlem.undergjeng %}
-			{{medlem.get_undergjeng_display}}
+			{% if medlem.medlemstype > 1 %}
+				{{medlem.get_undergjeng_display}}, senere {{medlem.get_medlemstype_display}}
+			{% else %}
+				{{medlem.get_undergjeng_display}}
+			{% endif %}
 		{% else %}
 			{{medlem.get_medlemstype_display}}
 		{% endif %}
@@ -113,9 +117,29 @@
 				{% for erfaring in medlem.erfaringer.all %}
 					{% if erfaring.verv %}
 						{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
-								<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv|capfirst}}</a>
-						{% else %}
-							{{erfaring.verv|capfirst}}
+							<a href="{% url 'verv_info' erfaring.verv.id %}">
+						{% endif %}
+							{% if erfaring.produksjon.UKEtype == "UKErevy" %}
+								{% if erfaring.verv.tittel == "lysdesigner" %}
+									Lysmester
+								{% elif erfaring.verv.tittel == "videodesigner" %}
+									Videomester
+								{% else %}
+									{{erfaring.verv|capfirst}}
+								{% endif %}
+							{% elif erfaring.produksjon.UKEtype == "supperevy" %}
+								{% if erfaring.verv.tittel == "produsent" %}
+									Suppedirektør
+								{% elif erfaring.verv.tittel == "regissør" %}
+									Supperegissør
+								{% else %}
+									{{erfaring.verv|capfirst}}
+								{% endif %}
+							{% else %}
+								{{erfaring.verv|capfirst}}
+							{% endif %}
+						{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+						</a>
 						{% endif %}
 					{% else %}
 						{{erfaring.tittel|capfirst}}

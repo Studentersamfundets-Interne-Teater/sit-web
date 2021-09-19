@@ -39,7 +39,7 @@ class Medlem(models.Model):
     MEDLEMSTYPER = ((1,'SIT'),(2,'Regi'),(3,'FK'),(4,'VK'),
         (5,'SO'),(6,'TSS'),(7,'TKS'),(8,'SPO'),(9,'UKA'),(10,'ISFiT'),
         (11,'MG'),(12,'ITK'),(13,'ARK'),(14,'FG'),(15,'KSG'),
-        (16,'KU'),(17,'KLST'),(18,'LØK'),(19,'DG'),(20,'Profil'),(21,'ekstern'))
+        (16,'KU'),(17,'KLST'),(18,'LØK'),(19,'DG'),(20,'SM'),(21,'Profil'),(22,'ekstern'))
     medlemstype = models.IntegerField(choices=MEDLEMSTYPER,default=1)
     fornavn = models.CharField(max_length=100)
     mellomnavn = models.CharField(blank=True,max_length=100)
@@ -51,14 +51,15 @@ class Medlem(models.Model):
     STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsjonist'),(4,'inaktiv'))
     status = models.IntegerField(choices=STATUSER,blank=True,null=True)
     portrett = models.ImageField(upload_to='portretter/',default='/default/katt.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
-    offentlig_portrett = models.BooleanField(blank=True,default=False) # avgjør om portrettet skal vises offentlig eller kun for interne. 
+    offentlig_portrett = models.BooleanField(blank=True,default=False) # avgjør om portrettet skal vises offentlig eller kun for interne.
     kallenavn = models.CharField(blank=True,max_length=100)
     telefon = models.CharField("telefonnummer",blank=True,max_length=100)
     epost = models.EmailField("e-postadresse",blank=True,max_length=100)
     studium = models.CharField(blank=True,max_length=200)
     jobb = models.CharField(blank=True,max_length=200)
     brukerkonto = models.OneToOneField(User,models.SET_NULL,blank=True,null=True)
-    def brukernavn(self): # lager et brukernavn ut ifra navn på formen 'jonfla93'.
+    def brukernavn(self):
+    # lager et brukernavn ut ifra navn på formen 'jonfla93'.
         return (self.fornavn[:3]+self.etternavn[:3]).lower()+str(self.opptaksar)[2:]
     class Meta:
         verbose_name_plural = "medlemmer"
@@ -88,7 +89,8 @@ class Utmerkelse(models.Model):
     ORDENER = ((1,'Den Gyldne Kat'),(2,'De Sorte Faars Ridderskab'),(3,'Den Træge Patron'),(4,'Polyhymnia'),(5,"Vrangstrupen"),(6,"Minerva Polyhymnia"))
     orden = models.IntegerField(choices=ORDENER,default=1)
     ar = models.IntegerField("år")
-    def full_tittel(self): # lager en full tittel på utmerkelsen av typen "ridder av Den Gyldne Kat fra 2015".
+    def full_tittel(self):
+    # lager en full tittel på utmerkelsen av typen "ridder av Den Gyldne Kat fra 2015".
         return self.get_tittel_display()+" av "+self.get_orden_display()+" fra "+str(self.ar)
     class Meta:
         verbose_name_plural = "utmerkelser"
@@ -118,16 +120,17 @@ class Verv(models.Model):
     henvendelser = models.CharField(blank=True,max_length=100) # holder en liste over hvilke henvendelser gjengvervet tar imot (til kontaktsida).
     instruks = models.TextField(blank=True) # holder en eventuell instruksfesta beskrivelse av vervet.
     beskrivelse = models.TextField(blank=True) # holder en eventuell grundigere beskrivelse av vervet.
-    def plural(self): # bøyer vervnavnet i flertall (til listevisninger).
-        if self.tittel[:10] == "medlem av ":
+    def plural(self):
+    # bøyer vervnavnet i flertall (til listevisninger).
+        if self.tittel[-11:] == " inspisient":
+            return self.tittel[:-11]+"e inspisienter"
+        elif self.tittel[:10] == "medlem av ":
             return self.tittel[10:]
         elif self.tittel[-6:] == "medlem":
             return self.tittel+"mer"
         elif self.tittel[-7:] == "gjengis":
             return self.tittel[:-2]+"en"
-        elif self.tittel[-9:] == "ansvarlig":
-            return self.tittel+"e"
-        elif self.tittel[-2:] == "er":
+        elif self.tittel[-2:] == "er" or self.tittel[-3:] == "lig":
             return self.tittel+"e"
         elif self.tittel[-1:] == "e":
             return self.tittel+"r"
@@ -177,37 +180,76 @@ class Produksjon(models.Model):
     partitur = models.FileField(upload_to='partitur/',blank=True) # holder ei PDF-fil med fullt partitur for forestillinga.
     visehefte = models.FileField(upload_to='visehefter/',blank=True) # holder ei PDF-fil med et eventuelt allsangvennlig visehefte fra forestillinga.
     beskrivelse = models.TextField(blank=True) # holder en beskrivelse av produksjonen for eksterne lesere.
-    anekdoter = models.TextField(blank=True) # holder ytterligere anekdoter for interne lesere. 
+    anekdoter = models.TextField(blank=True) # holder ytterligere anekdoter for interne lesere.
     reklame = models.TextField(blank=True) # holder en reklametekst til bruk på forsida.
-    pris = models.IntegerField(blank=True,null=True) # holder billettpris for eksterne.
-    medlemspris = models.IntegerField(blank=True,null=True) # holder billettpris for medlemmer av Samfundet.
+    pris = models.IntegerField("pris (kr)",blank=True,null=True) # holder billettpris (i kr) for eksterne.
+    medlemspris = models.IntegerField("medlempris (kr)",blank=True,null=True) # holder billettpris (i kr) for medlemmer av Samfundet.
     billettlink = models.CharField(blank=True,max_length=200) # holder en link til kjøp av billetter.
     blestestart = models.DateField("blæstestart",blank=True,null=True) # holder datoen da forsida skal begynne å reklamere for produksjonen.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til Facebook-arrangement.
+
     def blestestopp(self): # finner datoen da forsida skal slutte å reklamere for produksjonen.
         if self.forestillinger.count():
             return self.forestillinger.last().tidspunkt.date()
         else:
             return self.premieredato
-    def semester(self): # lager en semesterkode av typen 'H2020'.
-        return ("V" if self.premieredato.month < 7 else "H")+str(self.premieredato.year)
-    def spilleperiode(self): # lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar".
-        if self.forestillinger.count() > 1:
+    def UKEtype(self):
+    # returnerer om produksjonen er en UKEproduksjon, og i så fall hvilken type.
+        if self.produksjonstype == 4:
+            if self.produksjonstags.filter(tag="UKErevy"):
+                return "UKErevy"
+            elif self.produksjonstags.filter(tag="supperevy"):
+                return "supperevy"
+            else:
+                return "UKEintim"
+        else:
+            return ""
+    def semester(self):
+    # lager en semesterkode av typen 'H2021', eller 'UKA-21' hvis produksjonen er en festivalproduksjon.
+        if self.produksjonstype == 4:
+            ar = datetime.datetime.now().year
+            if self.premieredato.year > (ar-98):
+                return "UKA-"+str(self.premieredato.year)[-2:]
+            else:
+                return "UKA-"+str(self.premieredato.year)
+        elif self.produksjonstype == 5:
+            ar = datetime.datetime.now().year
+            if self.premieredato.year > (ar-98):
+                return "ISFiT-"+str(self.premieredato.year)[-2:]
+            else:
+                return "ISFiT-"+str(self.premieredato.year)
+        elif self.premieredato.month == 7 and self.premieredato.day == 1:
+            return str(self.premieredato.year)
+        elif self.premieredato.month < 7:
+            return "V"+str(self.premieredato.year)
+        else:
+            return "H"+str(self.premieredato.year)
+    def spilleperiode(self):
+    # lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar",
+    # "vår"/"høst" hvis spilledatoene er ukjente eller "UKA"/"ISFiT" hvis produksjonen er en festivalproduksjon.
+        if self.produksjonstype == 4:
+            return "UKA"
+        elif self.produksjonstype == 5:
+            return "ISFiT"
+        elif self.forestillinger.count() > 1:
             forste_dato = self.forestillinger.first().tidspunkt.date()
             siste_dato = self.forestillinger.last().tidspunkt.date()
-            datoer = verbose_date_span(forste_dato,siste_dato)
-        elif (self.premieredato.month == 1 and self.premieredato.day == 1):
-            datoer = "Våren"
-        elif (self.premieredato.month == 12 and self.premieredato.day == 24):
-            datoer = "Høsten"
+            if forste_dato == siste_dato:
+                return verbose_date(forste_dato)[:-5]
+            else:
+                return verbose_date_span(forste_dato,siste_dato)
         elif (self.premieredato.month == 7 and self.premieredato.day == 1):
-            datoer = ""
+            return ""
+        elif (self.premieredato.month == 1 and self.premieredato.day == 1):
+            return "vår"
+        elif (self.premieredato.month == 12 and self.premieredato.day == 24):
+            return "høst"
         else:
-            datoer = verbose_date(self.premieredato)[:-4]
-        return datoer
-    def full_premieredato(self): # lager en premieredato-string på formen "15. februar 2021" hvis datoen er kjent, ellers "Ukjent".
+            return verbose_date(self.premieredato)[:-5]
+    def full_premieredato(self):
+    # lager en premieredato-string på formen "15. februar 2021", eller "ukjent" hvis datoen er ukjent.
         if ((self.premieredato.month == 1 or self.premieredato.month == 7) and self.premieredato.day == 1) or (self.premieredato.month == 12 and self.premieredato.day == 24):
-            return "Ukjent"
+            return "ukjent"
         else:
             return verbose_date(self.premieredato)
     class Meta:
@@ -223,7 +265,8 @@ class Forestilling(models.Model):
 # holder forestillingstidspunktene for en gitt produksjon.
     produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='forestillinger')
     tidspunkt = models.DateTimeField()
-    def fullt_tidspunkt(self): # lager en tidspunkt-string på formen "15. februar 2021 klokka 15.15".
+    def fullt_tidspunkt(self):
+    # lager en tidspunkt-string på formen "15. februar 2021 klokka 15.15".
         return verbose_datetime(self.tidspunkt)
     class Meta:
         verbose_name_plural = "forestillinger"
@@ -244,7 +287,7 @@ class Nummer(models.Model):
         verbose_name_plural = "numre"
         ordering = ['-produksjon__premieredato','tittel']
     def __str__(self):
-        return self.tittel
+        return '"'+self.tittel+'"'+" fra "+str(self.produksjon)
 
 
 class Anmeldelse(models.Model):
@@ -253,7 +296,7 @@ class Anmeldelse(models.Model):
     forfatter = models.CharField(max_length=200)
     medium = models.CharField(max_length=100) # holder mediet der anmeldelsen ble publisert (avis, nettside, ...).
     offentlig = models.BooleanField() # avgjør om hele anmeldelsen skal ligge offentlig eller kun for interne.
-    fil = models.FileField(upload_to='anmeldelser/') # holder ei PDF-fil med den fulle anmeldelsen. 
+    fil = models.FileField(upload_to='anmeldelser/') # holder ei PDF-fil med den fulle anmeldelsen.
     utdrag = models.TextField() # holder et utdrag av anmeldelsen for eksterne lesere.
     class Meta:
         verbose_name_plural = "anmeldelser"
@@ -272,7 +315,8 @@ class Erfaring(models.Model):
     ar = models.IntegerField("år",blank=True,null=True) # holder et eventuelt år hvis vervet ikke er knytta til en produksjon.
     rolle = models.CharField(blank=True,max_length=100) # holder en utdypende rolle innafor vervet (feks Melchior Gabor, gitar, arbeidsleder eller konsulent).
     erfaringsskriv = models.FileField(upload_to='erfaringsskriv/',blank=True) # holder et eventuelt erfaringsskriv.
-    def full_tittel(self): # lager en full tittel for erfaringa på formen "skuespiller ("Melchior Gabor") i Spring Awakening (H2020)".
+    def full_tittel(self):
+    # lager en full tittel for erfaringa på formen "skuespiller ("Melchior Gabor") i Spring Awakening (H2020)".
         tittel = (str(self.verv) if self.verv else self.tittel)
         tittel += (" ("+self.rolle+")" if self.rolle else "")
         tittel += " i "+(str(self.produksjon) if self.produksjon else str(self.ar))
@@ -298,7 +342,8 @@ class Arrangement(models.Model):
     reklame = models.TextField(blank=True) # holder en reklametekst til bruk på forsida.
     blestestart = models.DateField("blæstestart (på forsida)",blank=True,null=True) # avgjør datoen da forsida skal begynne å reklamere for arrangementet.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til et eventuelt Facebook-arrangement.
-    def semester(self): # lager en semesterkode på formen 'H2020'.
+    def semester(self):
+    # lager en semesterkode på formen 'H2020'.
         return ("V" if self.tidspunkt.month < 7 else "H")+str(self.tidspunkt.year)
     class Meta:
         verbose_name_plural = "arrangementer"
@@ -328,6 +373,7 @@ class Foto(models.Model):
     # Typen 'gruppe' er ment for portrett- eller gruppebilder tatt av FG (feks gjengfoto, prodapp-bilde, bandbilde, ...).
     fototype = models.IntegerField(choices=FOTOTYPER)
     fotograf = models.CharField(blank=True,max_length=200)
+    offentlig = models.BooleanField(default=True) # avgjør om bildet skal ligge offentlig eller kun for interne.
     medlemmer = models.ManyToManyField(Medlem,blank=True) # holder ei eventuell liste over medlemmene som er med i fotoet.
     produksjon = models.ForeignKey(Produksjon,models.PROTECT,blank=True,null=True,related_name='bilder')
     nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='bilder')
@@ -343,7 +389,7 @@ class Foto(models.Model):
         if (self.produksjon):
             return self.get_fototype_display()+"bilde fra "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_fototype_display()+"bilde fra nummeret "+str(self.nummer)+" i "+str(self.nummer.produksjon)
+            return self.get_fototype_display()+"bilde fra nummeret "+str(self.nummer)
         elif (self.arrangement):
             return self.get_fototype_display()+"bilde fra "+str(self.arrangement)
         else:
@@ -354,21 +400,25 @@ class Opptak(models.Model):
 # holder opptak fra produksjoner, numre, arrangementer eller sosiale sammenkomster.
     OPPTAKSTYPER = ((1,'video'),(2,'lyd'))
     opptakstype = models.IntegerField(choices=OPPTAKSTYPER)
+    offentlig = models.BooleanField(default=True) # avgjør om opptaket skal ligge offentlig eller kun for interne.
     medlemmer = models.ManyToManyField(Medlem,blank=True) # holder ei eventuell liste over medlemmene som er med i opptaket.
     produksjon = models.ForeignKey(Produksjon,models.PROTECT,blank=True,null=True,related_name='opptak')
     nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='opptak')
     arrangement = models.ForeignKey(Arrangement,models.PROTECT,blank=True,null=True,related_name='opptak')
     dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis opptaket ikke er knytta til en produksjon, et nummer eller et arrangement.
-    fil = models.FileField(upload_to='opptak/') # holder selve fila med opptaket.
+    kilde = models.ForeignKey('self',models.PROTECT,blank=True,null=True,related_name='utdrag') # holder referanse til et eventuelt annet opptak som dette opptaket er utdrag fra.
+    kildestart = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget starter.
+    kildestopp = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget stopper.
+    fil = models.FileField(upload_to='opptak/',blank=True) # holder selve fila med opptaket hvis opptaket ikke er et utdrag.
     kontekst = models.TextField() # holder en infotekst til opptaket (hva, når, hvor, utdypende, ...).
     class Meta:
         verbose_name_plural = "opptak"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','opptakstype']
     def __str__(self):
         if (self.produksjon):
-            return self.get_opptakstype_display()+"opptak fra "+str(self.produksjon)
+            return self.get_opptakstype_display()+"opptak av "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_opptakstype_display()+"opptak fra nummeret "+str(self.nummer)+" i "+str(self.nummer.produksjon)
+            return self.get_opptakstype_display()+"opptak av nummeret "+str(self.nummer)
         elif (self.arrangement):
             return self.get_opptakstype_display()+"opptak fra "+str(self.arrangement)
         else:
