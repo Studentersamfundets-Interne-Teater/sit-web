@@ -1076,31 +1076,3 @@ select{
 		height: 17em;
 	}
 }
-
-.member-table {
-	border-collapse: collapse;
-	width: 100%;
-	min-width: 360px;
-}
-
-.member-table td {
-	border: 1px solid var(--sit-grullo-dark);
-	padding: 12px;
-}
-
-.member-table td span {
-		display: inline-block;
-		white-space: nowrap;
-}
-
-.member-table tr:hover {
-	background-color: var(--sit-grullo-20);
-}
-
-.member-table th {
-	padding: 16px 12px;
-	text-align: left;
-	background-color: var(--sit-grullo-dark);
-	border: 1px solid var(--main-bg-color);
-	color: var(--main-bg-color);
-}
