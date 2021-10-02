@@ -1,8 +1,8 @@
-
+@import "css/baseline.css";
 /* 1. GENERAL STYLES */
 
 /* Changes in root is sitewide */
-:root {
+/*:root {
 	--main-bg-color: #F2F4F3;
 	--main-text-color: #2B2B2C;
 	--secondary-text-color: #4B4B4B;
@@ -17,13 +17,13 @@
 	--sit-footer-color: #2D2924;
 	--sit-sans: Open Sans, sans-serif;
 	--sit-serif: Libre Baskerville, serif;
-}
+}*/
 
 /* 1.1 General styles, mobile/default */
 
 body {
-	color: var(--main-text-color);
-	background-color: var(--main-bg-color);
+	background-color: var(--main-text-color);
+	background-color: var(--main-background-color);
 	font-family: var(--sit-sans);
 	font-size: 18px;
 	font-weight: 400;
@@ -227,8 +227,8 @@ p {
 /* 2.2.1 Default/mobile */
 .footer {
 	margin-top: auto;
-	background-color: var(--sit-footer-color);
-	color: var(--sit-grullo-20);
+	background-color: var(--main-text-color);
+	color: var(--grullo-20);
 	padding: 40px 20px;
 	height: 600px;
 }
@@ -243,11 +243,10 @@ p {
 	flex-wrap: wrap;
 }
 .footer a {
-	color: var(--sit-grullo-20);
+	color: var(--grullo-20);
 }
 .footer a:hover {
 	text-decoration: underline;
-	/* color: var(--sit-red-light); */
 }
 .footer .footer-section{
 	width: 25%;
@@ -270,18 +269,18 @@ p {
 }
 .feedback-button{
 	margin-top: 1.5em;
-	background-color: var(--sit-footer-color);
+	background-color: var(--main-text-color);
     width: 200px;
     padding: 1em 0;
 	font-size: 0.9em;
-	border: solid 1px var(--sit-grullo-20);
+	border: solid 1px var(--grullo-20);
 	text-decoration: none;
-	color: var(--sit-grullo-20);
+	color: var(--grullo-20);
 	text-align: center;
 }
 .feedback-button:hover{
-	background-color: var(--sit-grullo-20);
-	color: var(--sit-footer-color);
+	background-color: var(--grullo-20);
+	color: var(--main-text-color);
 }
 
 /* 2.2.2 Desktop */
@@ -314,8 +313,8 @@ p {
 	position: relative;
 	cursor: pointer;
 	width: 100%;
-	background-color: var(--main-bg-color);
-	border: 2px solid var(--sit-grullo-light);
+	background-color: var(--main-background-color);
+	border: 2px solid var(--grullo-40);
 }
 
 .card:hover {
@@ -323,17 +322,17 @@ box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }
 
 .card-kostyme{
-	background-color: var(--sit-gunmetal-light);
+	background-color: var(--gunmetal-20);
 	border: none;
 }
 
 .card-kulisse{
-	background-color: var(--sit-grullo-light);
+	background-color: var(--grullo-40);
 	border: none;
 }
 
 .card-skuespill{
-	background-color: var(--sit-red-light);
+	background-color: var(--red-20);
 	border: none;
 }
 
@@ -400,7 +399,7 @@ select{
 	text-align: center;
 }
 .placeholder-content h2{
-	color: var(--sit-gunmetal-dark);
+	color: var(--gunmetal-80);
 	text-align: center;
 }
 .placeholder-content h3{
@@ -411,7 +410,7 @@ select{
 }
 .placeholder-content a{
 	text-decoration: underline;
-	color: var(--sit-gunmetal-dark);
+	color: var(--gunmetal-80);
 }
 .placeholder-content .text-info{
 	margin-top: 0;
@@ -435,7 +434,7 @@ select{
 .info-wrapper h2{
 	line-height: 1em;
 	margin: 0;
-	color: var(--sit-gunmetal-dark);
+	color: var(--gunmetal-80);
 }
 .info-wrapper-content{
 	width: 40%;
@@ -455,12 +454,12 @@ select{
 	height: 64px;
 	width: 240px;
 	border-radius: 32px;
-	background-color: var(--sit-gunmetal-dark);
+	background-color: var(--gunmetal-80);
 	color: var(--main-bg-color);
 }
 
 .btn:hover {
-	background-color: var(--sit-gunmetal-light);
+	background-color: var(--gunmetal-20);
 }
 
 .btn__tickets {
@@ -469,7 +468,7 @@ select{
 }
 
 .btn__tickets:hover {
-	background-color: var(--sit-grullo-20);
+	background-color: var(--grullo-20);
 	color: inherit;
 }
 
@@ -573,7 +572,7 @@ select{
 }
 
 .card__landing:first-of-type {
-	background-color: var(--sit-grullo-80);
+	background-color: var(--grullo-80);
 }
 
 @media only screen and (min-width: 560px) {
@@ -638,7 +637,7 @@ select{
 }
 
 .production-banner .production-banner-info {
-	background-color: var(--sit-grullo-light);
+	background-color: var(--grullo-40);
 	padding: 10px 0 10px 0;
 }
 
@@ -647,7 +646,7 @@ select{
 }
 .button-container{
 	width: 100%;
-	background-color: var(--sit-grullo-light);
+	background-color: var(--grullo-40);
 	padding-bottom: 20px;
 }
 .production-extra-info-box {
@@ -666,12 +665,12 @@ select{
 }
 .production-categories {
 	cursor: pointer;
-	color: var(--sit-grullo-dark);
+	color: var(--grullo-100);
 }
 
 .divider, .firstDivider {
 	flex-grow: 1;
-	border-top: 2px solid var(--sit-grullo-dark);
+	border-top: 2px solid var(--grullo-100);
 	margin-bottom: 25px;
 }
 
@@ -694,7 +693,7 @@ select{
 @media only screen and (min-width: 1024px) {
 	.production-banner-container{
 		width: 100%;
-		background-color: var(--sit-grullo-light);
+		background-color: var(--grullo-40);
 
 	}
 	.production-banner {
@@ -809,11 +808,11 @@ select{
 	margin-bottom: 16px;
 }
 .filter-category>label{
-	color: var(--sit-gunmetal-dark);
+	color: var(--gunmetal-80);
 	font-size: 1.3em;
 	line-height: 2em;
 	padding-bottom: 8px;
-	border-bottom: solid 1px var(--sit-gunmetal-dark);
+	border-bottom: solid 1px var(--gunmetal-80);
 }
 .filter-label-no-border{
 	border-bottom: none;
@@ -898,11 +897,11 @@ select{
 }
 .member-categories {
 	cursor: pointer;
-	color: var(--sit-gunmetal-light);
+	color: var(--gunmetal-20);
 }
 .member-divider, .member-firstDivider {
 	flex-grow: 1;
-	border-top: 2px solid var(--sit-gunmetal-light);
+	border-top: 2px solid var(--gunmetal-20);
 	margin-bottom: 25px;
 }
 
@@ -919,7 +918,7 @@ select{
 	}
 	.divider, .firstDivider {
 		flex-grow: 1;
-		border-top: 2px solid var(--sit-gunmetal-light);
+		border-top: 2px solid var(--gunmetal-20);
 		margin-bottom: 25px;
 	}
 	.member-information {

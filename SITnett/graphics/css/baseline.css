@@ -1,0 +1,37 @@
+:root {
+	--main-background-color: #FFFFFF;
+	--main-text-color: #2B2B2C;
+	--secondary-text-color: #7F7F82;
+
+	--error-red-dark: #ED0000;
+	--success-green: #5D8E52;
+
+	--red-100: #D20C16;
+	--red-80: #F32B35;
+	--red-60: #F5515A;
+	--red-40: #F7787E;
+	--red-20: #F99FA3;
+
+	--gunmetal-100: #22333B;
+	--gunmetal-80: #3C5A68;
+	--gunmetal-60: #527B8E;
+	--gunmetal-40: #719AAD;
+	--gunmetal-20: #97B5C3;
+
+	--grullo-100: #A9927D;
+	--grullo-80: #BEAD9D;
+	--grullo-60: #CEC1B6;
+	--grullo-40: #DED5CE;
+	--grullo-20: #EFEAE7;
+
+	--sit-sans: Open Sans, sans-serif;
+	--sit-serif: Libre Baskerville, serif;
+
+	--spacing-xxs: 4px;
+	--spacing-xs: 8px;
+	--spacing-s: 16px;
+	--spacing-m: 24px;
+	--spacing-l: 40px;
+	--spacing-xl: 48px;
+	--spacing-xxl: 56px;
+}
