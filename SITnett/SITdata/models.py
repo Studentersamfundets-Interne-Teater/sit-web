@@ -51,7 +51,7 @@ class Medlem(models.Model):
     STATUSER = ((1,'aktiv'),(2,'veteran'),(3,'pangsjonist'),(4,'inaktiv'))
     status = models.IntegerField(choices=STATUSER,blank=True,null=True)
     portrett = models.ImageField(upload_to='portretter/',default='/default/katt.png') # holder et bilde til bruk på forsida, i listevisninger og så videre.
-    offentlig_portrett = models.BooleanField(blank=True,default=False) # avgjør om portrettet skal vises offentlig eller kun for interne. 
+    offentlig_portrett = models.BooleanField(blank=True,default=False) # avgjør om portrettet skal vises offentlig eller kun for interne.
     kallenavn = models.CharField(blank=True,max_length=100)
     telefon = models.CharField("telefonnummer",blank=True,max_length=100)
     epost = models.EmailField("e-postadresse",blank=True,max_length=100)
@@ -180,13 +180,19 @@ class Produksjon(models.Model):
     partitur = models.FileField(upload_to='partitur/',blank=True) # holder ei PDF-fil med fullt partitur for forestillinga.
     visehefte = models.FileField(upload_to='visehefter/',blank=True) # holder ei PDF-fil med et eventuelt allsangvennlig visehefte fra forestillinga.
     beskrivelse = models.TextField(blank=True) # holder en beskrivelse av produksjonen for eksterne lesere.
-    anekdoter = models.TextField(blank=True) # holder ytterligere anekdoter for interne lesere. 
+    anekdoter = models.TextField(blank=True) # holder ytterligere anekdoter for interne lesere.
     reklame = models.TextField(blank=True) # holder en reklametekst til bruk på forsida.
     pris = models.IntegerField("pris (kr)",blank=True,null=True) # holder billettpris (i kr) for eksterne.
     medlemspris = models.IntegerField("medlempris (kr)",blank=True,null=True) # holder billettpris (i kr) for medlemmer av Samfundet.
     billettlink = models.CharField(blank=True,max_length=200) # holder en link til kjøp av billetter.
     blestestart = models.DateField("blæstestart",blank=True,null=True) # holder datoen da forsida skal begynne å reklamere for produksjonen.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til Facebook-arrangement.
+
+    def blestestopp(self): # finner datoen da forsida skal slutte å reklamere for produksjonen.
+        if self.forestillinger.count():
+            return self.forestillinger.last().tidspunkt.date()
+        else:
+            return self.premieredato
     def UKEtype(self):
     # returnerer om produksjonen er en UKEproduksjon, og i så fall hvilken type.
         if self.produksjonstype == 4:
@@ -290,7 +296,7 @@ class Anmeldelse(models.Model):
     forfatter = models.CharField(max_length=200)
     medium = models.CharField(max_length=100) # holder mediet der anmeldelsen ble publisert (avis, nettside, ...).
     offentlig = models.BooleanField() # avgjør om hele anmeldelsen skal ligge offentlig eller kun for interne.
-    fil = models.FileField(upload_to='anmeldelser/') # holder ei PDF-fil med den fulle anmeldelsen. 
+    fil = models.FileField(upload_to='anmeldelser/') # holder ei PDF-fil med den fulle anmeldelsen.
     utdrag = models.TextField() # holder et utdrag av anmeldelsen for eksterne lesere.
     class Meta:
         verbose_name_plural = "anmeldelser"
@@ -475,6 +481,8 @@ class Ar(models.Model):
     hostmotestart = models.DateField("høstmøtestart",blank=True,null=True) # holder datoen for høstens første mandagsmøte.
     hostmotestopp = models.DateField("høstmøtestopp",blank=True,null=True) # holder datoen for høstens siste mandagsmøte.
     genforstidspunkt = models.DateTimeField(blank=True,null=True) # holder tidspunkt for årets generalforsamling.
+    def full_soknadsfrist(self): # lager en søknadsfrist-string på formen "31. januar 2021 klokka 23.59".
+        return verbose_datetime(self.soknadsfrist)
     class Meta:
         verbose_name = "år"
         verbose_name_plural = "år"

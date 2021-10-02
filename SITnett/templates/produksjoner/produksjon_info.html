@@ -30,16 +30,9 @@
 					{% endif %}
 					</p>
 				</div>
-				{% if produksjon.forestillinger.all %}
-					<div class="production-banner-info">
-						{% for forestilling in produksjon.forestillinger.all %}
-							{{forestilling.fullt_tidspunkt}}<br>
-						{% endfor %}
-					</div>
-				{% endif %}
 				{% if produksjon.billettlink %}
 				<div class="button-container">
-					<a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
+					<br><a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
 				</div>
 				{% endif %}
 			</div>
