@@ -22,30 +22,49 @@ def get_ar(arstall):
     return ar
 
 
+def get_blesteliste(dag):
+# henter ei liste over produksjoner som skal blestes på forsida.
+    blesteliste = models.Produksjon.objects.all()
+    pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
+    blesteliste = blesteliste.filter(id__in=pids)
+    blesteliste = blesteliste.filter(blestestart__isnull=False).filter(blestestart__lte=dag)
+    blesteliste = blesteliste.order_by('premieredato')
+    return blesteliste
+
+def get_infotekst():
+# henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
+    if models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").count():
+        return models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first().beskrivelse
+    else:
+        return ""
+
 def view_hoved(request):
-    arstall = datetime.datetime.now().year
-    ar = get_ar(arstall)
+    dag = datetime.datetime.now().date()
+    ar = get_ar(dag.year)
+    blesteliste = get_blesteliste(dag)
+    infotekst = get_infotekst()
     return render(request, 'hoved.html', {'FEATURES': features,
-        'ar': ar})
+        'ar': ar, 'infotekst': infotekst, 'dag': dag, 'blesteliste': blesteliste})
 
 
 def view_info(request):
     arstall = datetime.datetime.now().year
     ar = get_ar(arstall)
-    if models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").count():
-    # henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
-        infotekst = models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first().beskrivelse
-    else:
-        infotekst = ""
+    infotekst = get_infotekst()
     return render(request, 'info.html', {'FEATURES': features,
         'ar': ar, 'infotekst': infotekst})
 
 
 def view_opptak(request):
+    klokke = datetime.datetime.now().time()
     dag = datetime.datetime.now().date()
     ar = get_ar(dag.year)
+    if ar.opptaksstart < dag and ar.soknadsfrist.date() >= dag and ar.soknadsfrist.time() >= klokke:
+        opptak = True
+    else:
+        opptak = False
     return render(request, 'opptak.html', {'FEATURES': features,
-        'ar': ar})
+        'ar': ar, 'opptak': opptak})
 
 
 def make_styrevervoppslag(ar):

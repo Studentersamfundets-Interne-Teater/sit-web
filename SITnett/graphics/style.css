@@ -540,11 +540,16 @@ select{
 }
 
 /* 4.2 Current shows */
+#landing-card-wrapper{
+	grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
 
 .card__landing {
 	max-width: 540px;
-	height: 22em;
-	cursor: default;
+	height: 28em;
+	cursor: pointer;
+	background-color: var(--sit-grullo-light);
+	border: none;
 }
 
 .card__landing .card-image {
@@ -569,11 +574,16 @@ select{
 }
 
 .card__landing p {
-	margin: 1em 0;
+	margin: 1.2em 0;
 }
 
-.card__landing:first-of-type {
-	background-color: var(--sit-grullo-80);
+.card__landing:nth-of-type(3n+1) {
+	background-color: var(--sit-gunmetal-light);
+}
+
+.btn__tickets__landing{
+	position: absolute;
+	bottom: 2em;
 }
 
 @media only screen and (min-width: 560px) {
@@ -589,6 +599,9 @@ select{
 	.card-wrapper-production {
 		grid-gap: 1.5rem 2.5rem;
 	}
+	#landing-card-wrapper{
+		grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+	}
 }
 
 @media only screen and (min-width: 756px) {
@@ -601,6 +614,9 @@ select{
 	}
 	.center-text{
 		display: block;
+	}
+	#landing-card-wrapper{
+		grid-template-columns: repeat(auto-fit, minmax(540px, 1fr));
 	}
 }
 
@@ -1075,32 +1091,4 @@ select{
 		width: 17em;
 		height: 17em;
 	}
-}
-
-.member-table {
-	border-collapse: collapse;
-	width: 100%;
-	min-width: 360px;
-}
-
-.member-table td {
-	border: 1px solid var(--sit-grullo-dark);
-	padding: 12px;
-}
-
-.member-table td span {
-		display: inline-block;
-		white-space: nowrap;
-}
-
-.member-table tr:hover {
-	background-color: var(--sit-grullo-20);
-}
-
-.member-table th {
-	padding: 16px 12px;
-	text-align: left;
-	background-color: var(--sit-grullo-dark);
-	border: 1px solid var(--main-bg-color);
-	color: var(--main-bg-color);
 }
