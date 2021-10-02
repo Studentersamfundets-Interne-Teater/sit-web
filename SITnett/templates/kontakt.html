@@ -30,7 +30,8 @@
 				<th class="text-strong">Henvendelser</th>
 				<th class="text-strong">E-post</th>
 			</tr>
-			</thead>
+		</thead>
+		<tbody>
 			{% for verv, erfaringer in styreoppslag.items %}
 				<tr>
 					{% if erfaringer.count > 1 %}
@@ -93,6 +94,7 @@
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
 				</tr>
 			{% endfor %}
+		</tbody>
 		</table>
 		<br><br>
 	{% endif %}
@@ -102,14 +104,15 @@
 	{% if vervoppslag %}
 		<h3>Gjengverv</h3>
 		<table class="member-table">
-			<thead>
-				<tr>
-					<th class="text-strong">Stilling</th>
-					<th class="text-strong">Navn</th>
-					<th class="text-strong">Henvendelser</th>
-					<th class="text-strong">E-post</th>
-				</tr>
-			</thead>
+		<thead>
+			<tr>
+				<th class="text-strong">Stilling</th>
+				<th class="text-strong">Navn</th>
+				<th class="text-strong">Henvendelser</th>
+				<th class="text-strong">E-post</th>
+			</tr>
+		</thead>
+		<tbody>
 			{% for verv, erfaringer in vervoppslag.items %}
 				<tr>
 					{% if erfaringer.count > 1 %}
@@ -172,6 +175,7 @@
 					<td>{% if verv.epost %}{{verv.epost}}{% endif %}</td>
 				</tr>
 			{% endfor %}
+		</tbody>
 		</table><br><br>
 	{% endif %}
 	</div>
