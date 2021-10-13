@@ -71,7 +71,7 @@ def make_styrevervoppslag(ar):
     # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år.
     styreerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=1)
     if styreerfaringer.count():
-        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by()
+        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('id')
         vervoppslag = {}
         for vid in vids:
             if vid == None:
@@ -92,7 +92,7 @@ def make_gjengvervoppslag(ar,authenticated):
     else:
         gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype__in=[2,3])
     if gjengerfaringer.count():
-        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by()
+        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by('id')
         vervoppslag = {}
         for vid in vids:
             if vid == None:
@@ -351,7 +351,7 @@ def view_produksjoner(request):
 
 def make_produksjonsvervoppslag(produksjon):
 # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon.
-    vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by()
+    vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by('id')
     vervoppslag = {}
     for vid in vids:
         if vid == None:
@@ -418,6 +418,7 @@ def view_produksjon_info(request, pid):
     else:
         access = 'other'
     vervoppslag = make_produksjonsvervoppslag(produksjon)
+    print(vervoppslag)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
     produksjonstags = produksjon.produksjonstags.all()
     if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
