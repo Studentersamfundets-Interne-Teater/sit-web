@@ -54,7 +54,7 @@
 						{% endif %}
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						{% for erfaring in erfaringer %}
-							{% if forloop.counter > 1 %}
+							{% if not forloop.first %}
 								,&nbsp;</span><span>
 								{% if erfaring.medlem %}
 									{% if FEATURES.TOGGLE_MEDLEMMER %}
@@ -135,7 +135,7 @@
 						{% endif %}
 						{% if erfaringer.first.rolle %} ({{erfaringer.first.rolle}}){% endif %}
 						{% for erfaring in erfaringer %}
-							{% if forloop.counter > 1 %}
+							{% if not forloop.first %}
 								,&nbsp;</span><span>
 								{% if erfaring.medlem %}
 									{% if FEATURES.TOGGLE_MEDLEMMER %}
