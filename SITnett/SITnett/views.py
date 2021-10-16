@@ -72,7 +72,6 @@ def make_styrevervoppslag(ar):
     styreerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=1)
     if styreerfaringer.count():
         vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
-        print(vids)
         vervoppslag = {}
         for vid in vids:
             if vid == None:
