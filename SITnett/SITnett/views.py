@@ -225,6 +225,44 @@ def view_medlem_ny(request):
         'medlemsform': medlemsform})
 
 
+def make_gjengerfaringsoppslag(medlem,authenticated):
+    # lager et oppslag på formen {årstall: [erfaring, erfaring, ...], ...} over gjengerfaringene til et medlem,
+    # sortert etter år og verv-id.
+    # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
+    gjengerfaringer = medlem.erfaringer.filter(produksjon__isnull=True)
+    if not authenticated:
+        gjengerfaringer = gjengerfaringer.filter(verv__vervtype=2)
+    if gjengerfaringer.count():
+        ar = gjengerfaringer.values_list('ar', flat=True).distinct().order_by('-ar')
+        erfaringsoppslag = {}
+        for arstall in ar:
+            if arstall == None:
+                continue
+            erfaringer = gjengerfaringer.filter(ar=arstall).order_by('verv__id')
+            erfaringsoppslag[arstall] = erfaringer
+    else:
+        erfaringsoppslag = None
+    return erfaringsoppslag
+
+
+def make_produksjonserfaringsoppslag(medlem):
+    # lager et oppslag på formen {produksjon: [erfaring, erfaring, ...], ...} over produksjonserfaringene til et medlem,
+    # sortert etter premieredato og verv-id.
+    produksjonserfaringer = medlem.erfaringer.filter(produksjon__isnull=False)
+    if produksjonserfaringer.count():
+        pids = produksjonserfaringer.values_list('produksjon', flat=True).distinct().order_by('-produksjon__premieredato')
+        erfaringsoppslag = {}
+        for pid in pids:
+            if pid == None:
+                continue
+            produksjon = models.Produksjon.objects.get(id=pid)
+            erfaringer = produksjonserfaringer.filter(produksjon=produksjon).order_by('verv__id')
+            erfaringsoppslag[produksjon] = erfaringer
+    else:
+        erfaringsoppslag = None
+    return erfaringsoppslag
+
+
 def view_medlem_info(request, mid):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
@@ -235,8 +273,10 @@ def view_medlem_info(request, mid):
         access = 'own'
     else:
         access = 'other'
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,request.user.is_authenticated)
+    produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     return render(request, 'medlemmer/medlem_info.html', {'FEATURES': features, 'access': access,
-        'medlem': medlem})
+        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag})
 
 
 @login_required
@@ -250,6 +290,8 @@ def view_medlem_endre(request, mid):
         MedlemForm = forms.MedlemOwnForm
     else:
         MedlemForm = forms.MedlemOtherForm
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,True)
+    produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     if request.method == 'POST':
         medlemsform = MedlemForm(request.POST, request.FILES, instance=medlem)
         erfaringsform = forms.ErfaringMedForm(request.POST,request.FILES)
@@ -279,8 +321,8 @@ def view_medlem_endre(request, mid):
         erfaringsform = forms.ErfaringMedForm()
         utmerkelsesform = forms.UtmerkelseForm()
     return render(request, 'medlemmer/medlem_endre.html', {'FEATURES': features,
-        'medlem': medlem, 'medlemsform': medlemsform, 'utmerkelsesform': utmerkelsesform,
-        'erfaringsform': erfaringsform})
+        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag,
+        'medlemsform': medlemsform, 'utmerkelsesform': utmerkelsesform, 'erfaringsform': erfaringsform})
 
 
 @permission_required('SITdata.delete_medlem')
@@ -418,7 +460,6 @@ def view_produksjon_info(request, pid):
     else:
         access = 'other'
     vervoppslag = make_produksjonsvervoppslag(produksjon)
-    print(vervoppslag)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
     produksjonstags = produksjon.produksjonstags.all()
     if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):

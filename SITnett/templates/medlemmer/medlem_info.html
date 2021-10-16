@@ -1,14 +1,14 @@
 {% extends "meny.html" %}
 
 {% block innhold %}
-	
+
 	<div class="member-image-container">
 		{% if user.is_authenticated %}
 			{% if medlem.portrett.url %}<img src="{{medlem.portrett.url}}">{% endif %}
 			{% else %} <img src="/files/default/katt.png">
 		{% endif %}
 	</div>
-	
+
 	<div class="member-general-info">
 		{% block medlem_navn %}
 		<h2>{{medlem}}</h2>
@@ -16,10 +16,10 @@
 			{% if medlem.kallenavn %}også kjent som <b>"{{medlem.kallenavn}}"</b><br><br>{% endif %}
 		{% endif %}
 		{% endblock medlem_navn %}
-	
+
 		<p>
 		{% if medlem.status and medlem.undergjeng %}
-			{{medlem.get_status_display|capfirst}}, 
+			{{medlem.get_status_display|capfirst}},
 		{% endif %}
 		{% if medlem.undergjeng %}
 			{% if medlem.medlemstype > 1 %}
@@ -38,7 +38,7 @@
 			{% for utmerkelse in medlem.utmerkelser.all %}
 					{{utmerkelse.full_tittel|capfirst}}
 					{% block utmerkelse_fjern %}
-					
+
 					{% endblock utmerkelse_fjern %}
 					<br>
 			{% endfor %}
@@ -57,7 +57,7 @@
 				{% else %}
 					{{medlem.opptaksar}}
 				{% endif %}
-				</td> 
+				</td>
 			</tr>
 			{% endif %}
 			{% if user.is_authenticated %}
@@ -68,13 +68,13 @@
 				{% if medlem.telefon %}
 				<tr>
 				  <td><b>Telefon:</b> </td>
-				  <td>{{medlem.telefon}}</td> 
+				  <td>{{medlem.telefon}}</td>
 				</tr>
 				{% endif %}
 				{% if medlem.epost %}
 				<tr>
 				  <td><b>E-post:</b></td>
-				  <td>{{medlem.epost}}</td> 
+				  <td>{{medlem.epost}}</td>
 				</tr>
 				{% endif %}
 				<tr>
@@ -84,7 +84,7 @@
 				{% if medlem.fodselsdato %}
 				<tr>
 				<td><b>Fødselsdag:</b></td>
-				<td>{{medlem.fodselsdato}}</td> 
+				<td>{{medlem.fodselsdato}}</td>
 				</tr>
 				{% endif %}
 				<tr>
@@ -94,13 +94,13 @@
 				{% if medlem.studium %}
 				<tr>
 				  <td><b>Studium:</b></td>
-				  <td>{{medlem.studium|capfirst}}</td> 
+				  <td>{{medlem.studium|capfirst}}</td>
 				</tr>
 				{% endif %}
 				{% if medlem.jobb %}
 					<tr>
 					<td><b>Jobb:</b></td>
-					<td>{{medlem.jobb|capfirst}}</td> 
+					<td>{{medlem.jobb|capfirst}}</td>
 					</tr>
 				{% endif %}
 			{% endif %}
@@ -109,61 +109,129 @@
 		{% endblock medlem_info %}
 	</div>
 
-	{% if medlem.erfaringer.count %}
+	{% if gjengerfaringsoppslag or produksjonserfaringsoppslag %}
 		<section class="member-information">
 			<div class="member-firstDivider"></div>
-			<a class="member-categories"><h3>Erfaringer</h3></a>
+
+			{% if gjengerfaringsoppslag %}
+			<a class="member-categories"><h3>Gjengerfaringer</h3></a>
 			<div class="member-category-content">
-				{% for erfaring in medlem.erfaringer.all %}
-					{% if erfaring.verv %}
-						{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
-							<a href="{% url 'verv_info' erfaring.verv.id %}">
-						{% endif %}
-							{% if erfaring.produksjon.UKEtype == "UKErevy" %}
-								{% if erfaring.verv.tittel == "lysdesigner" %}
-									Lysmester
-								{% elif erfaring.verv.tittel == "videodesigner" %}
-									Videomester
-								{% else %}
-									{{erfaring.verv|capfirst}}
-								{% endif %}
-							{% elif erfaring.produksjon.UKEtype == "supperevy" %}
-								{% if erfaring.verv.tittel == "produsent" %}
-									Suppedirektør
-								{% elif erfaring.verv.tittel == "regissør" %}
-									Supperegissør
+				{% for arstall, erfaringer in gjengerfaringsoppslag.items %}
+					{% for erfaring in erfaringer %}
+						{% if forloop.first %}
+							{% if erfaring.verv %}
+								{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+									<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv|capfirst}}</a>
 								{% else %}
 									{{erfaring.verv|capfirst}}
 								{% endif %}
 							{% else %}
-								{{erfaring.verv|capfirst}}
+								{{erfaring.tittel|capfirst}}
 							{% endif %}
-						{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
-						</a>
-						{% endif %}
-					{% else %}
-						{{erfaring.tittel|capfirst}}
-					{% endif %}
-					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %} i 
-					{% if erfaring.produksjon %}
-						{% if FEATURES.TOGGLE_PRODUKSJONER %}
-							<a href="{% url 'produksjon_info' erfaring.produksjon.id %}">{{erfaring.produksjon}}</a>
+							{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 						{% else %}
-							{{erfaring.produksjon}}
+							{% if forloop.last %} og {% else %}, {% endif %}
+							{% if erfaring.verv %}
+								{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+									<a href="{% url 'verv_info' erfaring.verv.id %}">{{erfaring.verv}}</a>
+								{% else %}
+									{{erfaring.verv}}
+								{% endif %}
+							{% else %}
+								{{erfaring.tittel}}
+							{% endif %}
+							{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 						{% endif %}
+					{% endfor %}
+					{% if FEATURES.TOGGLE_AR %}
+						i <a href="{% url 'ar_info' arstall %}">{{arstall}}</a>
 					{% else %}
-						{% if FEATURES.TOGGLE_AR %}
-							<a href="{% url 'ar_info' erfaring.ar %}">{{erfaring.ar}}</a>
-						{% else %}
-							{{erfaring.ar}}
-						{% endif %}
+						i {{arstall}}
 					{% endif %}
-					{% block erfaring_fjern %}
-
-					{% endblock erfaring_fjern %}
 					<br>
 				{% endfor %}
 			</div>
+			{% endif %}
+
+			{% if produksjonserfaringsoppslag %}
+			<a class="member-categories"><h3>Produksjonserfaringer</h3></a>
+			<div class="member-category-content">
+				{% for produksjon, erfaringer in produksjonserfaringsoppslag.items %}
+					{% for erfaring in erfaringer %}
+						{% if forloop.first %}
+							{% if erfaring.verv %}
+								{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+									<a href="{% url 'verv_info' erfaring.verv.id %}">
+								{% endif %}
+									{% if erfaring.produksjon.UKEtype == "UKErevy" %}
+										{% if erfaring.verv.tittel == "lysdesigner" %}
+											Lysmester
+										{% elif erfaring.verv.tittel == "videodesigner" %}
+											Videomester
+										{% else %}
+											{{erfaring.verv|capfirst}}
+										{% endif %}
+									{% elif erfaring.produksjon.UKEtype == "supperevy" %}
+										{% if erfaring.verv.tittel == "produsent" %}
+											Suppedirektør
+										{% elif erfaring.verv.tittel == "regissør" %}
+											Supperegissør
+										{% else %}
+											{{erfaring.verv|capfirst}}
+										{% endif %}
+									{% else %}
+										{{erfaring.verv|capfirst}}
+									{% endif %}
+								{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+								</a>
+								{% endif %}
+							{% else %}
+								{{erfaring.tittel|capfirst}}
+							{% endif %}
+							{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+						{% else %}
+							{% if forloop.last %} og {% else %}, {% endif %}
+							{% if erfaring.verv %}
+								{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+									<a href="{% url 'verv_info' erfaring.verv.id %}">
+								{% endif %}
+									{% if erfaring.produksjon.UKEtype == "UKErevy" %}
+										{% if erfaring.verv.tittel == "lysdesigner" %}
+											lysmester
+										{% elif erfaring.verv.tittel == "videodesigner" %}
+											videomester
+										{% else %}
+											{{erfaring.verv}}
+										{% endif %}
+									{% elif erfaring.produksjon.UKEtype == "supperevy" %}
+										{% if erfaring.verv.tittel == "produsent" %}
+											suppedirektør
+										{% elif erfaring.verv.tittel == "regissør" %}
+											supperegissør
+										{% else %}
+											{{erfaring.verv}}
+										{% endif %}
+									{% else %}
+										{{erfaring.verv}}
+									{% endif %}
+								{% if FEATURES.TOGGLE_VERV and erfaring.verv.erfaringsoverforing and user.is_authenticated %}
+								</a>
+								{% endif %}
+							{% else %}
+								{{erfaring.tittel}}
+							{% endif %}
+							{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+						{% endif %}
+					{% endfor %}
+					{% if FEATURES.TOGGLE_PRODUKSJONER %}
+						i <a href="{% url 'produksjon_info' produksjon.id %}">{{produksjon}}</a>
+					{% else %}
+						i {{produksjon}}
+					{% endif %}
+					<br>
+				{% endfor %}
+			</div>
+			{% endif %}
 		</section>
 	{% endif %}
 
@@ -178,7 +246,7 @@
 
 
 	{% block medlem_nav %}
-	
+
 		{% if FEATURES.TOGGLE_EDIT %}
 			{% if user.is_authenticated %}
 				<br><br>
@@ -191,7 +259,7 @@
 				<br>
 			{% endif %}
 		{% endif %}
-	
+
 	{% endblock medlem_nav %}
 
 {% endblock innhold %}
