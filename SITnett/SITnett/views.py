@@ -68,10 +68,11 @@ def view_opptak(request):
 
 
 def make_styrevervoppslag(ar):
-    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år.
+    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år, sortert etter verv-id.
     styreerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=1)
     if styreerfaringer.count():
-        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('id')
+        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
+        print(vids)
         vervoppslag = {}
         for vid in vids:
             if vid == None:
@@ -85,14 +86,14 @@ def make_styrevervoppslag(ar):
 
 
 def make_gjengvervoppslag(ar,authenticated):
-    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år.
+    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år, sortert etter verv-id.
     # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
     if not authenticated:
         gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=2)
     else:
         gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype__in=[2,3])
     if gjengerfaringer.count():
-        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by('id')
+        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
         vervoppslag = {}
         for vid in vids:
             if vid == None:
@@ -107,7 +108,7 @@ def make_gjengvervoppslag(ar,authenticated):
 def make_gjengtitteloppslag(ar,authenticated):
 # lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler et gitt år som ikke er registrerte verv.
 # Hvis man ikke er logga inn får man ikke opp noen titler.
-    titler = models.Erfaring.objects.filter(ar=ar).values_list('tittel', flat=True).distinct().order_by()
+    titler = models.Erfaring.objects.filter(ar=ar).values_list('tittel', flat=True).distinct()
     titteloppslag = {}
     if not authenticated:
         return titteloppslag
@@ -349,39 +350,6 @@ def view_produksjoner(request):
         'produksjonsliste': produksjonsliste, 'produksjonsform': produksjonsform})
 
 
-def make_produksjonsvervoppslag(produksjon):
-# lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon.
-    vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by('id')
-    vervoppslag = {}
-    for vid in vids:
-        if vid == None:
-            continue
-        verv = models.Verv.objects.get(id=vid)
-        erfaringer = produksjon.erfaringer.filter(verv=vid).order_by('rolle')
-        vervoppslag[verv] = erfaringer
-    return vervoppslag
-
-
-def make_produksjonstitteloppslag(produksjon):
-# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv.
-    titler = produksjon.erfaringer.all().values_list('tittel', flat=True).distinct().order_by()
-    titteloppslag = {}
-    for tittel in titler:
-        if tittel == "":
-            continue
-        erfaringer = produksjon.erfaringer.filter(tittel=tittel).order_by('rolle')
-        if erfaringer.count() > 1:
-            if tittel[-2:] == "er":
-                titteloppslag[tittel+"e"] = erfaringer
-            elif tittel[-1:] == "e":
-                titteloppslag[tittel+"r"] = erfaringer
-            else:
-                titteloppslag[tittel+"er"] = erfaringer
-        else:
-            titteloppslag[tittel] = erfaringer
-    return titteloppslag
-
-
 @permission_required('SITdata.add_produksjon')
 def view_produksjon_ny(request):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
@@ -405,6 +373,39 @@ def get_produsenterfaring(user,produksjon):
         return (user.medlem.erfaringer.all() & produksjon.erfaringer.filter(verv__tittel="produsent")).first()
     else:
         return None
+
+
+def make_produksjonsvervoppslag(produksjon):
+# lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon, sortert etter verv-id.
+    vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by('verv__id')
+    vervoppslag = {}
+    for vid in vids:
+        if vid == None:
+            continue
+        verv = models.Verv.objects.get(id=vid)
+        erfaringer = produksjon.erfaringer.filter(verv=vid).order_by('rolle')
+        vervoppslag[verv] = erfaringer
+    return vervoppslag
+
+def make_produksjonstitteloppslag(produksjon):
+# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv.
+    titler = produksjon.erfaringer.all().values_list('tittel', flat=True).distinct()
+    titteloppslag = {}
+    for tittel in titler:
+        if tittel == "":
+            continue
+        erfaringer = produksjon.erfaringer.filter(tittel=tittel).order_by('rolle')
+        if erfaringer.count() > 1:
+            if tittel[-2:] == "er":
+                titteloppslag[tittel+"e"] = erfaringer
+            elif tittel[-1:] == "e":
+                titteloppslag[tittel+"r"] = erfaringer
+            else:
+                titteloppslag[tittel+"er"] = erfaringer
+        else:
+            titteloppslag[tittel] = erfaringer
+    return titteloppslag
+
 
 def view_produksjon_info(request, pid):
     if not features.TOGGLE_PRODUKSJONER:
