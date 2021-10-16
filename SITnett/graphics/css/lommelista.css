@@ -1,0 +1,9 @@
+.lommelista__name,
+.lommelista__phone,
+.lommelista__email {
+  display: block;
+}
+
+.lommelista__row {
+  padding-bottom: 16px;
+}
