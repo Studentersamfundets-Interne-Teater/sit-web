@@ -330,11 +330,13 @@ def view_medlem_slett(request, mid):
     if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
         return redirect('hoved')
     medlem = get_object_or_404(models.Medlem, id=mid)
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,True)
+    produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     if (request.method == 'POST'):
         medlem.delete()
         return redirect('medlemmer')
     return render(request, 'medlemmer/medlem_slett.html', {'FEATURES': features,
-        'medlem': medlem})
+        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag})
 
 
 @permission_required('SITdata.delete_utmerkelse')
@@ -459,11 +461,11 @@ def view_produksjon_info(request, pid):
         access = 'own'
     else:
         access = 'other'
-    vervoppslag = make_produksjonsvervoppslag(produksjon)
-    titteloppslag = make_produksjonstitteloppslag(produksjon)
     produksjonstags = produksjon.produksjonstags.all()
     if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
         produksjonstags = produksjonstags.exclude(tag="revy")
+    vervoppslag = make_produksjonsvervoppslag(produksjon)
+    titteloppslag = make_produksjonstitteloppslag(produksjon)
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
         'produksjon': produksjon, 'produksjonstags': produksjonstags,
         'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
@@ -481,6 +483,9 @@ def view_produksjon_endre(request, pid):
         ProduksjonForm = forms.ProduksjonOwnForm
     else:
         return redirect('/konto/login/?next=%s' % request.path)
+    produksjonstags = produksjon.produksjonstags.all()
+    if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
+        produksjonstags = produksjonstags.exclude(tag="revy")
     vervoppslag = make_produksjonsvervoppslag(produksjon)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
     if request.method == 'POST':
@@ -512,7 +517,8 @@ def view_produksjon_endre(request, pid):
         anmeldelsesform = forms.AnmeldelseForm()
         erfaringsform = forms.ErfaringProdForm()
     return render(request, 'produksjoner/produksjon_endre.html', {'FEATURES': features,
-        'produksjon': produksjon, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+        'produksjon': produksjon, 'produksjonstags': produksjonstags,
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
         'produksjonsform': produksjonsform, 'forestillingsform': forestillingsform,
         'anmeldelsesform': anmeldelsesform, 'erfaringsform': erfaringsform})
 
@@ -522,11 +528,17 @@ def view_produksjon_slett(request, pid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
+    produksjonstags = produksjon.produksjonstags.all()
+    if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
+        produksjonstags = produksjonstags.exclude(tag="revy")
+    vervoppslag = make_produksjonsvervoppslag(produksjon)
+    titteloppslag = make_produksjonstitteloppslag(produksjon)
     if request.method == 'POST':
         produksjon.delete()
         return redirect('produksjoner')
     return render(request, 'produksjoner/produksjon_slett.html', {'FEATURES': features,
-        'produksjon': produksjon})
+        'produksjon': produksjon, 'produksjonstags': produksjonstags,
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,})
 
 
 @login_required
