@@ -1,5 +1,10 @@
-{% extends "meny.html" %} {% load static %} {% block innhold %}
+{% extends "meny.html" %} {% load static %}
 
+{% block header_content %}
+<link rel="stylesheet" href="{% static 'css/hero.css' %}"/>
+{% endblock header_content %}
+
+{% block innhold %}
 <section class="hero" id="hero">
   {% if ar.forsidebilde %}
     <img class="hero-image" id="hero-image"
@@ -14,6 +19,7 @@
     data-landscape="{% static 'img/default_hero.jpg' %}"
     data-portrait="{% static 'img/default_hero.jpg' %}">
   {% endif %}
+  <div class="hero-gradient-overlay"></div>
   <div class="hero-container">
     <h1 class="hero-title">
       {% if ar.forsidetittel %}
