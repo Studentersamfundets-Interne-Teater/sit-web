@@ -22,11 +22,9 @@
 						{{produksjon.get_produksjonstype_display}},
 					{% endif %}
 					{% if produksjon.produksjonstype == 4 or produksjon.produksjonstype == 5 %}
-						{{produksjon.semester}}
-					{% elif produksjon.spilleperiode %}
-						{{produksjon.spilleperiode|capfirst}} {{produksjon.premieredato.year}}
+						{{produksjon.spilleperiode}}
 					{% else %}
-						{{produksjon.premieredato.year}}
+						{{produksjon.spilleperiode|capfirst}} {{produksjon.premieredato.year}}
 					{% endif %}
 					</p>
 				</div>

@@ -227,10 +227,8 @@ class Produksjon(models.Model):
     def spilleperiode(self):
     # lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar",
     # "vår"/"høst" hvis spilledatoene er ukjente eller "UKA"/"ISFiT" hvis produksjonen er en festivalproduksjon.
-        if self.produksjonstype == 4:
-            return "UKA"
-        elif self.produksjonstype == 5:
-            return "ISFiT"
+        if self.produksjonstype in [4,5]:
+            return self.semester()
         elif self.forestillinger.count() > 1:
             forste_dato = self.forestillinger.first().tidspunkt.date()
             siste_dato = self.forestillinger.last().tidspunkt.date()
