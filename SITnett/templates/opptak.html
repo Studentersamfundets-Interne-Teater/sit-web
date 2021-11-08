@@ -66,12 +66,14 @@
 	{% else %}
 		<p>SIT tar ikke opp nye medlemmer nå, men kom tilbake i januar. Da vil det igjen bli anledning til å bli med i en av våre tre undergjenger Kostyme, Kulisse eller Skuespill.</p>
 		<p>Vi håper å se deg da!</p>
+		{% if ar.opptaksbilde_annet %}
 		<img src="{{ar.opptaksbilde_annet.fil.url}}" width="100%" />
 		<div class="text-info">
 		{% if ar.opptaksbilde_annet.fotograf %}
 			Foto: {{ar.opptaksbilde_annet.fotograf}}
 		{% endif %}
 		</div>
+		{% endif %}
 	{% endif %}
 	<br>
 </div>
