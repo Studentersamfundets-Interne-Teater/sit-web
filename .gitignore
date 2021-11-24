@@ -22,4 +22,7 @@ SITnett/requirements.txt
 logs/*
 SITnett/logs/*
 # Keep log folder
-!logs/.keep
+!SITnett/logs/.keep
+
+# Keep default image files
+SITnett/files/default/katt(er)?.png
