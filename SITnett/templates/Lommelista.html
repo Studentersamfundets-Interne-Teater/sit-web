@@ -3,6 +3,7 @@
 
 {% block header_content %}
 	<link rel="stylesheet" href="{% static 'mobile_contact_form.css' %}">
+	<link rel="stylesheet" href="{% static 'css/lommelista.css' %}">
 {% endblock header_content %}
 
 {% block innhold %}
@@ -21,13 +22,13 @@
 	</thead>
 	<tbody>
 		{% for medlem in lommeliste %}
-			<tr>
-				<td>
+			<tr class="lommelista__row">
+				<td class="lommelista__name">
 					<a href="{% url 'medlem_info' medlem.id %}"><b>{{medlem.etternavn}}, {{medlem.fornavn}}
 					{% if medlem.mellomnavn %}{{medlem.mellomnavn}}{% endif %}</b></a>
 				</td>
-				<td>{% if medlem.telefon %}{{medlem.telefon}}{% endif %}</td>
-				<td>{% if medlem.epost %}{{medlem.epost}}{% endif %}</td>
+				<td class="lommelista__phone">{% if medlem.telefon %}{{medlem.telefon}}{% endif %}</td>
+				<td class="lommelista__email">{% if medlem.epost %}{{medlem.epost}}{% endif %}</td>
 			</tr>
 		{% endfor %}
 	</tbody>
