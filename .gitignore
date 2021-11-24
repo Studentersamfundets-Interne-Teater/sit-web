@@ -19,7 +19,6 @@ SITnett/venv/
 SITnett/requirements.txt
 
 # Ignore log files
-logs/*
 SITnett/logs/*
 # Keep log folder
-!logs/.keep
+!SITnett/logs/.keep
