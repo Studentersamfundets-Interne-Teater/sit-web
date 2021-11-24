@@ -19,10 +19,6 @@ SITnett/venv/
 SITnett/requirements.txt
 
 # Ignore log files
-logs/*
 SITnett/logs/*
 # Keep log folder
 !SITnett/logs/.keep
-
-# Keep default image files
-SITnett/files/default/katt(er)?.png
