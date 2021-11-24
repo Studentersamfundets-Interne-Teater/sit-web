@@ -59,8 +59,11 @@ def view_opptak(request):
     klokke = datetime.datetime.now().time()
     dag = datetime.datetime.now().date()
     ar = get_ar(dag.year)
-    if ar.opptaksstart < dag and ar.soknadsfrist.date() >= dag and ar.soknadsfrist.time() >= klokke:
-        opptak = True
+    if ar.opptaksstart and ar.soknadsfrist:
+        if ar.opptaksstart <= dag and ar.soknadsfrist.date() >= dag and ar.soknadsfrist.time() >= klokke:
+            opptak = True
+        else:
+            opptak = False
     else:
         opptak = False
     return render(request, 'opptak.html', {'FEATURES': features,
