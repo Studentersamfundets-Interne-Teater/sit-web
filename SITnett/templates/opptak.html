@@ -2,16 +2,80 @@
 
 <div class="placeholder-content">
 	<h2>Opptak</h2>
-	<p>
-	<p>SIT tar ikke opp medlemmer nå, men kom tilbake i januar. Da vil det igjen bli anledning til å bli med i en av våre tre undergjenger Kostyme, Kulisse eller Skuespill.</p>
-	<p>Vi håper å se deg da!</p>
-	</p>
-	<img src="{% static 'assets/digfx1814.jpg' %}" width="100%" />
-	<div class="font-info">
-		Foto:
-		<a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener">
-		foto.samfundet.no</a>
-	</div>
-	<br />
+
+	{% if opptak %}
+		<p>SIT tar opp nye medlemmer nå! Gå inn på Samfundets søknadssider og legg inn en søknad innen fristen den <b>{{ar.full_soknadsfrist}}</b>!</p>
+		<div class="btn-wrapper">
+			<a class="btn" href="https://samfundet.no/opptak" rel="noreferrer noopener">Søk Samfundet</a>
+		</div>
+		{% if ar.opptakstekst_kostyme %}
+			<h3>Kostyme</h3>
+			<p>
+			{{ar.opptakstekst_kostyme|linebreaks}}
+			</p>
+			{% if ar.opptaksbilde_kostyme %}
+			<img src="{{ar.opptaksbilde_kostyme.fil.url}}" width="100%" />
+			<div class="text-info">
+			{% if ar.opptaksbilde_kostyme.fotograf %}
+				Foto: {{ar.opptaksbilde_kostyme.fotograf}}
+			{% endif %}
+			</div>
+			{% endif %}
+		{% endif %}
+		{% if ar.opptakstekst_kulisse %}
+			<h3>Kulisse</h3>
+			<p>
+			{{ar.opptakstekst_kulisse|linebreaks}}
+			</p>
+			{% if ar.opptaksbilde_kulisse %}
+			<img src="{{ar.opptaksbilde_kulisse.fil.url}}" width="100%" />
+			<div class="text-info">
+			{% if ar.opptaksbilde_kulisse.fotograf %}
+				Foto: {{ar.opptaksbilde_kulisse.fotograf}}
+			{% endif %}
+			</div>
+			{% endif %}
+		{% endif %}
+		{% if ar.opptakstekst_skuespill %}
+			<h3>Skuespill</h3>
+			<p>
+			{{ar.opptakstekst_skuespill|linebreaks}}
+			</p>
+			{% if ar.opptaksbilde_skuespill %}
+			<img src="{{ar.opptaksbilde_skuespill.fil.url}}" width="100%" />
+			<div class="text-info">
+			{% if ar.opptaksbilde_skuespill.fotograf %}
+				Foto: {{ar.opptaksbilde_skuespill.fotograf}}
+			{% endif %}
+			</div>
+			{% endif %}
+		{% endif %}
+		{% if ar.opptakstekst_annet %}
+			<h3>Andre verv</h3>
+			<p>
+			{{ar.opptakstekst_annet|linebreaks}}
+			</p>
+			{% if ar.opptaksbilde_annet %}
+			<img src="{{ar.opptaksbilde_annet.fil.url}}" width="100%" />
+			<div class="text-info">
+			{% if ar.opptaksbilde_annet.fotograf %}
+				Foto: {{ar.opptaksbilde_annet.fotograf}}
+			{% endif %}
+			</div>
+			{% endif %}
+		{% endif %}
+	{% else %}
+		<p>SIT tar ikke opp nye medlemmer nå, men kom tilbake i januar. Da vil det igjen bli anledning til å bli med i en av våre tre undergjenger Kostyme, Kulisse eller Skuespill.</p>
+		<p>Vi håper å se deg da!</p>
+		{% if ar.opptaksbilde_annet %}
+		<img src="{{ar.opptaksbilde_annet.fil.url}}" width="100%" />
+		<div class="text-info">
+		{% if ar.opptaksbilde_annet.fotograf %}
+			Foto: {{ar.opptaksbilde_annet.fotograf}}
+		{% endif %}
+		</div>
+		{% endif %}
+	{% endif %}
+	<br>
 </div>
 {% endblock innhold %}

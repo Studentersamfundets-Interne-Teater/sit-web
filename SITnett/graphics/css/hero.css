@@ -1,0 +1,9 @@
+.hero-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(#000000 50%, transparent);
+  opacity: 0.2;
+}
