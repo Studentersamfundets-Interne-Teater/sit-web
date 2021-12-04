@@ -1,5 +1,5 @@
 :root {
-	--main-background-color: #FFFFFF;
+	--main-background-color: #F2F4F3;
 	--main-text-color: #2B2B2C;
 	--secondary-text-color: #7F7F82;
 
@@ -26,6 +26,23 @@
 
 	--sit-sans: Open Sans, sans-serif;
 	--sit-serif: Libre Baskerville, serif;
+
+	--font-size-s: 14px;
+	--font-size-regular: 18px;
+	--font-size-l: 30px;
+	--font-size-xl: 48px;
+	--font-size-xxl: 72px;
+
+	--font-weight-regular: 400;
+	--font-weight-semi-bold: 600;
+	--font-weight-bold: 700;
+
+	--line-heigth-s: 100%;
+	--line-height-regular: 140%;
+	--line-height-l: 150%;
+
+	--letter-spacing-l: 0.02em;
+	--letter-spacing-xl: 0.03em;
 
 	--spacing-xxs: 4px;
 	--spacing-xs: 8px;

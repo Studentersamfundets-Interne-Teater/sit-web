@@ -2,7 +2,7 @@
     DJANGO Admin styles
 */
 :root {
-	--main-bg-color: #FFFFFF;
+	--main-background-color: #FFFFFF;
 	--main-text-color: #0E0E2C;
 	--secondary-text-color: #7F7F82;
 	--error-red-dark: #ED0000;
@@ -46,7 +46,7 @@ body {
     margin: 0;
     padding: 0;
     color: var(--main-text-color);
-	background-color: var(--main-bg-color);
+	background-color: var(--main-background-color);
 	font-family: var(--sit-sans);
 }
 
@@ -848,7 +848,7 @@ table#change-history tbody th {
     align-items: center;
     padding: var(--spacing-l);
     background: var(--grullo-100);
-    color: var(--main-bg-color);
+    color: var(--main-background-color);
     overflow: hidden;
 }
 
@@ -873,7 +873,7 @@ table#change-history tbody th {
 }
 
 #branding h1, #branding h1 a:link, #branding h1 a:visited {
-    color: var(--main-bg-color);
+    color: var(--main-background-color);
 }
 
 #branding h2 {

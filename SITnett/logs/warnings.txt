@@ -1,0 +1,4 @@
+WARNING, 2021-09-19 19:31:54,392. Not Found: /favicon.ico
+WARNING, 2021-09-19 19:32:48,325. Not Found: /favicon.ico
+WARNING, 2021-12-04 15:31:34,638. Not Found: /favicon.ico
+WARNING, 2021-12-04 15:31:42,135. Not Found: /favicon.ico
