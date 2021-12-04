@@ -72,6 +72,9 @@
 								{% if produksjon.produksjonstype == 4 or produksjon.produksjonstype == 5 %}
 									{{produksjon.spilleperiode}}
 								{% else %}
+									{% if produksjon.produksjonstype == 2 or produksjon.produksjonstype == 3 %}
+										{{produksjon.get_produksjonstype_display}},
+									{% endif %}
 									{{produksjon.spilleperiode|capfirst}} {{produksjon.premieredato.year}}
 								{% endif %}
 							</div>
