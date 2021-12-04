@@ -11,7 +11,7 @@
 		</div>
 
 		{{produksjonsform.media.js}}
-		<div class="filter-and-result-container">  
+		<div class="filter-and-result-container">
 			<div class="filter-column">
 				<button class="filter-button" onclick="filterFunction()">Filter</button>
 
@@ -28,7 +28,7 @@
 							<label>Tags</label>
 							<div style>{{produksjonsform.produksjonstags}}</div>
 						</div>
-						
+
 						<div class="filter-category">
 							<label>Forfatter</label>
 							<div>{{produksjonsform.forfatter}}</div>
@@ -42,7 +42,7 @@
 						<div class="filter-category">
 							<label>Spilleår</label>
 							<div class="year-search-container">
-								<p>Se oppsetninger mellom</p> 
+								<p>Se oppsetninger mellom</p>
 								<div>{{produksjonsform.fra_ar}} og {{produksjonsform.til_ar}}</div>
 							</div>
 						</div>
@@ -67,16 +67,17 @@
 					<a class="card" href="{% url 'produksjon_info' produksjon.id %}">
 						<img src="{{produksjon.banner.url}}" class="card-image" loading="lazy">
 						<div class="card-container">
-							<h3 class="card-title">{{produksjon.tittel}}</h3> 
+							<h3 class="card-title">{{produksjon.tittel}}</h3>
 							<div class="font-info text-strong">
 								{% if produksjon.produksjonstype == 4 or produksjon.produksjonstype == 5 %}
-									{{produksjon.semester}}
-								{% elif produksjon.spilleperiode %}
-									{{produksjon.spilleperiode|capfirst}} {{produksjon.premieredato.year}}
+									{{produksjon.spilleperiode}}
 								{% else %}
-									{{produksjon.premieredato.year}}
+									{% if produksjon.produksjonstype == 2 or produksjon.produksjonstype == 3 %}
+										{{produksjon.get_produksjonstype_display}},
+									{% endif %}
+									{{produksjon.spilleperiode|capfirst}} {{produksjon.premieredato.year}}
 								{% endif %}
-							</div> 
+							</div>
 						</div>
 					</a>
 					{% empty %}

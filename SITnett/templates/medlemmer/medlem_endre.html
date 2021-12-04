@@ -31,17 +31,9 @@
 {% endblock medlem_info %}
 
 
-{% block erfaring_fjern %}
-
-	{% if perms.SITdata.delete_erfaring %}
-		<a href="{% url 'erfaring_fjern' erfaring.id %}">Fjern</a>
-	{% endif %}
-			
-{% endblock erfaring_fjern %}
-
 {% block erfaring_ny %}
-	
-	{% if perms.SITdata.add_erfaring %}	
+
+	{% if perms.SITdata.add_erfaring %}
 		<br>
 		<form action="{% url 'medlem_endre' medlem.id %}" enctype="multipart/form-data" method="post" class="form-wrapper">
 			{% csrf_token %}
@@ -55,7 +47,7 @@
 
 
 {% block utmerkelse_fjern %}
-	
+
 	{% if perms.SITdata.delete_utmerkelse %}
 		<a href="{% url 'utmerkelse_fjern' utmerkelse.id %}">Fjern</a>
 	{% endif %}

@@ -71,10 +71,10 @@ def view_opptak(request):
 
 
 def make_styrevervoppslag(ar):
-    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år.
+    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år, sortert etter verv-id.
     styreerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=1)
     if styreerfaringer.count():
-        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('id')
+        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
         vervoppslag = {}
         for vid in vids:
             if vid == None:
@@ -88,14 +88,14 @@ def make_styrevervoppslag(ar):
 
 
 def make_gjengvervoppslag(ar,authenticated):
-    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år.
+    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år, sortert etter verv-id.
     # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
     if not authenticated:
         gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=2)
     else:
         gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype__in=[2,3])
     if gjengerfaringer.count():
-        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by('id')
+        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
         vervoppslag = {}
         for vid in vids:
             if vid == None:
@@ -110,7 +110,7 @@ def make_gjengvervoppslag(ar,authenticated):
 def make_gjengtitteloppslag(ar,authenticated):
 # lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler et gitt år som ikke er registrerte verv.
 # Hvis man ikke er logga inn får man ikke opp noen titler.
-    titler = models.Erfaring.objects.filter(ar=ar).values_list('tittel', flat=True).distinct().order_by()
+    titler = models.Erfaring.objects.filter(ar=ar).values_list('tittel', flat=True).distinct()
     titteloppslag = {}
     if not authenticated:
         return titteloppslag
@@ -228,6 +228,44 @@ def view_medlem_ny(request):
         'medlemsform': medlemsform})
 
 
+def make_gjengerfaringsoppslag(medlem,authenticated):
+    # lager et oppslag på formen {årstall: [erfaring, erfaring, ...], ...} over gjengerfaringene til et medlem,
+    # sortert etter år og verv-id.
+    # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
+    gjengerfaringer = medlem.erfaringer.filter(produksjon__isnull=True)
+    if not authenticated:
+        gjengerfaringer = gjengerfaringer.filter(verv__vervtype=2)
+    if gjengerfaringer.count():
+        ar = gjengerfaringer.values_list('ar', flat=True).distinct().order_by('-ar')
+        erfaringsoppslag = {}
+        for arstall in ar:
+            if arstall == None:
+                continue
+            erfaringer = gjengerfaringer.filter(ar=arstall).order_by('verv__id')
+            erfaringsoppslag[arstall] = erfaringer
+    else:
+        erfaringsoppslag = None
+    return erfaringsoppslag
+
+
+def make_produksjonserfaringsoppslag(medlem):
+    # lager et oppslag på formen {produksjon: [erfaring, erfaring, ...], ...} over produksjonserfaringene til et medlem,
+    # sortert etter premieredato og verv-id.
+    produksjonserfaringer = medlem.erfaringer.filter(produksjon__isnull=False)
+    if produksjonserfaringer.count():
+        pids = produksjonserfaringer.values_list('produksjon', flat=True).distinct().order_by('-produksjon__premieredato')
+        erfaringsoppslag = {}
+        for pid in pids:
+            if pid == None:
+                continue
+            produksjon = models.Produksjon.objects.get(id=pid)
+            erfaringer = produksjonserfaringer.filter(produksjon=produksjon).order_by('verv__id')
+            erfaringsoppslag[produksjon] = erfaringer
+    else:
+        erfaringsoppslag = None
+    return erfaringsoppslag
+
+
 def view_medlem_info(request, mid):
     if not features.TOGGLE_MEDLEMMER:
         return redirect('hoved')
@@ -238,8 +276,10 @@ def view_medlem_info(request, mid):
         access = 'own'
     else:
         access = 'other'
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,request.user.is_authenticated)
+    produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     return render(request, 'medlemmer/medlem_info.html', {'FEATURES': features, 'access': access,
-        'medlem': medlem})
+        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag})
 
 
 @login_required
@@ -253,6 +293,8 @@ def view_medlem_endre(request, mid):
         MedlemForm = forms.MedlemOwnForm
     else:
         MedlemForm = forms.MedlemOtherForm
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,True)
+    produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     if request.method == 'POST':
         medlemsform = MedlemForm(request.POST, request.FILES, instance=medlem)
         erfaringsform = forms.ErfaringMedForm(request.POST,request.FILES)
@@ -282,8 +324,8 @@ def view_medlem_endre(request, mid):
         erfaringsform = forms.ErfaringMedForm()
         utmerkelsesform = forms.UtmerkelseForm()
     return render(request, 'medlemmer/medlem_endre.html', {'FEATURES': features,
-        'medlem': medlem, 'medlemsform': medlemsform, 'utmerkelsesform': utmerkelsesform,
-        'erfaringsform': erfaringsform})
+        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag,
+        'medlemsform': medlemsform, 'utmerkelsesform': utmerkelsesform, 'erfaringsform': erfaringsform})
 
 
 @permission_required('SITdata.delete_medlem')
@@ -291,11 +333,13 @@ def view_medlem_slett(request, mid):
     if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
         return redirect('hoved')
     medlem = get_object_or_404(models.Medlem, id=mid)
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,True)
+    produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     if (request.method == 'POST'):
         medlem.delete()
         return redirect('medlemmer')
     return render(request, 'medlemmer/medlem_slett.html', {'FEATURES': features,
-        'medlem': medlem})
+        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag})
 
 
 @permission_required('SITdata.delete_utmerkelse')
@@ -352,39 +396,6 @@ def view_produksjoner(request):
         'produksjonsliste': produksjonsliste, 'produksjonsform': produksjonsform})
 
 
-def make_produksjonsvervoppslag(produksjon):
-# lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon.
-    vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by('id')
-    vervoppslag = {}
-    for vid in vids:
-        if vid == None:
-            continue
-        verv = models.Verv.objects.get(id=vid)
-        erfaringer = produksjon.erfaringer.filter(verv=vid).order_by('rolle')
-        vervoppslag[verv] = erfaringer
-    return vervoppslag
-
-
-def make_produksjonstitteloppslag(produksjon):
-# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv.
-    titler = produksjon.erfaringer.all().values_list('tittel', flat=True).distinct().order_by()
-    titteloppslag = {}
-    for tittel in titler:
-        if tittel == "":
-            continue
-        erfaringer = produksjon.erfaringer.filter(tittel=tittel).order_by('rolle')
-        if erfaringer.count() > 1:
-            if tittel[-2:] == "er":
-                titteloppslag[tittel+"e"] = erfaringer
-            elif tittel[-1:] == "e":
-                titteloppslag[tittel+"r"] = erfaringer
-            else:
-                titteloppslag[tittel+"er"] = erfaringer
-        else:
-            titteloppslag[tittel] = erfaringer
-    return titteloppslag
-
-
 @permission_required('SITdata.add_produksjon')
 def view_produksjon_ny(request):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
@@ -409,6 +420,39 @@ def get_produsenterfaring(user,produksjon):
     else:
         return None
 
+
+def make_produksjonsvervoppslag(produksjon):
+# lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon, sortert etter verv-id.
+    vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by('verv__id')
+    vervoppslag = {}
+    for vid in vids:
+        if vid == None:
+            continue
+        verv = models.Verv.objects.get(id=vid)
+        erfaringer = produksjon.erfaringer.filter(verv=vid).order_by('rolle')
+        vervoppslag[verv] = erfaringer
+    return vervoppslag
+
+def make_produksjonstitteloppslag(produksjon):
+# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv.
+    titler = produksjon.erfaringer.all().values_list('tittel', flat=True).distinct()
+    titteloppslag = {}
+    for tittel in titler:
+        if tittel == "":
+            continue
+        erfaringer = produksjon.erfaringer.filter(tittel=tittel).order_by('rolle')
+        if erfaringer.count() > 1:
+            if tittel[-2:] == "er":
+                titteloppslag[tittel+"e"] = erfaringer
+            elif tittel[-1:] == "e":
+                titteloppslag[tittel+"r"] = erfaringer
+            else:
+                titteloppslag[tittel+"er"] = erfaringer
+        else:
+            titteloppslag[tittel] = erfaringer
+    return titteloppslag
+
+
 def view_produksjon_info(request, pid):
     if not features.TOGGLE_PRODUKSJONER:
         return redirect('hoved')
@@ -420,12 +464,11 @@ def view_produksjon_info(request, pid):
         access = 'own'
     else:
         access = 'other'
-    vervoppslag = make_produksjonsvervoppslag(produksjon)
-    print(vervoppslag)
-    titteloppslag = make_produksjonstitteloppslag(produksjon)
     produksjonstags = produksjon.produksjonstags.all()
     if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
         produksjonstags = produksjonstags.exclude(tag="revy")
+    vervoppslag = make_produksjonsvervoppslag(produksjon)
+    titteloppslag = make_produksjonstitteloppslag(produksjon)
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
         'produksjon': produksjon, 'produksjonstags': produksjonstags,
         'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
@@ -443,6 +486,9 @@ def view_produksjon_endre(request, pid):
         ProduksjonForm = forms.ProduksjonOwnForm
     else:
         return redirect('/konto/login/?next=%s' % request.path)
+    produksjonstags = produksjon.produksjonstags.all()
+    if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
+        produksjonstags = produksjonstags.exclude(tag="revy")
     vervoppslag = make_produksjonsvervoppslag(produksjon)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
     if request.method == 'POST':
@@ -474,7 +520,8 @@ def view_produksjon_endre(request, pid):
         anmeldelsesform = forms.AnmeldelseForm()
         erfaringsform = forms.ErfaringProdForm()
     return render(request, 'produksjoner/produksjon_endre.html', {'FEATURES': features,
-        'produksjon': produksjon, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+        'produksjon': produksjon, 'produksjonstags': produksjonstags,
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
         'produksjonsform': produksjonsform, 'forestillingsform': forestillingsform,
         'anmeldelsesform': anmeldelsesform, 'erfaringsform': erfaringsform})
 
@@ -484,11 +531,17 @@ def view_produksjon_slett(request, pid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
+    produksjonstags = produksjon.produksjonstags.all()
+    if produksjonstags.filter(tag="UKErevy") or produksjonstags.filter(tag="supperevy"):
+        produksjonstags = produksjonstags.exclude(tag="revy")
+    vervoppslag = make_produksjonsvervoppslag(produksjon)
+    titteloppslag = make_produksjonstitteloppslag(produksjon)
     if request.method == 'POST':
         produksjon.delete()
         return redirect('produksjoner')
     return render(request, 'produksjoner/produksjon_slett.html', {'FEATURES': features,
-        'produksjon': produksjon})
+        'produksjon': produksjon, 'produksjonstags': produksjonstags,
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,})
 
 
 @login_required
