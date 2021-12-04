@@ -1,0 +1,85 @@
+@import "baseline.css";
+h1, h2, h3, h4{
+	font-family: var(--sit-serif);
+    line-height: var(--line-height-regular);
+    letter-spacing: var(--letter-spacing-l);
+}
+
+p, a, .ingress {
+    font-family: var(--sit-sans);
+}
+
+h1 {
+	font-size: var(--font-size-xl);
+}
+
+h2 {
+	font-size: var(--font-size-l);
+}
+
+h3 {
+	font-size: var(--font-size-regular);
+}
+
+.ingress {
+	font-size: var(--font-size-l);
+	line-height: var(--line-height-l);
+    letter-spacing: var(--letter-spacing-l);
+}
+
+p {
+	font-size: var(--font-size-regular);
+    line-height: var(--line-height-regular);
+}
+
+.p-strong {
+    font-weight: var(--font-weight-semi-bold);
+}
+
+.font-info {
+	font-size: var(--font-size-s);
+    line-height: var(--line-height-regular);
+}
+
+.font-info-strong {
+    font-size: var(--font-size-s);
+    line-height: var(--line-height-regular);
+    font-weight: var(--font-weight-bold);
+}
+
+a {
+    font-size: var(--font-size-regular);
+    line-height: var(--line-height-regular);
+	color: var(--main-text-color);
+	font-style: normal;
+	text-decoration: none;
+}
+
+.font-button {
+    font-size: var(--font-size-regular);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--letter-spacing-l);
+}
+
+/* 1.3 General styles, desktop */
+@media only screen and (min-width: 1024px) {
+    h1 {
+        font-size: var(--font-size-xxl);
+    }
+    
+    h2 {
+        font-size: var(--font-size-xl);
+    }
+    
+    h3 {
+        font-size: var(--font-size-l);
+    }
+
+    .ingress {
+        font-size: var(--font-size-regular);
+    }
+
+    .font-info {
+        font-size: var(--font-size-regular);
+    }
+}

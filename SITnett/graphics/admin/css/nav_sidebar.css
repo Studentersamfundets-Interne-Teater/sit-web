@@ -85,7 +85,7 @@
 
 #nav-sidebar .current-app .section:link,
 #nav-sidebar .current-app .section:visited {
-    color: var(--main-bg-color);
+    color: var(--main-background-color);
     font-weight: bold;
 }
 

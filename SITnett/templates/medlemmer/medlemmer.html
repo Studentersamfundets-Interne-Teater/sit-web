@@ -77,7 +77,7 @@
 							{% endif %}
 							<div class="card-container">
 								<h4 class="card-title">{{medlem.fornavn}} {{medlem.mellomnavn}} {{medlem.etternavn}}</h4> 
-								<div class="text-info text-strong">
+								<div class="font-info text-strong">
 									{% if medlem.medlemstype > 1 %}
 										{{medlem.get_medlemstype_display|capfirst}}
 									{% elif medlem.status and medlem.undergjeng %}

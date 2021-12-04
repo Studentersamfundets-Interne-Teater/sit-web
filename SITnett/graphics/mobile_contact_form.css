@@ -1,3 +1,4 @@
+@import "css/baseline.css";
 thead, .member-table__henvendelser {
   display: none;
 }
@@ -48,14 +49,14 @@ thead, .member-table__henvendelser {
   }
 
   .member-table tr:hover {
-    background-color: var(--sit-grullo-20);
+    background-color: var(--grullo-20);
   }
 
   .member-table th {
     padding: 16px 12px;
     text-align: left;
-    background-color: var(--sit-grullo-dark);
-    border: 1px solid var(--main-bg-color);
-    color: var(--main-bg-color);
+    background-color: var(--grullo-100);
+    border: 1px solid var(--main-background-color);
+    color: var(--main-background-color);
   }
 }
