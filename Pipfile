@@ -23,7 +23,7 @@ soupsieve = "==2.2.1"
 sqlparse = "==0.4.2"
 urllib3 = "==1.26.5"
 Django = "==3.2.5"
-Pillow = "==8.3.2"
+Pillow = "==9.0.0"
 Markdown = "==3.3.4"
 
 [requires]
