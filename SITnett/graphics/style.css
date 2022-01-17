@@ -296,10 +296,6 @@ select{
 .placeholder-content p{
 	margin-top: 0px;
 }
-.placeholder-content a{
-	text-decoration: underline;
-	color: var(--gunmetal-80);
-}
 .placeholder-content .font-info{
 	margin-top: 0;
 }
