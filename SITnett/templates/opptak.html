@@ -64,8 +64,13 @@
 			</div>
 			{% endif %}
 		{% endif %}
+		{% if ar.opptakstekst_kostyme or ar.opptakstekst_kulisse or ar.opptakstekst_skuespill %}
+			<div class="btn-wrapper">
+				<a class="btn" href="https://samfundet.no/opptak" rel="noreferrer noopener">Søk Samfundet</a>
+			</div>
+		{% endif %}
 	{% else %}
-		<p>SIT tar ikke opp nye medlemmer nå, men kom tilbake i januar. Da vil det igjen bli anledning til å bli med i en av våre tre undergjenger Kostyme, Kulisse eller Skuespill.</p>
+		<p>SIT tar ikke opp nye medlemmer nå, men følg med i januar. Da vil det igjen bli anledning til å bli med i en av våre tre undergjenger Kostyme, Kulisse eller Skuespill.</p>
 		<p>Vi håper å se deg da!</p>
 		{% if ar.opptaksbilde_annet %}
 		<img src="{{ar.opptaksbilde_annet.fil.url}}" width="100%" />
