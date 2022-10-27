@@ -208,28 +208,30 @@
 		{% endblock medvirkende_ny %}
 		</div>
 
-		<div class="divider"></div>
-		<a class="production-categories">Forestillinger</a>
-		<div class="production-category-content">
-		{% if produksjon.forestillinger.all %}
-			{% for forestilling in produksjon.forestillinger.all %}
-				{{forestilling.fullt_tidspunkt}}
-				{% block forestilling_fjern %}
-				<br>
-				{% endblock forestilling_fjern %}
-			{% endfor %}
-		{% else %}
-			<b>Premieredato:</b> {{produksjon.full_premieredato|capfirst}}<br>
+		{% if produksjon.forestillinger.all or produksjon.full_premieredato %}
+			<div class="divider"></div>
+			<a class="production-categories">Forestillinger</a>
+			<div class="production-category-content">
+			{% if produksjon.forestillinger.all %}
+				{% for forestilling in produksjon.forestillinger.all %}
+					{{forestilling.fullt_tidspunkt}}
+					{% block forestilling_fjern %}
+					<br>
+					{% endblock forestilling_fjern %}
+				{% endfor %}
+			{% else %}
+				<b>Premieredato:</b> {{produksjon.full_premieredato|capfirst}}<br>
+			{% endif %}
+			{% block forestilling_ny %}
+
+			{% endblock forestilling_ny %}
+			</div>
 		{% endif %}
-		{% block forestilling_ny %}
 
-		{% endblock forestilling_ny %}
-		</div>
-
-		<div class="divider"></div>
-		<a class="production-categories">Omtaler</a>
-		<div class="production-category-content">
 		{% if produksjon.anmeldelser.count %}
+			<div class="divider"></div>
+			<a class="production-categories">Omtaler</a>
+			<div class="production-category-content">
 			{% for anmeldelse in produksjon.anmeldelser.all %}
 				<p>
 				<i>{{anmeldelse.utdrag}}</i>
@@ -243,17 +245,18 @@
 				</p>
 				</p>
 			{% endfor %}
-		{% endif %}
 		{% block anmeldelse_ny %}
 
 		{% endblock anmeldelse_ny %}
 		</div>
+		{% endif %}
 
+		{% if produksjon.bilder.count %}
 		<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
 			<div class="gallery">
-				{% if produksjon.bilder.count %}
+				
 					{% for bilde in produksjon.bilder.all %}
 						{%if bilde.offentlig %}
 							<figure class="galleryItem">
@@ -267,12 +270,12 @@
 							</figure>
 						{% endif %}
 					{% endfor %}
-				{% endif %}
 			</div>
 		</div>
+		{% endif %}
 
+		{% if produksjon.opptak.count or produksjon.numre.count %}
 		<div class="divider"></div>
-
 		<a class="production-categories">Lyd og video</a>
 		<div class="production-category-content">
 			<div class="gallery">
@@ -314,6 +317,7 @@
 				{% endif %}
 			</div>
 		</div>
+		{% endif %}
 
 		<div class="divider"></div>
 	</section>
