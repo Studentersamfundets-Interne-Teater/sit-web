@@ -39,23 +39,23 @@
 
 	<div class="production-extra-info">
 		{% if produksjonstags.count %}
-			<div class="production-extra-info-box"><img src="{% static 'assets/genre_icon.svg' %}">
+		<div class="production-extra-info-box"><img src="{% static 'assets/genre_icon.svg' %}">
 			<p>{{produksjonstags|join:", "|capfirst}}</p>
-			</div>
+		</div>
 		{% endif %}
 		<div class="production-extra-info-box"><img src="{% static 'assets/location_icon.svg' %}">
-		<p>{{produksjon.lokale.all|join:", "}}</p>
+			<p>{{produksjon.lokale.all|join:", "}}</p>
 		</div>
 		{% if produksjon.varighet %}
-			<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
+		<div class="production-extra-info-box"><img src="{% static 'assets/duration_icon.svg' %}">
 			<p>{{produksjon.varighet|capfirst}}</p>
-			</div>
+		</div>
 		{% endif %}
 		{% if produksjon.pris %}
-			<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
+		<div class="production-extra-info-box"><img src="{% static 'assets/price_icon.svg' %}">
 			<p> {{produksjon.pris}} kr
 			{% if produksjon.medlemspris %} (ikke-medlem) / {{produksjon.medlemspris}} kr (medlem){% endif %}</p>
-			</div>
+		</div>
 		{% endif %}
 	</div>
 
@@ -72,11 +72,12 @@
 				{% endif %}
 			{% endblock produksjon_info %}
 		</div>
+
+		{% if vervoppslag or titteloppslag %}
 		<div class="divider"></div>
 		<a class="production-categories">Medvirkende</a>
 		<div class="production-category-content">
-		{% if vervoppslag %}
-			{% for verv, erfaringer in vervoppslag.items %}
+			{% if vervoppslag %} {% for verv,erfaringer in vervoppslag.items %}
 				{% if FEATURES.TOGGLE_VERV and verv.erfaringsoverforing and user.is_authenticated %}
 					<a href="{% url 'verv_info' verv.id %}"><b>
 				{% else %}
@@ -165,25 +166,23 @@
 					</b><br>
 				{% endif %}
 				{% for erfaring in erfaringer %}
-                    {% if erfaring.medlem %}
+          {% if erfaring.medlem %}
 						{% if FEATURES.TOGGLE_MEDLEMMER %}
 							<a href="{% url 'medlem_info' erfaring.medlem.id %}">{{erfaring.medlem}}</a></td>
 						{% else %}
 							{{erfaring.medlem}}
 						{% endif %}
-                    {% else %}
-                        {{ erfaring.navn }}
-                    {% endif %}
+          {% else %}
+              {{ erfaring.navn }}
+          {% endif %}
 					{% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_verv_fjern %}
 					<br>
 					{% endblock medvirkende_verv_fjern %}
 				{% endfor %}
 				<br>
-			{% endfor %}
-		{% endif %}
-		{% if titteloppslag %}
-			{% for tittel, erfaringer in titteloppslag.items %}
+			{% endfor %} {% endif %}
+			{% if titteloppslag %} {% for tittel,erfaringer in titteloppslag.items %}
 				<b>{{tittel|capfirst}}:</b><br>
 				{% for erfaring in erfaringer %}
 					{% if erfaring.medlem %}
@@ -192,46 +191,44 @@
 						{% else %}
 							{{erfaring.medlem}}
 						{% endif %}
-                    {% else %}
+          {% else %}
 						{{ erfaring.navn }}
-                    {% endif %}
-                    {% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
+          {% endif %}
+          {% if erfaring.rolle %} ({{erfaring.rolle}}){% endif %}
 					{% block medvirkende_tittel_fjern %}
 					<br>
 					{% endblock medvirkende_tittel_fjern %}
 				{% endfor %}
 				<br>
-			{% endfor %}
-		{% endif %}
-		{% block medvirkende_ny %}
+			{% endfor %} {% endif %}
+			{% block medvirkende_ny %}
 
-		{% endblock medvirkende_ny %}
+			{% endblock medvirkende_ny %}
 		</div>
+		{% endif %}
 
-		{% if produksjon.forestillinger.all or produksjon.full_premieredato %}
-			<div class="divider"></div>
+		{% if produksjon.forestillinger.count or produksjon.full_premieredato != "ukjent" %}
+		<div class="divider"></div>
 			<a class="production-categories">Forestillinger</a>
 			<div class="production-category-content">
-			{% if produksjon.forestillinger.all %}
-				{% for forestilling in produksjon.forestillinger.all %}
-					{{forestilling.fullt_tidspunkt}}
-					{% block forestilling_fjern %}
-					<br>
-					{% endblock forestilling_fjern %}
-				{% endfor %}
-			{% else %}
+			{% if produksjon.forestillinger.count %} {% for forestilling in produksjon.forestillinger.all %}
+				{{forestilling.fullt_tidspunkt}}
+				{% block forestilling_fjern %}
+				<br>
+				{% endblock forestilling_fjern %}
+			{% endfor %} {% else %}
 				<b>Premieredato:</b> {{produksjon.full_premieredato|capfirst}}<br>
 			{% endif %}
 			{% block forestilling_ny %}
 
 			{% endblock forestilling_ny %}
-			</div>
+		</div>
 		{% endif %}
 
 		{% if produksjon.anmeldelser.count %}
-			<div class="divider"></div>
-			<a class="production-categories">Omtaler</a>
-			<div class="production-category-content">
+		<div class="divider"></div>
+		<a class="production-categories">Omtaler</a>
+		<div class="production-category-content">
 			{% for anmeldelse in produksjon.anmeldelser.all %}
 				<p>
 				<i>{{anmeldelse.utdrag}}</i>
@@ -245,9 +242,9 @@
 				</p>
 				</p>
 			{% endfor %}
-		{% block anmeldelse_ny %}
+			{% block anmeldelse_ny %}
 
-		{% endblock anmeldelse_ny %}
+			{% endblock anmeldelse_ny %}
 		</div>
 		{% endif %}
 
@@ -255,22 +252,22 @@
 		<div class="divider"></div>
 		<a class="production-categories">Bildegalleri</a>
 		<div class="production-category-content">
-			<div class="gallery">
-				
-					{% for bilde in produksjon.bilder.all %}
-						{%if bilde.offentlig %}
-							<figure class="galleryItem">
-								<a href="#"><img src="{{bilde.fil.url}}" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{bilde.kontekst}} {% endif %}
-									{% if bilde.medlemmer.count %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}
-									{% if bilde.fotograf %} Foto: {{ bilde.fotograf }} {% endif %}"></a>
-									<figcaption>{% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br>
-										{% if bilde.medlemmer.count %}{% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}<br>
-										{% if bilde.fotograf %} Foto: {{bilde.fotograf}} {% endif %}
-									</figcaption>
-							</figure>
-						{% endif %}
-					{% endfor %}
-			</div>
+		<div class="gallery">
+			{% for bilde in produksjon.bilder.all %}
+				{%if bilde.offentlig %}
+					<figure class="galleryItem">
+						<a href="#"><img src="{{bilde.fil.url}}" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{bilde.kontekst}} {% endif %}
+							{% if bilde.medlemmer.count %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}
+							{% if bilde.fotograf %} Foto: {{ bilde.fotograf }} {% endif %}">
+						</a>
+						<figcaption>{% if bilde.kontekst %} {{ bilde.kontekst }} {% endif %} <br>
+							{% if bilde.medlemmer.count %}{% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}<br>
+							{% if bilde.fotograf %} Foto: {{bilde.fotograf}} {% endif %}
+						</figcaption>
+					</figure>
+				{% endif %}
+			{% endfor %}
+		</div>
 		</div>
 		{% endif %}
 
@@ -278,44 +275,38 @@
 		<div class="divider"></div>
 		<a class="production-categories">Lyd og video</a>
 		<div class="production-category-content">
-			<div class="gallery">
-				{% if produksjon.opptak.count %}
-					{% for opptak in produksjon.opptak.all %}
-						{%if opptak.offentlig %}
-							<figure class="galleryItem">
-								<video controls alt="{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %}
-									{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}">
-									<source src="{{opptak.fil.url}}" type="video/mp4">
-									Sorry, your browser doesn't support embedded videos.
-								</video>
-									<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
-											{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
-										</figcaption>
-							</figure>
-						{% endif %}
-					{% endfor %}
+		<div class="gallery">
+			{% if produksjon.opptak.count %} {% for opptak in produksjon.opptak.all %}
+				{%if opptak.offentlig %}
+					<figure class="galleryItem">
+						<video controls alt="{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %}
+							{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}">
+							<source src="{{opptak.fil.url}}" type="video/mp4">
+							Sorry, your browser doesn't support embedded videos.
+						</video>
+						<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
+							{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
+						</figcaption>
+					</figure>
 				{% endif %}
-				{% if produksjon.numre.count %}
-					{% for nummer in produksjon.numre.all %}
-						{% if nummer.opptak.count %}
-							{% for opptak in nummer.opptak.all %}
-								{%if opptak.offentlig %}
-									<figure class="galleryItem">
-										<video controls alt="{% if opptak.kontekst %} {{ opptak.kontekst }} {% endif %}
-											{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}">
-											<source src="{{opptak.fil.url}}" type="video/mp4">
-											Sorry, your browser doesn't support embedded videos.
-										</video>
-										<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
-											{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
-										</figcaption>
-									</figure>
-								{% endif %}
-							{% endfor %}
-						{% endif %}
-					{% endfor %}
-				{% endif %}
-			</div>
+			{% endfor %} {% endif %}
+			{% if produksjon.numre.count %} {% for nummer in produksjon.numre.all %}
+				{% if nummer.opptak.count %} {% for opptak in nummer.opptak.all %}
+					{%if opptak.offentlig %}
+						<figure class="galleryItem">
+							<video controls alt="{% if opptak.kontekst %} {{ opptak.kontekst }} {% endif %}
+								{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}">
+								<source src="{{opptak.fil.url}}" type="video/mp4">
+								Sorry, your browser doesn't support embedded videos.
+							</video>
+							<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
+								{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
+							</figcaption>
+						</figure>
+					{% endif %}
+				{% endfor %} {% endif %}
+			{% endfor %} {% endif %}
+		</div>
 		</div>
 		{% endif %}
 
