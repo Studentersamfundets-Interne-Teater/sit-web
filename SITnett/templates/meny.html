@@ -12,7 +12,7 @@
 
 	{% block header_content %}{% endblock header_content %}
 
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"> 
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -61,7 +61,7 @@
 
 	<content>
 		{% block innhold %}
-	
+
 		{% endblock innhold %}
 	</content>
 
@@ -70,14 +70,13 @@
 			<div class="footer-section">
 				<p><a href="{% url 'kontakt' %}" class="text-strong">Kontakt oss</a></p>
 				<p> Studentersamfundet <br>
-					Elgesetergate 1 <br> 
+					Elgesetergate 1 <br>
 					7030 Trondheim</p>
 				<p><a href="mailto:sit@samfundet.no"> sit@samfundet.no</a></p>
 				<!-- <p><a href="{% url 'kontakt' %}"> Kontakt</a> </p> -->
 			</div>
 			<div class="footer-section">
-				<p class="text-strong">Om SIT</p>
-				<a href="{% url 'info' %}"> Vår historie </a><br><br>
+				<p><a href="{% url 'info' %}" class="text-strong">Om SIT</a></p>
 				<a href="https://www.samfundet.no/informasjon" target="_blank" rel="noreferrer noopener">Om Studentersamfundet i Trondhjem</a>
 			</div>
 			<div class="footer-some footer-section">
