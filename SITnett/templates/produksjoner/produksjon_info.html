@@ -256,7 +256,7 @@
 			{% for bilde in produksjon.bilder.all %}
 				{%if bilde.offentlig %}
 					<figure class="galleryItem">
-						<a href="#"><img src="{{bilde.fil.url}}" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{bilde.kontekst}} {% endif %}
+						<a href="#"><img src="{{bilde.fil.url}}" loading="lazy" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{bilde.kontekst}} {% endif %}
 							{% if bilde.medlemmer.count %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}
 							{% if bilde.fotograf %} Foto: {{ bilde.fotograf }} {% endif %}">
 						</a>
