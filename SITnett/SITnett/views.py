@@ -469,9 +469,13 @@ def view_produksjon_info(request, pid):
         produksjonstags = produksjonstags.exclude(tag="revy")
     vervoppslag = make_produksjonsvervoppslag(produksjon)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
+    if models.Opptak.objects.filter(nummer__produksjon=produksjon):
+        nummeropptak = True
+    else:
+        nummeropptak = False
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
         'produksjon': produksjon, 'produksjonstags': produksjonstags,
-        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag})
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag, 'nummeropptak': nummeropptak})
 
 
 @login_required
@@ -576,6 +580,43 @@ def view_anmeldelse_fjern(request, aid):
             'anmeldelse': anmeldelse})
     else:
         return redirect('/konto/login?next=%s' % request.path)
+
+
+def view_numre(request):
+    if not features.TOGGLE_NUMRE:
+        return redirect('hoved')
+    nummerliste = models.Nummer.objects.all()
+    if request.GET:
+        nummerform = forms.NummerSearchForm(request.GET)
+        if request.GET['tittel']:
+            tittel = request.GET['tittel']
+            nummerliste = nummerliste.filter(tittel__icontains=tittel)
+        if 'produksjon' in request.GET and request.GET['produksjon'] != '':
+            produksjoner = request.GET.getlist('produksjon')
+            nummerliste = nummerliste.filter(produksjon__id__in=produksjoner)
+        if request.GET['fritekst']:
+            fritekst = request.GET['fritekst']
+            nummerliste = (nummerliste.filter(beskrivelse__icontains=fritekst) |
+                nummerliste.filter(anekdoter__icontains=fritekst) |
+                nummerliste.filter(manus__icontains=fritekst))
+    else:
+        arstall = datetime.datetime.now().year
+        nummerform = forms.NummerSearchForm()
+        produksjonsliste = models.Produksjon.objects.all()
+        produksjonsliste = produksjonsliste.filter(premieredato__year__gte=(arstall-30))
+        produksjonsliste = produksjonsliste.filter(produksjonstype=4)
+        nummerliste = nummerliste.filter(produksjon__id__in=produksjonsliste)
+            # filtrerer ut numre fra produksjoner fra de siste 10 årene som utgangspunkt.
+    return render(request, 'numre/numre.html', {'FEATURES': features,
+        'nummerliste': nummerliste, 'nummerform': nummerform})
+
+
+def view_nummer_info(request, nid):
+    if not features.TOGGLE_NUMRE:
+        return redirect('hoved')
+    nummer = get_object_or_404(models.Nummer, id=nid)
+    return render(request, 'numre/nummer_info.html', {'FEATURES': features,
+        'nummer': nummer})
 
 
 @login_required

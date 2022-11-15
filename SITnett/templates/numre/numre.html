@@ -1,0 +1,67 @@
+{% extends "meny.html" %}
+{% load static %}
+
+{% block innhold %}
+	<head>
+		<link rel="stylesheet" href="{% static 'select2.css' %}"/>
+	</head>
+	<div class="production-wrapper">
+		<div class="title-wrapper">
+			<h2>Numre</h2>
+		</div>
+
+		{{nummerform.media.js}}
+		<div class="filter-and-result-container">
+			<div class="filter-column">
+				<button class="filter-button" onclick="filterFunction()">Filter</button>
+
+				<div id="filter-container" class="filter-hide">
+
+					<form method="get">
+
+						<div class="filter-category">
+							<label>Tittel</label>
+							<div>{{nummerform.tittel}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Produksjon</label>
+							<div>{{nummerform.produksjon}}</div>
+						</div>
+
+						<div class="filter-category">
+							<label>Tekstsøk</label>
+							<div>{{nummerform.fritekst}}</div>
+						</div>
+
+						<input type="submit" value="Søk">
+					</form>
+				</div>
+			</div>
+
+			<div class="result-column">
+				<div class="card-wrapper">
+					{% for nummer in nummerliste %}
+					<a class="card" href="{% url 'nummer_info' nummer.id %}">
+						{% if nummer.produksjon.plakat %}
+							<img src="{{nummer.produksjon.plakat.url}}" class="card-image" loading="lazy">
+						{% else %}
+							<img src="/files/default/katter.png" class="card-image" loading="lazy">
+						{% endif %}
+						<div class="card-container">
+							<h3 class="card-title">{{nummer.tittel}}</h3>
+							<div class="font-info text-strong">
+								{{nummer.produksjon.tittel}} ({{nummer.produksjon.premieredato.year}})
+							</div>
+						</div>
+					</a>
+					{% empty %}
+						Fant ingen numre.
+					{% endfor %}
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<script src="{% static "/filter_accordion.js" %}"></script>
+{% endblock innhold %}

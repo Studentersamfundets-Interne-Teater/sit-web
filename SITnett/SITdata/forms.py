@@ -82,7 +82,7 @@ class ProduksjonSearchForm(forms.Form):
     produksjonstype = forms.MultipleChoiceField(label="Type",choices=models.Produksjon.PRODUKSJONSTYPER,required=False,
         widget = forms.widgets.CheckboxSelectMultiple,initial=[1,2,3,4,5])
     fritekst = forms.CharField(label="Tekstsøk",required=False,max_length=20)
-    
+
 
 class ForestillingForm(forms.ModelForm):
     class Meta:
@@ -96,6 +96,13 @@ class AnmeldelseForm(forms.ModelForm):
         model = models.Anmeldelse
         fields = ['forfatter','medium','offentlig','fil','utdrag']
         widgets = {'fil':CustomFileInput}
+
+
+class NummerSearchForm(forms.Form):
+    tittel = forms.CharField(required=False,max_length=20)
+    produksjon = forms.ModelChoiceField(queryset=models.Produksjon.objects.all(),required=False,
+        widget = Select2MultipleWidget)
+    fritekst = forms.CharField(label="Tekstsøk",required=False,max_length=20)
 
 
 class VervAdminForm(forms.ModelForm):

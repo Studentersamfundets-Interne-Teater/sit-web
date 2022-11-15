@@ -91,6 +91,7 @@ class FEATURE_SETTINGS():
     TOGGLE_AR = True  # skrur på årsider (med gruppefoto, verv, produksjoner og hendelser for et gitt år).
     TOGGLE_MEDLEMMER = True  # skrur på medlemsoversikt og medlemssider.
     TOGGLE_PRODUKSJONER = True  # skrur på produksjonsoversikt og produksjonssider.
+    TOGGLE_NUMRE = True # skrur på nummeroversikt og nummersider.
     TOGGLE_ARRANGEMENTER = False  # skrur på arrangementssider.
     TOGGLE_VERV = False  # skrur på vervoversikt og vervsider.
     TOGGLE_UTTRYKK = False  # skrur på uttrykksliste.
