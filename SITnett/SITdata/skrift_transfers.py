@@ -1914,26 +1914,7 @@ def transfer_all_numre():
     for nummer, nummer_dict in dict_of_lydfil_dicts.items():
         create_nummer(nummer, nummer_dict, location, prod)
 
-def get_nummer_pictures():
-     # pdb.set_trace()
-    all_numre = models.Nummer.objects.all()
-    for nummer in all_numre:
-        if nummer.manus.find("]") != -1:
-            # print(nummer.manus)
-            manus = nummer.manus
-            # print(manus.find("]"))
-            skrift_url = manus[manus.find("]")+2:manus.find(")", manus.find("]"))]
-            print(skrift_url)
-        
 
-def img_pictures(skrift_path):
-    for file in os.listdir(skrift_path+"img/"):
-        if file not in os.listdir(settings.MEDIA_ROOT + '/bilder/'):
-            shutil.copyfileobj(open(file, 'rb'), open(settings.MEDIA_ROOT + '/bilder/' + file, 'wb'))
-            fil = '/bilder/' + file
-            new_foto = models.Foto(fil=fil, kontekst=file, produksjon=new_produksjon, fototype=1, fotograf=fotograf)
-            new_foto.save()
-            
 def fixtext(s):
     if s[0].isupper() and s[1:].islower():
         return s.lower()
@@ -1948,7 +1929,6 @@ if __name__ == "__main__":
     # transfer_all_produksjoner(Skriftdata_path)
     # transfer_all_arsverv(Skriftdata_path)
     # transfer_all_numre(Skriftdata_path)
-    # update_manus_in_live_db()
+    update_manus_in_live_db()
     # print(get_manus_from_local_db())
-    # transfer_all_hendelser(Skriftdata_path)
-    get_nummer_pictures()
+    transfer_all_hendelser(Skriftdata_path)
