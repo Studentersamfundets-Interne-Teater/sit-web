@@ -33,6 +33,7 @@
 			{% endif %}
 			{% if FEATURES.TOGGLE_MEDLEMMER %}<a href="{% url 'medlemmer' %}">Medlemmer</a>{% endif %}
 			{% if FEATURES.TOGGLE_PRODUKSJONER %}<a href="{% url 'produksjoner' %}">Produksjoner</a>{% endif %}
+			{% if FEATURES.TOGGLE_NUMRE %}<a href="{% url 'numre' %}">Numre</a>{% endif %}
 			{% if user.is_authenticated %}
 				{% if FEATURES.TOGGLE_VERV %}<a href="{% url 'verv' %}">Verv</a>{% endif %}
 				{% if FEATURES.TOGGLE_UTTRYKK %}<a href="{% url 'uttrykk' %}">Uttrykk</a>{% endif %}

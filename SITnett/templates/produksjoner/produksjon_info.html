@@ -250,11 +250,11 @@
 
 		{% if produksjon.bilder.count %}
 		<div class="divider"></div>
-		<a class="production-categories">Bildegalleri</a>
+		<a class="production-categories">Bilder</a>
 		<div class="production-category-content">
 		<div class="gallery">
 			{% for bilde in produksjon.bilder.all %}
-				{%if bilde.offentlig %}
+				{% if user.is_authenticated or bilde.offentlig %}
 					<figure class="galleryItem">
 						<a href="#"><img src="{{bilde.fil.url}}" loading="lazy" alt="Bilde {{forloop.counter}}: {% if bilde.kontekst %} {{bilde.kontekst}} {% endif %}
 							{% if bilde.medlemmer.count %} Medlemmer: {% for medlem in bilde.medlemmer.all %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}
@@ -271,18 +271,18 @@
 		</div>
 		{% endif %}
 
-		{% if produksjon.opptak.count or produksjon.numre.count %}
+		{% if produksjon.opptak.count or nummeropptak %}
 		<div class="divider"></div>
-		<a class="production-categories">Lyd og video</a>
+		<a class="production-categories">Opptak</a>
 		<div class="production-category-content">
 		<div class="gallery">
 			{% if produksjon.opptak.count %} {% for opptak in produksjon.opptak.all %}
-				{%if opptak.offentlig %}
+				{%if user.is_authenticated or opptak.offentlig %}
 					<figure class="galleryItem">
 						<video controls alt="{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %}
 							{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{medlem.fornavn}} {{medlem.kallenavn}} {{medlem.etternavn}}{% endfor %}{% endif %}">
 							<source src="{{opptak.fil.url}}" type="video/mp4">
-							Sorry, your browser doesn't support embedded videos.
+							Beklager, nettleseren din støtter ikke direkte visning av videoer.
 						</video>
 						<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
 							{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
@@ -292,20 +292,33 @@
 			{% endfor %} {% endif %}
 			{% if produksjon.numre.count %} {% for nummer in produksjon.numre.all %}
 				{% if nummer.opptak.count %} {% for opptak in nummer.opptak.all %}
-					{%if opptak.offentlig %}
+					{%if user.is_authenticated or opptak.offentlig %}
 						<figure class="galleryItem">
 							<video controls alt="{% if opptak.kontekst %} {{ opptak.kontekst }} {% endif %}
 								{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}">
 								<source src="{{opptak.fil.url}}" type="video/mp4">
-								Sorry, your browser doesn't support embedded videos.
+								Beklager, nettleseren din støtter ikke direkte visning av videoer.
 							</video>
-							<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %} <br>
+							<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}} {% endif %}<br>
+								Fra nummeret "{{nummer.tittel}}".<br>
 								{% if opptak.medlemmer.count %} Medlemmer: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{ medlem.fornavn }} {{ medlem.kallenavn }} {{ medlem.etternavn }}{% endfor %}{% endif %}
 							</figcaption>
 						</figure>
 					{% endif %}
 				{% endfor %} {% endif %}
 			{% endfor %} {% endif %}
+		</div>
+		</div>
+		{% endif %}
+
+		{% if FEATURES.TOGGLE_NUMRE and produksjon.numre.count %}
+		<div class="divider"></div>
+		<a class="production-categories">Numre</a>
+		<div class="production-category-content">
+		<div class="gallery">
+			{% for nummer in produksjon.numre.all %}
+				<a href="{% url 'nummer_info' nummer.id %}">{{nummer.tittel}}</a><br>
+			{% endfor %}
 		</div>
 		</div>
 		{% endif %}
