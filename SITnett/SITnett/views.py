@@ -454,9 +454,20 @@ def make_produksjonstitteloppslag(produksjon):
 
 
 def view_produksjon_info(request, pid):
+    
     if not features.TOGGLE_PRODUKSJONER:
         return redirect('hoved')
+    
     produksjon = get_object_or_404(models.Produksjon, id=pid)
+    
+    if produksjon.forestillinger.count():
+        ferdig = datetime.datetime.now().date() > produksjon.forestillinger.last().tidspunkt.date()
+    elif produksjon.premieredato > datetime.datetime.now().date():
+        ferdig = False
+    else:
+        ferdig = True
+
+
     produsenterfaring = get_produsenterfaring(request.user,produksjon)
     if request.user.has_perm('SITdata.change_produksjon'):
         access = 'admin'
@@ -475,7 +486,7 @@ def view_produksjon_info(request, pid):
         nummeropptak = False
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
         'produksjon': produksjon, 'produksjonstags': produksjonstags,
-        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag, 'nummeropptak': nummeropptak})
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag, 'nummeropptak': nummeropptak, "ferdig":ferdig})
 
 
 @login_required
