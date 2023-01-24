@@ -1,0 +1,116 @@
+.main-content {
+  box-sizing: border-box;
+}
+
+.numre-main-heading {
+  font-size: 1.5rem;
+  color: #2b2b2b;
+  font-weight: 700;
+  font-family: var(--sit-serif);
+  text-align: center;
+  padding: 0 18px;
+  margin: 0;
+  margin-bottom: 30px;
+}
+
+.numre-search-form {
+  padding: 0 18px;
+}
+
+.numre-search-form__label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--gunmetal-80);
+}
+
+.numre-search-form__input {
+  appearance: none;
+  background: #fff;
+  border: 1px solid var(--secondary-text-color);
+  display: block;
+  width: 100%;
+}
+
+.nummer-wrapper {
+  padding-inline: 18px;
+}
+
+.nummer-wrapper__row {
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  padding: 18px 0;
+  border-bottom: 2px solid #a48b75;
+}
+
+.nummer-wrapper__row__chevron {
+  position: relative;
+  top: 2px;
+}
+
+.nummer-wrapper__row__item-list {
+  display: none;
+}
+
+.nummer-wrapper__row__btn {
+  display: none;
+}
+
+.nummer-wrapper__row__title-wrapper {
+  font-size: var(--font-size-regular);
+}
+
+.nummer-wrapper__row__title-wrapper__title {
+  font-family: var(--sit-sans);
+  font-size: inherit;
+  font-weight: 600;
+  margin: 0;
+  margin-bottom: 3px;
+}
+
+.nummer-wrapper__row__title-wrapper__subtitle {
+  color: #4b4b4b;
+}
+
+/* Desktop styles */
+@media (min-width: 1024px) {
+  .numre-main-wrapper {
+    display: grid;
+    grid-template-columns: 224px 1fr;
+    gap: 44px;
+    max-width: 1124px;
+    margin: 0 auto;
+  }
+  
+  .numre-main-heading {
+    font-size: 2.75rem;
+    color: var(--gunmetal-80);
+  }
+
+  .nummer-wrapper__row {
+    grid-template-columns: 7fr 3fr 166px;
+  }
+
+  .nummer-wrapper__row__title-wrapper {
+    height: max-content;
+    align-self: center;
+  }
+
+  .nummer-wrapper__row__chevron {
+    display: none;
+  }
+
+  .nummer-wrapper__row__item-list {
+    display: block;
+    font-size: var(--font-size-regular);
+    list-style: none;
+  }
+
+  .nummer-wrapper__row__btn {
+    display: block;
+    align-self: center;
+    font-size: 16px;
+    padding: 12px 64px;
+    border: 1px solid var(--grullo-100);
+    border-radius: 32px;
+  }
+}

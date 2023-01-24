@@ -1,67 +1,33 @@
 {% extends "meny.html" %}
 {% load static %}
 
+{% block header_content %}
+  <link rel="stylesheet" href="{% static 'css/numre.css' %}" />
+{% endblock header_content %}
+
 {% block innhold %}
-	<head>
-		<link rel="stylesheet" href="{% static 'select2.css' %}"/>
-	</head>
-	<div class="production-wrapper">
-		<div class="title-wrapper">
-			<h2>Numre</h2>
-		</div>
-
-		{{nummerform.media.js}}
-		<div class="filter-and-result-container">
-			<div class="filter-column">
-				<button class="filter-button" onclick="filterFunction()">Filter</button>
-
-				<div id="filter-container" class="filter-hide">
-
-					<form method="get">
-
-						<div class="filter-category">
-							<label>Tittel</label>
-							<div>{{nummerform.tittel}}</div>
-						</div>
-
-						<div class="filter-category">
-							<label>Produksjon</label>
-							<div>{{nummerform.produksjon}}</div>
-						</div>
-
-						<div class="filter-category">
-							<label>Tekstsøk</label>
-							<div>{{nummerform.fritekst}}</div>
-						</div>
-
-						<input type="submit" value="Søk">
-					</form>
-				</div>
-			</div>
-
-			<div class="result-column">
-				<div class="card-wrapper">
-					{% for nummer in nummerliste %}
-					<a class="card" href="{% url 'nummer_info' nummer.id %}">
-						{% if nummer.produksjon.plakat %}
-							<img src="{{nummer.produksjon.plakat.url}}" class="card-image" loading="lazy">
-						{% else %}
-							<img src="/files/default/katter.png" class="card-image" loading="lazy">
-						{% endif %}
-						<div class="card-container">
-							<h3 class="card-title">{{nummer.tittel}}</h3>
-							<div class="font-info text-strong">
-								{{nummer.produksjon.tittel}} ({{nummer.produksjon.premieredato.year}})
-							</div>
-						</div>
-					</a>
-					{% empty %}
-						Fant ingen numre.
-					{% endfor %}
-				</div>
-
-			</div>
-		</div>
-	</div>
-	<script src="{% static "/filter_accordion.js" %}"></script>
+  <h1 class="numre-main-heading">Numre</h1>
+  <section class="numre-main-wrapper">
+    <form class="numre-search-form">
+      <label class="numre-search-form__label" for="search-query-input">Søk</label>
+      <input class="numre-search-form__input" name="query" id="search-query-input" value="{{ search_query }}">
+    </form>
+    <div class="nummer-wrapper">
+      {% for nummer in nummerliste %}
+        <a class="nummer-wrapper__row" href="{% url 'nummer_info' nummer.id %}">
+          <div class="nummer-wrapper__row__title-wrapper">
+            <h2 class="nummer-wrapper__row__title-wrapper__title">{{ nummer.tittel }}</h2>
+            <span class="nummer-wrapper__row__title-wrapper__subtitle">{{ nummer.produksjon }}</span>
+          </div>
+          <ul class="nummer-wrapper__row__item-list">
+            {% if nummer.manus %}<li>Tekst</li>{% endif %}
+            {% if nummer.noter %}<li>Noter</li>{% endif %}
+            {% if nummer.opptak.count %}<li>Opptak</li>{% endif %}
+          </ul>
+          <img class="nummer-wrapper__row__chevron" src="{% static "assets/right-chevron.svg" %}" />
+          <div class="nummer-wrapper__row__btn">Åpne</div>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
 {% endblock innhold %}
