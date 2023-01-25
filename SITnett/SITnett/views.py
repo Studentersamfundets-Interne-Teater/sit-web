@@ -600,6 +600,8 @@ def view_numre(request):
             models.Nummer.objects.filter(tittel__icontains=search_query)
             | models.Nummer.objects.filter(produksjon__tittel__icontains=search_query)
             | models.Nummer.objects.filter(manus__icontains=search_query)
+            | models.Nummer.objects.filter(beskrivelse__icontains=search_query)
+            | models.Nummer.objects.filter(anekdoter__icontains=search_query)
         )
 
     return render(
