@@ -10,13 +10,13 @@
 	<link rel="icon" type="image/svg" href="{% static 'assets/sit_logo_without_text.svg' %}">
 	<link rel="stylesheet" href="{% static 'style.css' %}"/>
 
-	{% block header_content %}{% endblock header_content %}
-
+	
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<script src="{% static 'js/jquery.js' %}"></script>
+	{% block header_content %}{% endblock header_content %}
 </head>
 
 <body>
@@ -60,11 +60,11 @@
 
 	</div>
 
-	<content>
+	<main class="main-wrapper">
 		{% block innhold %}
 
 		{% endblock innhold %}
-	</content>
+	</main>
 
 	<div class="footer">
 		<div class="footer-flex-wrapper">
