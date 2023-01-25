@@ -454,20 +454,16 @@ def make_produksjonstitteloppslag(produksjon):
 
 
 def view_produksjon_info(request, pid):
-    
     if not features.TOGGLE_PRODUKSJONER:
         return redirect('hoved')
-    
     produksjon = get_object_or_404(models.Produksjon, id=pid)
-    
-    if produksjon.forestillinger.count():
-        ferdig = datetime.datetime.now().date() > produksjon.forestillinger.last().tidspunkt.date()
-    elif produksjon.premieredato > datetime.datetime.now().date():
+    dag = datetime.datetime.now().date()
+    if produksjon.forestillinger.count() and produksjon.forestillinger.last().tidspunkt.date() >= dag:
+        ferdig = False
+    elif produksjon.premieredato > dag:
         ferdig = False
     else:
         ferdig = True
-
-
     produsenterfaring = get_produsenterfaring(request.user,produksjon)
     if request.user.has_perm('SITdata.change_produksjon'):
         access = 'admin'
