@@ -33,8 +33,10 @@
 					<br><a href="{{produksjon.billettlink}}" class="btn btn__tickets">Finn billetter</a>
 				</div>
 				{% endif %}
-				{% if  produksjon.visehefte %}
-					<br><a href="{{produksjon.visehefte.url}}" class="feedback-button">Visehefte</a>
+				{% if produksjon.visehefte %}
+				<div class="button-container">
+					<br><a href="{{produksjon.visehefte.url}}" class="btn btn__tickets">Visehefte</a>
+				</div>
 				{% endif %}
 			</div>
 		</div>
@@ -318,14 +320,12 @@
 		<div class="divider"></div>
 		<a class="production-categories">Numre</a>
 		<div class="production-category-content">
-		<div class="gallery">
-			{% if produksjon.visehefte %}
-				<br><a href="{{produksjon.visehefte.url}}" class="feedback-button">Visehefte</a>
-			{% endif %}
 			{% for nummer in produksjon.numre.all %}
 				<a href="{% url 'nummer_info' nummer.id %}">{{nummer.tittel}}</a><br>
 			{% endfor %}
-		</div>
+			{% if produksjon.visehefte %}
+				<br><a href="{{produksjon.visehefte.url}}" target="_blank" rel="noreferrer noopener" class="secondary-button">Visehefte</a>
+			{% endif %}
 		</div>
 		{% endif %}
 
