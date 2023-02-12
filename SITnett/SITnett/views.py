@@ -476,13 +476,18 @@ def view_produksjon_info(request, pid):
         produksjonstags = produksjonstags.exclude(tag="revy")
     vervoppslag = make_produksjonsvervoppslag(produksjon)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
+    if models.Foto.objects.filter(nummer__produksjon=produksjon):
+        nummerbilder = True
+    else:
+        nummerbilder = False
     if models.Opptak.objects.filter(nummer__produksjon=produksjon):
         nummeropptak = True
     else:
         nummeropptak = False
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
         'produksjon': produksjon, 'produksjonstags': produksjonstags,
-        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag, 'nummeropptak': nummeropptak, "ferdig":ferdig})
+        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+        'nummerbilder': nummerbilder, 'nummeropptak': nummeropptak, "ferdig":ferdig})
 
 
 @login_required
@@ -613,7 +618,6 @@ def view_numre(request):
             "search_query": search_query,
         },
     )
-
 
 
 def view_nummer_info(request, nid):
