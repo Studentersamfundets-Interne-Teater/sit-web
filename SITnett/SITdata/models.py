@@ -402,10 +402,10 @@ class Foto(models.Model):
         verbose_name_plural = "fotoer"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','fototype']
     def __str__(self):
-        if (self.produksjon):
-            return self.get_fototype_display()+"bilde "+str(self.id)+" fra "+str(self.produksjon)
-        elif (self.nummer):
+        if (self.nummer):
             return self.get_fototype_display()+"bilde "+str(self.id)+" fra nummeret "+str(self.nummer)
+        elif (self.produksjon):
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra "+str(self.produksjon)
         elif (self.arrangement):
             return self.get_fototype_display()+"bilde "+str(self.id)+" fra "+str(self.arrangement)
         else:
@@ -431,10 +431,10 @@ class Opptak(models.Model):
         verbose_name_plural = "opptak"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','opptakstype']
     def __str__(self):
-        if (self.produksjon):
-            return self.get_opptakstype_display()+"opptak "+str(self.id)+" av "+str(self.produksjon)
-        elif (self.nummer):
+        if (self.nummer):
             return self.get_opptakstype_display()+"opptak "+str(self.id)+" av nummeret "+str(self.nummer)
+        elif (self.produksjon):
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" av "+str(self.produksjon)
         elif (self.arrangement):
             return self.get_opptakstype_display()+"opptak "+str(self.id)+" fra "+str(self.arrangement)
         else:
