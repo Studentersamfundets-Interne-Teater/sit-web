@@ -432,13 +432,13 @@ class Opptak(models.Model):
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','opptakstype']
     def __str__(self):
         if (self.produksjon):
-            return self.get_opptakstype_display()+"opptak av "+str(self.produksjon)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" av "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_opptakstype_display()+"opptak av nummeret "+str(self.nummer)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" av nummeret "+str(self.nummer)
         elif (self.arrangement):
-            return self.get_opptakstype_display()+"opptak fra "+str(self.arrangement)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" fra "+str(self.arrangement)
         else:
-            return self.get_opptakstype_display()+"opptak fra den "+verbose_date(self.dato)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" fra den "+verbose_date(self.dato)
 
 
 class Uttrykk(models.Model):
