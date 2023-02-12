@@ -385,13 +385,13 @@ class Foto(models.Model):
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','fototype']
     def __str__(self):
         if (self.produksjon):
-            return self.get_fototype_display()+"bilde fra "+str(self.produksjon)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_fototype_display()+"bilde fra nummeret "+str(self.nummer)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra nummeret "+str(self.nummer)
         elif (self.arrangement):
-            return self.get_fototype_display()+"bilde fra "+str(self.arrangement)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra "+str(self.arrangement)
         else:
-            return self.get_fototype_display()+"bilde fra den "+verbose_date(self.dato)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra den "+verbose_date(self.dato)
 
 
 class Opptak(models.Model):
