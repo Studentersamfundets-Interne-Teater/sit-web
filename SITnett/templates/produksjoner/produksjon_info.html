@@ -290,7 +290,10 @@
 							Beklager, nettleseren din støtter ikke direkte visning av videoer.
 						</video>
 						<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}}<br> {% endif %}
-							{% if opptak.medlemmer.count %} Med: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}} {% endfor %}{% endif %}
+							{% if opptak.nummer %}
+								Tolkning av nummeret {{opptak.nummer}}.<br>
+							{% endif %}
+							{% if opptak.medlemmer.count %} Med: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}}{% endfor %}{% endif %}
 						</figcaption>
 					</figure>
 				{% endif %}
@@ -298,6 +301,7 @@
 			{% if produksjon.numre.count %} {% for nummer in produksjon.numre.all %}
 				{% if nummer.opptak.count %} {% for opptak in nummer.opptak.all %}
 					{%if user.is_authenticated or opptak.offentlig %}
+						{% if not opptak.produksjon %}
 						<figure class="galleryItem">
 							<video controls alt="{% if opptak.kontekst %} {{ opptak.kontekst }} {% endif %}
 								{% if opptak.medlemmer.count %} Med: {% for medlem in opptak.medlemmer.all %} {{medlem}} {% endfor %}{% endif %}">
@@ -309,6 +313,7 @@
 								{% if opptak.medlemmer.count %} Med: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}} {% endfor %}{% endif %}
 							</figcaption>
 						</figure>
+						{% endif %}
 					{% endif %}
 				{% endfor %} {% endif %}
 			{% endfor %} {% endif %}
