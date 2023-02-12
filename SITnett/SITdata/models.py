@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 import datetime
+from urllib.parse import unquote
 
 def verbose_date(date):
 # lager en dato-string på formen "15. februar 2021".
@@ -377,9 +378,20 @@ class Foto(models.Model):
     nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='bilder')
     arrangement = models.ForeignKey(Arrangement,models.PROTECT,blank=True,null=True,related_name='bilder')
     dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis bildet ikke er knytta til en produksjon, et nummer eller et arrangement.
-    FGlink = models.CharField("FG-link",blank=True,max_length=200) # holder en link til bildet i Fotogjengens arkiv.
+    FGlink = models.CharField("FG-link",blank=True,max_length=200) # holder en link til bildet i Fotogjengens arkiv (på formen "https://foto.samfundet.no/arkiv/DIGFO/9/47/").
     fil = models.ImageField(upload_to='bilder/',blank=True) # holder ei eventuell fil hvis bildet ikke er fra Fotogjengen.
     kontekst = models.TextField() # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
+    def url(self):
+    # returnerer en full URL til bildefila, enten fra databasen eller fra Fotogjengens arkiv (på formen "https://foto.samfundet.no/media/alle/web/DIGFO/digfo0947.jpg").
+        if (self.fil):
+            return self.fil.url
+        elif (self.FGlink):
+            FGkode = self.FGlink.split("/")
+            FGkode = FGkode[(FGkode.index("arkiv")+1):]
+            FGkode = [string.rjust(2,'0') for string in FGkode if string]
+            FGkode = unquote(''.join(FGkode))
+            FGkode = ''.join(char for char in FGkode if char.isalpha())+'/'+FGkode.lower()+".jpg"
+            return "https://foto.samfundet.no/media/alle/web/"+FGkode
     class Meta:
         verbose_name_plural = "fotoer"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','fototype']
