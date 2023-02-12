@@ -364,8 +364,8 @@ class Hendelse(models.Model):
 
 class Foto(models.Model):
 # holder bilder fra produksjoner, numre, arrangementer eller sosiale sammenkomster.
-    FOTOTYPER = ((1,'scene'),(2,'kostyme'),(3,'kulisse'),(4,'arbeid'),(5,'dalje'),
-        (6,'arrangement'),(7,'gruppe'),(8,'sosialt'))
+    FOTOTYPER = ((1,'scene'),(2,'kostyme'),(3,'kulisse'),(4,'arbeids'),(5,'dalje'),
+        (6,'arrangements'),(7,'gruppe'),(8,'sosialt'))
     # Typen 'scene' er ment for bilder fra forestilling, mens typene 'kostyme' og 'kulisse' er ment for nærbilder av kostymer eller kulisser.
     # Typen 'arbeid' er ment for bilder av sying, bygging, øving eller møter.
     # Typen 'gruppe' er ment for portrett- eller gruppebilder tatt av FG (feks gjengfoto, prodapp-bilde, bandbilde, ...).
