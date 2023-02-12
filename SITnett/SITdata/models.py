@@ -381,6 +381,12 @@ class Foto(models.Model):
     FGlink = models.CharField("FG-link",blank=True,max_length=200) # holder en link til bildet i Fotogjengens arkiv (på formen "https://foto.samfundet.no/arkiv/DIGFO/9/47/").
     fil = models.ImageField(upload_to='bilder/',blank=True) # holder ei eventuell fil hvis bildet ikke er fra Fotogjengen.
     kontekst = models.TextField() # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
+    def fotokred(self):
+    # returnerer en string med hvem som skal krediteres for bildet.
+        if (self.fotograf):
+            return self.fotograf
+        elif (self.FGlink):
+            return "foto.samfundet.no"
     def url(self):
     # returnerer en full URL til bildefila, enten fra databasen eller fra Fotogjengens arkiv (på formen "https://foto.samfundet.no/media/alle/web/DIGFO/digfo0947.jpg").
         if (self.fil):
