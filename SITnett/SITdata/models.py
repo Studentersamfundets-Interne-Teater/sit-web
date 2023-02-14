@@ -380,7 +380,7 @@ class Foto(models.Model):
     dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis bildet ikke er knytta til en produksjon, et nummer eller et arrangement.
     FGlink = models.CharField("FG-link",blank=True,max_length=200) # holder en link til bildet i Fotogjengens arkiv (på formen "https://foto.samfundet.no/arkiv/DIGFO/9/47/").
     fil = models.ImageField(upload_to='bilder/',blank=True) # holder ei eventuell fil hvis bildet ikke er fra Fotogjengen.
-    kontekst = models.TextField() # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
+    kontekst = models.TextField(blank=True) # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
     def fotokred(self):
     # returnerer en string med hvem som skal krediteres for bildet.
         if (self.fotograf):
@@ -426,7 +426,7 @@ class Opptak(models.Model):
     kildestart = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget starter.
     kildestopp = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget stopper.
     fil = models.FileField(upload_to='opptak/',blank=True) # holder selve fila med opptaket hvis opptaket ikke er et utdrag.
-    kontekst = models.TextField() # holder en infotekst til opptaket (hva, når, hvor, utdypende, ...).
+    kontekst = models.TextField(blank=True) # holder en infotekst til opptaket (hva, når, hvor, utdypende, ...).
     class Meta:
         verbose_name_plural = "opptak"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','opptakstype']
