@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 import datetime
+from urllib.parse import unquote
 
 def verbose_date(date):
 # lager en dato-string på formen "15. februar 2021".
@@ -364,8 +365,8 @@ class Hendelse(models.Model):
 
 class Foto(models.Model):
 # holder bilder fra produksjoner, numre, arrangementer eller sosiale sammenkomster.
-    FOTOTYPER = ((1,'scene'),(2,'kostyme'),(3,'kulisse'),(4,'arbeid'),(5,'dalje'),
-        (6,'arrangement'),(7,'gruppe'),(8,'sosialt'))
+    FOTOTYPER = ((1,'scene'),(2,'kostyme'),(3,'kulisse'),(4,'arbeids'),(5,'dalje'),
+        (6,'arrangements'),(7,'gruppe'),(8,'sosialt'))
     # Typen 'scene' er ment for bilder fra forestilling, mens typene 'kostyme' og 'kulisse' er ment for nærbilder av kostymer eller kulisser.
     # Typen 'arbeid' er ment for bilder av sying, bygging, øving eller møter.
     # Typen 'gruppe' er ment for portrett- eller gruppebilder tatt av FG (feks gjengfoto, prodapp-bilde, bandbilde, ...).
@@ -377,21 +378,38 @@ class Foto(models.Model):
     nummer = models.ForeignKey(Nummer,models.PROTECT,blank=True,null=True,related_name='bilder')
     arrangement = models.ForeignKey(Arrangement,models.PROTECT,blank=True,null=True,related_name='bilder')
     dato = models.DateField(blank=True,null=True) # holder en eventuell dato hvis bildet ikke er knytta til en produksjon, et nummer eller et arrangement.
-    FGlink = models.CharField("FG-link",blank=True,max_length=200) # holder en link til bildet i Fotogjengens arkiv.
+    FGlink = models.CharField("FG-link",blank=True,max_length=200) # holder en link til bildet i Fotogjengens arkiv (på formen "https://foto.samfundet.no/arkiv/DIGFO/9/47/").
     fil = models.ImageField(upload_to='bilder/',blank=True) # holder ei eventuell fil hvis bildet ikke er fra Fotogjengen.
-    kontekst = models.TextField() # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
+    kontekst = models.TextField(blank=True) # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
+    def fotokred(self):
+    # returnerer en string med hvem som skal krediteres for bildet.
+        if (self.fotograf):
+            return self.fotograf
+        elif (self.FGlink):
+            return "foto.samfundet.no"
+    def url(self):
+    # returnerer en full URL til bildefila, enten fra databasen eller fra Fotogjengens arkiv (på formen "https://foto.samfundet.no/media/alle/web/DIGFO/digfo0947.jpg").
+        if (self.fil):
+            return self.fil.url
+        elif (self.FGlink):
+            FGkode = self.FGlink.split("/")
+            FGkode = FGkode[(FGkode.index("arkiv")+1):]
+            FGkode = [string.rjust(2,'0') for string in FGkode if string]
+            FGkode = unquote(''.join(FGkode))
+            FGkode = ''.join(char for char in FGkode if char.isalpha())+'/'+FGkode.lower()+".jpg"
+            return "https://foto.samfundet.no/media/alle/web/"+FGkode
     class Meta:
         verbose_name_plural = "fotoer"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','fototype']
     def __str__(self):
         if (self.produksjon):
-            return self.get_fototype_display()+"bilde fra "+str(self.produksjon)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_fototype_display()+"bilde fra nummeret "+str(self.nummer)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" av nummeret "+str(self.nummer)
         elif (self.arrangement):
-            return self.get_fototype_display()+"bilde fra "+str(self.arrangement)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra "+str(self.arrangement)
         else:
-            return self.get_fototype_display()+"bilde fra den "+verbose_date(self.dato)
+            return self.get_fototype_display()+"bilde "+str(self.id)+" fra den "+verbose_date(self.dato)
 
 
 class Opptak(models.Model):
@@ -408,19 +426,19 @@ class Opptak(models.Model):
     kildestart = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget starter.
     kildestopp = models.TimeField(blank=True,null=True) # holder tida i kildeopptaket der det eventuelle utdraget stopper.
     fil = models.FileField(upload_to='opptak/',blank=True) # holder selve fila med opptaket hvis opptaket ikke er et utdrag.
-    kontekst = models.TextField() # holder en infotekst til opptaket (hva, når, hvor, utdypende, ...).
+    kontekst = models.TextField(blank=True) # holder en infotekst til opptaket (hva, når, hvor, utdypende, ...).
     class Meta:
         verbose_name_plural = "opptak"
         ordering = ['-produksjon__premieredato','-arrangement__tidspunkt','-dato','opptakstype']
     def __str__(self):
         if (self.produksjon):
-            return self.get_opptakstype_display()+"opptak av "+str(self.produksjon)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" fra "+str(self.produksjon)
         elif (self.nummer):
-            return self.get_opptakstype_display()+"opptak av nummeret "+str(self.nummer)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" av nummeret "+str(self.nummer)
         elif (self.arrangement):
-            return self.get_opptakstype_display()+"opptak fra "+str(self.arrangement)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" fra "+str(self.arrangement)
         else:
-            return self.get_opptakstype_display()+"opptak fra den "+verbose_date(self.dato)
+            return self.get_opptakstype_display()+"opptak "+str(self.id)+" fra den "+verbose_date(self.dato)
 
 
 class Uttrykk(models.Model):
