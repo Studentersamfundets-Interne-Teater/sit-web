@@ -269,7 +269,7 @@
 							{% if bilde.nummer %}
 								Tolkning av nummeret {{bilde.nummer}}.<br>
 							{% endif %}
-							{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}}<br> {% endfor %}{% endif %}
+							{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}} {% endfor %}<br>{% endif %}
 							{% if bilde.fotokred %} Foto: {{bilde.fotokred}} {% endif %}
 						</figcaption>
 					</figure>
@@ -286,7 +286,7 @@
 							</a>
 							<figcaption>{% if bilde.kontekst %} {{bilde.kontekst}}<br> {% endif %}
 								Fra nummeret "{{nummer.tittel}}".<br>
-								{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}}<br> {% endfor %}{% endif %}
+								{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}} {% endfor %}<br>{% endif %}
 								{% if bilde.fotokred %} Foto: {{bilde.fotokred}} {% endif %}
 							</figcaption>
 						</figure>
