@@ -265,10 +265,11 @@
 							{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %} {{medlem}} {% endfor %}{% endif %}
 							{% if bilde.fotokred %} Foto: {{ bilde.fotokred }} {% endif %}">
 						</a>
-						<figcaption>{% if bilde.kontekst %} {{bilde.kontekst}}<br> {% endif %}
+						<figcaption>
 							{% if bilde.nummer %}
 								Tolkning av nummeret {{bilde.nummer}}.<br>
 							{% endif %}
+							{% if bilde.kontekst %} {{bilde.kontekst}}<br> {% endif %}
 							{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}} {% endfor %}<br>{% endif %}
 							{% if bilde.fotokred %} Foto: {{bilde.fotokred}} {% endif %}
 						</figcaption>
@@ -284,8 +285,9 @@
 								{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %} {{medlem}} {% endfor %}{% endif %}
 								{% if bilde.fotokred %} Foto: {{ bilde.fotokred }} {% endif %}">
 							</a>
-							<figcaption>{% if bilde.kontekst %} {{bilde.kontekst}}<br> {% endif %}
+							<figcaption>
 								Fra nummeret "{{nummer.tittel}}".<br>
+								{% if bilde.kontekst %} {{bilde.kontekst}}<br> {% endif %}
 								{% if bilde.medlemmer.count %} Med: {% for medlem in bilde.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}} {% endfor %}<br>{% endif %}
 								{% if bilde.fotokred %} Foto: {{bilde.fotokred}} {% endif %}
 							</figcaption>
@@ -311,10 +313,11 @@
 							<source src="{{opptak.fil.url}}" type="video/mp4">
 							Beklager, nettleseren din støtter ikke direkte visning av videoer.
 						</video>
-						<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}}<br> {% endif %}
+						<figcaption class="video-caption">
 							{% if opptak.nummer %}
 								Tolkning av nummeret {{opptak.nummer}}.<br>
 							{% endif %}
+							{% if opptak.kontekst %} {{opptak.kontekst}}<br> {% endif %}
 							{% if opptak.medlemmer.count %} Med: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}}{% endfor %}{% endif %}
 						</figcaption>
 					</figure>
@@ -330,8 +333,9 @@
 								<source src="{{opptak.fil.url}}" type="video/mp4">
 								Beklager, nettleseren din støtter ikke direkte visning av videoer.
 							</video>
-							<figcaption class="video-caption">{% if opptak.kontekst %} {{opptak.kontekst}}<br> {% endif %}
+							<figcaption class="video-caption">
 								Fra nummeret "{{nummer.tittel}}".<br>
+								{% if opptak.kontekst %} {{opptak.kontekst}}<br> {% endif %}
 								{% if opptak.medlemmer.count %} Med: {% for medlem in opptak.medlemmer.all %}{% if forloop.counter >= 2 %}, {% endif %} {{medlem}} {% endfor %}{% endif %}
 							</figcaption>
 						</figure>
