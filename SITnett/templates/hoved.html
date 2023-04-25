@@ -8,10 +8,10 @@
 <section class="hero" id="hero">
   {% if ar.forsidebilde %}
     <img class="hero-image" id="hero-image"
-  	src="{{ar.forsidebilde.fil.url}}"
+  	src="{{ar.forsidebilde.url}}"
   	alt=""
-  	data-landscape="{{ar.forsidebilde.fil.url}}"
-  	data-portrait="{{ar.forsidebilde.fil.url}}">
+  	data-landscape="{{ar.forsidebilde.url}}"
+  	data-portrait="{{ar.forsidebilde.url}}">
   {% else %}
     <img class="hero-image" id="hero-image"
     src="{% static 'img/default_hero.jpg' %}"
@@ -37,14 +37,11 @@
       </a>
     {% endcomment %}
   </div>
+  {% if ar.forsidebilde.fotokred %}
   <div class="font-info" style="position: absolute; bottom: 1rem; left: 1rem; color: white;">
-    Foto: 
-    {% if ar.forsidebilde.fotograf %}
-      {{ar.forsidebilde.fotograf}}
-    {% else %}
-      <a href="https://foto.samfundet.no/" target="_blank" rel="noreferrer noopener" style="color: white;">foto.samfundet.no</a>
-    {% endif %}
+    Foto: {{ar.forsidebilde.fotokred}}
   </div>
+  {% endif %}
 </section>
 
 {% if blesteliste.count %}
