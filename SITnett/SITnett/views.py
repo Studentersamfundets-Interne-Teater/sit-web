@@ -231,10 +231,10 @@ def view_medlem_ny(request):
 def make_gjengerfaringsoppslag(medlem,authenticated):
     # lager et oppslag på formen {årstall: [erfaring, erfaring, ...], ...} over gjengerfaringene til et medlem,
     # sortert etter år og verv-id.
-    # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
+    # Hvis man er logga inn får man opp både styre-, ekstern- og intern-gjengverv; ellers bare styre- og ekstern-.
     gjengerfaringer = medlem.erfaringer.filter(produksjon__isnull=True)
     if not authenticated:
-        gjengerfaringer = gjengerfaringer.filter(verv__vervtype=2)
+        gjengerfaringer = gjengerfaringer.filter(verv__vervtype__in=[1,2])
     if gjengerfaringer.count():
         ar = gjengerfaringer.values_list('ar', flat=True).distinct().order_by('-ar')
         erfaringsoppslag = {}
