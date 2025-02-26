@@ -11,24 +11,24 @@ from SITdata import models, forms
 features = settings.FEATURES
 
 
-def get_ar(arstall):
-# finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen.
-    if not models.Ar.objects.filter(pk=arstall):
-        ar = models.Ar(pk=arstall)
-        ar.save()
-    else:
-        ar = models.Ar.objects.filter(pk=arstall).first()
+def get_ar(arstall: int) -> models.Ar:
+    """Finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen."""
+    if ar := models.Ar.objects.filter(pk=arstall).first():
+        return ar
+    ar = models.Ar(pk=arstall)
+    ar.save()
     return ar
 
 
-def get_blesteliste(dag):
-# henter ei liste over produksjoner som skal blestes på forsida.
-    blesteliste = models.Produksjon.objects.all()
-    pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
-    blesteliste = blesteliste.filter(id__in=pids)
-    blesteliste = blesteliste.filter(blestestart__isnull=False).filter(blestestart__lte=dag)
-    blesteliste = blesteliste.order_by('premieredato')
-    return blesteliste
+
+def get_blesteliste(dag: datetime.date) -> list[models.Produksjon]:
+    """Henter ei liste over produksjoner som skal blestes på forsida."""
+    blesteliste = models.Produksjon.objects.filter(
+        blestestart__isnull=False,
+        blestestart__lte=dag
+    ).order_by("premieredato")
+    return [prod for prod in blesteliste if prod.blestestopp() >= dag]
+
 
 def get_infotekst():
 # henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
