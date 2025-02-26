@@ -30,13 +30,12 @@ def test_that_get_blesteliste_gets_relevant_productions():
 
     second_to_find = models.Produksjon(
         tittel="Har hatt premiere, men har fremdeles forestillinger igjen",
-        premieredato =today - dt.timedelta(days=2),
-        blestestart=today - dt.timedelta(days=7)
+        premieredato=today - dt.timedelta(days=2),
+        blestestart=today - dt.timedelta(days=7),
     )
     second_to_find.save()
     models.Forestilling(
-        produksjon=second_to_find,
-        tidspunkt=now + dt.timedelta(days=1)
+        produksjon=second_to_find, tidspunkt=now + dt.timedelta(days=1)
     ).save()
 
     # Also create some productions which should be ignored
@@ -53,19 +52,19 @@ def test_that_get_blesteliste_gets_relevant_productions():
     )
     production_to_ignore.save()
     models.Forestilling(
-        produksjon=production_to_ignore,
-        tidspunkt=now - dt.timedelta(days=1)
+        produksjon=production_to_ignore, tidspunkt=now - dt.timedelta(days=1)
     ).save()
 
     models.Produksjon(
         tittel="Har blæstestart i fremtiden",
         premieredato=today + dt.timedelta(days=10),
-        blestestart=today + dt.timedelta(days=7)
+        blestestart=today + dt.timedelta(days=7),
     )
 
     found_productions = get_blesteliste(today)
 
     # Compare titles of actually found productions to names of productions we expect to find
-    assert set(p.tittel for p in found_productions) == set(
-       [ first_to_find.tittel, second_to_find.tittel]
-    )
+    assert [p.tittel for p in found_productions] == [
+        second_to_find.tittel,
+        first_to_find.tittel,
+    ]
