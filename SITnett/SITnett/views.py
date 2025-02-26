@@ -1,10 +1,9 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 
-import os
 import datetime
 
 from SITdata import models, forms
