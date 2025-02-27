@@ -1,10 +1,9 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.models import User, Group
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.conf import settings
 
-import os
 import datetime
 
 from SITdata import models, forms
@@ -12,31 +11,30 @@ from SITdata import models, forms
 features = settings.FEATURES
 
 
-def get_ar(arstall):
-# finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen.
-    if not models.Ar.objects.filter(pk=arstall):
-        ar = models.Ar(pk=arstall)
-        ar.save()
-    else:
-        ar = models.Ar.objects.filter(pk=arstall).first()
+def get_ar(arstall: int) -> models.Ar:
+    """Finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen."""
+    if ar := models.Ar.objects.filter(pk=arstall).first():
+        return ar
+    ar = models.Ar(pk=arstall)
+    ar.save()
     return ar
 
 
-def get_blesteliste(dag):
-# henter ei liste over produksjoner som skal blestes på forsida.
-    blesteliste = models.Produksjon.objects.all()
-    pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
-    blesteliste = blesteliste.filter(id__in=pids)
-    blesteliste = blesteliste.filter(blestestart__isnull=False).filter(blestestart__lte=dag)
-    blesteliste = blesteliste.order_by('premieredato')
-    return blesteliste
 
-def get_infotekst():
+def get_blesteliste(dag: datetime.date) -> list[models.Produksjon]:
+    """Henter ei liste over produksjoner som skal blestes på forsida."""
+    blesteliste = models.Produksjon.objects.filter(
+        blestestart__isnull=False,
+        blestestart__lte=dag
+    ).order_by("premieredato")
+    return [prod for prod in blesteliste if prod.blestestopp() >= dag]
+
+
+def get_infotekst() -> str:
 # henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
-    if models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").count():
-        return models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first().beskrivelse
-    else:
-        return ""
+    if info := models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first():
+        return info.beskrivelse
+    return ""
 
 def view_hoved(request):
     dag = datetime.datetime.now().date()
