@@ -1,6 +1,6 @@
 import pytest
 import datetime as dt
-from ..views import get_ar, get_blesteliste
+from ..views import get_ar, get_blesteliste, get_infotekst
 
 from SITdata import models
 
@@ -68,3 +68,16 @@ def test_that_get_blesteliste_gets_relevant_productions():
         second_to_find.tittel,
         first_to_find.tittel,
     ]
+
+
+@pytest.mark.django_db()
+def test_that_get_infotekst_returns_empty_string_when_no_appropriate_title_is_found() -> None:
+    found = get_infotekst()
+    assert found == ""
+
+
+@pytest.mark.django_db()
+def test_that_appropriate_infotekst_is_found() -> None:
+    models.Uttrykk(tittel="Studentersamfundets Interne Teater", beskrivelse="For en flott gjeng!").save()
+    found = get_infotekst()
+    assert found == "For en flott gjeng!"

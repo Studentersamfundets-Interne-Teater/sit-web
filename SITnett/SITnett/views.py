@@ -30,12 +30,11 @@ def get_blesteliste(dag: datetime.date) -> list[models.Produksjon]:
     return [prod for prod in blesteliste if prod.blestestopp() >= dag]
 
 
-def get_infotekst():
+def get_infotekst() -> str:
 # henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
-    if models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").count():
-        return models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first().beskrivelse
-    else:
-        return ""
+    if info := models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first():
+        return info.beskrivelse
+    return ""
 
 def view_hoved(request):
     dag = datetime.datetime.now().date()
