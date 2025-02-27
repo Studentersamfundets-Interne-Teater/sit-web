@@ -76,6 +76,21 @@ body {
 	top: 25px;
 }
 
+/* Style the logout button */
+.topnav #logout-btn {
+    appearance: none;
+    background: none;
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 24px;
+    color: var(--main-text-color);
+}
+
+.topnav #logout-btn:hover {
+    text-decoration: underline;
+}
+
 /* Add bold font to menu links when hovering */
 .topnav a:hover {
 	text-decoration: underline;
