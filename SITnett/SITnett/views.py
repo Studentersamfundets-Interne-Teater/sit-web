@@ -12,7 +12,7 @@ features = settings.FEATURES
 
 
 def get_ar(arstall: int) -> models.Ar:
-    """Finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen."""
+    # finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen.
     if ar := models.Ar.objects.filter(pk=arstall).first():
         return ar
     ar = models.Ar(pk=arstall)
@@ -20,14 +20,12 @@ def get_ar(arstall: int) -> models.Ar:
     return ar
 
 
-
-def get_blesteliste(dag: datetime.date) -> list[models.Produksjon]:
-    """Henter ei liste over produksjoner som skal blestes på forsida."""
-    blesteliste = models.Produksjon.objects.filter(
-        blestestart__isnull=False,
-        blestestart__lte=dag
-    ).order_by("premieredato")
-    return [prod for prod in blesteliste if prod.blestestopp() >= dag]
+def get_blesteliste(dag: datetime.date):
+    # henter ei liste over produksjoner som skal blæstes på forsida.
+    blesteliste = models.Produksjon.objects.filter(blestestart__isnull=False,blestestart__lte=dag)
+    pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
+    blesteliste = blesteliste.filter(id__in=pids).order_by("premieredato")
+    return blesteliste
 
 
 def get_infotekst() -> str:
