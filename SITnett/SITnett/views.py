@@ -1,4 +1,4 @@
-
+from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
@@ -152,10 +152,14 @@ def view_medlemmer(request):
     if request.GET:
         medlemsform = forms.MedlemSearchForm(request.GET)
         if navn := request.GET.get('navn'):
-            medlemsliste = (medlemsliste.filter(fornavn__icontains=navn)
-                | medlemsliste.filter(mellomnavn__icontains=navn)
-                | medlemsliste.filter(etternavn__icontains=navn)
-                | medlemsliste.filter(kallenavn__icontains=navn))
+            individual_names = navn.strip().split()
+            name_query = Q()
+            for name in individual_names:
+                name_query |= (Q(fornavn__icontains=name)
+                    | Q(mellomnavn__icontains=name)
+                    | Q(etternavn__icontains=name)
+                    | Q(kallenavn__icontains=name))
+            medlemsliste = medlemsliste.filter(name_query)
 
         if undergjenger := request.GET.getlist('undergjeng'):
             if '0' in undergjenger:
