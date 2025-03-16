@@ -151,46 +151,44 @@ def view_medlemmer(request):
     medlemsliste = models.Medlem.objects.all()
     if request.GET:
         medlemsform = forms.MedlemSearchForm(request.GET)
-        if request.GET['navn']:
-            navn = request.GET['navn']
+        if navn := request.GET.get('navn'):
             medlemsliste = (medlemsliste.filter(fornavn__icontains=navn)
                 | medlemsliste.filter(mellomnavn__icontains=navn)
                 | medlemsliste.filter(etternavn__icontains=navn)
                 | medlemsliste.filter(kallenavn__icontains=navn))
-        if 'undergjeng' in request.GET and request.GET['undergjeng'] != '':
-            undergjenger = request.GET.getlist('undergjeng')
+
+        if undergjenger := request.GET.getlist('undergjeng'):
             if '0' in undergjenger:
                 ukjentliste = medlemsliste.filter(undergjeng__isnull=True)
             else:
                 ukjentliste = medlemsliste.none()
             medlemsliste = (medlemsliste.filter(undergjeng__in=undergjenger) | ukjentliste)
-        if 'status' in request.GET and request.GET['status'] != '':
-            statuser = request.GET.getlist('status')
+
+        if statuser := request.GET.getlist('status'):
             if '0' in statuser:
                 ukjentliste = medlemsliste.filter(status__isnull=True)
             else:
                 ukjentliste = medlemsliste.none()
             medlemsliste = (medlemsliste.filter(status__in=statuser) | ukjentliste)
+
         if 'ukjent_ar' in request.GET:
             ukjentliste = medlemsliste.filter(opptaksar__isnull=True)
-            if not request.GET['fra_ar'] and not request.GET['til_ar']:
+            if not request.GET.get('fra_ar') and not request.GET.get('til_ar'):
                 medlemsliste = ukjentliste
         else:
             ukjentliste = medlemsliste.none()
-        if request.GET['fra_ar']:
-            fra_ar = request.GET['fra_ar']
+        if fra_ar := request.GET.get('fra_ar'):
             medlemsliste = (medlemsliste.filter(opptaksar__gte=fra_ar) | ukjentliste)
-        if request.GET['til_ar']:
-            til_ar = request.GET['til_ar']
+
+        if til_ar := request.GET.get('til_ar'):
             medlemsliste = (medlemsliste.filter(opptaksar__lte=til_ar) | ukjentliste)
-        if 'medlemstype' in request.GET and request.GET['medlemstype'] != '':
-            medlemstyper = request.GET.getlist('medlemstype')
+
+        if medlemstyper := request.GET.getlist('medlemstype'):
             medlemsliste = medlemsliste.filter(medlemstype__in=medlemstyper)
             for medlemstype in medlemstyper: # inkluderer andre medlemmer enn SITere, selv om de ikke har undergjeng, status eller opptaksår.
                 if medlemstype != '1':
                     medlemsliste = (medlemsliste | models.Medlem.objects.filter(medlemstype=medlemstype))
-        if 'tittel' in request.GET:
-            titler = request.GET.getlist('tittel')
+        if titler := request.GET.getlist('tittel'):
             ordner = request.GET.getlist('orden')
             utmerkelsesliste = models.Utmerkelse.objects.filter(tittel__in=titler).filter(orden__in=ordner)
             mids = utmerkelsesliste.values_list('medlem',flat=True).distinct()
