@@ -153,13 +153,13 @@ def view_medlemmer(request):
         medlemsform = forms.MedlemSearchForm(request.GET)
         if navn := request.GET.get('navn'):
             individual_names = navn.strip().split()
-            name_query = Q()
             for name in individual_names:
-                name_query |= (Q(fornavn__icontains=name)
+                medlemsliste = medlemsliste.filter(
+                    Q(fornavn__icontains=name)
                     | Q(mellomnavn__icontains=name)
                     | Q(etternavn__icontains=name)
-                    | Q(kallenavn__icontains=name))
-            medlemsliste = medlemsliste.filter(name_query)
+                    | Q(kallenavn__icontains=name)
+                )
 
         if undergjenger := request.GET.getlist('undergjeng'):
             if '0' in undergjenger:
