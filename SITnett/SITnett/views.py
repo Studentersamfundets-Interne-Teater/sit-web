@@ -151,6 +151,7 @@ def view_medlemmer(request):
     medlemsliste = models.Medlem.objects.all()
     if request.GET:
         medlemsform = forms.MedlemSearchForm(request.GET)
+
         if navn := request.GET.get('navn'):
             individual_names = navn.strip().split()
             for name in individual_names:
@@ -181,6 +182,7 @@ def view_medlemmer(request):
                 medlemsliste = ukjentliste
         else:
             ukjentliste = medlemsliste.none()
+
         if fra_ar := request.GET.get('fra_ar'):
             medlemsliste = (medlemsliste.filter(opptaksar__gte=fra_ar) | ukjentliste)
 
@@ -192,11 +194,13 @@ def view_medlemmer(request):
             for medlemstype in medlemstyper: # inkluderer andre medlemmer enn SITere, selv om de ikke har undergjeng, status eller opptaksår.
                 if medlemstype != '1':
                     medlemsliste = (medlemsliste | models.Medlem.objects.filter(medlemstype=medlemstype))
+
         if titler := request.GET.getlist('tittel'):
             ordner = request.GET.getlist('orden')
             utmerkelsesliste = models.Utmerkelse.objects.filter(tittel__in=titler).filter(orden__in=ordner)
             mids = utmerkelsesliste.values_list('medlem',flat=True).distinct()
             medlemsliste = medlemsliste.filter(id__in=mids)
+
     else:
         arstall = datetime.datetime.now().year
         medlemsform = forms.MedlemSearchForm()
