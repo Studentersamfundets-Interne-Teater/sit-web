@@ -6,6 +6,7 @@ from django.conf import settings
 import datetime
 from urllib.parse import unquote
 
+
 def verbose_date(date: datetime.date) -> str:
     """Lager en dato-string på formen "15. februar 2021"."""
     dato = str(date.day)+". "
@@ -60,9 +61,11 @@ class Medlem(models.Model):
     jobb = models.CharField(blank=True,max_length=200)
     brukerkonto = models.OneToOneField(User,models.SET_NULL,blank=True,null=True)
 
+
     def brukernavn(self) -> str:
-        """Lager et brukernavn ut ifra navn på formen 'jonfla93'."""
+        """Lager et brukernavn ut ifra navn på formen 'jonfla13'."""
         return (self.fornavn[:3]+self.etternavn[:3]).lower()+str(self.opptaksar)[2:]
+
 
     class Meta:
         verbose_name_plural = "medlemmer"
@@ -76,7 +79,7 @@ class Medlem(models.Model):
 
 
 class Sitat(models.Model):
-    """Artige sitater gjort av medlemmer."""
+    """Sitater gjort av medlemmer."""
     medlem = models.ForeignKey(Medlem,models.CASCADE,related_name='sitater')
     utsagn = models.TextField() # holder selve sitatet.
     kontekst = models.TextField() # holder kontekst for sitatet (når, hvor, utdypende, ...).
@@ -97,9 +100,11 @@ class Utmerkelse(models.Model):
     orden = models.IntegerField(choices=ORDENER,default=1)
     ar = models.IntegerField("år")
 
+
     def full_tittel(self) -> str:
         """Lager en full tittel på utmerkelsen av typen "ridder av Den Gyldne Kat fra 2015"."""
         return self.get_tittel_display()+" av "+self.get_orden_display()+" fra "+str(self.ar)
+
 
     class Meta:
         verbose_name_plural = "utmerkelser"
@@ -134,6 +139,7 @@ class Verv(models.Model):
     instruks = models.TextField(blank=True) # holder en eventuell instruksfesta beskrivelse av vervet.
     beskrivelse = models.TextField(blank=True) # holder en eventuell grundigere beskrivelse av vervet.
 
+
     def plural(self) -> str:
         """Bøyer vervnavnet i flertall (til listevisninger)."""
         if self.tittel[-11:] == " inspisient":
@@ -150,6 +156,7 @@ class Verv(models.Model):
             return self.tittel+"r"
         else:
             return self.tittel+"er"
+
 
     class Meta:
         verbose_name_plural = "verv"
@@ -210,6 +217,7 @@ class Produksjon(models.Model):
     blestestart = models.DateField("blæstestart",blank=True,null=True) # holder datoen da forsida skal begynne å reklamere for produksjonen.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til Facebook-arrangement.
 
+
     def blestestopp(self) -> datetime.date:
         """Finner datoen da forsida skal slutte å reklamere for produksjonen."""
         if self.forestillinger.count():
@@ -257,7 +265,7 @@ class Produksjon(models.Model):
 
 
     def spilleperiode(self) -> str:
-        """Lager en spilleperiode-string på formen "15.–16. februar"/"15. januar – 16. februar",
+        """Lager en spilleperiode-streng på formen "15.–16. februar"/"15. januar – 16. februar",
         "vår"/"høst" hvis spilledatoene er ukjente eller "UKA"/"ISFiT" hvis produksjonen er en festivalproduksjon.
         """
         if self.produksjonstype in [4,5]:
@@ -279,9 +287,8 @@ class Produksjon(models.Model):
             return verbose_date(self.premieredato)[:-5]
 
 
-
     def full_premieredato(self) -> str:
-        """Lager en premieredato-string på formen "15. februar 2021", eller "ukjent" hvis datoen er ukjent."""
+        """Lager en premieredato-streng på formen "15. februar 2021", eller "ukjent" hvis datoen er ukjent."""
         if ((self.premieredato.month == 1 or self.premieredato.month == 7) and self.premieredato.day == 1) or (self.premieredato.month == 12 and self.premieredato.day == 24):
             return "ukjent"
         else:
@@ -292,10 +299,8 @@ class Produksjon(models.Model):
         verbose_name_plural = "produksjoner"
         ordering = ['-premieredato','produksjonstype','tittel']
 
-
     def __str__(self):
         return self.tittel+" ("+self.semester()+")"
-
 
     def get_absolute_url(self):
         return reverse('produksjon_info',kwargs={'pid':self.id})
@@ -306,9 +311,11 @@ class Forestilling(models.Model):
     produksjon = models.ForeignKey(Produksjon,models.CASCADE,related_name='forestillinger')
     tidspunkt = models.DateTimeField()
 
+
     def fullt_tidspunkt(self) -> str:
-        """Lager en tidspunkt-string på formen "15. februar 2021 klokka 15.15"."""
+        """Lager en tidspunkt-streng på formen "15. februar 2021 klokka 15.15"."""
         return verbose_datetime(self.tidspunkt)
+
 
     class Meta:
         verbose_name_plural = "forestillinger"
@@ -363,12 +370,14 @@ class Erfaring(models.Model):
     rolle = models.CharField(blank=True,max_length=100) # holder en utdypende rolle innafor vervet (feks Melchior Gabor, gitar, arbeidsleder eller konsulent).
     erfaringsskriv = models.FileField(upload_to='erfaringsskriv/',blank=True) # holder et eventuelt erfaringsskriv.
 
+
     def full_tittel(self) -> str:
         """Lager en full tittel for erfaringa på formen "skuespiller ("Melchior Gabor") i Spring Awakening (H2020)"."""
         tittel = (str(self.verv) if self.verv else self.tittel)
         tittel += (" ("+self.rolle+")" if self.rolle else "")
         tittel += " i "+(str(self.produksjon) if self.produksjon else str(self.ar))
         return tittel
+
 
     class Meta:
         verbose_name_plural = "erfaringer"
@@ -393,9 +402,11 @@ class Arrangement(models.Model):
     blestestart = models.DateField("blæstestart (på forsida)",blank=True,null=True) # avgjør datoen da forsida skal begynne å reklamere for arrangementet.
     FBlink = models.CharField("Facebook-link",blank=True,max_length=200) # holder en link til et eventuelt Facebook-arrangement.
 
-    def semester(self):
+
+    def semester(self) -> str:
         """Lager en semesterkode på formen 'H2020'."""
         return ("V" if self.tidspunkt.month < 7 else "H")+str(self.tidspunkt.year)
+
 
     class Meta:
         verbose_name_plural = "arrangementer"
@@ -438,14 +449,15 @@ class Foto(models.Model):
     fil = models.ImageField(upload_to='bilder/',blank=True) # holder ei eventuell fil hvis bildet ikke er fra Fotogjengen.
     kontekst = models.TextField(blank=True) # holder en infotekst til bildet (hva, når, hvor, utdypende, ...).
 
+
     def fotokred(self) -> str:
-        """Returnerer en string med hvem som skal krediteres for bildet."""
+        """Returnerer en streng med hvem som skal krediteres for bildet."""
         if (self.fotograf):
             return self.fotograf
         elif (self.FGlink):
             return "foto.samfundet.no"
 
-    def url(self):
+    def url(self) -> str:
         """Returnerer en full URL til bildefila, enten fra databasen eller fra Fotogjengens arkiv (på formen "https://foto.samfundet.no/media/alle/web/DIGFO/digfo0947.jpg")."""
         if (self.fil):
             return self.fil.url
@@ -456,6 +468,7 @@ class Foto(models.Model):
             FGkode = unquote(''.join(FGkode))
             FGkode = ''.join(char for char in FGkode if char.isalpha())+'/'+FGkode.lower()+".jpg"
             return "https://foto.samfundet.no/media/alle/web/"+FGkode
+
 
     class Meta:
         verbose_name_plural = "fotoer"
@@ -534,9 +547,11 @@ class Dokument(models.Model):
     tittel = models.CharField(max_length=100)
     dato = models.DateField()
     fil = models.FileField(upload_to='dokumenter/')
+
     class Meta:
         verbose_name_plural = "dokumenter"
         ordering = ['-dato','tittel']
+
     def __str__(self):
         return self.tittel+" ("+str(self.dato)+")"
 
@@ -565,8 +580,11 @@ class Ar(models.Model):
     hostmotestopp = models.DateField("høstmøtestopp",blank=True,null=True) # holder datoen for høstens siste mandagsmøte.
     genforstidspunkt = models.DateTimeField(blank=True,null=True) # holder tidspunkt for årets generalforsamling.
 
-    def full_soknadsfrist(self) -> str: # lager en søknadsfrist-string på formen "31. januar 2021 klokka 23.59".
+
+    def full_soknadsfrist(self) -> str:
+        """Lager en søknadsfrist-string på formen "31. januar 2021 klokka 23.59"."""
         return verbose_datetime(self.soknadsfrist)
+
 
     class Meta:
         verbose_name = "år"
