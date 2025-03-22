@@ -1,8 +1,11 @@
+from django.urls import reverse
 import pytest
 import datetime as dt
 from ..views import get_ar, get_blesteliste, get_infotekst
 
 from SITdata import models
+
+from django.test import Client
 
 
 @pytest.mark.django_db()
@@ -81,3 +84,71 @@ def test_that_appropriate_infotekst_is_found() -> None:
     models.Uttrykk(tittel="Studentersamfundets Interne Teater", beskrivelse="For en flott gjeng!").save()
     found = get_infotekst()
     assert found == "For en flott gjeng!"
+
+
+@pytest.mark.django_db()
+def test_that_searching_for_a_single_name_finds_the_appropriate_members(client: Client) -> None:
+    last_year = dt.date.today().year - 1
+
+    member_to_find = models.Medlem(fornavn="Live", etternavn="Jacobsen", opptaksar=last_year, status=1, undergjeng=1)
+    member_to_find.save()
+    member_to_ignore = models.Medlem(fornavn="Erik", etternavn="Jakobsen", opptaksar=last_year, status=1, undergjeng=2)
+    member_to_ignore.save()
+
+    response = client.get(reverse("medlemmer"), query_params={"navn": "jaCoBSEn"})
+    assert response.status_code == 200
+
+    returned_members = response.context["medlemsliste"]
+    assert member_to_find in returned_members
+    assert member_to_ignore not in returned_members
+
+
+@pytest.mark.django_db()
+def test_that_searching_for_full_name_finds_the_appropriate_member(client: Client) -> None:
+    last_year = dt.date.today().year - 1
+
+    member_to_ignore = models.Medlem(fornavn="Live", etternavn="Jacobsen", opptaksar=last_year, status=1, undergjeng=1)
+    member_to_ignore.save()
+    member_to_find = models.Medlem(fornavn="Erik", mellomnavn="André", etternavn="Jakobsen", opptaksar=last_year, status=1, undergjeng=2)
+    member_to_find.save()
+
+    response = client.get(reverse("medlemmer"), query_params={"navn": "eRik ANDRé JaKObsen"})
+    assert response.status_code == 200
+
+    returned_members = response.context["medlemsliste"]
+    assert member_to_find in returned_members
+    assert member_to_ignore not in returned_members
+
+@pytest.mark.django_db()
+def test_that_searching_for_full_name_does_not_find_people_sharing_one_of_the_names(
+    client: Client,
+) -> None:
+    last_year = dt.date.today().year - 1
+
+    member_to_ignore = models.Medlem(
+        fornavn="Live",
+        etternavn="Jakobsen",
+        opptaksar=last_year,
+        status=1,
+        undergjeng=1,
+    )
+    member_to_ignore.save()
+    member_to_find = models.Medlem(
+        fornavn="Erik",
+        mellomnavn="André",
+        etternavn="Jakobsen",
+        opptaksar=last_year,
+        status=1,
+        undergjeng=2,
+    )
+    member_to_find.save()
+
+    response = client.get(
+        reverse("medlemmer"),
+        query_params={"navn": "eRik ANDRé JaKObsen"},
+    )
+    assert response.status_code == 200
+
+    returned_members = response.context["medlemsliste"]
+    assert member_to_find in returned_members
+    assert member_to_ignore not in returned_members
