@@ -1,4 +1,3 @@
-
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
@@ -12,7 +11,7 @@ features = settings.FEATURES
 
 
 def get_ar(arstall: int) -> models.Ar:
-    # finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen.
+    """Finner et gitt år, eller oppretter det hvis det ikke ligger inne i databasen."""
     if ar := models.Ar.objects.filter(pk=arstall).first():
         return ar
     ar = models.Ar(pk=arstall)
@@ -21,7 +20,7 @@ def get_ar(arstall: int) -> models.Ar:
 
 
 def get_blesteliste(dag: datetime.date):
-    # henter ei liste over produksjoner som skal blæstes på forsida.
+    """Henter ei liste over produksjoner som skal blæstes på forsida."""
     blesteliste = models.Produksjon.objects.filter(blestestart__isnull=False,blestestart__lte=dag)
     pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
     blesteliste = blesteliste.filter(id__in=pids).order_by("premieredato")
@@ -29,10 +28,11 @@ def get_blesteliste(dag: datetime.date):
 
 
 def get_infotekst() -> str:
-# henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen.
+    """Henter ut infotekst fra et eventuelt uttrykk med tittel "Studentersamfundets Interne Teater" i uttrykksdatabasen."""
     if info := models.Uttrykk.objects.filter(tittel="Studentersamfundets Interne Teater").first():
         return info.beskrivelse
     return ""
+
 
 def view_hoved(request):
     dag = datetime.datetime.now().date()
@@ -67,7 +67,7 @@ def view_opptak(request):
 
 
 def make_styrevervoppslag(ar):
-    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år, sortert etter verv-id.
+    """Lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år, sortert etter verv-id."""
     styreerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=1)
     if styreerfaringer.count():
         vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
@@ -83,9 +83,11 @@ def make_styrevervoppslag(ar):
     return vervoppslag
 
 
-def make_gjengvervoppslag(ar,authenticated):
-    # lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år, sortert etter verv-id.
-    # Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
+def make_gjengvervoppslag(ar, authenticated):
+    """Lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over gjengvervene et gitt år, sortert etter verv-id.
+
+    Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
+    """
     if not authenticated:
         gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=2)
     else:
@@ -103,9 +105,12 @@ def make_gjengvervoppslag(ar,authenticated):
         vervoppslag = None
     return vervoppslag
 
-def make_gjengtitteloppslag(ar,authenticated):
-# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler et gitt år som ikke er registrerte verv.
-# Hvis man ikke er logga inn får man ikke opp noen titler.
+
+def make_gjengtitteloppslag(ar, authenticated):
+    """Lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler et gitt år som ikke er registrerte verv.
+
+    Hvis man ikke er logga inn får man ikke opp noen titler.
+    """
     titler = models.Erfaring.objects.filter(ar=ar).values_list('tittel', flat=True).distinct()
     titteloppslag = {}
     if not authenticated:
@@ -134,6 +139,7 @@ def view_kontakt(request):
     vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
     return render(request, 'kontakt.html', {'FEATURES': features,
         'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag})
+
 
 @login_required
 def view_Lommelista(request):
@@ -225,9 +231,11 @@ def view_medlem_ny(request):
 
 
 def make_gjengerfaringsoppslag(medlem,authenticated):
-    # lager et oppslag på formen {årstall: [erfaring, erfaring, ...], ...} over gjengerfaringene til et medlem,
-    # sortert etter år og verv-id.
-    # Hvis man er logga inn får man opp både styre-, ekstern- og intern-gjengverv; ellers bare styre- og ekstern-.
+    """Lager et oppslag på formen {årstall: [erfaring, erfaring, ...], ...} over gjengerfaringene til et medlem,
+    sortert etter år og verv-id.
+
+    Hvis man er logga inn får man opp både styre-, ekstern- og intern-gjengverv; ellers bare styre- og ekstern-.
+    """
     gjengerfaringer = medlem.erfaringer.filter(produksjon__isnull=True)
     if not authenticated:
         gjengerfaringer = gjengerfaringer.filter(verv__vervtype__in=[1,2])
@@ -245,8 +253,9 @@ def make_gjengerfaringsoppslag(medlem,authenticated):
 
 
 def make_produksjonserfaringsoppslag(medlem):
-    # lager et oppslag på formen {produksjon: [erfaring, erfaring, ...], ...} over produksjonserfaringene til et medlem,
-    # sortert etter premieredato og verv-id.
+    """Lager et oppslag på formen {produksjon: [erfaring, erfaring, ...], ...} over produksjonserfaringene til et medlem,
+    sortert etter premieredato og verv-id.
+    """
     produksjonserfaringer = medlem.erfaringer.filter(produksjon__isnull=False)
     if produksjonserfaringer.count():
         pids = produksjonserfaringer.values_list('produksjon', flat=True).distinct().order_by('-produksjon__premieredato')
@@ -408,7 +417,7 @@ def view_produksjon_ny(request):
 
 
 def get_produsenterfaring(user,produksjon):
-# sjekker om en bruker har produsenterfaring i en gitt produksjon, og returnerer den eventuelle erfaringa.
+    """Sjekker om en bruker har produsenterfaring i en gitt produksjon, og returnerer den eventuelle erfaringa."""
     if not user.is_authenticated:
         return None
     if models.Medlem.objects.filter(brukerkonto=user):
@@ -418,7 +427,7 @@ def get_produsenterfaring(user,produksjon):
 
 
 def make_produksjonsvervoppslag(produksjon):
-# lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon, sortert etter verv-id.
+    """Lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon, sortert etter verv-id."""
     vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by('verv__id')
     vervoppslag = {}
     for vid in vids:
@@ -429,8 +438,9 @@ def make_produksjonsvervoppslag(produksjon):
         vervoppslag[verv] = erfaringer
     return vervoppslag
 
+
 def make_produksjonstitteloppslag(produksjon):
-# lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv.
+    """Lager et oppslag på formen {tittel: [erfaring, erfaring, ...], ...} over titler i en gitt produksjon som ikke er registrerte verv."""
     titler = produksjon.erfaringer.all().values_list('tittel', flat=True).distinct()
     titteloppslag = {}
     for tittel in titler:
@@ -648,7 +658,7 @@ def view_verv_ny(request):
 
 
 def get_ververfaring(user,verv):
-# sjekker om en bruker har erfaring fra et gitt verv, og returnerer den eventuelle erfaringa.
+    """Sjekker om en bruker har erfaring fra et gitt verv, og returnerer den eventuelle erfaringa."""
     if not user.is_authenticated:
         return None
     if models.Medlem.objects.filter(brukerkonto=user):
