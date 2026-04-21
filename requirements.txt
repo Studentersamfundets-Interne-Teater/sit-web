@@ -12,7 +12,7 @@ django-super-deduper==0.1.4
 html2text==2020.1.16
 idna==2.10
 iniconfig==2.0.0
-lxml==4.9.1
+lxml==6.1.0
 markdown==3.3.4
 mypy==1.15.0
 mypy-extensions==1.0.0
