@@ -13,7 +13,7 @@ html2text==2020.1.16
 idna==2.10
 iniconfig==2.0.0
 lxml==6.1.0
-markdown==3.3.4
+markdown==3.8.1
 mypy==1.15.0
 mypy-extensions==1.0.0
 packaging==24.2
