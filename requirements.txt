@@ -1,7 +1,7 @@
 asgiref==3.8.1
 beautifulsoup4==4.9.3
 bs4==0.0.1
-certifi==2020.12.5
+certifi==2023.5.7
 chardet==4.0.0
 django==5.1
 django-appconf==1.0.4
