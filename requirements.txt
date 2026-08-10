@@ -23,7 +23,7 @@ pytest==9.0.3
 pytest-django==4.10.0
 pytz==2021.1
 requests==2.33.0
-soupsieve==2.2.1
+soupsieve==2.8.4
 sqlparse==0.5.4
 types-pyyaml==6.0.12.20241230
 typing-extensions==4.12.2
