@@ -152,3 +152,68 @@ def test_that_searching_for_full_name_does_not_find_people_sharing_one_of_the_na
     returned_members = response.context["medlemsliste"]
     assert member_to_find in returned_members
     assert member_to_ignore not in returned_members
+
+
+@pytest.mark.django_db()
+def test_admin_bulk_assign_verv_creates_erfaring_for_all_selected_members(client: Client) -> None:
+    User = __import__("django.contrib.auth.models", fromlist=["User"]).User
+    admin_user = User.objects.create_superuser("admin", "admin@example.com", "secret123")
+    client.force_login(admin_user)
+
+    member_one = models.Medlem(fornavn="Anna", etternavn="Andersen", opptaksar=2024, status=1, undergjeng=1)
+    member_two = models.Medlem(fornavn="Bjørn", etternavn="Berg", opptaksar=2024, status=1, undergjeng=2)
+    member_one.save()
+    member_two.save()
+
+    role = models.Verv.objects.create(tittel="Kulissebygger", vervtype=3, erfaringsoverforing=True)
+    url = reverse("admin:SITdata_erfaring_assign_verv")
+
+    response = client.post(
+        url,
+        {
+            "member_ids": [str(member_one.pk), str(member_two.pk)],
+            "verv": str(role.pk),
+            "ar": "2025",
+            "member_roles": ["Kulissebygger", "Kulissebygger"],
+        },
+        follow=True,
+    )
+
+    assert response.status_code == 200
+    assert models.Erfaring.objects.filter(medlem=member_one, verv=role, ar=2025).count() == 1
+    assert models.Erfaring.objects.filter(medlem=member_two, verv=role, ar=2025).count() == 1
+
+
+@pytest.mark.django_db()
+def test_experience_bulk_page_searches_and_assigns_members(client: Client) -> None:
+    User = __import__("django.contrib.auth.models", fromlist=["User"]).User
+    admin_user = User.objects.create_superuser("admin", "admin@example.com", "secret123")
+    client.force_login(admin_user)
+
+    member_one = models.Medlem(fornavn="Ada", etternavn="Andersen", opptaksar=2024, status=1, undergjeng=1)
+    member_two = models.Medlem(fornavn="Bjørn", etternavn="Berg", opptaksar=2024, status=1, undergjeng=2)
+    member_one.save()
+    member_two.save()
+    role = models.Verv.objects.create(tittel="Kulissebygger", vervtype=3, erfaringsoverforing=True)
+
+    url = reverse("admin:SITdata_erfaring_assign_verv")
+    search_response = client.get(url, {"member_search": "Ada Andersen"})
+
+    assert search_response.status_code == 200
+    assert str(member_one) in search_response.content.decode()
+    assert str(member_two) not in search_response.content.decode()
+
+    response = client.post(
+        url,
+        {
+            "member_ids": [str(member_one.pk), str(member_two.pk)],
+            "verv": str(role.pk),
+            "ar": "2029",
+            "member_roles": ["Bygger", "Bas"],
+        },
+        follow=True,
+    )
+
+    assert response.status_code == 200
+    assert models.Erfaring.objects.filter(medlem=member_one, verv=role, ar=2029, rolle="Bygger").count() == 1
+    assert models.Erfaring.objects.filter(medlem=member_two, verv=role, ar=2029, rolle="Bas").count() == 1

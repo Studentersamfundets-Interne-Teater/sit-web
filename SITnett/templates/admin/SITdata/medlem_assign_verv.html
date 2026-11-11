@@ -1,0 +1,146 @@
+{% extends "admin/base_site.html" %} {% block extrastyle %} {{ block.super }}
+<style>
+  .assign-verv-page {
+    max-width: 980px;
+  }
+  .assign-verv-page h2 {
+    margin: 24px 0 8px;
+  }
+  .assign-verv-help {
+    color: #666;
+    margin-top: 0;
+  }
+  .assign-verv-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 20px;
+  }
+  .assign-verv-table th,
+  .assign-verv-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+  }
+  .assign-verv-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+  }
+  .assign-verv-table input {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 420px;
+  }
+  .assign-verv-form {
+    margin-top: 24px;
+  }
+</style>
+{% endblock %} {% block content %}
+<div class="assign-verv-page">
+  <form method="get" class="assign-verv-search">
+    <h2>Finn medlemmer</h2>
+    <p class="assign-verv-help">
+      Søk på fornavn eller etternavn, velg medlemmer og trykk «Legg til
+      medlemmer».
+    </p>
+    <input
+      type="search"
+      name="member_search"
+      value="{{ member_search }}"
+      placeholder="Søk etter medlem"
+    />
+    <button type="submit">Søk</button>
+    {% for id in selected_ids %}<input
+      type="hidden"
+      name="member_ids"
+      value="{{ id }}"
+    />{% endfor %}
+  </form>
+  {% if member_results %}
+  <form method="get">
+    {% for id in selected_ids %}<input
+      type="hidden"
+      name="member_ids"
+      value="{{ id }}"
+    />{% endfor %}
+    <input type="hidden" name="member_search" value="{{ member_search }}" />
+    <table class="assign-verv-table">
+      <thead>
+        <tr>
+          <th>Velg</th>
+          <th>Medlem</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for medlem in member_results %}
+        <tr>
+          <td>
+            <input
+              type="checkbox"
+              name="add_member_ids"
+              value="{{ medlem.pk }}"
+            />
+          </td>
+          <td>{{ medlem }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <button type="submit">Legg til medlemmer</button>
+  </form>
+  {% endif %}
+
+  <p class="assign-verv-help">
+    Valgte medlemmer: {{ selected_members|length }}. Fyll inn én rolle per
+    medlem, eller bruk samme rolle for alle.
+  </p>
+
+  <form method="post">
+    {% csrf_token %} {% for id in selected_ids %}
+    <input type="hidden" name="member_ids" value="{{ id }}" />
+    {% endfor %}
+
+    <h2>Roller per medlem</h2>
+    <p class="assign-verv-help">
+      Rollene følger rekkefølgen på medlemmene under.
+    </p>
+    <table class="assign-verv-table">
+      <thead>
+        <tr>
+          <th>Medlem</th>
+          <th>Rolle</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for medlem in selected_members %}
+        <tr>
+          <td>{{ medlem }}</td>
+          <td><input type="text" name="member_roles" maxlength="100" /></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <fieldset class="module aligned assign-verv-form">
+      <h2>Felles opplysninger</h2>
+      {% for field in form %}
+      <div class="form-row">
+        {{ field.errors }}
+        <div>
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        </div>
+        <div>{{ field }}</div>
+      </div>
+      {% endfor %}
+    </fieldset>
+
+    <p class="assign-verv-help">
+      Dette oppretter én ny erfaring per valgt medlem. Felter du lar stå tomme
+      lagres tomme.
+    </p>
+
+    <div class="submit-row">
+      <input type="submit" value="Legg til verv" class="default" />
+    </div>
+  </form>
+</div>
+{% endblock %}
