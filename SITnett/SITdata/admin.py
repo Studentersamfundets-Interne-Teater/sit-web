@@ -11,16 +11,19 @@ from . import models
 
 
 class AssignVervForm(forms.Form):
-    verv = forms.ModelChoiceField(queryset=models.Verv.objects.all(), label="Verv")
+    verv = forms.ModelChoiceField(
+        queryset=models.Verv.objects.all(), label="Verv")
     ar = forms.IntegerField(label="År", initial=datetime.date.today().year)
-    rolle = forms.CharField(label="Samme rolle for alle", required=False, max_length=100)
+    rolle = forms.CharField(label="Samme rolle for alle",
+                            required=False, max_length=100)
     tittel = forms.CharField(label="Tittel", required=False, max_length=100)
     produksjon = forms.ModelChoiceField(
         queryset=models.Produksjon.objects.all(),
         label="Produksjon",
         required=False,
     )
-    navn = forms.CharField(label="Eksternt navn", required=False, max_length=200)
+    navn = forms.CharField(label="Eksternt navn",
+                           required=False, max_length=200)
     erfaringsskriv = forms.FileField(label="Erfaringsskriv", required=False)
 
 
@@ -39,7 +42,8 @@ def assign_verv_to_members(member_ids, verv, ar, rolle="", tittel="", produksjon
     """Legger til samme erfaring for flere medlemmer med individuell rolle per medlem."""
     created = 0
     normalized_ids = normalize_member_ids(member_ids)
-    members = list(models.Medlem.objects.filter(pk__in=normalized_ids).order_by('pk'))
+    members = list(models.Medlem.objects.filter(
+        pk__in=normalized_ids).order_by('pk'))
 
     role_values = member_roles or [rolle] * len(members)
 
@@ -82,88 +86,137 @@ class AnmeldelseInline(admin.TabularInline):
 
 
 class MedlemAdmin(admin.ModelAdmin):
-    list_display = ['id','etternavn','fornavn','medlemstype','opptaksar','undergjeng','status','brukerkonto']
+    list_display = ['id', 'etternavn', 'fornavn', 'medlemstype',
+                    'opptaksar', 'undergjeng', 'status', 'brukerkonto']
     search_fields = ['fornavn', 'mellomnavn', 'etternavn', 'kallenavn']
-    inlines = [ErfaringInline,UtmerkelseInline]
+    list_filter = [
+        "fornavn",
+        "etternavn",
+        "medlemstype",
+        "undergjeng",
+        "status",
+        "opptaksar",
+    ]
+    inlines = [ErfaringInline, UtmerkelseInline]
 
-admin.site.register(models.Medlem,MedlemAdmin)
+
+admin.site.register(models.Medlem, MedlemAdmin)
 
 
 class SitatAdmin(admin.ModelAdmin):
-    list_display = ['id','utsagn','medlem']
+    list_display = ['id', 'utsagn', 'medlem']
 
-admin.site.register(models.Sitat,SitatAdmin)
+
+admin.site.register(models.Sitat, SitatAdmin)
 
 
 class UtmerkelseAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','medlem','ar']
+    list_display = ['id', 'tittel', 'medlem', 'ar']
 
-admin.site.register(models.Utmerkelse,UtmerkelseAdmin)
+
+admin.site.register(models.Utmerkelse, UtmerkelseAdmin)
 
 
 class VervtagAdmin(admin.ModelAdmin):
-    list_display = ['id','tag']
+    list_display = ['id', 'tag']
+
 
 class VervAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','vervtype','erfaringsoverforing']
+    list_display = ['id', 'tittel', 'vervtype', 'erfaringsoverforing']
 
-admin.site.register(models.Vervtag,VervtagAdmin)
-admin.site.register(models.Verv,VervAdmin)
+
+admin.site.register(models.Vervtag, VervtagAdmin)
+admin.site.register(models.Verv, VervAdmin)
 
 
 class LokaleAdmin(admin.ModelAdmin):
-    list_display = ['id','navn']
+    list_display = ['id', 'navn']
 
-admin.site.register(models.Lokale,LokaleAdmin)
+
+admin.site.register(models.Lokale, LokaleAdmin)
 
 
 class ProduksjonstagAdmin(admin.ModelAdmin):
-    list_display = ['id','tag']
+    list_display = ['id', 'tag']
+
 
 class ProduksjonAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','produksjonstype','premieredato']
-    inlines = [ForestillingInline,AnmeldelseInline]
+    list_display = ['id', 'tittel', 'produksjonstype', 'premieredato']
+    inlines = [ForestillingInline, AnmeldelseInline]
 
-admin.site.register(models.Produksjonstag,ProduksjonstagAdmin)
-admin.site.register(models.Produksjon,ProduksjonAdmin)
+
+admin.site.register(models.Produksjonstag, ProduksjonstagAdmin)
+admin.site.register(models.Produksjon, ProduksjonAdmin)
 
 
 class ForestillingAdmin(admin.ModelAdmin):
-    list_display = ['id','produksjon','tidspunkt']
+    list_display = ['id', 'produksjon', 'tidspunkt']
 
-admin.site.register(models.Forestilling,ForestillingAdmin)
+
+admin.site.register(models.Forestilling, ForestillingAdmin)
 
 
 class NummerAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','produksjon']
+    list_display = ['id', 'tittel', 'produksjon']
 
-admin.site.register(models.Nummer,NummerAdmin)
+
+admin.site.register(models.Nummer, NummerAdmin)
 
 
 class AnmeldelseAdmin(admin.ModelAdmin):
-    list_display = ['id','produksjon','forfatter','medium','offentlig']
+    list_display = ['id', 'produksjon', 'forfatter', 'medium', 'offentlig']
 
-admin.site.register(models.Anmeldelse,AnmeldelseAdmin)
+
+admin.site.register(models.Anmeldelse, AnmeldelseAdmin)
 
 
 class ErfaringAdmin(admin.ModelAdmin):
-    list_display = ['id','medlem','navn','verv','tittel','produksjon','ar','rolle']
+    list_display = ['id', 'medlem', 'navn', 'verv',
+                    'tittel', 'produksjon', 'ar', 'rolle']
+
+    search_fields = [
+        "medlem__fornavn",
+        "medlem__mellomnavn",
+        "medlem__etternavn",
+        "navn",
+        "verv__tittel",
+        "tittel",
+        "produksjon__tittel",
+        "rolle",
+    ]
+
+    list_filter = [
+        ("verv", admin.RelatedOnlyFieldListFilter),
+        ("produksjon", admin.RelatedOnlyFieldListFilter),
+        ("ar", admin.EmptyFieldListFilter),
+        ("erfaringsskriv", admin.EmptyFieldListFilter),
+    ]
+
+    list_select_related = [
+        "medlem",
+        "verv",
+        "produksjon",
+    ]
+
     autocomplete_fields = ['medlem']
     change_list_template = 'admin/SITdata/erfaring/change_list.html'
 
     def get_urls(self):
         urls = super().get_urls()
         custom_urls = [
-            path('assign-verv/', self.admin_site.admin_view(self.assign_verv_view), name='SITdata_erfaring_assign_verv'),
+            path('assign-verv/', self.admin_site.admin_view(self.assign_verv_view),
+                 name='SITdata_erfaring_assign_verv'),
         ]
         return custom_urls + urls
 
     def assign_verv_view(self, request):
         if request.method == 'POST':
-            selected_ids = normalize_member_ids(request.POST.getlist('member_ids'))
+            selected_ids = normalize_member_ids(
+                request.POST.getlist('member_ids'))
         else:
             selected_ids = normalize_member_ids(
-                request.GET.getlist('member_ids') + request.GET.getlist('add_member_ids')
+                request.GET.getlist('member_ids') +
+                request.GET.getlist('add_member_ids')
             )
 
         member_search = request.GET.get('member_search', '').strip()
@@ -177,9 +230,11 @@ class ErfaringAdmin(admin.ModelAdmin):
                     | Q(etternavn__icontains=search_term)
                     | Q(kallenavn__icontains=search_term)
                 )
-            member_results = member_results.order_by('etternavn', 'fornavn')[:25]
+            member_results = member_results.order_by(
+                'etternavn', 'fornavn')[:25]
 
-        selected_members = list(models.Medlem.objects.filter(pk__in=selected_ids).order_by('pk'))
+        selected_members = list(models.Medlem.objects.filter(
+            pk__in=selected_ids).order_by('pk'))
         if request.method == 'POST':
             form = AssignVervForm(request.POST, request.FILES)
             if form.is_valid() and selected_ids:
@@ -195,7 +250,8 @@ class ErfaringAdmin(admin.ModelAdmin):
                     form.cleaned_data['erfaringsskriv'],
                     member_roles,
                 )
-                self.message_user(request, f"La til {created} erfaring(er) for {form.cleaned_data['verv']}.", level=messages.SUCCESS)
+                self.message_user(
+                    request, f"La til {created} erfaring(er) for {form.cleaned_data['verv']}.", level=messages.SUCCESS)
                 return HttpResponseRedirect(reverse('admin:SITdata_erfaring_changelist'))
         else:
             form = AssignVervForm(initial={'ar': datetime.date.today().year})
@@ -212,50 +268,61 @@ class ErfaringAdmin(admin.ModelAdmin):
         }
         return render(request, 'admin/SITdata/medlem_assign_verv.html', context)
 
-admin.site.register(models.Erfaring,ErfaringAdmin)
+
+admin.site.register(models.Erfaring, ErfaringAdmin)
 
 
 class ArrangementAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','offentlig','tidspunkt']
+    list_display = ['id', 'tittel', 'offentlig', 'tidspunkt']
 
-admin.site.register(models.Arrangement,ArrangementAdmin)
+
+admin.site.register(models.Arrangement, ArrangementAdmin)
 
 
 class HendelseAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','dato']
+    list_display = ['id', 'tittel', 'dato']
 
-admin.site.register(models.Hendelse,HendelseAdmin)
+
+admin.site.register(models.Hendelse, HendelseAdmin)
 
 
 class FotoAdmin(admin.ModelAdmin):
-    list_display = ['id','fototype','produksjon','nummer','arrangement','dato']
+    list_display = ['id', 'fototype', 'produksjon',
+                    'nummer', 'arrangement', 'dato']
 
-admin.site.register(models.Foto,FotoAdmin)
+
+admin.site.register(models.Foto, FotoAdmin)
 
 
 class OpptakAdmin(admin.ModelAdmin):
-    list_display = ['id','opptakstype','produksjon','nummer','arrangement','dato']
+    list_display = ['id', 'opptakstype',
+                    'produksjon', 'nummer', 'arrangement', 'dato']
 
-admin.site.register(models.Opptak,OpptakAdmin)
+
+admin.site.register(models.Opptak, OpptakAdmin)
 
 
 class UttrykkAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel']
+    list_display = ['id', 'tittel']
 
-admin.site.register(models.Uttrykk,UttrykkAdmin)
+
+admin.site.register(models.Uttrykk, UttrykkAdmin)
 
 
 class DokumenttagAdmin(admin.ModelAdmin):
-    list_display = ['id','tag']
+    list_display = ['id', 'tag']
+
 
 class DokumentAdmin(admin.ModelAdmin):
-    list_display = ['id','tittel','dato']
+    list_display = ['id', 'tittel', 'dato']
 
-admin.site.register(models.Dokumenttag,DokumenttagAdmin)
-admin.site.register(models.Dokument,DokumentAdmin)
+
+admin.site.register(models.Dokumenttag, DokumenttagAdmin)
+admin.site.register(models.Dokument, DokumentAdmin)
 
 
 class ArAdmin(admin.ModelAdmin):
     list_display = ['arstall']
 
-admin.site.register(models.Ar,ArAdmin)
+
+admin.site.register(models.Ar, ArAdmin)
