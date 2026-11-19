@@ -1,97 +1,186 @@
 {% load static %}
 
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Studentersamfundets Interne Teater</title>
 
-<head>
-	<meta charset="UTF-8"/>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Studentersamfundets Interne Teater</title>
-	<link rel="icon" type="image/svg" href="{% static 'assets/sit_logo_without_text.svg' %}">
-	<link rel="stylesheet" href="{% static 'style.css' %}"/>
+    <link
+      rel="icon"
+      type="image/svg"
+      href="{% static 'assets/sit_logo_without_text.svg' %}"
+    />
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
 
-	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="{% static 'js/jquery.js' %}"></script>
-	{% block header_content %}{% endblock header_content %}
-</head>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Open+Sans"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Libre+Baskerville"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 
-<body>
+    <script src="{% static 'js/jquery.js' %}"></script>
 
-	<div class="topnav">
-		<a href="{% url 'hoved' %}"><img src="{% static 'assets/sit_logo_without_text.svg' %}" height=60 id="logo"></a>
-		<div id="menuLinks">
-			<a href="{% url 'info' %}">Om SIT</a>
-			{% if FEATURES.TOGGLE_KONTAKT %}
-				<a href="{% url 'kontakt' %}">Kontakt</a>
-				{% if user.is_authenticated %}
-					<a href="{% url 'Lommelista' %}">Lommelista</a>
-				{% endif %}
-			{% endif %}
-			{% if FEATURES.TOGGLE_MEDLEMMER %}<a href="{% url 'medlemmer' %}">Medlemmer</a>{% endif %}
-			{% if FEATURES.TOGGLE_PRODUKSJONER %}<a href="{% url 'produksjoner' %}">Produksjoner</a>{% endif %}
-			{% if FEATURES.TOGGLE_NUMRE %}<a href="{% url 'numre' %}">Numre</a>{% endif %}
-			{% if user.is_authenticated %}
-				{% if FEATURES.TOGGLE_VERV %}<a href="{% url 'verv' %}">Verv</a>{% endif %}
-				{% if FEATURES.TOGGLE_UTTRYKK %}<a href="{% url 'uttrykk' %}">Uttrykk</a>{% endif %}
-				{% if FEATURES.TOGGLE_ARKIV %}<a href="{% url 'arkiv' %}">Arkiv</a>{% endif %}
-				{% if FEATURES.TOGGLE_DOKUMENTER %}<a href="{% url 'dokumenter' %}">Dokumenter</a>{% endif %}
-				<a href="http://sit-bar.samfundet.no/">Badeportal</a>
-			{% else %}
-				<a href="{% url 'opptak' %}">Søk SIT</a>
-			{% endif %}
-		</div>
+    {% block header_content %}{% endblock header_content %}
+  </head>
 
-		<status id="status">
-			{% if user.is_authenticated %}
-			<form method="post" action="{% url 'logout' %}">
-			 {% csrf_token %}
-			 <button type="submit" href="{% url 'logout' %}" id="logout-btn"><img src="{% static 'assets/sit_profile_icon.svg' %}">{{user.username}} Logg ut</button>
-			</form>
-			{% else %}
-			<a href="{% url 'login' %}" class="logo"><img src="{% static 'assets/sit_profile_icon.svg' %}">  Logg inn</a>
-			{% endif %}
-		</status>
-		<a href="javascript:void(0);" class="hamburger-icon" onclick="hamburgerFunction()">
-			<i class="material-icons">menu</i>
-		</a>
+  <body>
+    <div class="topnav">
+      <a href="{% url 'hoved' %}">
+        <img
+          src="{% static 'assets/sit_logo_without_text.svg' %}"
+          height="60"
+          id="logo"
+        />
+      </a>
 
+      <div id="menuLinks">
+        <a href="{% url 'info' %}">Om SIT</a>
 
+        {% if FEATURES.TOGGLE_KONTAKT %}
+        <a href="{% url 'kontakt' %}">Kontakt</a>
 
-	</div>
+        {% if user.is_authenticated %}
+        <a href="{% url 'Lommelista' %}">Lommelista</a>
+        {% endif %} {% endif %} {% if FEATURES.TOGGLE_MEDLEMMER %}
+        <a href="{% url 'medlemmer' %}">Medlemmer</a>
+        {% endif %} {% if FEATURES.TOGGLE_PRODUKSJONER %}
+        <a href="{% url 'produksjoner' %}">Produksjoner</a>
+        {% endif %} {% if FEATURES.TOGGLE_NUMRE %}
+        <a href="{% url 'numre' %}">Numre</a>
+        {% endif %} {% if user.is_authenticated %} {% if FEATURES.TOGGLE_VERV %}
+        <a href="{% url 'verv' %}">Verv</a>
+        {% endif %} {% if FEATURES.TOGGLE_UTTRYKK %}
+        <a href="{% url 'uttrykk' %}">Uttrykk</a>
+        {% endif %} {% if FEATURES.TOGGLE_ARKIV %}
+        <a href="{% url 'arkiv' %}">Arkiv</a>
+        {% endif %} {% if FEATURES.TOGGLE_DOKUMENTER %}
+        <a href="{% url 'dokumenter' %}">Dokumenter</a>
+        {% endif %} {% if user.is_staff %}
+        <a href="{% url 'adminpanel' %}">Adminpanel</a>
+        {% endif %}
 
-	<main class="main-wrapper">
-		{% block innhold %}
+        <a href="http://sit-bar.samfundet.no/">Badeportal</a>
 
-		{% endblock innhold %}
-	</main>
+        {% else %}
 
-	<div class="footer">
-		<div class="footer-flex-wrapper">
-			<div class="footer-section">
-				<p><a href="{% url 'kontakt' %}" class="text-strong">Kontakt oss</a></p>
-				<p> Studentersamfundet <br>
-					Elgeseter gate 1 <br>
-					7030 Trondheim</p>
-				<p><a href="mailto:sit@samfundet.no"> sit@samfundet.no</a></p>
-				<!-- <p><a href="{% url 'kontakt' %}"> Kontakt</a> </p> -->
-			</div>
-			<div class="footer-section">
-				<p><a href="{% url 'info' %}" class="text-strong">Om SIT</a></p>
-				<a href="https://www.samfundet.no/informasjon" target="_blank" rel="noreferrer noopener">Om Studentersamfundet i Trondhjem</a>
-			</div>
-			<div class="footer-some footer-section">
-				<a href="https://www.facebook.com/studentersamfundetsinterneteater" target="_blank" rel="noreferrer noopener" class="some-links"><i class="fa fa-facebook"></i>Facebook</a>
-				<a href="https://www.instagram.com/samfundetsinterneteater" target="_blank" rel="noreferrer noopener" class="some-links"><i class="fa fa-instagram"></i>Instagram</a>
-				<a href="https://www.snapchat.com/add/SITeater" target="_blank" rel="noreferrer noopener" class="some-links"><i class="fa fa-snapchat"></i>Snapchat</a>
-				<a href="https://forms.gle/LE4BEM3dZiBwo5wv8" target="_blank" rel="noreferrer noopener" class="feedback-button">Gi oss tilbakemelding!</a>
-			</div>
-		</div>
-	</div>
-	<script src="{% static 'hamburger.js' %}"></script>
-</body>
+        <a href="{% url 'opptak' %}">Søk SIT</a>
 
+        {% endif %}
+      </div>
+
+      <status id="status">
+        {% if user.is_authenticated %}
+
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" id="logout-btn">
+            <img src="{% static 'assets/sit_profile_icon.svg' %}" />
+            {{ user.username }} Logg ut
+          </button>
+        </form>
+
+        {% else %}
+
+        <a href="{% url 'login' %}" class="logo">
+          <img src="{% static 'assets/sit_profile_icon.svg' %}" />
+          Logg inn
+        </a>
+
+        {% endif %}
+      </status>
+
+      <a
+        href="javascript:void(0);"
+        class="hamburger-icon"
+        onclick="hamburgerFunction()"
+      >
+        <i class="material-icons">menu</i>
+      </a>
+    </div>
+
+    <main class="main-wrapper">{% block innhold %} {% endblock innhold %}</main>
+
+    <div class="footer">
+      <div class="footer-flex-wrapper">
+        <div class="footer-section">
+          <p>
+            <a href="{% url 'kontakt' %}" class="text-strong">Kontakt oss</a>
+          </p>
+
+          <p>
+            Studentersamfundet<br />
+            Elgeseter gate 1<br />
+            7030 Trondheim
+          </p>
+
+          <p>
+            <a href="mailto:sit@samfundet.no">sit@samfundet.no</a>
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <p>
+            <a href="{% url 'info' %}" class="text-strong">Om SIT</a>
+          </p>
+
+          <a
+            href="https://www.samfundet.no/informasjon"
+            target="_blank"
+            rel="noreferrer noopener"
+          >
+            Om Studentersamfundet i Trondhjem
+          </a>
+        </div>
+
+        <div class="footer-some footer-section">
+          <a
+            href="https://www.facebook.com/studentersamfundetsinterneteater"
+            target="_blank"
+            class="some-links"
+          >
+            <i class="fa fa-facebook"></i>Facebook
+          </a>
+
+          <a
+            href="https://www.instagram.com/samfundetsinterneteater"
+            target="_blank"
+            class="some-links"
+          >
+            <i class="fa fa-instagram"></i>Instagram
+          </a>
+
+          <a
+            href="https://www.snapchat.com/add/SITeater"
+            target="_blank"
+            class="some-links"
+          >
+            <i class="fa fa-snapchat"></i>Snapchat
+          </a>
+
+          <a
+            href="https://forms.gle/LE4BEM3dZiBwo5wv8"
+            target="_blank"
+            class="feedback-button"
+          >
+            Gi oss tilbakemelding!
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'hamburger.js' %}"></script>
+  </body>
 </html>

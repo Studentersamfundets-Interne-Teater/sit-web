@@ -22,8 +22,10 @@ def get_ar(arstall: int) -> models.Ar:
 
 def get_blesteliste(dag: datetime.date):
     """Henter ei liste over produksjoner som skal blæstes på forsida."""
-    blesteliste = models.Produksjon.objects.filter(blestestart__isnull=False,blestestart__lte=dag)
-    pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp() >= dag]
+    blesteliste = models.Produksjon.objects.filter(
+        blestestart__isnull=False, blestestart__lte=dag)
+    pids = [produksjon.id for produksjon in blesteliste if produksjon.blestestopp()
+            >= dag]
     blesteliste = blesteliste.filter(id__in=pids).order_by("premieredato")
     return blesteliste
 
@@ -41,7 +43,7 @@ def view_hoved(request):
     blesteliste = get_blesteliste(dag)
     infotekst = get_infotekst()
     return render(request, 'hoved.html', {'FEATURES': features,
-        'ar': ar, 'infotekst': infotekst, 'dag': dag, 'blesteliste': blesteliste})
+                                          'ar': ar, 'infotekst': infotekst, 'dag': dag, 'blesteliste': blesteliste})
 
 
 def view_info(request):
@@ -49,7 +51,7 @@ def view_info(request):
     ar = get_ar(arstall)
     infotekst = get_infotekst()
     return render(request, 'info.html', {'FEATURES': features,
-        'ar': ar, 'infotekst': infotekst})
+                                         'ar': ar, 'infotekst': infotekst})
 
 
 def view_opptak(request):
@@ -64,20 +66,23 @@ def view_opptak(request):
     else:
         opptak = False
     return render(request, 'opptak.html', {'FEATURES': features,
-        'ar': ar, 'opptak': opptak})
+                                           'ar': ar, 'opptak': opptak})
 
 
 def make_styrevervoppslag(ar):
     """Lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over styrevervene et gitt år, sortert etter verv-id."""
-    styreerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=1)
+    styreerfaringer = models.Erfaring.objects.filter(
+        ar=ar).filter(verv__vervtype=1)
     if styreerfaringer.count():
-        vids = styreerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
+        vids = styreerfaringer.values_list(
+            'verv', flat=True).distinct().order_by('verv__id')
         vervoppslag = {}
         for vid in vids:
             if vid == None:
                 continue
             verv = models.Verv.objects.get(id=vid)
-            erfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__id=vid).order_by('rolle')
+            erfaringer = models.Erfaring.objects.filter(
+                ar=ar).filter(verv__id=vid).order_by('rolle')
             vervoppslag[verv] = erfaringer
     else:
         vervoppslag = None
@@ -90,17 +95,21 @@ def make_gjengvervoppslag(ar, authenticated):
     Hvis man er logga inn får man opp både intern- og ekstern-gjengverv; ellers bare ekstern-.
     """
     if not authenticated:
-        gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype=2)
+        gjengerfaringer = models.Erfaring.objects.filter(
+            ar=ar).filter(verv__vervtype=2)
     else:
-        gjengerfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__vervtype__in=[2,3])
+        gjengerfaringer = models.Erfaring.objects.filter(
+            ar=ar).filter(verv__vervtype__in=[2, 3])
     if gjengerfaringer.count():
-        vids = gjengerfaringer.values_list('verv', flat=True).distinct().order_by('verv__id')
+        vids = gjengerfaringer.values_list(
+            'verv', flat=True).distinct().order_by('verv__id')
         vervoppslag = {}
         for vid in vids:
             if vid == None:
                 continue
             verv = models.Verv.objects.get(id=vid)
-            erfaringer = models.Erfaring.objects.filter(ar=ar).filter(verv__id=vid).order_by('rolle')
+            erfaringer = models.Erfaring.objects.filter(
+                ar=ar).filter(verv__id=vid).order_by('rolle')
             vervoppslag[verv] = erfaringer
     else:
         vervoppslag = None
@@ -112,14 +121,16 @@ def make_gjengtitteloppslag(ar, authenticated):
 
     Hvis man ikke er logga inn får man ikke opp noen titler.
     """
-    titler = models.Erfaring.objects.filter(ar=ar).values_list('tittel', flat=True).distinct()
+    titler = models.Erfaring.objects.filter(
+        ar=ar).values_list('tittel', flat=True).distinct()
     titteloppslag = {}
     if not authenticated:
         return titteloppslag
     for tittel in titler:
         if tittel == "":
             continue
-        erfaringer = models.Erfaring.objects.filter(ar=ar).filter(tittel=tittel).order_by('rolle')
+        erfaringer = models.Erfaring.objects.filter(
+            ar=ar).filter(tittel=tittel).order_by('rolle')
         if erfaringer.count() > 1:
             if tittel[-2:] == "er" or tittel[-3:] == "lig":
                 titteloppslag[tittel+"e"] = erfaringer
@@ -137,9 +148,9 @@ def view_kontakt(request):
         return redirect('hoved')
     arstall = datetime.datetime.now().year
     styreoppslag = make_styrevervoppslag(arstall)
-    vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
+    vervoppslag = make_gjengvervoppslag(arstall, request.user.is_authenticated)
     return render(request, 'kontakt.html', {'FEATURES': features,
-        'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag})
+                                            'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag})
 
 
 @login_required
@@ -147,9 +158,10 @@ def view_Lommelista(request):
     if not features.TOGGLE_KONTAKT:
         return redirect('hoved')
     arstall = datetime.datetime.now().year
-    lommeliste = models.Medlem.objects.filter(status__in=[1,2]).order_by('etternavn')
+    lommeliste = models.Medlem.objects.filter(
+        status__in=[1, 2]).order_by('etternavn')
     return render(request, 'Lommelista.html', {'FEATURES': features,
-        'lommeliste': lommeliste})
+                                               'lommeliste': lommeliste})
 
 
 def view_medlemmer(request):
@@ -174,14 +186,16 @@ def view_medlemmer(request):
                 ukjentliste = medlemsliste.filter(undergjeng__isnull=True)
             else:
                 ukjentliste = medlemsliste.none()
-            medlemsliste = (medlemsliste.filter(undergjeng__in=undergjenger) | ukjentliste)
+            medlemsliste = (medlemsliste.filter(
+                undergjeng__in=undergjenger) | ukjentliste)
 
         if statuser := request.GET.getlist('status'):
             if '0' in statuser:
                 ukjentliste = medlemsliste.filter(status__isnull=True)
             else:
                 ukjentliste = medlemsliste.none()
-            medlemsliste = (medlemsliste.filter(status__in=statuser) | ukjentliste)
+            medlemsliste = (medlemsliste.filter(
+                status__in=statuser) | ukjentliste)
 
         if 'ukjent_ar' in request.GET:
             ukjentliste = medlemsliste.filter(opptaksar__isnull=True)
@@ -191,31 +205,37 @@ def view_medlemmer(request):
             ukjentliste = medlemsliste.none()
 
         if fra_ar := request.GET.get('fra_ar'):
-            medlemsliste = (medlemsliste.filter(opptaksar__gte=fra_ar) | ukjentliste)
+            medlemsliste = (medlemsliste.filter(
+                opptaksar__gte=fra_ar) | ukjentliste)
 
         if til_ar := request.GET.get('til_ar'):
-            medlemsliste = (medlemsliste.filter(opptaksar__lte=til_ar) | ukjentliste)
+            medlemsliste = (medlemsliste.filter(
+                opptaksar__lte=til_ar) | ukjentliste)
 
         if medlemstyper := request.GET.getlist('medlemstype'):
             medlemsliste = medlemsliste.filter(medlemstype__in=medlemstyper)
-            for medlemstype in medlemstyper: # inkluderer andre medlemmer enn SITere, selv om de ikke har undergjeng, status eller opptaksår.
+            # inkluderer andre medlemmer enn SITere, selv om de ikke har undergjeng, status eller opptaksår.
+            for medlemstype in medlemstyper:
                 if medlemstype != '1':
-                    medlemsliste = (medlemsliste | models.Medlem.objects.filter(medlemstype=medlemstype))
+                    medlemsliste = (medlemsliste | models.Medlem.objects.filter(
+                        medlemstype=medlemstype))
 
         if titler := request.GET.getlist('tittel'):
             ordner = request.GET.getlist('orden')
-            utmerkelsesliste = models.Utmerkelse.objects.filter(tittel__in=titler).filter(orden__in=ordner)
-            mids = utmerkelsesliste.values_list('medlem',flat=True).distinct()
+            utmerkelsesliste = models.Utmerkelse.objects.filter(
+                tittel__in=titler).filter(orden__in=ordner)
+            mids = utmerkelsesliste.values_list('medlem', flat=True).distinct()
             medlemsliste = medlemsliste.filter(id__in=mids)
 
     else:
         arstall = datetime.datetime.now().year
         medlemsform = forms.MedlemSearchForm()
-        medlemsliste = medlemsliste.filter(undergjeng__in=[1,2,3]).filter(status__in=[1,2,3]).filter(medlemstype=1)
+        medlemsliste = medlemsliste.filter(undergjeng__in=[1, 2, 3]).filter(
+            status__in=[1, 2, 3]).filter(medlemstype=1)
         medlemsliste = medlemsliste.filter(opptaksar__gte=(arstall-10))
-            # filtrerer ut SITere fra de siste 10 årene som utgangspunkt.
+        # filtrerer ut SITere fra de siste 10 årene som utgangspunkt.
     return render(request, "medlemmer/medlemmer.html", {'FEATURES': features,
-        'medlemsliste': medlemsliste, 'medlemsform': medlemsform})
+                                                        'medlemsliste': medlemsliste, 'medlemsform': medlemsform})
 
 
 @permission_required('SITdata.add_medlem')
@@ -227,17 +247,18 @@ def view_medlem_ny(request):
         if medlemsform.is_valid():
             medlem = medlemsform.save()
             if 'opprett_brukerkonto' in request.POST:
-                brukerkonto = User.objects.create_user(medlem.brukernavn(), medlem.epost, 'ta-de-du!')
+                brukerkonto = User.objects.create_user(
+                    medlem.brukernavn(), medlem.epost, 'ta-de-du!')
                 medlem.brukerkonto = brukerkonto
                 medlem.save()
             return redirect('medlem_info', medlem.id)
     else:
         medlemsform = forms.MedlemAdminForm()
     return render(request, 'medlemmer/medlem_ny.html', {'FEATURES': features,
-        'medlemsform': medlemsform})
+                                                        'medlemsform': medlemsform})
 
 
-def make_gjengerfaringsoppslag(medlem,authenticated):
+def make_gjengerfaringsoppslag(medlem, authenticated):
     """Lager et oppslag på formen {årstall: [erfaring, erfaring, ...], ...} over gjengerfaringene til et medlem,
     sortert etter år og verv-id.
 
@@ -245,14 +266,16 @@ def make_gjengerfaringsoppslag(medlem,authenticated):
     """
     gjengerfaringer = medlem.erfaringer.filter(produksjon__isnull=True)
     if not authenticated:
-        gjengerfaringer = gjengerfaringer.filter(verv__vervtype__in=[1,2])
+        gjengerfaringer = gjengerfaringer.filter(verv__vervtype__in=[1, 2])
     if gjengerfaringer.count():
-        ar = gjengerfaringer.values_list('ar', flat=True).distinct().order_by('-ar')
+        ar = gjengerfaringer.values_list(
+            'ar', flat=True).distinct().order_by('-ar')
         erfaringsoppslag = {}
         for arstall in ar:
             if arstall == None:
                 continue
-            erfaringer = gjengerfaringer.filter(ar=arstall).order_by('verv__id')
+            erfaringer = gjengerfaringer.filter(
+                ar=arstall).order_by('verv__id')
             erfaringsoppslag[arstall] = erfaringer
     else:
         erfaringsoppslag = None
@@ -265,13 +288,15 @@ def make_produksjonserfaringsoppslag(medlem):
     """
     produksjonserfaringer = medlem.erfaringer.filter(produksjon__isnull=False)
     if produksjonserfaringer.count():
-        pids = produksjonserfaringer.values_list('produksjon', flat=True).distinct().order_by('-produksjon__premieredato')
+        pids = produksjonserfaringer.values_list(
+            'produksjon', flat=True).distinct().order_by('-produksjon__premieredato')
         erfaringsoppslag = {}
         for pid in pids:
             if pid == None:
                 continue
             produksjon = models.Produksjon.objects.get(id=pid)
-            erfaringer = produksjonserfaringer.filter(produksjon=produksjon).order_by('verv__id')
+            erfaringer = produksjonserfaringer.filter(
+                produksjon=produksjon).order_by('verv__id')
             erfaringsoppslag[produksjon] = erfaringer
     else:
         erfaringsoppslag = None
@@ -288,10 +313,11 @@ def view_medlem_info(request, mid):
         access = 'own'
     else:
         access = 'other'
-    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,request.user.is_authenticated)
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(
+        medlem, request.user.is_authenticated)
     produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     return render(request, 'medlemmer/medlem_info.html', {'FEATURES': features, 'access': access,
-        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag})
+                                                          'medlem': medlem, 'gjengerfaringsoppslag': gjengerfaringsoppslag, 'produksjonserfaringsoppslag': produksjonserfaringsoppslag})
 
 
 @login_required
@@ -305,16 +331,17 @@ def view_medlem_endre(request, mid):
         MedlemForm = forms.MedlemOwnForm
     else:
         MedlemForm = forms.MedlemOtherForm
-    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,True)
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem, True)
     produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     if request.method == 'POST':
         medlemsform = MedlemForm(request.POST, request.FILES, instance=medlem)
-        erfaringsform = forms.ErfaringMedForm(request.POST,request.FILES)
+        erfaringsform = forms.ErfaringMedForm(request.POST, request.FILES)
         utmerkelsesform = forms.UtmerkelseForm(request.POST)
         if 'lagre_medlem' in request.POST and medlemsform.is_valid():
             medlemsform.save()
             if 'opprett_brukerkonto' in request.POST:
-                brukerkonto = User.objects.create_user(medlem.brukernavn(), medlem.epost, 'ta-de-du!')
+                brukerkonto = User.objects.create_user(
+                    medlem.brukernavn(), medlem.epost, 'ta-de-du!')
                 medlem.brukerkonto = brukerkonto
                 medlem.save()
             elif 'fjern_brukerkonto' in request.POST:
@@ -336,8 +363,8 @@ def view_medlem_endre(request, mid):
         erfaringsform = forms.ErfaringMedForm()
         utmerkelsesform = forms.UtmerkelseForm()
     return render(request, 'medlemmer/medlem_endre.html', {'FEATURES': features,
-        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag,
-        'medlemsform': medlemsform, 'utmerkelsesform': utmerkelsesform, 'erfaringsform': erfaringsform})
+                                                           'medlem': medlem, 'gjengerfaringsoppslag': gjengerfaringsoppslag, 'produksjonserfaringsoppslag': produksjonserfaringsoppslag,
+                                                           'medlemsform': medlemsform, 'utmerkelsesform': utmerkelsesform, 'erfaringsform': erfaringsform})
 
 
 @permission_required('SITdata.delete_medlem')
@@ -345,13 +372,13 @@ def view_medlem_slett(request, mid):
     if not (features.TOGGLE_MEDLEMMER and features.TOGGLE_EDIT):
         return redirect('hoved')
     medlem = get_object_or_404(models.Medlem, id=mid)
-    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem,True)
+    gjengerfaringsoppslag = make_gjengerfaringsoppslag(medlem, True)
     produksjonserfaringsoppslag = make_produksjonserfaringsoppslag(medlem)
     if (request.method == 'POST'):
         medlem.delete()
         return redirect('medlemmer')
     return render(request, 'medlemmer/medlem_slett.html', {'FEATURES': features,
-        'medlem': medlem, 'gjengerfaringsoppslag':gjengerfaringsoppslag, 'produksjonserfaringsoppslag':produksjonserfaringsoppslag})
+                                                           'medlem': medlem, 'gjengerfaringsoppslag': gjengerfaringsoppslag, 'produksjonserfaringsoppslag': produksjonserfaringsoppslag})
 
 
 @permission_required('SITdata.delete_utmerkelse')
@@ -364,7 +391,7 @@ def view_utmerkelse_fjern(request, uid):
         utmerkelse.delete()
         return redirect('medlem_info', medlem.id)
     return render(request, 'medlemmer/utmerkelse_fjern.html', {'FEATURES': features,
-        'utmerkelse': utmerkelse})
+                                                               'utmerkelse': utmerkelse})
 
 
 def view_produksjoner(request):
@@ -375,37 +402,44 @@ def view_produksjoner(request):
         produksjonsform = forms.ProduksjonSearchForm(request.GET)
         if request.GET['tittel']:
             tittel = request.GET['tittel']
-            produksjonsliste = produksjonsliste.filter(tittel__icontains=tittel)
+            produksjonsliste = produksjonsliste.filter(
+                tittel__icontains=tittel)
         if 'produksjonstags' in request.GET and request.GET['produksjonstags'] != '':
             produksjonstags = request.GET.getlist('produksjonstags')
-            produksjonsliste = produksjonsliste.filter(produksjonstags__id__in=produksjonstags)
+            produksjonsliste = produksjonsliste.filter(
+                produksjonstags__id__in=produksjonstags)
         if request.GET['forfatter']:
             forfatter = request.GET['forfatter']
-            produksjonsliste = produksjonsliste.filter(forfatter__icontains=forfatter)
+            produksjonsliste = produksjonsliste.filter(
+                forfatter__icontains=forfatter)
         if 'lokale' in request.GET and request.GET['lokale'] != '':
             lokaler = request.GET.getlist('lokale')
             produksjonsliste = produksjonsliste.filter(lokale__id__in=lokaler)
         if request.GET['fra_ar']:
             fra_ar = request.GET['fra_ar']
-            produksjonsliste = produksjonsliste.filter(premieredato__year__gte=fra_ar)
+            produksjonsliste = produksjonsliste.filter(
+                premieredato__year__gte=fra_ar)
         if request.GET['til_ar']:
             til_ar = request.GET['til_ar']
-            produksjonsliste = produksjonsliste.filter(premieredato__year__lte=til_ar)
+            produksjonsliste = produksjonsliste.filter(
+                premieredato__year__lte=til_ar)
         if 'produksjonstype' in request.GET and request.GET['produksjonstype'] != '':
             produksjonstyper = request.GET.getlist('produksjonstype')
-            produksjonsliste = produksjonsliste.filter(produksjonstype__in=produksjonstyper)
+            produksjonsliste = produksjonsliste.filter(
+                produksjonstype__in=produksjonstyper)
         if request.GET['fritekst']:
             fritekst = request.GET['fritekst']
             produksjonsliste = (produksjonsliste.filter(beskrivelse__icontains=fritekst) |
-                produksjonsliste.filter(anekdoter__icontains=fritekst) |
-                produksjonsliste.filter(reklame__icontains=fritekst))
+                                produksjonsliste.filter(anekdoter__icontains=fritekst) |
+                                produksjonsliste.filter(reklame__icontains=fritekst))
     else:
         arstall = datetime.datetime.now().year
         produksjonsform = forms.ProduksjonSearchForm()
-        produksjonsliste = produksjonsliste.filter(premieredato__year__gte=(arstall-10))
-            # filtrerer ut produksjoner fra de siste 10 årene som utgangspunkt.
+        produksjonsliste = produksjonsliste.filter(
+            premieredato__year__gte=(arstall-10))
+        # filtrerer ut produksjoner fra de siste 10 årene som utgangspunkt.
     return render(request, 'produksjoner/produksjoner.html', {'FEATURES': features,
-        'produksjonsliste': produksjonsliste, 'produksjonsform': produksjonsform})
+                                                              'produksjonsliste': produksjonsliste, 'produksjonsform': produksjonsform})
 
 
 @permission_required('SITdata.add_produksjon')
@@ -413,17 +447,18 @@ def view_produksjon_ny(request):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     if request.method == 'POST':
-        produksjonsform = forms.ProduksjonAdminForm(request.POST, request.FILES)
+        produksjonsform = forms.ProduksjonAdminForm(
+            request.POST, request.FILES)
         if produksjonsform.is_valid():
             produksjon = produksjonsform.save()
             return redirect('produksjon_info', produksjon.id)
     else:
         produksjonsform = forms.ProduksjonAdminForm()
     return render(request, 'produksjoner/produksjon_ny.html', {'FEATURES': features,
-        'produksjonsform': produksjonsform})
+                                                               'produksjonsform': produksjonsform})
 
 
-def get_produsenterfaring(user,produksjon):
+def get_produsenterfaring(user, produksjon):
     """Sjekker om en bruker har produsenterfaring i en gitt produksjon, og returnerer den eventuelle erfaringa."""
     if not user.is_authenticated:
         return None
@@ -435,7 +470,8 @@ def get_produsenterfaring(user,produksjon):
 
 def make_produksjonsvervoppslag(produksjon):
     """Lager et oppslag på formen {verv: [erfaring, erfaring, ...], ...} over vervene i en gitt produksjon, sortert etter verv-id."""
-    vids = produksjon.erfaringer.all().values_list('verv', flat=True).distinct().order_by('verv__id')
+    vids = produksjon.erfaringer.all().values_list(
+        'verv', flat=True).distinct().order_by('verv__id')
     vervoppslag = {}
     for vid in vids:
         if vid == None:
@@ -453,7 +489,8 @@ def make_produksjonstitteloppslag(produksjon):
     for tittel in titler:
         if tittel == "":
             continue
-        erfaringer = produksjon.erfaringer.filter(tittel=tittel).order_by('rolle')
+        erfaringer = produksjon.erfaringer.filter(
+            tittel=tittel).order_by('rolle')
         if erfaringer.count() > 1:
             if tittel[-2:] == "er":
                 titteloppslag[tittel+"e"] = erfaringer
@@ -477,7 +514,7 @@ def view_produksjon_info(request, pid):
         ferdig = False
     else:
         ferdig = True
-    produsenterfaring = get_produsenterfaring(request.user,produksjon)
+    produsenterfaring = get_produsenterfaring(request.user, produksjon)
     if request.user.has_perm('SITdata.change_produksjon'):
         access = 'admin'
     elif produsenterfaring:
@@ -498,9 +535,9 @@ def view_produksjon_info(request, pid):
     else:
         nummeropptak = False
     return render(request, 'produksjoner/produksjon_info.html', {'FEATURES': features, 'access': access,
-        'produksjon': produksjon, 'produksjonstags': produksjonstags,
-        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
-        'nummerbilder': nummerbilder, 'nummeropptak': nummeropptak, "ferdig":ferdig})
+                                                                 'produksjon': produksjon, 'produksjonstags': produksjonstags,
+                                                                 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+                                                                 'nummerbilder': nummerbilder, 'nummeropptak': nummeropptak, "ferdig": ferdig})
 
 
 @login_required
@@ -508,7 +545,7 @@ def view_produksjon_endre(request, pid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     produksjon = get_object_or_404(models.Produksjon, id=pid)
-    produsenterfaring = get_produsenterfaring(request.user,produksjon)
+    produsenterfaring = get_produsenterfaring(request.user, produksjon)
     if request.user.has_perm('SITdata.change_produksjon'):
         ProduksjonForm = forms.ProduksjonAdminForm
     elif produsenterfaring:
@@ -521,7 +558,8 @@ def view_produksjon_endre(request, pid):
     vervoppslag = make_produksjonsvervoppslag(produksjon)
     titteloppslag = make_produksjonstitteloppslag(produksjon)
     if request.method == 'POST':
-        produksjonsform = ProduksjonForm(request.POST, request.FILES, instance=produksjon)
+        produksjonsform = ProduksjonForm(
+            request.POST, request.FILES, instance=produksjon)
         forestillingsform = forms.ForestillingForm(request.POST)
         anmeldelsesform = forms.AnmeldelseForm(request.POST, request.FILES)
         erfaringsform = forms.ErfaringProdForm(request.POST, request.FILES)
@@ -549,10 +587,10 @@ def view_produksjon_endre(request, pid):
         anmeldelsesform = forms.AnmeldelseForm()
         erfaringsform = forms.ErfaringProdForm()
     return render(request, 'produksjoner/produksjon_endre.html', {'FEATURES': features,
-        'produksjon': produksjon, 'produksjonstags': produksjonstags,
-        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
-        'produksjonsform': produksjonsform, 'forestillingsform': forestillingsform,
-        'anmeldelsesform': anmeldelsesform, 'erfaringsform': erfaringsform})
+                                                                  'produksjon': produksjon, 'produksjonstags': produksjonstags,
+                                                                  'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+                                                                  'produksjonsform': produksjonsform, 'forestillingsform': forestillingsform,
+                                                                  'anmeldelsesform': anmeldelsesform, 'erfaringsform': erfaringsform})
 
 
 @permission_required('SITdata.delete_produksjon')
@@ -569,8 +607,8 @@ def view_produksjon_slett(request, pid):
         produksjon.delete()
         return redirect('produksjoner')
     return render(request, 'produksjoner/produksjon_slett.html', {'FEATURES': features,
-        'produksjon': produksjon, 'produksjonstags': produksjonstags,
-        'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,})
+                                                                  'produksjon': produksjon, 'produksjonstags': produksjonstags,
+                                                                  'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag, })
 
 
 @login_required
@@ -578,14 +616,15 @@ def view_forestilling_fjern(request, fid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     forestilling = get_object_or_404(models.Forestilling, id=fid)
-    produsenterfaring = get_produsenterfaring(request.user,forestilling.produksjon)
+    produsenterfaring = get_produsenterfaring(
+        request.user, forestilling.produksjon)
     if request.user.has_perm('SITdata.delete_forestilling') or produsenterfaring:
         if request.method == 'POST':
             produksjon = forestilling.produksjon
             forestilling.delete()
             return redirect('produksjon_info', produksjon.id)
         return render(request, 'produksjoner/forestilling_fjern.html', {'FEATURES': features,
-            'forestilling': forestilling})
+                                                                        'forestilling': forestilling})
     else:
         return redirect('/konto/login?next=%s' % request.path)
 
@@ -595,14 +634,15 @@ def view_anmeldelse_fjern(request, aid):
     if not (features.TOGGLE_PRODUKSJONER and features.TOGGLE_EDIT):
         return redirect('hoved')
     anmeldelse = get_object_or_404(models.Anmeldelse, id=aid)
-    produsenterfaring = get_produsenterfaring(request.user,anmeldelse.produksjon)
+    produsenterfaring = get_produsenterfaring(
+        request.user, anmeldelse.produksjon)
     if request.user.has_perm('SITdata.delete_anmeldelse') or produsenterfaring:
         if request.method == 'POST':
             produksjon = anmeldelse.produksjon
             anmeldelse.delete()
             return redirect('produksjon_info', produksjon.id)
         return render(request, 'produksjoner/anmeldelse_fjern.html', {'FEATURES': features,
-            'anmeldelse': anmeldelse})
+                                                                      'anmeldelse': anmeldelse})
     else:
         return redirect('/konto/login?next=%s' % request.path)
 
@@ -638,7 +678,7 @@ def view_nummer_info(request, nid):
         return redirect('hoved')
     nummer = get_object_or_404(models.Nummer, id=nid)
     return render(request, 'numre/nummer_info.html', {'FEATURES': features,
-        'nummer': nummer})
+                                                      'nummer': nummer})
 
 
 @login_required
@@ -661,10 +701,10 @@ def view_verv_ny(request):
     else:
         vervform = forms.VervAdminForm()
     return render(request, 'verv/verv_ny.html', {'FEATURES': features,
-        'vervform': vervform})
+                                                 'vervform': vervform})
 
 
-def get_ververfaring(user,verv):
+def get_ververfaring(user, verv):
     """Sjekker om en bruker har erfaring fra et gitt verv, og returnerer den eventuelle erfaringa."""
     if not user.is_authenticated:
         return None
@@ -681,15 +721,15 @@ def view_verv_info(request, vid):
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
-    ververfaring = get_ververfaring(request.user,verv)
+    ververfaring = get_ververfaring(request.user, verv)
     if request.user.has_perm('SITdata.change_verv'):
         access = 'admin'
     elif ververfaring:
         access = 'own'
     else:
         access = 'other'
-    return render(request, 'verv/verv_info.html', {'FEATURES': features, 'access':access,
-        'verv': verv})
+    return render(request, 'verv/verv_info.html', {'FEATURES': features, 'access': access,
+                                                   'verv': verv})
 
 
 @login_required
@@ -699,7 +739,7 @@ def view_verv_endre(request, vid):
     verv = get_object_or_404(models.Verv, id=vid)
     if not verv.erfaringsoverforing:
         return redirect('verv')
-    ververfaring = get_ververfaring(request.user,verv)
+    ververfaring = get_ververfaring(request.user, verv)
     if request.user.has_perm('SITdata.change_verv'):
         VervForm = forms.VervAdminForm
         access = 'admin'
@@ -715,7 +755,8 @@ def view_verv_endre(request, vid):
         else:
             erfaringsform = None
         if ververfaring:
-            erfaringsskrivform = forms.ErfaringsskrivForm(request.POST, request.FILES, instance=ververfaring)
+            erfaringsskrivform = forms.ErfaringsskrivForm(
+                request.POST, request.FILES, instance=ververfaring)
         else:
             erfaringsskrivform = None
         if 'lagre_verv' in request.POST and vervform.is_valid():
@@ -736,12 +777,13 @@ def view_verv_endre(request, vid):
         else:
             erfaringsform = None
         if ververfaring:
-            erfaringsskrivform = forms.ErfaringsskrivForm(instance=ververfaring)
+            erfaringsskrivform = forms.ErfaringsskrivForm(
+                instance=ververfaring)
         else:
             erfaringsskrivform = None
     return render(request, 'verv/verv_endre.html', {'FEATURES': features,
-        'verv': verv, 'vervform': vervform, 'erfaringsform': erfaringsform,
-        'erfaringsskrivform': erfaringsskrivform})
+                                                    'verv': verv, 'vervform': vervform, 'erfaringsform': erfaringsform,
+                                                    'erfaringsskrivform': erfaringsskrivform})
 
 
 @permission_required('SITdata.delete_verv')
@@ -755,17 +797,18 @@ def view_verv_slett(request, vid):
         verv.delete()
         return redirect('verv')
     return render(request, 'verv/verv_slett.html', {'FEATURES': features,
-        'verv': verv})
+                                                    'verv': verv})
 
 
 @login_required
 def view_erfaring_fjern(request, eid):
     if not ((features.TOGGLE_MEDLEMMER or features.TOGGLE_PRODUKSJONER or features.TOGGLE_VERV)
-        and features.TOGGLE_EDIT):
+            and features.TOGGLE_EDIT):
         return redirect('hoved')
     erfaring = get_object_or_404(models.Erfaring, id=eid)
     if erfaring.produksjon:
-        produsenterfaring = get_produsenterfaring(request.user,erfaring.produksjon)
+        produsenterfaring = get_produsenterfaring(
+            request.user, erfaring.produksjon)
     else:
         produsenterfaring = None
     if request.user.has_perm('SITdata.delete_erfaring') or produsenterfaring:
@@ -786,7 +829,7 @@ def view_erfaring_fjern(request, eid):
                 erfaring.delete()
                 return redirect('hoved')
         return render(request, 'medlemmer/erfaring_fjern.html', {'FEATURES': features,
-            'erfaring': erfaring})
+                                                                 'erfaring': erfaring})
     else:
         return redirect('/konto/login?next=%s' % request.path)
 
@@ -812,8 +855,8 @@ def view_dokumenter(request):
     return render(request, 'dokumenter.html', {'FEATURES': features})
 
 
-def get_styreerfaring(user,arstall):
-# sjekker om en bruker har styreerfaring fra et gitt år, og returnerer den eventuelle erfaringa.
+def get_styreerfaring(user, arstall):
+    # sjekker om en bruker har styreerfaring fra et gitt år, og returnerer den eventuelle erfaringa.
     if not user.is_authenticated:
         return None
     if models.Medlem.objects.filter(brukerkonto=user):
@@ -828,7 +871,7 @@ def view_ar_info(request, arstall):
     if arstall < 1910 or arstall > datetime.datetime.now().year:
         return redirect('hoved')
     ar = get_ar(arstall)
-    styreerfaring = get_styreerfaring(request.user,ar.arstall)
+    styreerfaring = get_styreerfaring(request.user, ar.arstall)
     if request.user.has_perm('SITdata.change_ar'):
         access = 'admin'
     elif styreerfaring:
@@ -836,12 +879,14 @@ def view_ar_info(request, arstall):
     else:
         access = 'other'
     styreoppslag = make_styrevervoppslag(arstall)
-    vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
-    titteloppslag = make_gjengtitteloppslag(arstall,request.user.is_authenticated)
-    produksjonsliste = models.Produksjon.objects.filter(premieredato__year=arstall)
+    vervoppslag = make_gjengvervoppslag(arstall, request.user.is_authenticated)
+    titteloppslag = make_gjengtitteloppslag(
+        arstall, request.user.is_authenticated)
+    produksjonsliste = models.Produksjon.objects.filter(
+        premieredato__year=arstall)
     return render(request, 'ar/ar_info.html', {'FEATURES': features, 'access': access,
-        'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
-        'produksjonsliste': produksjonsliste})
+                                               'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+                                               'produksjonsliste': produksjonsliste})
 
 
 @login_required
@@ -849,7 +894,7 @@ def view_ar_endre(request, arstall):
     if not (features.TOGGLE_AR and features.TOGGLE_EDIT):
         return redirect('hoved')
     ar = get_object_or_404(models.Ar, pk=arstall)
-    styreerfaring = get_styreerfaring(request.user,ar.arstall)
+    styreerfaring = get_styreerfaring(request.user, ar.arstall)
     if request.user.has_perm('SITdata.change_ar'):
         access = 'admin'
     elif styreerfaring:
@@ -857,9 +902,11 @@ def view_ar_endre(request, arstall):
     else:
         return redirect('/konto/login/?next=%s' % request.path)
     styreoppslag = make_styrevervoppslag(arstall)
-    vervoppslag = make_gjengvervoppslag(arstall,request.user.is_authenticated)
-    titteloppslag = make_gjengtitteloppslag(arstall,request.user.is_authenticated)
-    produksjonsliste = models.Produksjon.objects.filter(premieredato__year=arstall)
+    vervoppslag = make_gjengvervoppslag(arstall, request.user.is_authenticated)
+    titteloppslag = make_gjengtitteloppslag(
+        arstall, request.user.is_authenticated)
+    produksjonsliste = models.Produksjon.objects.filter(
+        premieredato__year=arstall)
     if request.method == 'POST':
         arsform = forms.ArForm(request.POST, request.FILES, instance=ar)
         erfaringsform = forms.ErfaringArForm(request.POST, request.FILES)
@@ -875,8 +922,8 @@ def view_ar_endre(request, arstall):
         arsform = forms.ArForm(instance=ar)
         erfaringsform = forms.ErfaringArForm()
     return render(request, 'ar/ar_endre.html', {'FEATURES': features,
-        'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
-        'produksjonsliste': produksjonsliste, 'arsform': arsform, 'erfaringsform': erfaringsform})
+                                                'ar': ar, 'styreoppslag': styreoppslag, 'vervoppslag': vervoppslag, 'titteloppslag': titteloppslag,
+                                                'produksjonsliste': produksjonsliste, 'arsform': arsform, 'erfaringsform': erfaringsform})
 
 
 @permission_required('SITdata.add_medlem')
@@ -885,4 +932,12 @@ def view_ar_nyttkull(request, arstall):
         return redirect('hoved')
     ar = get_object_or_404(models.Ar, pk=arstall)
     return render(request, 'ar/ar_nyttkull.html', {'FEATURES': features,
-        'ar': ar})
+                                                   'ar': ar})
+
+
+@login_required
+def adminpanel(request):
+    if not request.user.is_staff:
+        return redirect("/")
+
+    return render(request, "admin/dashboard.html")
